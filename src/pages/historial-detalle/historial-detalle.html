@@ -1,0 +1,73 @@
+
+<ion-content class="main-view">
+
+    <div style="background-color:none"></div>
+
+      <ion-card style="width:40px" class="modal_content">
+<div class="" align="right">
+          <a color="dark" (click)="closeModal()">
+              <ion-icon name="close" color="dark"></ion-icon>
+            </a>
+
+
+</div>
+
+<div class="" align="center">
+<img src="../assets/imgs/logo-negro Guest-.png" style="width:140px" alt="">
+<br>
+<b>INFORMACIÓN</b>
+</div>
+<br>
+<font  size="2"  style=" opacity:0.5" for="">Folio </font><br>
+<font size="2" style=" opacity:0.5" for="">Hora de reservación:  {{historia.hora}}</font><br>
+<font size="2" style=" opacity:0.5" for="">Zona</font>
+<br>
+<br>
+  <!--Prueba-->
+  <!-- <ion-card class="card_atras"> -->
+    <!-- <ion-card-content class="card_atras"> -->
+      <!-- <ion-card-title> -->
+        <!-- <h4 class="">Detalle Reservacion </h4> -->
+      <!-- </ion-card-title> -->
+<div class="" align="center">
+ <font for="" style="" size="2"><b>PRODUCTOS ADQUIRIDOS</b></font>
+</div>
+<br>
+      <div class="" *ngFor="let producto of productos">
+        <div class="row" style="">
+          <div class="col-2">
+            <img class="icon" src="../assets/imgs/Group 59.jpeg" item-start>
+          </div>
+          <div class="col-5" style="margin-left:30px">
+            <p class="">{{ producto.producto }} </p>
+
+          </div>
+          <div class="col-4" style="margin-left:35px">
+            <label class="negro" item-end>$ {{ producto.costo }} </label>
+
+          </div>
+
+        </div>
+        <!-- <img class="icon" src="../assets/imgs/Group 59.png" item-start> -->
+        <!-- <p class="">{{ producto.producto }} </p> -->
+            </div>
+
+    <div class="" align="center">
+<b>_________________________________</b>
+<br>
+        <ion-badge item-end></ion-badge>
+        <!-- <img class="icon" src="../assets/imgs/icons/billete.png" item-start> -->
+<div class="">
+    <b  style="margin-left:20px">TOTAL &nbsp;  &nbsp; &nbsp; &nbsp; $ {{sumatoria}}</b>
+</div>
+
+        <!-- <b item-end>$ {{sumatoria}}</b> -->
+
+      </div>
+
+    <!-- </ion-card-content> -->
+
+  <!-- </ion-card> -->
+
+</ion-card>
+</ion-content>

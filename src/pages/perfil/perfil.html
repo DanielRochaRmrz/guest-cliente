@@ -1,0 +1,335 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+                    <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+                </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:40%;border-radius:50%;">
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:85%;border-radius:50%;">
+                    </div>
+                </div> -->
+                <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+<br>
+<ion-content>
+
+
+
+    <ion-row style="margin-top: 5px;">
+        <ion-col col-9>
+            <label for="" style="margin-left:20px;  margin-top:10px; color:#FD9530"><b>PERFIL</b> </label>
+        </ion-col>
+        <ion-col col-3>
+            <button *ngIf="invitado != 'true'"  class="btnEditar" (click)="editarPerfil()">Editar</button>
+        </ion-col>
+    </ion-row>
+    <br>
+    <!-- <span style="margin-left:20px;position:absolute;margin-top:-10px">____________</span> -->
+
+    <span style="margin-left:20px;opacity:.3;position:absolute;margin-top:-8px">
+        <font size="2">TUS DATOS</font>
+    </span>
+
+
+    <div align="center">
+        <div *ngIf="nombresUserss.provider == 'facebook'">
+            <div *ngIf="nombresUserss.status_foto == 0">
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
+                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+            </div>
+            <div *ngIf="nombresUserss.status_foto == 1">
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
+                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+            </div>
+        </div>
+        <div *ngIf="nombresUserss.provider == 'google'">
+            <div *ngIf="nombresUserss.status_foto == 0">
+                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="mostrar_camara()">
+                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+            </div>
+            <div *ngIf="nombresUserss.status_foto == 1">
+                <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
+                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <ion-list no-lines class="margen_2" style="padding: 20px;">
+
+
+        <!-- <ion-card style="width:330px;margin-left:20px"> -->
+        <ion-card>
+            <ion-row>
+                <ion-col col-2>
+                    <img class="icon" src="../assets/imgs/icons/Group101.png" style="width:40px;height:40px" item-start>
+
+                </ion-col>
+                <ion-col col-6>
+
+                    <h4 class="letras"> Nombre:</h4>
+
+                    <div class="usuarioN">{{user.displayName}}</div>
+                </ion-col>
+                <!-- <img class="icon" src="../assets/imgs/icons/Group 24.png" style="width:60px;height:60px" item-start> -->
+
+            </ion-row>
+        </ion-card>
+
+        <!-- <ion-card style="width:330px;margin-left:20px"> -->
+        <ion-card>
+            <ion-row>
+                <ion-col col-2>
+                    <img class="icon" src="../assets/imgs/icons/Group24.png" style="width:40px;height:40px" item-start>
+                </ion-col>
+                <ion-col col-10>
+
+                    <h4 class="letras"> Correo:</h4>
+                    <div class="usuarioN">
+                        {{ user.email}}
+                    </div>
+                </ion-col>
+            </ion-row>
+
+        </ion-card>
+
+        <!-- <ion-card style="width:330px;margin-left:20px"> -->
+        <ion-card>
+            <ion-row>
+                <ion-col col-2>
+                    <img class="icon" src="../assets/imgs/icons/Group251.png" style="width:40px;height:40px" item-start>
+
+                </ion-col>
+
+                <ion-col col-10>
+                    <h4 class="letras">Teléfono:</h4>
+
+                    <div *ngFor="let users of nombresUsers">
+                        <div *ngIf="users.uid==user.uid">
+                            <div class="usuarioN">
+                                {{users.phoneNumber}}
+                            </div>
+                        </div>
+                    </div>
+                </ion-col>
+            </ion-row>
+
+            <!-- <img class="icon" src="../assets/imgs/icons/telefono.png" item-start> -->
+            <!-- <div class="margen4"> -->
+            <!-- <h4>Teléfono:</h4> -->
+
+            <!-- </div> -->
+        </ion-card>
+
+        <!-- <ion-card style="width:330px;margin-left:20px"> -->
+        <ion-card>
+            <ion-row>
+                <ion-col col-2>
+                    <!-- <img class="icon" src="../assets/imgs/icons/Ellipse 6.png" style="width:50px;height:50px"
+                        item-start>
+                    <img class="icon" src="../assets/imgs/Trajeta-pago-01.png"
+                        style="margin-top:-45px;margin-left:10px;position:absolute" item-start> -->
+                    <img class="icon" src="../assets/imgs/tarjeta_New.png" style="width:40px;height:40px" item-start>
+                </ion-col>
+
+                <ion-col col-10>
+                    <h4 class="letras">Tarjeta:</h4>
+
+                    <div *ngFor="let tarjetas of misTarjetas">
+                        <div *ngIf="tarjetas.estatus=='ACTIVA'">
+                            <div *ngIf="tarjetas.idUsuario==user.uid">
+                                <div class="usuarioN">
+                                    **** **** **** {{tarjetas.numTarjeta4dijitos}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-col>
+                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
+            </ion-row>
+
+        </ion-card>
+
+        <!-- <ion-card style="width:330px;margin-left:20px"> -->
+        <ion-card>
+            <div *ngIf="user.provider == 'facebook'">
+
+                <ion-row>
+                    <ion-col col-2 align="center">
+                        <!-- <ion-icon name="logo-facebook" item-start class="iconoFG"></ion-icon> -->
+                        <img src="./assets/imgs/facebook.png" class="imgFGN" alt="">
+                    </ion-col>
+
+                    <ion-col col-10>
+                        <div class="margen3">
+                            <h4>Sesión:</h4>
+                            <div class="faceD">Facebook</div>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </div>
+            <div *ngIf="user.provider == 'google'">
+
+                <ion-row>
+                    <ion-col col-2 align="center">
+                        <!-- <ion-icon name="logo-google" item-start class="iconoFG"></ion-icon> -->
+                        <img src="./assets/imgs/g.png" class="imgFGN" alt="">
+                    </ion-col>
+
+                    <ion-col col-10>
+                        <div class="margen3">
+                            <h4>Sesión:</h4>
+                            <div class="googleD">Google</div>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </div>
+        </ion-card>
+
+
+        <div align="center">
+            <button style="border-radius:10px;background-color:#FD9530;width:50px;width:130px;height:30px;margin-top:40px" (click)="salir()" block>
+                <font color="white">Cerrar Sesión</font>
+            </button>
+        </div>
+
+
+
+        <!-- <div text-center class="borde">
+            <div>
+                <img class="imagen_2" src="./assets/imgs/Logoblanco.png">
+                !--<h3 text-center class="blanco"> Información del usuario </h3>--
+            </div>
+            !--Imagen del usuario--
+            <div class="">
+                <div *ngFor="let users of nombresUsers">
+                    <div *ngIf="users.uid==user.uid">
+                        <img class="imagen_perfil" [src]="users.photoURL">
+                    </div>
+                </div>
+
+                !--<img class="imagen_perfil" src="../assets/imgs/icons/user.jpg">--
+            </div>
+            !--Filtro de bandera de usuario--
+            <div class="filt">
+                <img class="cate" src="../assets/imgs/icons/gold_guest.png" item-start>
+            </div>
+        </div> -->
+        <!-- <ion-item>
+            <img class="icon" src="../assets/imgs/icons/profile.png" item-start>
+            <div class="margen3">
+                <h4> Nombre:</h4> {{user.nombre}}
+            </div>
+        </ion-item>
+        <ion-item>
+            <img class="icon" src="../assets/imgs/icons/correo.png" item-start>
+            <div class="margen3">
+                <h4> Correo:</h4>{{ user.email}}
+            </div>
+        </ion-item> -->
+        <!--<ion-item>
+            <img class="icon" src="../assets/imgs/icons/cumple.png" item-start>
+            <div class="margen3">
+                <h4>Cumpleaños:</h4>xxxx-xx-xx</div>
+         </ion-item>-->
+        <!--<ion-item>
+            <img class="icon" src="../assets/imgs/icons/telefono.png" item-start>
+            <div class="margen3">
+                <h4>Teléfono:</h4> {{ user.phoneNumber }} </div>
+          </ion-item>-->
+        <!-- <ion-item>
+            <img class="icon" src="../assets/imgs/icons/telefono.png" item-start>
+            <div class="margen4">
+                <h4>Teléfono:</h4>
+                <div *ngFor="let users of nombresUsers">
+                    <div *ngIf="users.uid==user.uid">
+                        {{users.phoneNumber}}
+                    </div>
+                </div>
+            </div>
+        </ion-item> -->
+        <!-- <ion-item *ngIf="user.provider == 'facebook'">
+            <div class="margen3">
+                <h4>Sesión:</h4>Facebook
+            </div>
+            <img class="icon" src="../assets/imgs/icons/facebook.png" item-start>
+        </ion-item> -->
+        <!-- <ion-item *ngIf="user.provider == 'google'">
+            <div class="margen3">
+                <h4>Sesión:</h4>Google
+            </div>
+            <img class="icon" src="../assets/imgs/icons/google.png" item-start>
+        </ion-item> -->
+        <!-- <ion-item>
+            <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start>
+            <div class="margen4">
+                <h4>Métodos de pago</h4>
+                !--<div *ngFor="let tarjetas of tarjetasData">
+                  <div *ngIf="tarjetas.estatus=='ACTIVA'">
+                    <div *ngIf="tarjetas.idUsuario==user.uid">
+                       {{tarjetas.numTarjeta}}
+                    </div>
+                  </div>
+                </div>--
+                Tarjeta
+            </div>
+        </ion-item> -->
+        <!--<ion-item>
+            <div class="margen3">
+                <h4>Tarjetas:</h4>
+            </div>
+            <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start>
+            <div class="margen3">**** 5425</div>
+            <div class="margen3">**** 6420</div>
+        </ion-item>-->
+        <!--<ion-item>
+            <img class="icon" src="../assets/imgs/icons/profile.png" item-start>
+            <div class="margen4">
+                <h4>Código:</h4>
+                <div *ngFor="let users of nombresUsers">
+                    <div *ngIf="users.uid==user.uid">
+                       {{users.codigo}}
+                    </div>
+                </div>
+            </div>
+        </ion-item>-->
+        <!-- <button ion-button (click)="salir()" color="dark" block>
+            Cerrar Sesión
+        </button> -->
+    </ion-list>
+</ion-content>

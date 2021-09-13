@@ -1,0 +1,230 @@
+page-reservaciones {
+    //Nuevo
+    .toolbar-background {
+        background-image: url('../assets/content/head.png')!important;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .borde {
+        margin-top: 0em;
+    }
+    //Nuevo
+    .botonMod {
+        // background: white;
+        // height: 38px;
+        // border-radius: 60%;
+        // margin-top: 5px;
+        // width: 26px;
+    }
+    .btnMasMenos {
+        border-radius: 20px;
+        box-shadow: 0 3px 5px #ccc;
+    }
+    .btnHora {
+        background-color: #fee8c5;
+        box-shadow: 0 5px 5px #853232, 0 9px 0 #5e2525, 0px 9px 10px rgba(0, 0, 0, 0.4), inset 0px 2px 15px rgba(255, 255, 255, 0.4), inset 0 -2px 9px rgba(0, 0, 0, 0.2);
+        width: 35px;
+        height: 35px;
+    }
+    .imgMenu {
+        width: 40px;
+        margin-top: 15px;
+    }
+    //Nuevo
+    .colorIcon3 {
+        zoom: 1;
+        color: #000;
+        font-size: inherit;
+    }
+    .selecciona {
+        font-size: 14px;
+        color: #000;
+        font-weight: bold;
+    }
+    .item-ios [item-right],
+    .item-ios [item-end] {
+        margin: 0px;
+    }
+    .senala2 {
+        color: black;
+        font-size: 10px;
+        // position: absolute;
+        // margin-left: 105px;
+        margin-top: -5px;
+    }
+    .senala {
+        color: black;
+        font-size: 10px;
+        margin-right: 60px;
+        // margin-right: 20px;
+        // position: absolute;
+        // text-align: right;
+    }
+    #people {
+        // height: auto;
+        // width: 10rem;
+        margin-top: -1rem;
+        height: 200px;
+    }
+    #mas_menos {
+        max-width: 4rem;
+        margin-top: -1rem;
+    }
+    #caja {
+        margin-top: 5px;
+        margin-top: -1rem;
+    }
+    .caja {
+        border-radius: 6px;
+        overflow: hidden;
+        height: 2.6rem;
+        width: 70%;
+        font-size: 2.4rem;
+        font-weight: 390;
+        text-transform: uppercase;
+        color: #000;
+        margin: auto;
+        // margin-top: 2.5rem;
+    }
+    .ajustar {
+        margin-top: 11%;
+        position: absolute;
+        margin-left: 15%;
+    }
+    .ion-icon {
+        color: #FD9530;
+    }
+    ion-datetime {
+        color: black;
+    }
+    .reloj {
+        position: relative;
+        margin-top: -159px;
+    }
+    .calendar {
+        position: relative;
+        margin-top: -120px;
+    }
+    .zonaTitulo {
+        color: #706F6F;
+        font-size: small;
+    }
+    .titulocheck {
+        color: #7A7979;
+    }
+    .compartir {
+        color: #7A7979;
+        font-size: small;
+    }
+    .iconog {
+        color: #7A7979;
+    }
+    .card-background-page {
+        ion-card {
+            position: relative;
+            text-align: center;
+        }
+        .card-title {
+            position: absolute;
+            top: 36%;
+            font-size: 2.0em;
+            width: 100%;
+            font-weight: bold;
+            color: #fff;
+        }
+        .card-subtitle {
+            font-size: 1.0em;
+            position: absolute;
+            top: 52%;
+            color: #fff;
+        }
+        .esquinal {
+            width: 20px;
+            margin-top: -130px;
+            margin-left: -6px;
+        }
+    }
+    ion-card img {
+        display: block;
+        /* width: 100%; */
+    }
+    ion-icon {
+        color: #FAA22D;
+    }
+    ion-list .item {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eccc68+80,fefcea+80&0.05+0,0.05+100 */
+        background: -moz-linear-gradient(top, rgba(254, 252, 234, 0.05) 0%, rgba(254, 252, 234, 0.05) 80%, rgba(254, 252, 234, 0.05) 100%);
+        /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, rgba(254, 252, 234, 0.05) 0%, rgba(254, 252, 234, 0.05) 80%, rgba(254, 252, 234, 0.05) 100%);
+        /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, rgba(254, 252, 234, 0.05) 0%, rgba(254, 252, 234, 0.05) 80%, rgba(254, 252, 234, 0.05) 100%);
+        /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        //   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#0dfefcea', endColorstr='#0dfefcea', GradientType=0);
+        //   /* IE6-9 */
+        color: #ffffff;
+    }
+    .tipoletras {
+        color: #FD9530;
+        font-size: small;
+    }
+    .tipocontenido {
+        color: #000;
+    }
+    .card_atras {
+        color: #000
+    }
+    .zoomX {
+        width: 400px;
+        height: 400px;
+    }
+    .imgCroquis {
+        width: 500%;
+        height: 700%;
+    }
+    agm-map {
+        height: 200px;
+        // width: 100%;
+    }
+    .fab-ios-primary {
+        color: #fff;
+        background-color: #010101;
+    }
+    .fab-md-primary {
+        color: #fff;
+        background-color: #010101;
+    }
+    page-reservaciones ion-icon {
+        color: #FAA22D;
+    }
+    .select-text {
+        color: black !important;
+    }
+    .datetime-md {
+        padding: 12px 0px 13px 16px;
+    }
+    .datetime-ios {
+        padding: 10px 0px 11px 0px;
+    }
+    .margen {
+        height: 5rem;
+    }
+    .responsiveContent {
+        position: relative;
+        height: 0;
+        overflow: hidden;
+        padding-bottom: 56.2%;
+        margin-bottom: 20px;
+    }
+    .responsiveContent iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .iframe {
+        height: 30rem;
+        width: 100%;
+    }
+}

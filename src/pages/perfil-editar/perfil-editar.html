@@ -1,0 +1,94 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-fab color="negro" (click)="(goBack())" class="atras">
+                <ion-icon name="arrow-back" color="naranja"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goBack()" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+                  <div *ngIf="miUser.provider == 'facebook'">
+                      <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                          style="width:40%;border-radius:50%;">
+                  </div>
+                  <div *ngIf="miUser.provider == 'google'">
+                      <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                          style="width:85%;border-radius:50%;">
+                  </div>
+              </div> -->
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <div>
+        <ion-grid>
+            <ion-row style="margin-top:80px">
+
+                <ion-col>
+                    <form [formGroup]="myForm" novalidate>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col col-12>
+                                    <ion-item class="_input">
+                                        <ion-label floating>Nombre</ion-label>
+                                        <ion-input type="text" name="nombre" formControlName="nombre" [(ngModel)]="nombre"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+
+                            <ion-row>
+                                <ion-col col-12>
+                                    <ion-item class="_input">
+                                        <ion-label floating>Correo</ion-label>
+                                        <ion-input type="text" name="correo" formControlName="correo" [(ngModel)]="correo"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col col-12>
+                                    <ion-item class="_input">
+                                        <ion-label floating>Telefono</ion-label>
+                                        <ion-input type="text" name="telefono" formControlName="telefono" [(ngModel)]="telefono"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col col-12>
+                                    <ion-item class="_input">
+                                        <ion-label floating>Tarjeta</ion-label>
+                                        <ion-input type="text" name="tarjeta" formControlName="tarjeta" [(ngModel)]="tarjeta"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+
+                        </ion-grid>
+                        <br>
+                        <ion-row>
+                            <ion-col>
+                                <div padding>
+                                    <button class="envio" (click)="editar(id)" ion-button icon-left block> <font size="2">Editar</font> </button>
+
+                                </div>
+                            </ion-col>
+                        </ion-row>
+
+                    </form>
+
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+    </div>
+
+</ion-content>

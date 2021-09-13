@@ -1,0 +1,88 @@
+page-modal-tarjetas-add {
+
+  .toolbar-background-md {
+      background-color: rgba(0, 0, 0, 0.5);
+  }
+  .toolbar-background-ios {
+      background-color: rgba(0, 0, 0, 0.5);
+  }
+
+
+  //NUEVOS
+  .borde {
+      margin-top: 0em;
+      border-style: solid;
+      border-width: 1px;
+      border-bottom-color: #e49602;
+  }
+  .ima{
+    height: 28px;
+    width: 28px;
+    background-color: black;
+    margin-left: 120%;
+    margin-top: 55%;
+  }
+  .esquina{
+    background-color: black;
+  }
+  .texto-alineado{
+    margin-top: 4%;
+    margin-left: -20%;
+  }
+  
+  .colorRow{
+  background-color: #e49602;
+  height: 41px;
+  }
+  [text-color="texto1"] {
+  color: #000;
+  }
+  [text-color="texto2"] {
+  color: #000000;
+  }
+
+  [text-color="texto3"] {
+  color: #000;
+  font-family: "TimesNewRoman" !important;
+  text-transform: uppercase;
+  }
+  
+  ion-list .item {
+
+    color: #000;
+  }
+  ion-card {
+    position: relative;
+    text-align: center;
+  }
+  .item-md {
+    padding-left: 0px;
+  }
+  .blanco_1 {
+      font-size: 18px;
+      resize: none;
+      color: #000;
+  }
+  .blanco_2 {
+      font-size: 11px;
+      resize: none;
+      color: #000;
+  }
+  .toolbar-background {
+    background-image: url('../assets/content/head.png')!important;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.borde {
+    margin-top: 0em;
+}
+
+//Nuevo
+
+.imgMenu{
+    width: 40px;
+    margin-top: 15px;
+  }
+}

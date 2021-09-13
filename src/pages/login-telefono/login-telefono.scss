@@ -1,0 +1,39 @@
+page-login-telefono {
+    ion-content {
+        background-image: url('../assets/imgs/Guest 159 1.png');
+        // background-image: url('../assets/imgs/Rectangle 12.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        //background-position: center;
+        width: 100%;
+        position: relative;
+        border: none;
+    }
+    .esquina {
+        background-color: black;
+    }
+    .borde {
+        margin-top: 0em;
+        border-style: solid;
+        border-width: 1px;
+        border-bottom-color: #e49602;
+    }
+    //Nuevo
+    .toolbar-background {
+        background-image: url('../assets/content/head.png')!important;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .atras {
+        width: 4rem;
+        height: 4rem;
+        margin-top: 1rem;
+    }
+    ._input {
+        background: none;
+    }
+    .content {
+        margin-top: 5rem;
+    }
+}

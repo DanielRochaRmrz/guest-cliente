@@ -1,0 +1,107 @@
+page-evento-detalle {
+
+    //Nuevo
+  .toolbar-background {
+    background-image: url('../assets/content/head.png')!important;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .borde {
+    margin-top: 0em;
+  }
+
+  //Nuevo
+  .botonMod {
+    // background: white;
+    // height: 38px;
+    // border-radius: 60%;
+    // margin-top: 5px;
+    // width: 26px;
+  }
+
+  .imgMenu{
+    width: 40px;
+    margin-top: 15px;
+  }
+
+  //Nuevo
+  .colorIcon3 {
+    zoom: 1;
+    color: #000;
+    font-size: inherit;
+  }
+
+  .selecciona {
+    font-size: 14px
+  }
+  
+  .card-background-page {
+  
+    ion-card {
+      position: relative;
+      text-align: center;
+    }
+  
+    .card-title {
+      position: absolute;
+      top: 36%;
+      font-size: 2.3em;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+      font-family: 'Open Sans', sans-serif;
+    }
+  
+    .card-subtitle {
+      font-size: 1.0em;
+      position: absolute;
+      top: 52%;
+      width: 100%;
+      color: #fff;
+    }
+  
+  }
+  
+  .btnshare {
+    zoom: 70%;
+    margin-top: -95px;
+  }
+  
+  .iconStar {
+    margin-top: -95px;
+  }
+  
+  .btnre{
+    background-color: #FD9530;
+    height: 35px;
+    width: 40%;
+  }
+  
+  .texto2{
+    color: #fff;
+    font-size: small;
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+  
+  .iconoestrella {
+    width: 20%;
+    color:#FFC149;
+    font-size: 20px;
+  }
+  
+  
+  .radio-md .radio-checked,
+  .radio-md-primary .radio-checked {
+    border-color: #fff;
+  }
+  .radio-md .radio-inner,
+  .radio-md-primary .radio-inner {
+     background-color: #fff;
+  }
+  .item-md .radio-md {
+     background-color: transparent;
+  }
+  
+}

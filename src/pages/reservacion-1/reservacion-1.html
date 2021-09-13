@@ -1,0 +1,250 @@
+<ion-header>
+    <ion-navbar class="borde" hideBackButton>
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+                    <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+                </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="verEvento()" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:40%;border-radius:50%;">
+                      </div>
+                      <div *ngIf="miUser.provider == 'google'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                      </div>
+                </div> -->
+                <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+<br>
+<ion-content class="card-background-page">
+
+    <div *ngIf="estatus == 0">
+
+        <ion-row>
+            <ion-col col-2></ion-col>
+            <ion-col col-8>
+                <div class="ciudad">
+                    <ion-item text-right class="card_atras" no-lines style="width: 88%;background: #E49602;border-radius: 25px;">
+                        <ion-label>
+                            <h3 class="colorIcon" style="text-align: initial;color: white;text-transform: uppercase;font-size: 14px;">Ciudad</h3>
+                        </ion-label>
+                        <ion-select [(ngModel)]="filterPostCiudad" interface="popover" style="color: #000; text-align: center;">
+                            <div *ngFor="let ciudad of ciudades">
+                                <ion-option [value]="ciudad.ciudad">{{ciudad.ciudad}}</ion-option>
+                            </div>
+                        </ion-select>
+                    </ion-item>
+                </div>
+            </ion-col>
+            <ion-col col-2></ion-col>
+        </ion-row>
+
+        <br>
+
+        <ion-item text-center no-lines>
+            <label class="selecciona"> SELECCIONA EL LUGAR DE TU RESERVACIÓN </label>
+        </ion-item>
+
+
+        <div *ngFor="let user of usuarios">
+            <div *ngIf="uidUserSesion==user.uid">
+                <div *ngFor="let sucursal of sucursalesS | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad" class="card_atras">
+                    <!-- <div *ngIf="sucursal.ciudad==user.ciudad"> -->
+                    <div *ngIf="invitado=='true'">
+                        <ion-card>
+                            <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
+                            <img src="{{sucursal.photoURL}}" (click)="invitadoAlert()" />
+                            <!-- <img *ngIf="invitado==1" src="{{sucursal.photoURL}}" style="width:720px;height:300px" (click)="reservar(sucursal.uid)" /> -->
+                            <div class="card-title">
+                                <ion-fab class="btnshare" right top edge>
+                                    <button ion-fab style="background-color: #fff;">
+                                        <ion-icon name="md-share" style="color: black;" color=dark></ion-icon>
+                                    </button>
+                                    <ion-fab-list side="top right edge">
+                                        <button class="fabbtn" ion-fab (click)="compartir(sucursal.displayName, sucursal.photoURL)">
+                                            <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                            <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
+                                        </button>
+                                        <button class="fabbtn" ion-fab (click)="compartirInsta(sucursal.displayName, sucursal.photoURL)">
+                                            <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                            <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
+                                        </button>
+                                    </ion-fab-list>
+                                </ion-fab>
+                                <b (click)="invitadoAlert()">{{sucursal.displayName}} </b>
+                            </div>
+
+                            <!-- <div class="card-subtitle" (click)="reservar(sucursal.uid)">{{sucursal.direccion}}, {{sucursal.ciudad}} -->
+                            <!-- <div align="right" (click)="reservar(sucursal.uid)"> -->
+                            <div class="card-subtitle" (click)="invitadoAlert()">{{sucursal.direccion}}, {{sucursal.ciudad}}
+                                <div align="right">
+                                    <!-- <img src="./assets/imgs/select.png" style="width: 30%;margin-top: -5%;" alt="" (click)="reservar(sucursal.uid)"> -->
+                                    <img src="./assets/imgs/select.png" style="width: 40%;margin-top: -5%;" alt="">
+                                </div>
+                            </div>
+
+                        </ion-card>
+                    </div>
+
+
+                    <div *ngIf="invitado==1" (click)="reservar(sucursal.uid)">
+                        <ion-card>
+                            <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
+
+                            <img src="{{sucursal.photoURL}}" />
+                            <!-- <img *ngIf="invitado==1" src="{{sucursal.photoURL}}" style="width:720px;height:300px" (click)="reservar(sucursal.uid)" /> -->
+
+                            <div class="card-title">
+                                <ion-fab class="btnshare" right top>
+                                    <button ion-fab style="background-color: #fff;">
+                                        <!-- <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon> -->
+                                        <ion-icon name="md-share" style="color: black;"></ion-icon>
+                                    </button>
+                                    <ion-fab-list side="top right edge">
+                                        <button class="fabbtn" ion-fab (click)="compartir(sucursal.displayName, sucursal.photoURL)">
+                                            <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                            <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
+                                        </button>
+                                        <button class="fabbtn" ion-fab (click)="compartirInsta(sucursal.displayName, sucursal.photoURL)">
+                                            <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                            <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
+                                        </button>
+                                    </ion-fab-list>
+                                </ion-fab>
+                                <b>{{sucursal.displayName}} </b>
+                            </div>
+
+                            <!-- <div class="card-subtitle" (click)="reservar(sucursal.uid)">{{sucursal.direccion}}, {{sucursal.ciudad}} -->
+                            <!-- <div align="right" (click)="reservar(sucursal.uid)"> -->
+                            <div class="card-subtitle">{{sucursal.direccion}}, {{sucursal.ciudad}}
+                                <div align="right">
+                                    <!-- <img src="./assets/imgs/select.png" style="width: 30%;margin-top: -5%;" alt="" (click)="reservar(sucursal.uid)"> -->
+                                    <br>
+                                    <ion-row>
+                                        <ion-col align="right" class="selCol" col-10>
+                                            <span>SELECCIONAR</span>
+                                        </ion-col>
+                                        <ion-col align="center">
+                                            <img src="./assets/imgs/Group.svg" style="width: 35px;margin-left: 2px;" alt="" (click)="reservar(sucursal.uid)">
+                                        </ion-col>
+                                    </ion-row>
+
+                                </div>
+                            </div>
+
+                        </ion-card>
+                    </div>
+
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="estatus == 1">
+
+        <ion-row>
+            <ion-col col-2></ion-col>
+            <ion-col col-8>
+                <div class="ciudad">
+                    <ion-item text-right class="card_atras" no-lines style="width: 88%;background: #E49602;border-radius: 25px;">
+                        <ion-label>
+                            <h3 class="colorIcon" style="text-align: initial;color: white;text-transform: uppercase;font-size: 14px;">Ciudad</h3>
+                        </ion-label>
+                        <ion-select [(ngModel)]="filterPostCiudad" interface="popover" style="color: #000; text-align: center;">
+                            <div *ngFor="let ciudad of ciudades">
+                                <ion-option [value]="ciudad.ciudad">{{ciudad.ciudad}}</ion-option>
+                            </div>
+                        </ion-select>
+                    </ion-item>
+                </div>
+            </ion-col>
+            <ion-col col-2></ion-col>
+        </ion-row>
+
+        <br>
+
+        <ion-item text-center no-lines>
+            <label class="selecciona"> SELECCIONA EL LUGAR DE TU RESERVACIÓN </label>
+        </ion-item>
+
+
+        <div *ngFor="let user of usuarios">
+            <div *ngIf="uidUserSesion==user.uid">
+                <div *ngFor="let sucursal of sucursales | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad" class="card_atras" (click)="reservar(sucursal.uid)">
+                    <!-- <div *ngIf="sucursal.ciudad==user.ciudad"> -->
+
+                    <ion-card>
+                        <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
+                        <img src="{{sucursal.photoURL}}" (click)="reservar(sucursal.uid)" />
+                        <div class="card-title">
+                            <ion-fab class="btnshare" top right edge>
+                                <button ion-fab style="background-color: #fff;">
+                                    <!-- <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon> -->
+                                    <ion-icon name="md-share" color="dark"></ion-icon>
+                                </button>
+                                <ion-fab-list side="top right edge">
+                                    <button class="fabbtn" ion-fab (click)="compartir(sucursal.displayName, sucursal.photoURL)">
+                                        <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                        <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
+                                    </button>
+                                    <button class="fabbtn" ion-fab (click)="compartirInsta(sucursal.displayName, sucursal.photoURL)">
+                                        <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                        <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
+                                    </button>
+                                </ion-fab-list>
+                            </ion-fab>
+                            <b>{{sucursal.displayName}}</b>
+                        </div>
+                        <div class="card-subtitle" (click)="reservar(sucursal.uid)">{{sucursal.direccion}}, {{sucursal.ciudad}}
+                            <div align="right" (click)="reservar(sucursal.uid)">
+                                <!-- <img src="./assets/imgs/select.png" style="width: 30%;margin-top: -5%;" alt="" (click)="reservar(sucursal.uid)"> -->
+                                <br>
+                                <ion-row>
+                                    <ion-col align="right" class="selCol" col-10>
+                                        <span>SELECCIONAR</span>
+                                    </ion-col>
+                                    <ion-col align="center">
+                                        <img src="./assets/imgs/Group.svg" style="width: 35px;margin-left: 2px;" alt="" (click)="reservar(sucursal.uid)">
+                                    </ion-col>
+                                </ion-row>
+                            </div>
+                        </div>
+
+                    </ion-card>
+
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</ion-content>

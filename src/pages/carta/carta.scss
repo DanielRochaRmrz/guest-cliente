@@ -1,0 +1,93 @@
+page-carta {
+
+     //Nuevo
+     .toolbar-background {
+        background-image: url('../assets/content/head.png')!important;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .borde {
+        margin-top: 0em;
+    }
+
+    //Nuevo
+    .botonMod {
+        // background: white;
+        // height: 38px;
+        // border-radius: 60%;
+        // margin-top: 5px;
+        // width: 26px;
+    }
+
+    .imgMenu{
+        width: 40px;
+        margin-top: 15px;
+    }
+
+    .lugar {
+        color: #000;
+    }
+
+    //Nuevo
+    .toolbar-background {
+        background-image: url('../assets/content/head.png')!important;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+
+    .borde {
+        margin-top: 0em;
+    }
+
+    .lugar {
+        color: #474646;
+        font-size: medium;
+    }
+
+    .cuadro {
+        background-color: #FD9530;
+        color: #fff;
+        font-size: larger;
+        width: 100%;
+        border-radius: 15px;
+        text-align: center;
+        // height: 10%;
+        text-transform: uppercase;
+    }
+
+    .descripcion {
+        background-color: #FBF9F7;
+        border-radius: 15px;
+        margin-top: -1%;
+    }
+
+    .letra {
+        text-transform: uppercase;
+        color: #474646;
+    }
+
+    .letraContenido {
+        text-align: center;
+        color: #474646;
+    }
+
+    .precio {
+        color: #FD9530;
+        font-size: large;
+    }
+
+    .ver {
+        color: #474646;
+    }
+
+    ion-icon {
+        color: #FFC149;
+    }
+
+    .total {
+        margin-top: 1rem;
+    }
+}

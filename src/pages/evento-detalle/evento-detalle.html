@@ -1,0 +1,129 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+                    <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+                </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:40%;border-radius:50%;">
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:85%;border-radius:50%;">
+                    </div>
+                </div> -->
+
+                <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content class="card-background-page">
+
+    <ion-row>
+        <ion-col col-3>
+            <ion-item text-center no-lines>
+                <ion-icon name="md-calendar" class="colorIcon" (click)="verEvento()"></ion-icon>
+                <p style="font-size: 11px;" (click)="verEvento()">EVENTOS</p>
+            </ion-item>
+        </ion-col>
+        <ion-col col-5 style="margin-left: -25px;">
+            <ion-item text-center no-lines>
+                <ion-icon name="md-time" class="colorIcon" (click)="verReservacion()"></ion-icon>
+                <p style="font-size: 11px;" (click)="verReservacion()">RESERVACIONES</p>
+            </ion-item>
+        </ion-col>
+        <ion-col>
+        </ion-col>
+    </ion-row>
+
+    <br>
+
+    <ion-item text-center no-lines>
+        <label class="selecciona"> AJUSTA TU RESERVACIÓN </label>
+    </ion-item>
+
+    <ion-card>
+        <img [src]="evento.img" />
+        <div class="card-title">
+
+            <ion-row align="end">
+                <ion-col col-8></ion-col>
+                <ion-col col-2 class="iconStar">
+                    <ion-icon name="star" class="iconoestrella"></ion-icon>
+                </ion-col>
+                <ion-col col-2>
+                    <ion-fab class="btnshare" top right edge>
+                        <button ion-fab color="dark">
+                            <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon>
+                        </button>
+                        <ion-fab-list side="top right edge">
+                            <button class="fabbtn" ion-fab (click)="compartir(evento)">
+                                <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
+                            </button>
+                            <button class="fabbtn" ion-fab (click)="compartirInsta(evento)">
+                                <!-- <img src="../assets/imgs/icons/facebook.png"> -->
+                                <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
+                            </button>
+                        </ion-fab-list>
+                    </ion-fab>
+                </ion-col>
+            </ion-row>
+
+            {{ evento.titulo }}
+        </div>
+        <div class="card-subtitle">
+
+            {{evento.obs}}
+
+            <br>
+
+            {{evento.fecha}}, {{ evento.hora }}
+
+            <br>
+
+            {{evento.categoria}}
+
+            <br>
+
+            {{evento.lugar}}
+        </div>
+    </ion-card>
+
+</ion-content>
+<ion-footer no-border>
+    <div align="center">
+        <button ion-button class="btnre" round (click)="Reservar(evento.uid, sucursalID)">
+            <p text-color="texto2">RESERVAR</p>
+        </button>
+    </div>
+</ion-footer>

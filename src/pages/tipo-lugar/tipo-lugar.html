@@ -1,0 +1,70 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+          <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+        </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+          <div *ngIf="miUser.provider == 'facebook'">
+            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:40%;border-radius:50%;">
+          </div>
+          <div *ngIf="miUser.provider == 'google'">
+            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+          </div>
+        </div> -->
+                <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img [src]="miUser.photoURL" style="width:40%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img [src]="miUser.photoURL" style="width: 43px;height: 46px;border-radius:50%;">
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width:85%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="card-background-page">
+    <ion-card>
+        <img src="./assets/content/03.png" (click)="goToEvento()" />
+        <div class="card-title" (click)="goToEvento()">Eventos</div>
+        <!-- <div class="card-subtitle">41 Listings</div> -->
+    </ion-card>
+
+    <ion-card>
+        <img src="./assets/content/02.png" (click)="goToList('restaurante')" />
+        <div class="card-title" (click)="goToList('restaurante')">Restaurantes</div>
+        <!-- <div class="card-subtitle">64 Listings</div> -->
+    </ion-card>
+
+    <ion-card>
+        <img src="./assets/content/01.png" (click)="goToList('bar')" />
+        <div class="card-title" (click)="goToList('bar')">Bares</div>
+        <!-- <div class="card-subtitle">72 Listings</div> -->
+    </ion-card>
+
+    <ion-card>
+        <img src="./assets/content/04.png" (click)="goToList('antro')" />
+        <div class="card-title" (click)="goToList('antro')">Antros</div>
+        <!-- <div class="card-subtitle">28 Listings</div> -->
+    </ion-card>
+
+</ion-content>

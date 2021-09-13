@@ -1,0 +1,38 @@
+<ion-header class="esquina">
+    <ion-navbar class="borde">
+       <ion-row >
+         <ion-col>
+            <button ion-fab color="negro" (click)="(goBack())"><ion-icon name="arrow-back" color="naranja" style="zoom:1.2;"></ion-icon></button>
+         </ion-col>
+         <ion-col>
+             <ion-title class="texto-alineado"><h6>PAGO</h6></ion-title>
+         </ion-col>
+         <ion-col>
+             <button class="esquina">
+              <img src="./assets/imgs/icons/corona.png" class="ima">
+             </button>
+         </ion-col>
+       </ion-row>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+<div text-center>
+  <ion-badge style="background-color:#FD9530;">
+    <h4>SI TU PAGO FUE EXITOSO EN
+    <br>
+     DETALLES DE LA RESERVACIÓN
+    <br>
+    VE TU CÓDIGO QR GENERADO</h4>
+  </ion-badge>
+</div>
+   <!--<ion-card class="card_atras">
+     <qrcode [qrdata]="created_code" [size]="256" [level]="'M'"></qrcode>
+   </ion-card>-->
+    <!--<button  ion-button expand="block" (click)="scanCode()" >
+    <ion-icon slot="start" name="qr-scanner"></ion-icon>
+    Escanear
+    </button>-->
+    <!--<button ion-button color="naranja" (click)="modalTarjetas()">
+     QR generado
+    </button>-->
+</ion-content>

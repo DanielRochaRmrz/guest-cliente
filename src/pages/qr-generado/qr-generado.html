@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar class="borde" hideBackButton>
+      <ion-row>
+          <ion-col>
+              <!-- <button ion-button (click)="(goBack())" class="botonMod">
+                  <-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> --
+                  <img src="./assets/icon/atras.png" alt="" class="imgMenu" (click)="(goBack())">
+              </button> -->
+              <img src="./assets/icon/atras.png" alt="" class="imgMenu" (click)="(goBack())">
+          </ion-col>
+          <ion-col align="center">
+              <img src="./assets/imgs/Logoblanco.png" (click)="(home())" style="width: 60%;" alt="">
+          </ion-col>
+          <ion-col>
+              <!-- <div align='end'>
+                  <div *ngIf="miUser.provider == 'facebook'">
+                      <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                          style="width:40%;border-radius:50%;">
+                  </div>
+                  <div *ngIf="miUser.provider == 'google'">
+                      <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                          style="width:85%;border-radius:50%;">
+                  </div>
+              </div> -->
+              <div align='end'>
+                  <div *ngIf="miUser.provider == 'facebook'">
+                      <div *ngIf="miUser.status_foto == 0">
+                          <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                      </div>
+                      <div *ngIf="miUser.status_foto == 1">
+                          <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                      </div>
+                  </div>
+                  <div *ngIf="miUser.provider == 'google'">
+                      <div *ngIf="miUser.status_foto == 0">
+                          <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                      </div>
+                      <div *ngIf="miUser.status_foto == 1">
+                          <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                      </div>
+                  </div>
+              </div>
+          </ion-col>
+      </ion-row>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+
+  <br><br><br><br><br>
+  
+   <div style="display: flex; justify-content: center; text-align: center;">
+     <qrcode [qrdata]="created_code" [size]="256" [level]="'M'"></qrcode>
+   </div>
+    <!--<button  ion-button expand="block" (click)="scanCode()" >
+    <ion-icon slot="start" name="qr-scanner"></ion-icon>
+    Escanear
+    </button>-->
+
+</ion-content>

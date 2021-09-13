@@ -1,0 +1,93 @@
+<ion-header mode="md">
+  <ion-navbar style="background-color: transparent">
+    <ion-buttons end>
+      <button ion-button icon-only (click)="doPrompt()">
+        <ion-icon name="close" style="color: #000;font-size:xx-large"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-slides pager loop="true" autoplay="5000" speed="500">
+  <ion-slide class="sla1">
+    <!-- <img src="../assets/imgs/logo-negro Guest.png" alt=""> -->
+    <div class="sla1">
+
+    </div>
+  </ion-slide>
+
+  <ion-slide class="sla2">
+    <div class="sla2">
+
+    </div>
+    <!-- <img src="../assets/imgs/Guest 22 1.png"  style="width:580px" alt=""> -->
+  </ion-slide>
+
+  <!-- <ion-slide class="sla3">
+    <div class="sla3">
+
+    </div>
+
+    <img src="../assets/imgs/Rectangle 12.png"
+      style="position:absolute;width:400px;height:700px;margin-left:-180px;margin-top:-78px" alt="">
+    <img src="../assets/imgs/Rectangle 59.png" style="position:absolute;width:340px;margin-left:-165px;margin-top:30px"
+      alt="">
+
+    <ion-grid>
+      <ion-row class="esquina">
+        <ion-col><button class="esquina" (click)="goLogin()" icon-left block>
+            <img src="./assets/imgs/icons/corona.png" style="margin-top:-80px" class="ima"></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="margen">
+      <ion-row>
+        <ion-col class="top-20">
+          <img src="./assets/imgs/Logoblanco.png" style="width:180px">
+        </ion-col>
+      </ion-row>
+
+      <br>
+      <p style="margin-left: 3%;text-align: center;">
+        <a style="color: #ffffff;" (click)="onReset('recuperacion')">
+          ¿ Olvidaste tu contraseña ?
+        </a>
+      </p>
+
+      <div *ngIf="botones_inicio.activado == 1">
+        <ion-row style="margin-top:-10px">
+
+          <ion-col>
+            <div class="" align="center">
+              <button class="blanco" style="background-color: #FFFFFF;width:280px" (click)="signInWithFacebook()"
+                ion-button icon-left block>
+                <ion-icon name="logo-facebook"></ion-icon>
+                <font size="2" style=""> Facebook</font>
+              </button>
+            </div>
+
+
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <ion-row>
+        <ion-col>
+          <div class="" align="center">
+
+            <button class="blanco" style="background-color: #FFFFFF;width:280px"
+              (click)="signInWithCorreo('inicio_sesion')" ion-button icon-left block>
+              Correo Electrónico
+            </button>
+          </div>
+
+          <p style="color: white;"><b style="font-size: 20px;" (click)="signInWithCorreo('registro')">Registrate </b>
+            <font style="  letter-spacing: 0.25em"> para iniciar sesión con Correo electrónico</font>
+          </p>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+  </ion-slide> -->
+
+</ion-slides>

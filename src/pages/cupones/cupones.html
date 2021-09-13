@@ -1,0 +1,136 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+                    <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+                </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%;" alt="">
+            </ion-col>
+            <ion-col>
+                <!-- <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:40%;border-radius:50%;">
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                            style="width:85%;border-radius:50%;">
+                    </div>
+                </div> -->
+                <div align='end'>
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <br>
+    <br>
+    <label for="" style="margin-left:20px; margin-top:10px;color:#FD9530">CUPONES DISPONIBLES</label>
+    <br>
+    <span style="margin-left:20px;position:absolute;margin-top:-10px">________________________________</span>
+    <br>
+    <span style="margin-left:20px;opacity:.3;position:absolute;margin-top:-8px">
+        <font size="2">ESTOS CUPONES ESTAN ACTIVOS</font>
+    </span>
+
+    <br> <br>
+
+    <!-- <h2 class="titulos">Cupones disponibles</h2> -->
+    <div *ngFor="let sucursal of totalsucursal">
+        <div *ngIf="usuario.ciudad == sucursal.ciudad">
+            <div *ngFor="let cupones of totalcupones" style="text-align: center;">
+                <div *ngIf="sucursal.uid == cupones.idSucursal">
+                    <div *ngFor="let cupon of cupones_visibles">
+                        <div *ngIf="cupones.uid == cupon">
+                            <div *ngIf=" cupones.numCupones > 0">
+                                <div *ngIf=" cupones.estatus == 'Activo'">
+                                <div *ngIf="cupones.fechaExpiracion >= fechaActual">
+                                    <!-- <br> <br> -->
+                                    <!-- <ion-badge class="tamanoB" color="naranja" item-end>
+                                            Cupón de descuento {{ cupones.valorCupon | currency }}
+                                            <br>
+                                            Código {{ cupones.codigoCupon }}
+                                            <br><br>
+                                            <ion-badge color="dark">{{ cupones.estatus }}</ion-badge>
+                                            <br><br>
+                                            <ion-badge color="light" (click)="CopyText(cupones.codigoCupon)">
+                                                <ion-icon name="copy" is-active="false"></ion-icon> Copiar código
+                                            </ion-badge>
+                                        </ion-badge>
+                                        <br> -->
+
+                                    <img src="./assets/imgs/Vector (3).png" alt="" style="width:420px">
+                                    <br><br>
+                                    <div class="row" style="position:absolute;margin-top:-120px;margin-left:60px">
+                                        <div class="col-4">
+                                            <font style="color:#C88F1E" size="5"> <b>{{ cupones.valorCupon | currency
+                                                    }}</b></font>
+
+                                        </div>
+                                        <div class="col-2">
+                                            <img src="./assets/imgs/Logoblanco.png"
+                                                style="margin-top:-10px;width:55px; margin-left:40px">
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="position:absolute;margin-top:-80px;margin-left:50px">
+                                        <div class="col-4">
+                                            <font style="color:#C88F1E"> MXN de descuento</font>
+
+                                        </div>
+                                        <div class="col-4">
+                                            <font style="color:#C88F1E;margin-left:10px"> Código {{ cupones.codigoCupon
+                                                }}</font>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="position:absolute;margin-top:-65px;margin-left:50px">
+                                        <div class="col-4">
+                                            <font style="color:#C88F1E">
+                                                Sucursal: {{sucursal.displayName}}
+                                            </font>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="position:absolute;margin-top:-50px;margin-left:50px">
+                                        <div class="col-4">
+                                            <font style="color:#C88F1E"> Vigencia: {{ cupones.fechaExpiracion }}</font>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+</ion-content>
