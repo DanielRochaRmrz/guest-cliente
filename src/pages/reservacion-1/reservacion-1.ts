@@ -138,8 +138,8 @@ export class Reservacion_1Page {
   compartir(displayName, photoURL) {
     this.socialSharing
       .shareViaFacebook(displayName, null, photoURL)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
+      .then((resp) => console.log('Error -->', JSON.stringify(resp))) // se pudo compartir
+      .catch((err) => console.log('Error -->', JSON.stringify(err))); // si sucede un error
   }
 
   compartirInsta(displayName, photoURL) {

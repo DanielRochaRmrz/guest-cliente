@@ -8,6 +8,8 @@ import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
 // import { promises } from 'fs';
+import { HttpClient } from '@angular/common/http';
+
 
 
 @Injectable()
@@ -77,7 +79,7 @@ export class ReservacionProvider {
   sucursal: AngularFirestoreCollection<any[]>;
   _sucursal: Observable<any>;
 
-  constructor(public af: AngularFirestore) {
+  constructor(public af: AngularFirestore, public http: HttpClient) {
     console.log("Hello ReservacionProvider Provider");
   }
 
@@ -970,6 +972,16 @@ export class ReservacionProvider {
         });
       })
     ));
+  }
+
+  obtenerMesas(id) {
+    return new Promise((resolve, rejects) => {
+      const url = `https://adminsoft.mx/operacion/guest/obtener_mesas/${id}`;
+      this.http.get(url).subscribe((resp: any) => {
+        const data = resp.consulta;
+        resolve(data);
+      });
+    });
   }
 
 

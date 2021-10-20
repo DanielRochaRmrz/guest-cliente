@@ -28,9 +28,9 @@ export class CroquisPage {
   ionViewDidLoad() {
     this.user();
     this.params = this.navParams.get('data');
-    console.log('Params -->', this.params);
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(`https://adminsoft.mx/operacion/login/cuadricula_cliente/${this.params.idSucursal}/${this.params.idReservacion}/${this.params.zona}/${this.params.zona_consumo}/${this.params.fecha}/${this.params.hora}`);
+    console.log('Url -->', this.url);
     
-    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(`https://adminsoft.mx/operacion/login/cuadricula_cliente/1/30-08-21/${this.params.uidSucursal}/${this.params.uidReservacion}/${this.params.zona}/${this.params.fecha}/${this.params.hora}`);
   }
 
   async user(){

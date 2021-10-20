@@ -90,6 +90,9 @@ export class ReservacionesPage {
   personas: number = 3;
   fecha: string = '2021-06-03';
   hora: string = '05:00';
+
+  zona_consumo: number;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -307,6 +310,8 @@ export class ReservacionesPage {
   alertConsumo() {
     const zona = this.data.zona;
     this._providerReserva.getZona(zona).subscribe(zona => {
+      console.log('Zona -->', zona.consumo);
+      this.zona_consumo = zona.consumo;
       const formatter = new Intl.NumberFormat("en-MX", {
         style: "currency",
         currency: "MXN",
@@ -481,7 +486,8 @@ export class ReservacionesPage {
             idSucursal: this.idSucursal,
             zona: this.data.zona,
             hora: this.hora,
-            fecha: this.fecha
+            fecha: this.fecha,
+            zona_consumo: this.zona_consumo
         }});
       }
     });

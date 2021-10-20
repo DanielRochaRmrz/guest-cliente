@@ -77,12 +77,12 @@
                 <div *ngFor="let sucursal of sucursalesS | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad" class="card_atras">
                     <!-- <div *ngIf="sucursal.ciudad==user.ciudad"> -->
                     <div *ngIf="invitado=='true'">
-                        <ion-card>
+                        <ion-card class="card-image">
                             <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
-                            <img src="{{sucursal.photoURL}}" (click)="invitadoAlert()" />
+                            <img src="{{sucursal.photoURL}}" (click)="invitadoAlert()" class="card-image" />
                             <!-- <img *ngIf="invitado==1" src="{{sucursal.photoURL}}" style="width:720px;height:300px" (click)="reservar(sucursal.uid)" /> -->
                             <div class="card-title">
-                                <ion-fab class="btnshare" right top edge>
+                                <ion-fab class="btnshare compartir-redes" right top edge>
                                     <button ion-fab style="background-color: #fff;">
                                         <ion-icon name="md-share" style="color: black;" color=dark></ion-icon>
                                     </button>
@@ -114,14 +114,14 @@
 
 
                     <div *ngIf="invitado==1" (click)="reservar(sucursal.uid)">
-                        <ion-card>
+                        <ion-card class="card-image">
                             <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
 
-                            <img src="{{sucursal.photoURL}}" />
+                            <img src="{{sucursal.photoURL}}" class="card-image" />
                             <!-- <img *ngIf="invitado==1" src="{{sucursal.photoURL}}" style="width:720px;height:300px" (click)="reservar(sucursal.uid)" /> -->
 
                             <div class="card-title">
-                                <ion-fab class="btnshare" right top>
+                                <ion-fab class="btnshare compartir-redes" right top>
                                     <button ion-fab style="background-color: #fff;">
                                         <!-- <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon> -->
                                         <ion-icon name="md-share" style="color: black;"></ion-icon>
@@ -201,11 +201,11 @@
                 <div *ngFor="let sucursal of sucursales | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad" class="card_atras" (click)="reservar(sucursal.uid)">
                     <!-- <div *ngIf="sucursal.ciudad==user.ciudad"> -->
 
-                    <ion-card>
+                    <ion-card class="card-image">
                         <!-- <img [src]="sucursal.photoURL" (click)="reservar(sucursal.uid)" /> -->
-                        <img src="{{sucursal.photoURL}}" (click)="reservar(sucursal.uid)" />
+                        <img src="{{sucursal.photoURL}}" (click)="reservar(sucursal.uid)" class="card-image" />
                         <div class="card-title">
-                            <ion-fab class="btnshare" top right edge>
+                            <ion-fab class="btnshare compartir-redes" top right edge>
                                 <button ion-fab style="background-color: #fff;">
                                     <!-- <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon> -->
                                     <ion-icon name="md-share" color="dark"></ion-icon>

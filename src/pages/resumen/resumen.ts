@@ -74,6 +74,7 @@ export class ResumenPage {
   sucursal: any;
   ocultar2: boolean = true;
   codigoSel: any;
+  mesas: any;
 
 
   constructor(
@@ -110,6 +111,7 @@ export class ResumenPage {
     this.getZona();
     this.goToUser();
     this.AllCupon();
+    this.obtenerMesas();
     this.codigoSel = 0;
     // this.verificarcodigo();
     //this.ionViewWillEnter();
@@ -486,6 +488,11 @@ export class ResumenPage {
   addPoliticas(){
     const variable = 'resumen';
     this.navCtrl.push(PoliticasPage, {variable: variable});
+  }
+
+  async obtenerMesas(){
+    this.mesas = await this._providerReserva.obtenerMesas(this.idReservacion);
+    console.log( 'Mesas -->', this.mesas);
   }
 
 }

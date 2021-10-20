@@ -127,10 +127,12 @@ export class EventosPage {
 
 
   compartir(evento: any) {
+   const message = String(evento.titulo);
+   const image = evento.img;
     this.socialSharing
-      .shareViaFacebook(evento.titulo, null, evento.img)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
+      .shareViaFacebook('Hola mundo', null, null)
+      .then((resp) => console.log('La respuesta -->>', resp)) // se pudo compartir
+      .catch((err) => console.log('El error -->>', err)); // si sucede un error
   }
 
   compartirInsta(evento: any) {

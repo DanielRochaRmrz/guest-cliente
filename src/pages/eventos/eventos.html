@@ -127,7 +127,7 @@
           <div *ngIf="evento.uidSucursal==sucursal.uid"> -->
         <!--<div *ngIf="sucursal.ciudad==user.ciudad"> -->
 
-        <ion-card>
+        <ion-card class="card-image">
             <img [src]="evento.img" (click)="verDetalle(evento.uid, evento.uidSucursal)" />
             <div class="card-title">
                 <ion-fab class="btnshare" top right edge>

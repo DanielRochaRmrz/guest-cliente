@@ -71,7 +71,7 @@
         <label class="selecciona"> AJUSTA TU RESERVACIÓN </label>
     </ion-item>
 
-    <ion-card>
+    <ion-card class="card-image">
         <img [src]="evento.img" />
         <div class="card-title">
 
@@ -105,17 +105,11 @@
 
             {{evento.obs}}
 
-            <br>
+            <br> {{evento.fecha}}, {{ evento.hora }}
 
-            {{evento.fecha}}, {{ evento.hora }}
+            <br> {{evento.categoria}}
 
-            <br>
-
-            {{evento.categoria}}
-
-            <br>
-
-            {{evento.lugar}}
+            <br> {{evento.lugar}}
         </div>
     </ion-card>
 

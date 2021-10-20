@@ -157,4 +157,11 @@ page-reservacion-1 {
         margin-top: 4px;
         font-size: large;
     }
+    .card-image {
+        width: auto !important;
+        height: 308px !important;
+    }
+    .compartir-redes {
+        z-index: 2;
+    }
 }
