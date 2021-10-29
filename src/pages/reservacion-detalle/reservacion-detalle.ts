@@ -419,7 +419,7 @@ export class ReservacionDetallePage {
 
 
   eliminarReservacion(idReservacion, playerIDs) {
-    this.getUsersPusCancelar(playerIDs);
+    // this.getUsersPusCancelar(playerIDs);
     this.afs.collection("reservaciones").doc(idReservacion).delete().then(() => {
       console.log("Document successfully deleted!");
 

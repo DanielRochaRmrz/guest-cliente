@@ -412,57 +412,57 @@ export class ReservacionesPage {
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
 
       //Si se compartio la cuenta insertar telefonos en tabla compartidas
-      if (this.compartir != undefined) {
-        this.afs.collection('users', ref => ref.where('uid', '==', this.uid)).valueChanges().subscribe(data => {
-          this.usertel = data;
-          this.usertel.forEach(element => {
-            console.log('usertel', element.phoneNumber);
-            //insertar en tabla compartidas telefono del usuario en sesion
-            this._providerReserva.saveCompartirPropio(element.phoneNumber, respuesta.idReservacion, this.uid).then((respuesta: any) => {
-              console.log("Respuesta: ", respuesta);
-            });
-          });
-        });
+      // if (this.compartir != undefined) {
+      //   this.afs.collection('users', ref => ref.where('uid', '==', this.uid)).valueChanges().subscribe(data => {
+      //     this.usertel = data;
+      //     this.usertel.forEach(element => {
+      //       console.log('usertel', element.phoneNumber);
+      //       //insertar en tabla compartidas telefono del usuario en sesion
+      //       this._providerReserva.saveCompartirPropio(element.phoneNumber, respuesta.idReservacion, this.uid).then((respuesta: any) => {
+      //         console.log("Respuesta: ", respuesta);
+      //       });
+      //     });
+      //   });
 
-        //sacar numeros que se seleccionan en el formulario compartir cuenta
-        this.compartir.forEach(data => {
-          //estandarizar telefonos 10 digitos
-          this.telefono1 = data.replace(/ /g, "");
-          this.telefono2 = this.telefono1.replace(/-/g, "");
-          this.telefono3 = this.telefono2.substr(-10);
-          //insertar en tabla compartidas los numeros de con quien se esta compartiendo
-          this._providerReserva.saveCompartirTodos(this.telefono3, respuesta.idReservacion, this.uid).then((respuesta2: any) => {
-            console.log("Respuesta id compartir: ", respuesta2.idCompartir);
-            this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', respuesta2.idCompartir)).valueChanges().subscribe(data => {
-              this.resultCompartidas = data;
-              //insertar el player id de cada telefono insertado
-              this.resultCompartidas.forEach(element => {
-                console.log('este es el telefono', element.telefono);
-                this._providerReserva.buscarPlayerid(element.telefono).subscribe(players => {
-                  this.players = players[0].playerID;
-                  this.afs.collection("compartidas").doc(element.idCompartir).update({
-                    "playerId": this.players
-                  })
-                    .then(function () {
-                      console.log("se actualizo el playerid");
-                    });
-                });
-              });
-            });
-          });
-          //consulta para buscar el player id del ususario seleccionado y su tel
-        });//termina foreach compartir
-        console.log('reservacion nueva', respuesta.idReservacion);
-        //cambiar reservacion a estatus compartido
-        this._providerReserva
-          .updateReservacionCompartida(respuesta.idReservacion)
-          .then((respuesta: any) => {
-            console.log("Respuesta: ", respuesta);
-            if (respuesta.success == true) {
-              console.log("Success: ", respuesta.success);
-            }
-          });
-      }//termina funcion compartir cuenta insercion en tabla compartidas
+      //   //sacar numeros que se seleccionan en el formulario compartir cuenta
+      //   this.compartir.forEach(data => {
+      //     //estandarizar telefonos 10 digitos
+      //     this.telefono1 = data.replace(/ /g, "");
+      //     this.telefono2 = this.telefono1.replace(/-/g, "");
+      //     this.telefono3 = this.telefono2.substr(-10);
+      //     //insertar en tabla compartidas los numeros de con quien se esta compartiendo
+      //     this._providerReserva.saveCompartirTodos(this.telefono3, respuesta.idReservacion, this.uid).then((respuesta2: any) => {
+      //       console.log("Respuesta id compartir: ", respuesta2.idCompartir);
+      //       this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', respuesta2.idCompartir)).valueChanges().subscribe(data => {
+      //         this.resultCompartidas = data;
+      //         //insertar el player id de cada telefono insertado
+      //         this.resultCompartidas.forEach(element => {
+      //           console.log('este es el telefono', element.telefono);
+      //           this._providerReserva.buscarPlayerid(element.telefono).subscribe(players => {
+      //             this.players = players[0].playerID;
+      //             this.afs.collection("compartidas").doc(element.idCompartir).update({
+      //               "playerId": this.players
+      //             })
+      //               .then(function () {
+      //                 console.log("se actualizo el playerid");
+      //               });
+      //           });
+      //         });
+      //       });
+      //     });
+      //     //consulta para buscar el player id del ususario seleccionado y su tel
+      //   });//termina foreach compartir
+      //   console.log('reservacion nueva', respuesta.idReservacion);
+      //   //cambiar reservacion a estatus compartido
+      //   this._providerReserva
+      //     .updateReservacionCompartida(respuesta.idReservacion)
+      //     .then((respuesta: any) => {
+      //       console.log("Respuesta: ", respuesta);
+      //       if (respuesta.success == true) {
+      //         console.log("Success: ", respuesta.success);
+      //       }
+      //     });
+      // }//termina funcion compartir cuenta insercion en tabla compartidas
       if (respuesta.success == true) {
         console.log("Success: ", respuesta.success);
         localStorage.setItem("idReservacion", respuesta.idReservacion);

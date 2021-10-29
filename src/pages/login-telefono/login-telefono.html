@@ -3,11 +3,11 @@
         <ion-row>
             <ion-col>
                 <button ion-fab color="negro" (click)="(goBack())" class="atras">
-            <ion-icon name="arrow-back" color="naranja"></ion-icon>
-          </button>
+          <ion-icon name="arrow-back" color="naranja"></ion-icon>
+        </button>
             </ion-col>
             <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" (click)="goBack()" style="width: 60%;" alt="">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goBack()" style="width: 60%" alt="" />
             </ion-col>
             <ion-col>
                 <!-- <div align='end'>
@@ -24,38 +24,31 @@
         </ion-row>
     </ion-navbar>
 </ion-header>
-<br>
+<br />
 <ion-content padding class="content">
-    <img src="../assets/imgs/Rectangle 59.png" style="
-    position: absolute;
-    width: 100%;
-    margin-top: 0rem;
-  " alt="" />
+    <img src="../assets/imgs/Rectangle 59.png" style="position: absolute; width: 100%; margin-top: 0rem; z-index: -1" alt="" />
     <div id="recaptcha-container"></div>
     <ion-item class="_input">
-        <ion-label stacked style="color:white">Ciudad</ion-label>
-        <ion-select [(ngModel)]="ciudad" multiple="false" cancelText="Cancelar" okText="Aceptar" style="color:white">
+        <ion-label stacked style="color: white">Ciudad</ion-label>
+        <ion-select [(ngModel)]="ciudad" multiple="false" cancelText="Cancelar" okText="Aceptar" style="color: white">
             <div>
                 <ion-option value="León">León</ion-option>
             </div>
         </ion-select>
     </ion-item>
-    <br>
+    <br />
     <ion-item class="_input">
-        <ion-label stacked style="color:white">Numero de teléfono</ion-label>
-        <ion-input type="number" [(ngModel)]="phoneNumber" style="color:white"></ion-input>
+        <ion-label stacked style="color: white">Numero de teléfono</ion-label>
+        <ion-input type="number" [(ngModel)]="phoneNumber" style="color: white"></ion-input>
     </ion-item>
 
     <ion-row>
         <ion-col>
             <div padding>
                 <button ion-button id="sign-in-button" (click)="signIn(phoneNumber, ciudad)" ion-button icon-left block>
-                Registrar
-              </button>
+          Registrar
+        </button>
             </div>
         </ion-col>
     </ion-row>
-
-
-
 </ion-content>
