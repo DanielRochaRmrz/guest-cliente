@@ -21,6 +21,7 @@ export class TelefonoUserPage {
   telefono: any;
   ciudad: any;
   myForm: FormGroup;
+  ciudades: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,6 +42,7 @@ export class TelefonoUserPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TelefonoUserPage');
+    this.getCiudades();
   }
 
   addTelefono() {
@@ -66,6 +68,17 @@ export class TelefonoUserPage {
 
   //   this.navCtrl.setRoot(TipoLugarPage);
   // }
+
+
+  getCiudades () {
+    this.afs
+      .collection("ciudades")
+      .valueChanges()
+      .subscribe(dataCiudad => {
+        this.ciudades = dataCiudad;
+        console.log('cudades', this.ciudades);
+      });
+  }
 
   alerta() {
     const confirm = this.alertCtrl.create({

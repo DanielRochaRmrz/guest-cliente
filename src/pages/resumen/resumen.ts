@@ -284,7 +284,7 @@ export class ResumenPage {
   }
 
   verificarcodigo(uidsucursal, total) {
-    const cvc = parseInt(this.codigoSel);
+    const cvc = parseInt(localStorage.getItem('cupon'));
     console.log("este es el codigo", cvc);
     console.log("Uid de la sucursal", uidsucursal);
     console.log('este es el total', total);
@@ -292,7 +292,6 @@ export class ResumenPage {
 
     this.afs.collection('cupones', ref => ref.where('codigoCupon', '==', cvc)).valueChanges().subscribe(data => {
       this.cupones = data;
-      // console.log("estos son mis cupones", this.cupones.numCupones);
 
       this.cupones.forEach(element => {
 
@@ -313,6 +312,10 @@ export class ResumenPage {
         this.cuponn = cupon;
         this.uidcupon = uidcupon;
         this.numcupon = numcupon;
+
+        localStorage.setItem("id_cupon", uidcupon);
+        localStorage.setItem("cuponn", cupon);
+        localStorage.setItem("numcupon", numcupon);
       });
 
     });
@@ -321,7 +324,7 @@ export class ResumenPage {
     this.doToReservacion(total);
     this.doToCanjeo(total);
 
-  }
+}
 
   prueba(total, cupon, uidcupon, numcupon) {
 
@@ -343,85 +346,101 @@ export class ResumenPage {
 
 
   doToReservacion(total) {
-    const rest = total - this.cuponn;
-    const cvc = parseInt(this.codigoSel);
-    const restacupones = this.numcupon - 1;
+
+    //new
+    const id_cupon = localStorage.getItem('id_cupon');
+    const cuponn = localStorage.getItem('cuponn');
+    const numcupon = localStorage.getItem('numcupon');
+    //New
+    const rest = total - parseInt(cuponn);
+    const cvc = parseInt(localStorage.getItem('cupon'));
+    const restacupones = parseInt(numcupon) - 1;
 
     console.log("esta es la resta del cupon:", rest);
-    console.log("este son los datos del cupon. Codigo", cvc, " valor ", this.cuponn, " id cupon ", this.uidcupon, "numero de cupon ", this.numcupon);
+    console.log("este son los datos del cupon. Codigo", cvc, " valor ", cuponn, " id cupon ", id_cupon, "numero de cupon ", numcupon);
     console.log("total de numeros de cupon restantes: ", restacupones);
     console.log("Este es el id de la reservacion", this.idReservacion);
 
     this.afs.collection("reservaciones").doc(this.idReservacion).update({
       "totalReservacion": rest,
-      "uidCupon": this.uidcupon
+      "uidCupon": id_cupon
     })
       .then(function () {
         console.log("Document successfully updated!");
       });
 
-  }
+}
 
 
-  doToCupon(total) {
+doToCupon(total) {
 
-    const rest = total - this.cuponn;
-    const cvc = parseInt(this.codigoSel);
-    const restacupones = this.numcupon - 1;
+  const id_cupon = localStorage.getItem('id_cupon');
+  const cuponn = localStorage.getItem('cuponn');
+  const numcupon = localStorage.getItem('numcupon');
 
-    console.log("esta es la resta del cupon:", rest);
-    console.log("este son los datos del cupon. Codigo", cvc, " valor ", this.cuponn, " id cupon ", this.uidcupon, "numero de cupon ", this.numcupon);
-    console.log("total de numeros de cupon restantes: ", restacupones);
-    console.log("Este es el id de la reservacion", this.idReservacion);
-
-    this.afs.collection("cupones").doc(this.uidcupon).update({
-      "numCupones": restacupones
-    })
-      .then(function () {
-        console.log("Document successfully updated!");
-      });
-  }
+  const rest = total - parseInt(cuponn);
+  const cvc = parseInt(localStorage.getItem('cupon'));
+  const restacupones = parseInt(numcupon) - 1;
 
 
-  doToCanjeo(total) {
-    this.ocultar1 = !this.ocultar1;
-    this.ocultar2 = !this.ocultar2;
-    const rest = total - this.cuponn;
-    const cvc = parseInt(this.codigoSel);
-    const restacupones = this.numcupon - 1;
+  console.log("esta es la resta del cupon:", rest);
+  console.log("este son los datos del cupon. Codigo", cvc, " valor ", cuponn, " id cupon ", id_cupon, "numero de cupon ", numcupon);
+  console.log("total de numeros de cupon restantes: ", restacupones);
+  console.log("Este es el id de la reservacion", this.idReservacion);
 
-    console.log("esta es la resta del cupon:", rest);
-    console.log("este son los datos del cupon. Codigo", cvc, " valor ", this.cuponn, " id cupon ", this.uidcupon, "numero de cupon ", this.numcupon);
-    console.log("total de numeros de cupon restantes: ", restacupones);
-    console.log("Este es el id de la reservacion", this.idReservacion);
-
-    this.afs.collection("canjeo").add({
-      idSucursal: this.idSucursal,
-      idReservacion: this.idReservacion,
-      idUser: this.uid,
-      idCupon: this.uidcupon
-    })
-      .then(function (docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function (error) {
-        console.error("Error adding document: ", error);
-      });
-
-    let alerta = this.alertCtrl.create({
-      message:
-        "Se ha canjeado el cupón",
-      buttons: [
-        {
-          text: "Aceptar",
-          handler: () => {
-            console.log("Buy clicked");
-          }
-        }
-      ]
+  this.afs.collection("cupones").doc(id_cupon).update({
+    "numCupones": restacupones
+  })
+    .then(function () {
+      console.log("Document successfully updated!");
     });
-    alerta.present();
-  }
+}
+
+
+doToCanjeo(total) {
+  this.ocultar1 = !this.ocultar1;
+  this.ocultar2 = !this.ocultar2;
+
+  const id_cupon = localStorage.getItem('id_cupon');
+  const cuponn = localStorage.getItem('cuponn');
+  const numcupon = localStorage.getItem('numcupon');
+
+  const rest = total - parseInt(cuponn);
+  const cvc = parseInt(localStorage.getItem('cupon'));
+  const restacupones = parseInt(numcupon) - 1;
+
+  console.log("esta es la resta del cupon:", rest);
+  console.log("este son los datos del cupon. Codigo", cvc, " valor ", cuponn, " id cupon ", id_cupon, "numero de cupon ", numcupon);
+  console.log("total de numeros de cupon restantes: ", restacupones);
+  console.log("Este es el id de la reservacion", this.idReservacion);
+
+  this.afs.collection("canjeo").add({
+    idSucursal: this.idSucursal,
+    idReservacion: this.idReservacion,
+    idUser: this.uid,
+    idCupon: id_cupon
+  })
+    .then(function (docRef) {
+      console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function (error) {
+      console.error("Error adding document: ", error);
+    });
+
+  let alerta = this.alertCtrl.create({
+    message:
+      "Se ha canjeado el cupón",
+    buttons: [
+      {
+        text: "Aceptar",
+        handler: () => {
+          console.log("Buy clicked");
+        }
+      }
+    ]
+  });
+  alerta.present();
+}
 
   AllCupon() {
     this.fechaActual = new Date().toJSON().split("T")[0];
@@ -479,11 +498,13 @@ export class ResumenPage {
   }
 
 
-  onChange(dato) {
-    console.log("Dato:", dato);
-    this.codigoSel = dato;
-    console.log("este es el valor de la variable global", this.codigoSel);
-  }
+  
+onChange(dato) {
+  console.log("Dato:", dato);
+  this.codigoSel = dato;
+  console.log("este es el valor de la variable global", this.codigoSel);
+  localStorage.setItem("cupon", this.codigoSel);
+}
 
   addPoliticas(){
     const variable = 'resumen';
