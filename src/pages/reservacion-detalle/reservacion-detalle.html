@@ -144,6 +144,26 @@
                     <ion-badge class="negro" item-end>{{totalPropina | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
+            <ion-row class="colorRow" no-line>
+                <ion-item class="colorRow">
+                    <a class="blanco_22">Iva</a>
+                    <ion-badge class="negro" item-end>{{totalPropina*.16 | currency}}</ion-badge>
+                </ion-item>
+            </ion-row>
+
+            <ion-row class="colorRow" no-line>
+                <ion-item class="colorRow">
+                    <a class="blanco_22">Comision 3.9</a>
+                    <ion-badge class="negro" item-end>{{totalPropina*.039 | currency}}</ion-badge>
+                </ion-item>
+            </ion-row>
+
+            <ion-row class="colorRow" no-line>
+                <ion-item class="colorRow">
+                    <a class="blanco_22">Total</a>
+                    <ion-badge class="negro" item-end>{{(totalPropina*.039)+(totalPropina*.16)+(totalPropina) | currency}}</ion-badge>
+                </ion-item>
+            </ion-row>
         </div>
         <br />
         <!--VALIDAR QUE APAREZCA CUENTA NORMAL CUANDO NO EXISTE UN CUPON-->

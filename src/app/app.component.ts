@@ -18,6 +18,8 @@ import { CuponesPage } from "../pages/cupones/cupones";
 import { TipoLugarPage } from "../pages/tipo-lugar/tipo-lugar";
 import { SliderPage } from "../pages/slider/slider";
 import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { SMS } from "@ionic-native/sms";
+import { messaging } from "firebase";
 
 @Component({
   templateUrl: "app.html",
@@ -51,11 +53,34 @@ export class MyApp {
     private afAuth: AngularFireAuth,
     public _providerPushNoti: PushNotiProvider,
     public afs: AngularFirestore,
-    private androidPermissions: AndroidPermissions
+    private androidPermissions: AndroidPermissions,
+    public SMS: SMS 
   ) {
     platform.ready().then(() => {
       if (this.platform.is('android')) {
-         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS);
+        this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
+          success => {
+              if (!success.hasPermission) {
+                  this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).
+                  then((success) => {
+                          this.sendMessage();
+                      },
+                      (err) => {
+                          console.error(err);
+                      });
+              } else {
+                  this.sendMessage();
+              }
+          },
+          err => {
+              this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).
+              then((success) => {
+                      this.sendMessage();
+                  },
+                  (err) => {
+                      console.error(err);
+                  });
+          });
       }
       this.invitado = 1;
 
@@ -246,4 +271,14 @@ export class MyApp {
     this.rootPage = rootPage;
     this.menuCtrl.close();
   }
+  sendMessage(){
+    if(this.SMS) {
+      this.SMS.send('4772550562', 'Hello world!').then(succes => {
+        console.log(succes);
+      }).catch(err => {
+        console.log(err);
+      });
+
+    }
+}
 }
