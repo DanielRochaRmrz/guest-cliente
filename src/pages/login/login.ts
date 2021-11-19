@@ -1,12 +1,10 @@
 import { Component } from "@angular/core";
 import { IonicPage, MenuController, NavController, NavParams, Platform } from "ionic-angular";
-
-import { AngularFireAuth } from "@angular/fire/auth";
-import firebase from "firebase/app";
+import * as firebase  from'firebase/app'
+import 'firebase/auth';
 import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { Facebook, FacebookLoginResponse } from "@ionic-native/facebook";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { HomePage } from "../home/home";
 import { TelefonoUserPage } from "../telefono-user/telefono-user";
 import { TipoLugarPage } from "../tipo-lugar/tipo-lugar";
 import { LoginCorreoPage } from "../login-correo/login-correo";
@@ -35,12 +33,11 @@ export class LoginPage {
   pageLogin = "admin-login";
   authToken: any;
   uidUserSesion: any;
-  userLo: any;
+  userLo: any = "";
 
   constructor(
     public navCtrl: NavController,
     public usuarioProv: UsuarioProvider,
-    private afAuth: AngularFireAuth,
     private platform: Platform,
     private fb: Facebook,
     public afs: AngularFirestore,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
+import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 import { EventosPage } from '../eventos/eventos';
 import { Reservacion_1Page } from '../reservacion-1/reservacion-1';
 
@@ -19,7 +20,10 @@ export class TipoLugarPage {
   constructor(public navCtrl: NavController,
     public afs: AngularFirestore,
     public navParams: NavParams,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController,
+    public _providerPushNoti: PushNotiProvider,
+    ) {
+      this._providerPushNoti.init_push_noti();
       this.menuCtrl.enable(true);
     //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem('uid');

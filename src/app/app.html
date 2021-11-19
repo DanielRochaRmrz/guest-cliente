@@ -1,20 +1,5 @@
 <ion-menu [content]="content">
     <ion-content class="menu-content" mode="md">
-        <!-- <div>
-            <div class="margen3_app">
-                <div *ngFor="let users of nombresUsers">
-                    <div *ngIf="users.uid==user.uid">
-                        <img class="imgRedonda" [src]="users.photoURL">
-                    </div>
-                </div>
-            </div>
-            <div class="margen2_app">
-                <h6 class="mayusculas">{{user.nombre}}</h6>
-            </div>
-            <div class="margen1_app">
-                <img class="cate" src="../assets/imgs/icons/gold_guest.png">
-            </div>
-        </div> -->
 
 
         <div align="center">
@@ -42,35 +27,15 @@
             </div>
         </div>
 
-        <!-- <div align="center">
-            <div *ngIf="nombresUserss.provider == 'facebook'">
-                <img class="imgRedonda" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720">
-                <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-            </div>
-            <div *ngIf="nombresUserss.provider == 'google'">
-                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720">
-                <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-            </div>
-        </div> -->
 
         <div class="margen4_app">
             <ion-list class="menu-list">
                 <button ion-item (click)="iraHome()">
                     <img class="home" src="../assets/imgs/icons/iconos-07.png"> Home
                 </button>
-                <!-- <button ion-item (click)="irNosotros( nosotros )">
-                  <img class="home" src="../assets/imgs/icons/corona.png">  Nosotros
-                  </button> -->
-                <!--<button ion-item (click)="irReservacion( reservacion )">
-                    <img class="home" src="../assets/imgs/icons/time.png"> Reservaciones
-                  </button>-->
                 <button ion-item (click)="iraMisreservaciones()">
                     <img class="home" src="../assets/imgs/guest04.png"> Mis Reservaciones
                 </button>
-                <!--<button ion-item (click)="irCarta( carta )">
-                    <img class="home" src="../assets/imgs/icons/champagne.png">  Carta Móvil
-                  </button>
-                -->
                 <button ion-item style="background:#FD9530" (click)="iraPerfil()">
                     <img class="home" src="../assets/imgs/icons/iconos-02.png"> Perfil
                 </button>
@@ -80,7 +45,7 @@
                 <button ion-item style="background:#FD9530" (click)="iraPago()">
                     <img class="home" src="../assets/imgs/icons/medidas.png"> Pago
                 </button>
-                <button ion-item  style="background:#FD9530" (click)="iraCupones()">
+                <button ion-item style="background:#FD9530" (click)="iraCupones()">
                     <img class="home" src="../assets/imgs/icons/medidas-09.png"> &nbsp; Cupones
                 </button>
                 <button style="border-radius: 10px;color:#ffff;width:50px;width:130px;height:30px;margin-left:50px;margin-top:60px" block (click)="irsalir()">

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from "firebase/app";
+import 'firebase/firestore'; 
 import { Stripe } from "@ionic-native/stripe";
 import { LoadingController } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from "@angular/http";

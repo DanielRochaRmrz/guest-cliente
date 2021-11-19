@@ -7,6 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class CroquisProvider {
 
   usuario: any = {};
+  apiURL: string = 'https://adminsoft.mx/operacion/guest';
 
   constructor(public http: HttpClient, private db: AngularFirestore) {}
 
@@ -17,6 +18,15 @@ export class CroquisProvider {
           this.usuario = user.data();
           resolve(this.usuario);
         });
+    });
+  }
+
+  getRsvpHttp(idRsvp: string){
+    return new Promise((resolve, rejects) => {
+      const url = `${this.apiURL}/obtener_rsvp/${idRsvp}`;
+      this.http.get(url).subscribe( (rsvp: any) => {
+        resolve(rsvp.consulta);
+      });
     });
   }
 

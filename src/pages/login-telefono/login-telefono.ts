@@ -1,7 +1,8 @@
 import { Component} from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Nav } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
 import { LoginPage } from '../login/login';
-import firebase from 'firebase/app';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 
 

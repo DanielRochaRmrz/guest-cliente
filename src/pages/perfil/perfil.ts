@@ -129,13 +129,11 @@ export class PerfilPage {
     this.msg();
 
     const options: CameraOptions = {
-      quality: 50,
+      quality: 70,
       destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      // targetWidth: 820,
-      // targetHeight: 720,
-      // saveToPhotoAlbum: true
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      mediaType: 2,
+      saveToPhotoAlbum: false,
     }
 
     this.camera.getPicture(options).then((imageData) => {

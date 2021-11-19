@@ -49,11 +49,10 @@ import { ImagencroquisPage } from '../pages/imagencroquis/imagencroquis';
 import { PipesModule } from "../pipes/pipes.module";
 
 //Firebase
-import { AngularFireModule, FirebaseAuth } from 'angularfire2';
+import { AngularFireModule} from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
-import firebase from 'firebase/app';
 
 //Provider
 import { UsuarioProvider } from '../providers/usuario/usuario';
@@ -91,7 +90,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PoliticasPage } from '../pages/politicas/politicas';
 import { LoginTelDatosPage } from '../pages/login-tel-datos/login-tel-datos';
 import { HttpClientModule } from '@angular/common/http';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 
 
 var firebaseConfig = {
@@ -103,19 +102,6 @@ var firebaseConfig = {
   messagingSenderId: "853477386824",
   appId: "1:853477386824:web:7fcd8b51df5c9c17b0867d"
 };
-
-// export const firebaseConfig = {
-//   apiKey: "AIzaSyBMOdM_K6dsKDa2BYKi8Emvj0zGdsK_eLE",
-//     authDomain: "newguest-3a209.firebaseapp.com",
-//     projectId: "newguest-3a209",
-//     databaseURL: "https://newguest-3a209.firebaseio.com",
-//     storageBucket: "newguest-3a209.appspot.com",
-//     messagingSenderId: "489787167990",
-//     appId: "1:489787167990:web:6678029aa1fa75032708d7",
-//     measurementId: "G-0SLV8ZTVY6"
-// };
-
-firebase.initializeApp(firebaseConfig);
 
 @NgModule({
   declarations: [
@@ -144,7 +130,6 @@ firebase.initializeApp(firebaseConfig);
     GenerarqrPage,
     Generarqr_2Page,
     CuponesPage,
-    // HistorialDetallePage,
     PropinaPage,
     QrGeneradoPage,
     TipoLugarPage,
@@ -254,7 +239,8 @@ firebase.initializeApp(firebaseConfig);
     SMS,
     CuponesProvider,
     Stripe,
-    CroquisProvider
+    CroquisProvider,
+    AndroidPermissions
   ]
 })
 export class AppModule {}

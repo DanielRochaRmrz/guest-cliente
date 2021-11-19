@@ -87,12 +87,12 @@ export class ProductoDetallePage {
     this.getProduct(this.idProducto, this.idReservacion);
   }
   //funciones para ocultar las tabs
-  ionViewWillEnter() {
-    this.tabBarElement.style.display = 'none';
-  }
-  ionViewWillLeave() {
-    this.tabBarElement.style.display = 'flex';
-  }
+  // ionViewWillEnter() {
+  //   this.tabBarElement.style.display = 'none';
+  // }
+  // ionViewWillLeave() {
+  //   this.tabBarElement.style.display = 'flex';
+  // }
 
   getProduct(idProducto, idx) {
     this._providerCarta.getProduct(idProducto).subscribe(product => {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 import { CartaPage } from '../carta/carta';
@@ -19,15 +19,17 @@ export class CroquisPage {
   params: any = {};
 
   constructor(
-    public navCtrl       : NavController, 
-    public navParams     : NavParams, 
-    public croquisService: CroquisProvider,
-    private sanitizer    : DomSanitizer
+    public navCtrl        : NavController, 
+    public navParams      : NavParams,
+    public alertCtrl      : AlertController,
+    public croquisService : CroquisProvider,
+    private sanitizer     : DomSanitizer
     ) {}
 
   ionViewDidLoad() {
     this.user();
     this.params = this.navParams.get('data');
+    console.log('Params -->', this.params);
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(`https://adminsoft.mx/operacion/login/cuadricula_cliente/${this.params.idSucursal}/${this.params.idReservacion}/${this.params.zona}/${this.params.zona_consumo}/${this.params.fecha}/${this.params.hora}`);
     console.log('Url -->', this.url);
     
@@ -37,14 +39,24 @@ export class CroquisPage {
      this.miUser = await this.croquisService.getUser();
   }
 
-  irCata(){
-    this.navCtrl.push(CartaPage, {
-      idReservacion: this.params.idReservacion,
-      idSucursal: this.params.idSucursal,
-      zona: this.params.zona,
-      hora: this.params.hora,
-      fecha: this.params.fecha
-    });
+  async irCata(){
+    const rsvp: any = await this.croquisService.getRsvpHttp(this.params.idReservacion);
+    console.log(rsvp.length);
+    if (rsvp.length == 0) {
+      const alert = this.alertCtrl.create({
+        title: 'Seleciona tu mesa para continuar',
+        buttons: ['Aceptar']
+      });
+      alert.present();
+    } else {
+      this.navCtrl.push(CartaPage, {
+        idReservacion: this.params.idReservacion,
+        idSucursal: this.params.idSucursal,
+        zona: this.params.zona,
+        hora: this.params.hora,
+        fecha: this.params.fecha
+      });
+    }
   }
 
   irReservaciones(){

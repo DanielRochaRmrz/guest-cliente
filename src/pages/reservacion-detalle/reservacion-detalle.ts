@@ -69,6 +69,7 @@ export class ReservacionDetallePage {
   reservacionFecha: any;
   miUser: any = {};
   idSucursal: any;
+  mesas: any;
  
 
   constructor(public navCtrl: NavController,
@@ -80,7 +81,8 @@ export class ReservacionDetallePage {
     public afs: AngularFirestore,
     public menu: MenuController,
     public platform: Platform,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private _providerReserva: ReservacionProvider
   ) {
 
     //this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', 'M4rUKeGx7WPOHXMxOTzy')).valueChanges().subscribe(data2 => {
@@ -179,6 +181,7 @@ export class ReservacionDetallePage {
     this.compartidaEstatusFinal();
     this.verificarEscaneo();
     this.estatusPagando();
+    this.obtenerMesas();
   }
 
   compartidaEstatusFinal() {
@@ -419,11 +422,13 @@ export class ReservacionDetallePage {
 
 
   eliminarReservacion(idReservacion, playerIDs) {
+    this.eliminar_rsvp(idReservacion);
     // this.getUsersPusCancelar(playerIDs);
     this.afs.collection("reservaciones").doc(idReservacion).delete().then(() => {
       console.log("Document successfully deleted!");
 
       // this.showAlert();
+      
       this.showToast('bottom');
       this.goBack();
     }).catch((error) => {
@@ -493,4 +498,18 @@ export class ReservacionDetallePage {
   behind(){
     this.navCtrl.setRoot(MisReservacionesPage);
   }
+
+  async obtenerMesas(){
+    this.mesas = await this._providerReserva.obtenerMesas(this.idReservacion);
+    console.log( 'Mesas -->', this.mesas);
+  }
+
+  async eliminar_rsvp(idReservacion){
+    const rsvp = {
+      idReservacion: idReservacion
+    };
+    const r = await this._providerReserva.eliminar_rsvp(rsvp);
+    console.log( 'RSVP -->', r);
+  }
+
 }

@@ -984,6 +984,17 @@ export class ReservacionProvider {
     });
   }
 
+  eliminar_rsvp(rsvp) {
+    return new Promise((resolve, rejects) => {
+      console.log('RSVP -->', rsvp);
+      const url = `https://adminsoft.mx/operacion/guest/eliminar_rsvp/`;
+      this.http.post(url, rsvp).subscribe((resp: any) => {
+        const data = resp.datos;
+        resolve(data);
+      });
+    });
+  }
+
 
 
 }

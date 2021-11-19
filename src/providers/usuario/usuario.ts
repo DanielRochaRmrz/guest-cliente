@@ -1,19 +1,16 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { Injectable } from "@angular/core";
+import { AngularFireDatabase } from "@angular/fire/database";
+import { AngularFireAuth } from "angularfire2/auth";
 import { map } from "rxjs/operators";
 
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs/Observable";
-import * as moment from "moment";
 
 @Injectable()
 export class UsuarioProvider {
-
   data: any = {};
 
   usuario: Credenciales = {};
@@ -36,19 +33,21 @@ export class UsuarioProvider {
   tarjetaPagar2: AngularFirestoreCollection<any[]>;
   _tarjetaPagar2: Observable<any>;
 
-
   constructor(
     public afDB: AngularFireDatabase,
     public afireauth: AngularFireAuth,
-    public afs: AngularFirestore) {
-    console.log('Hello UsuarioProvider Provider');
+    public afs: AngularFirestore
+  ) {
+    console.log("Hello UsuarioProvider Provider");
   }
 
-  cargarUsuario(nombre: string,
+  cargarUsuario(
+    nombre: string,
     email: string,
     imagen: string,
     uid: string,
-    provider: string) {
+    provider: string
+  ) {
     this.usuario.nombre = nombre;
     this.usuario.email = email;
     this.usuario.imagen = imagen;
@@ -58,13 +57,13 @@ export class UsuarioProvider {
 
   public getCodigo(idx) {
     // return this.afiredatabase.object("sucursales/" + uid);
-    this.codigo = this.afs.collection<any>("usuarios", ref =>
+    this.codigo = this.afs.collection<any>("usuarios", (ref) =>
       ref.where("uid", "==", idx)
     );
     this._codigo = this.codigo.valueChanges();
     return (this._codigo = this.codigo.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
+      map((changes) => {
+        return changes.map((action) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc;
           return data;
@@ -73,54 +72,60 @@ export class UsuarioProvider {
     ));
   }
 
-
   public getUser(uid) {
-    return this.afDB.object('users/' + uid);
+    return this.afDB.object("users/" + uid);
   }
 
   inhabilitar(uid) {
     console.log(uid);
     this.data = {
-      active: false
-    }
-    this.afs.collection('users').doc(uid).update(this.data);
+      active: false,
+    };
+    this.afs.collection("users").doc(uid).update(this.data);
     // this.afDB.database.ref('users/'+ uid).update(this.data);
   }
 
   habilitar(uid) {
     console.log(uid);
     this.data = {
-      active: true
-    }
-    this.afs.collection('users').doc(uid).update(this.data);
+      active: true,
+    };
+    this.afs.collection("users").doc(uid).update(this.data);
     //  this.afDB.database.ref('users/'+ uid).update(this.data);
   }
 
   //Agregar el  telfono del usuario
   public agregarTelefono(idx, telefono, ciudad) {
-    console.log('El user llego al provider', idx);
-    console.log('El telfono llego al provider', telefono);
-    console.log('La ciudad llego al provider', ciudad);
+    console.log("El user llego al provider", idx);
+    console.log("El telfono llego al provider", telefono);
+    console.log("La ciudad llego al provider", ciudad);
     return new Promise((resolve, reject) => {
       this.afs
         .collection("users")
         .doc(idx)
         .update({
           phoneNumber: telefono,
-          ciudad: ciudad
+          ciudad: ciudad,
         })
-        .then(reserva => {
+        .then((reserva) => {
           console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
   }
 
   //insertar registro de tarjeta
-  public agregarTarjeta(idUsuario, numTarjeta, anioExp, mesExp, cvc, numTarjeta4dijitos) {
+  public agregarTarjeta(
+    idUsuario,
+    numTarjeta,
+    anioExp,
+    mesExp,
+    cvc,
+    numTarjeta4dijitos
+  ) {
     return new Promise((resolve, reject) => {
       this.afs
         .collection("tarjetas")
@@ -131,14 +136,14 @@ export class UsuarioProvider {
           anioExpiracion: anioExp,
           mesExpiracion: mesExp,
           cvc: cvc,
-          estatus: 'ACTIVA'
+          estatus: "ACTIVA",
         })
-        .then(reserva => {
+        .then((reserva) => {
           console.log("registro exitoso: ", reserva.id);
           this.updateTarjetaId(reserva.id);
           resolve({ success: true, idTarjeta: reserva.id });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -149,22 +154,21 @@ export class UsuarioProvider {
       .collection("tarjetas")
       .doc(ID)
       .update({
-        idTarjeta: ID
+        idTarjeta: ID,
       })
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch(() => {});
   }
 
   //obtener el ID del usuario con el numero de telefono recibido
   public getUsuarioID(idx) {
-    this.usuarioID = this.afs.collection<any>("users", ref =>
-      ref
-        .where("phoneNumber", "==", idx)
+    this.usuarioID = this.afs.collection<any>("users", (ref) =>
+      ref.where("phoneNumber", "==", idx)
     );
     this._usuarioID = this.usuarioID.valueChanges();
     return (this._usuarioID = this.usuarioID.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
+      map((changes) => {
+        return changes.map((action) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -175,15 +179,13 @@ export class UsuarioProvider {
 
   //obtener la tarjeta registrada y activa del id del usuario obtenido
   public getTarjetaPagar(idx) {
-    this.tarjetaPagar = this.afs.collection<any>("tarjetas", ref =>
-      ref
-        .where("idUsuario", "==", idx)
-        .where("estatus", "==", "ACTIVA")
+    this.tarjetaPagar = this.afs.collection<any>("tarjetas", (ref) =>
+      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA")
     );
     this._tarjetaPagar = this.tarjetaPagar.valueChanges();
     return (this._tarjetaPagar = this.tarjetaPagar.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
+      map((changes) => {
+        return changes.map((action) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -192,17 +194,15 @@ export class UsuarioProvider {
     ));
   }
 
-   //obtener la tarjeta registrada y activa del id del usuario
-   public getTarjetaPagar2(idx) {
-    this.tarjetaPagar2 = this.afs.collection<any>("tarjetas", ref =>
-      ref
-        .where("idUsuario", "==", idx)
-        .where("estatus", "==", "ACTIVA")
+  //obtener la tarjeta registrada y activa del id del usuario
+  public getTarjetaPagar2(idx) {
+    this.tarjetaPagar2 = this.afs.collection<any>("tarjetas", (ref) =>
+      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA")
     );
     this._tarjetaPagar2 = this.tarjetaPagar2.valueChanges();
     return (this._tarjetaPagar2 = this.tarjetaPagar2.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
+      map((changes) => {
+        return changes.map((action) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -215,15 +215,13 @@ export class UsuarioProvider {
   public getTarjetasUser(idx) {
     //console.log('mi user en provider',idx);
     // return this.afiredatabase.object("sucursales/" + uid);
-    this.tarjetas = this.afs.collection<any>("tarjetas", ref =>
-      ref
-        .where("idUsuario", "==", idx)
-        .where("estatus", "==", 'ACTIVA')
+    this.tarjetas = this.afs.collection<any>("tarjetas", (ref) =>
+      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA")
     );
     this._tarjetas = this.tarjetas.valueChanges();
     return (this._tarjetas = this.tarjetas.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
+      map((changes) => {
+        return changes.map((action) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -234,23 +232,23 @@ export class UsuarioProvider {
 
   //obtener todas las trajetas registradas del usuario que sean diferentes a eliminadas
   public getTarjetasRegistradas(idx) {
-    console.log('mi user en provider', idx);
+    console.log("mi user en provider", idx);
     // return this.afiredatabase.object("sucursales/" + uid);
-    this.tarjetasRegistradas = this.afs.collection<any>("tarjetas", ref =>
-      ref
-        .where("idUsuario", "==", idx)
-        .where("estatus", "==", "ACTIVA")
+    this.tarjetasRegistradas = this.afs.collection<any>("tarjetas", (ref) =>
+      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA")
     );
     this._tarjetasRegistradas = this.tarjetasRegistradas.valueChanges();
-    return (this._tarjetasRegistradas = this.tarjetasRegistradas.snapshotChanges().pipe(
-      map(changes => {
-        return changes.map(action => {
-          const data = action.payload.doc.data() as any;
-          data.$key = action.payload.doc.id;
-          return data;
-        });
-      })
-    ));
+    return (this._tarjetasRegistradas = this.tarjetasRegistradas
+      .snapshotChanges()
+      .pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.$key = action.payload.doc.id;
+            return data;
+          });
+        })
+      ));
   }
 
   //Cambiar estatus de la tarjeta a eliminado
@@ -264,44 +262,27 @@ export class UsuarioProvider {
         .then(() => {
           resolve(true);
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
     return promise;
-    // return new Promise((resolve, reject) => {
-    //   this.afs
-    //     .collection("tarjetas")
-    //     .doc(idx)
-    //     .update({
-    //       estatus: "Eliminada"
-    //     })
-    //     .then(reserva => {
-    //       console.log("Reservación actualizada: ", JSON.stringify(reserva));
-    //       resolve({ success: true });
-    //     })
-    //     .catch(err => {
-    //       reject(err);
-    //     });
-    //});
   }
 
   //Cambiar estatus de la tarjeta a ACTIVA
   public updateTarjetaActiva(idx) {
-    //  console.log('llego a provider la tarjeta',idx);
-    //  console.log('llego a provider la tarjeta anterior',tarjetaAnterior);
     return new Promise((resolve, reject) => {
       this.afs
         .collection("tarjetas")
         .doc(idx)
         .update({
-          estatus: "ACTIVA"
+          estatus: "ACTIVA",
         })
-        .then(reserva => {
+        .then((reserva) => {
           console.log("tarjeta activada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
@@ -313,24 +294,22 @@ export class UsuarioProvider {
         .collection("tarjetas")
         .doc(idx)
         .update({
-          estatus: "INACTIVA"
+          estatus: "INACTIVA",
         })
-        .then(reserva => {
+        .then((reserva) => {
           console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
   }
-  
-  public updatePerfil(idx, infoPerfil){
 
+  public updatePerfil(idx, infoPerfil) {
     return new Promise((resolve, reject) => {
-      
       console.log("perfil: ", infoPerfil.nombre);
-      
+
       this.afs
         .collection("users")
         .doc(idx)
@@ -338,21 +317,17 @@ export class UsuarioProvider {
           displayName: infoPerfil.nombre,
           email: infoPerfil.correo,
           phoneNumber: infoPerfil.telefono,
-          tarjeta: infoPerfil.tarjeta
+          tarjeta: infoPerfil.tarjeta,
         })
-        .then(reserva => {
+        .then((reserva) => {
           console.log("perfil actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
-        .catch(err => {
+        .catch((err) => {
           reject(err);
         });
     });
-
-
-
   }
-
 }
 
 export interface Credenciales {
