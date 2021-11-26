@@ -70,7 +70,7 @@ export class ReservacionDetallePage {
   miUser: any = {};
   idSucursal: any;
   mesas: any;
- 
+  soloTotal:any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -84,7 +84,7 @@ export class ReservacionDetallePage {
     public toastCtrl: ToastController,
     private _providerReserva: ReservacionProvider
   ) {
-
+    this.soloTotal = '';
     //this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', 'M4rUKeGx7WPOHXMxOTzy')).valueChanges().subscribe(data2 => {
     //  this.reservacionLugar2 = data2;
     //    this.reservacionLugar2.forEach(element2 => {
@@ -225,6 +225,8 @@ export class ReservacionDetallePage {
           this.totalPropina = this.total + this.propinaRe;
           console.log('propina', this.totalPropina);
           this.validarPropina = 'Existe';
+        } else {
+          this.soloTotal = 1;
         }
       });
     });

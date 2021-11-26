@@ -1,7 +1,10 @@
 {
   "name": "guest-cliente",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {
+      "enabled": false
+    }
   },
   "type": "ionic-angular"
 }

@@ -1,57 +1,65 @@
-import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
-import { PushNotiProvider } from '../../providers/push-noti/push-noti';
-import { EventosPage } from '../eventos/eventos';
-import { Reservacion_1Page } from '../reservacion-1/reservacion-1';
-
+import { Component } from "@angular/core";
+import { AngularFirestore } from "@angular/fire/firestore";
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  MenuController,
+} from "ionic-angular";
+import { PushNotiProvider } from "../../providers/push-noti/push-noti";
+import { EventosPage } from "../eventos/eventos";
+import { Reservacion_1Page } from "../reservacion-1/reservacion-1";
+import { DeviceProvider } from "../../providers/device/device";
 
 @IonicPage()
 @Component({
-  selector: 'page-tipo-lugar',
-  templateUrl: 'tipo-lugar.html',
+  selector: "page-tipo-lugar",
+  templateUrl: "tipo-lugar.html",
 })
 export class TipoLugarPage {
-
   uidUserSesion: any;
   usuarios: any;
   miUser: any = {};
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public afs: AngularFirestore,
     public navParams: NavParams,
     public menuCtrl: MenuController,
     public _providerPushNoti: PushNotiProvider,
-    ) {
-      this._providerPushNoti.init_push_noti();
-      this.menuCtrl.enable(true);
+    private _providerDevice: DeviceProvider
+  ) {
+    this._providerDevice.deviceInfo();
+    this.menuCtrl.enable(true);
     //sacar el id del usuario del local storage
-    this.uidUserSesion = localStorage.getItem('uid');
-    console.log('id del usuario en eventos', this.uidUserSesion);
+    this.uidUserSesion = localStorage.getItem("uid");
+    console.log("id del usuario en eventos", this.uidUserSesion);
 
     //obtener informacion de mi user
     this.afs
-      .collection("users").doc(this.uidUserSesion)
+      .collection("users")
+      .doc(this.uidUserSesion)
       .valueChanges()
-      .subscribe(dataSu => {
+      .subscribe((dataSu) => {
         this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
+        console.log("Datos de mi usuario", this.miUser);
       });
-
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TipoLugarPage');
+    console.log("ionViewDidLoad TipoLugarPage");
   }
 
-  goToEvento(){
+  goToEvento() {
     this.navCtrl.setRoot(EventosPage);
   }
 
-  goToList(opcionS){
-    const estatus = 0; 
+  goToList(opcionS) {
+    const estatus = 0;
     console.log("esta es la opcion", opcionS);
-    this.navCtrl.setRoot(Reservacion_1Page, {opcionS: opcionS, estatus: estatus});
+    this.navCtrl.setRoot(Reservacion_1Page, {
+      opcionS: opcionS,
+      estatus: estatus,
+    });
   }
-
 }

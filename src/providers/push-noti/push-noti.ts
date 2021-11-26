@@ -23,24 +23,24 @@ export class PushNotiProvider {
 
   init_push_noti() {
     if (this.platform.is("cordova")) {
-      this.oneSignal.startInit(
+      window["plugins"].oneSignal.startInit(
         "de05ee4f-03c8-4ff4-8ca9-c80c97c5c0d9",
         "853477386824"
       );
 
-      this.oneSignal.inFocusDisplaying(
-        this.oneSignal.OSInFocusDisplayOption.InAppAlert
+      window["plugins"].oneSignal.inFocusDisplaying(
+        window["plugins"].oneSignal.OSInFocusDisplayOption.InAppAlert
       );
 
-      this.oneSignal.handleNotificationReceived().subscribe(() => {
+      window["plugins"].oneSignal.handleNotificationReceived().subscribe(() => {
         // do something when notification is received
       });
 
-      this.oneSignal.handleNotificationOpened().subscribe(() => {
+      window["plugins"].oneSignal.handleNotificationOpened().subscribe(() => {
         // do something when a notification is opened
       });
 
-      this.oneSignal.getIds().then(data => {
+      window["plugins"].oneSignal.getIds().then(data => {
         // alert('Data :' + JSON.stringify(data));
         const uidUser = localStorage.getItem("uid");
         //console.log('id del usuario en sesion', uidUser);
@@ -51,7 +51,7 @@ export class PushNotiProvider {
         localStorage.setItem("playerID", playerID);
       });
 
-      this.oneSignal.endInit();
+      window["plugins"].oneSignal.endInit();
     } else {
       console.log("*** OneSignal no funciona en web ***");
     }
@@ -59,24 +59,24 @@ export class PushNotiProvider {
 
   init_notification() {
     if (this.platform.is("cordova")) {
-      this.oneSignal.startInit(
+      window["plugins"].oneSignal.startInit(
         "de05ee4f-03c8-4ff4-8ca9-c80c97c5c0d9",
         "853477386824"
       );
 
-      this.oneSignal.inFocusDisplaying(
-        this.oneSignal.OSInFocusDisplayOption.InAppAlert
+      window["plugins"].oneSignal.inFocusDisplaying(
+        window["plugins"].oneSignal.OSInFocusDisplayOption.InAppAlert
       );
 
-      this.oneSignal.handleNotificationReceived().subscribe(() => {
+      window["plugins"].oneSignal.handleNotificationReceived().subscribe(() => {
         // do something when notification is received
       });
 
-      this.oneSignal.handleNotificationOpened().subscribe(() => {
+      window["plugins"].oneSignal.handleNotificationOpened().subscribe(() => {
         // do something when a notification is opened
       });
 
-      this.oneSignal.getIds().then(data => {
+      window["plugins"].oneSignal.getIds().then(data => {
         // alert('Data :' + JSON.stringify(data));
         const uidUser = localStorage.getItem("uid");
         //console.log('id del usuario en sesion', uidUser);
@@ -94,11 +94,10 @@ export class PushNotiProvider {
 
       });
 
-      this.oneSignal.endInit();
+      window["plugins"].oneSignal.endInit();
     } else {
       console.log("*** OneSignal no funciona en web ***");
     }
   }
-
 
 }

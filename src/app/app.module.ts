@@ -72,6 +72,8 @@ import { UserProvider } from '../providers/user/user';
 import { CartaProvider } from '../providers/carta/carta';
 import { GestionReservacionesProvider } from '../providers/gestion-reservaciones/gestion-reservaciones';
 import { CroquisProvider } from '../providers/croquis/croquis';
+import { DeviceProvider } from '../providers/device/device';
+import { AppVersion } from '@ionic-native/app-version';
 
 //Plugin
 import { Facebook } from '@ionic-native/facebook';
@@ -91,6 +93,10 @@ import { PoliticasPage } from '../pages/politicas/politicas';
 import { LoginTelDatosPage } from '../pages/login-tel-datos/login-tel-datos';
 import { HttpClientModule } from '@angular/common/http';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { Device } from '@ionic-native/device';
+import { UniqueDeviceID } from '@ionic-native/unique-device-id';
+import { FCM } from '@ionic-native/fcm';
+
 
 
 var firebaseConfig = {
@@ -240,7 +246,12 @@ var firebaseConfig = {
     CuponesProvider,
     Stripe,
     CroquisProvider,
-    AndroidPermissions
+    AndroidPermissions,
+    Device,
+    DeviceProvider,
+    AppVersion,
+    UniqueDeviceID,
+    FCM
   ]
 })
 export class AppModule {}

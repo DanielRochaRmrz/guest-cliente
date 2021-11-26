@@ -19,16 +19,20 @@ import { TipoLugarPage } from "../pages/tipo-lugar/tipo-lugar";
 import { SliderPage } from "../pages/slider/slider";
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { SMS } from "@ionic-native/sms";
-import { messaging } from "firebase";
+
+import { AppVersion } from "@ionic-native/app-version";
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 @Component({
   templateUrl: "app.html",
 })
 export class MyApp {
+
   @ViewChild(Nav) nav: Nav;
 
   user: Credenciales = {};
-
   rootPage: any;
   home = TipoLugarPage;
   nosotros = NosotrosPage;
@@ -46,7 +50,12 @@ export class MyApp {
   nombresUserss: any = {};
   foto: number;
   invitado: any;
+  version: any;
+  token: string;
+
   constructor(
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
     private platform: Platform,
     public menuCtrl: MenuController,
     public usuarioProv: UsuarioProvider,
@@ -54,9 +63,12 @@ export class MyApp {
     public _providerPushNoti: PushNotiProvider,
     public afs: AngularFirestore,
     private androidPermissions: AndroidPermissions,
-    public SMS: SMS 
+    public SMS: SMS,
+    private app: AppVersion,
   ) {
     platform.ready().then(() => {
+      statusBar.styleDefault();
+      splashScreen.hide();
       if (this.platform.is('android')) {
         this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
           success => {
@@ -82,6 +94,40 @@ export class MyApp {
                   });
           });
       }
+
+      if (this.platform.is('cordova')) {
+        this.app.getVersionCode().then((res) => {
+          this.version = res;
+          localStorage.setItem('versionApp', this.version);
+        });
+    
+        FCM.getToken().then( (token: string) => {
+          console.log('Token -->', token);
+          this.token = token;
+          localStorage.setItem('tokenPush', this.token);
+        }).catch( (error) => {
+          console.log('Error -->', error);
+        });
+    
+        FCM.onTokenRefresh().subscribe( ( token: string ) => {
+          console.log('Token actulizado -->', token);
+          this.token = token;
+          localStorage.setItem('tokenPush', this.token);
+        });
+    
+        FCM.onNotification().subscribe( (data) => {
+          if (data.wasTapped) {
+            //cuando nuestra app esta en segundo plano
+            console.log('Estamos en segundo plano', JSON.stringify(data));
+          } else {
+            //ocurre cuando nuestra app esta en primer plano
+            console.log('Estamos en primer plano', JSON.stringify(data));
+          }
+        }, error => {
+          console.log('Error -->', error);
+        });
+      }
+
       this.invitado = 1;
 
       if (localStorage.getItem("invitado") != null) {

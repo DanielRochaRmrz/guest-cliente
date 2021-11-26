@@ -6,8 +6,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TelefonoUserPage } from '../telefono-user/telefono-user';
-import { EventosPage } from '../eventos/eventos';
-import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 import * as firebase from 'firebase';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 
@@ -42,7 +40,6 @@ export class LoginCorreoPage {
     public fbr: FormBuilder,
     public db: AngularFirestore,
     public alertCtrl: AlertController,
-    public _providerPus: PushNotiProvider,
     public toastCtrl: ToastController,
     public navParams: NavParams) {
 
@@ -119,8 +116,6 @@ export class LoginCorreoPage {
             ciudad: 'null',
             tarjeta: ''
           });
-
-          this._providerPus.init_notification();
           this.navCtrl.setRoot(TelefonoUserPage, {
             idUsuario: this.us.uid
           });
@@ -145,7 +140,6 @@ export class LoginCorreoPage {
               type: 'u',
               ciudad: 'null'
             });
-            this._providerPus.init_notification();
             this.navCtrl.setRoot(TelefonoUserPage, {
               idUsuario: this.us.uid
             });
@@ -183,7 +177,6 @@ export class LoginCorreoPage {
           console.log('Usuario: ', JSON.stringify(user));
           localStorage.setItem("uid", user.user.uid);
           console.log("Este es el usuario", JSON.stringify(user.user.uid), "cual de los dos sera", user.user.uid);
-          // this.navCtrl.setRoot(EventosPage, { 'uid': user.user.uid });
           this.navCtrl.setRoot(TipoLugarPage, { 'uid': user.user.uid });
         }
       });

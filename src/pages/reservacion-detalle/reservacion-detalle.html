@@ -141,29 +141,36 @@
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">TOTAL RESERVACIÓN</a>
-                    <ion-badge class="negro" item-end>{{totalPropina | currency}}</ion-badge>
+                    <ion-badge *ngIf="soloTotal ==''" class="negro" item-end>{{totalPropina | currency}}</ion-badge>
+                    <ion-badge *ngIf="soloTotal =='1'" class="negro" item-end>{{total | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
+
+
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">Iva</a>
-                    <ion-badge class="negro" item-end>{{totalPropina*.16 | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal ==''" item-end>{{totalPropina*.16 | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal =='1'" item-end>{{total*.16 | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
 
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">Comision 3.9</a>
-                    <ion-badge class="negro" item-end>{{totalPropina*.039 | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal ==''" item-end>{{totalPropina*.039 | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal =='1'" item-end>{{total*.039 | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
 
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">Total</a>
-                    <ion-badge class="negro" item-end>{{(totalPropina*.039)+(totalPropina*.16)+(totalPropina) | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal ==''" item-end>{{(totalPropina*.039)+(totalPropina*.16)+(totalPropina) | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal =='1'" item-end>{{(total*.039)+(total*.16)+(total) | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
+
         </div>
         <br />
         <!--VALIDAR QUE APAREZCA CUENTA NORMAL CUANDO NO EXISTE UN CUPON-->
@@ -192,6 +199,29 @@
                             <ion-badge class="negro" item-end>{{totalPropinaCupon | currency}}</ion-badge>
                         </ion-item>
                     </ion-row>
+
+
+                    <ion-row class="colorRow" no-line>
+                        <ion-item class="colorRow">
+                            <a class="blanco_22">Iva</a>
+                            <ion-badge class="negro" item-end>{{totalPropinaCupon*.16 | currency}}</ion-badge>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="colorRow" no-line>
+                        <ion-item class="colorRow">
+                            <a class="blanco_22">Comision 3.9</a>
+                            <ion-badge class="negro" item-end>{{totalPropinaCupon*.039 | currency}}</ion-badge>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="colorRow" no-line>
+                        <ion-item class="colorRow">
+                            <a class="blanco_22">Total</a>
+                            <ion-badge class="negro" item-end>{{(totalPropinaCupon*.039)+(totalPropinaCupon*.16)+(totalPropinaCupon) | currency}}</ion-badge>
+                        </ion-item>
+                    </ion-row>
+
                 </div>
             </div>
         </div>
@@ -208,7 +238,7 @@
                                 <ion-item class="card_atras">
                                     <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
                                     <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{compartidas.totalDividido | currency}}</ion-badge>
+                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.039) | currency}}</ion-badge>
                                     <ion-badge class="negro" item-end>{{compartidas.estatus}}</ion-badge>
                                     <!--<div *ngIf="resultadoEspera=='true'">
                          <div *ngIf="compartidas.estatus=='Aceptado'">
@@ -237,7 +267,7 @@
                                 <ion-item class="card_atras">
                                     <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
                                     <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{compartidas.totalDividido | currency}}</ion-badge>
+                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.039)| currency}}</ion-badge>
                                     <ion-badge class="negro" item-end>{{compartidas.estatus}}</ion-badge>
                                     <!--<div *ngIf="resultadoEspera=='true'">
                          <div *ngIf="compartidas.estatus=='Aceptado'">
@@ -266,7 +296,7 @@
                                 <ion-item class="card_atras">
                                     <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
                                     <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{compartidas.totalDividido | currency}}</ion-badge>
+                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.039) | currency}}</ion-badge>
                                     <ion-badge class="negro" item-end>{{compartidas.estatus}}<br />{{compartidas.estatus_pago}}</ion-badge>
                                     <!--<ion-badge class="negro" item-end >{{compartidas.estatus_pago}}</ion-badge>-->
                                     <div *ngIf="resultadoEspera=='true'">
