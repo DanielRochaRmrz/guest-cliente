@@ -67,7 +67,8 @@ export class MyApp {
     private app: AppVersion,
   ) {
     platform.ready().then(() => {
-      statusBar.styleDefault();
+      statusBar.overlaysWebView(false);
+      statusBar.backgroundColorByHexString('#FD9530');
       splashScreen.hide();
       if (this.platform.is('android')) {
         this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
@@ -93,6 +94,8 @@ export class MyApp {
                       console.error(err);
                   });
           });
+      } else {
+        // this.sendMessage();
       }
 
       if (this.platform.is('cordova')) {
@@ -100,32 +103,35 @@ export class MyApp {
           this.version = res;
           localStorage.setItem('versionApp', this.version);
         });
+
+        this.requestPush();  
     
-        FCM.getToken().then( (token: string) => {
-          console.log('Token -->', token);
-          this.token = token;
-          localStorage.setItem('tokenPush', this.token);
-        }).catch( (error) => {
-          console.log('Error -->', error);
-        });
+        // FCM.getToken().then( (token: string) => {
+        //   console.log('Token -->', token);
+        //   this.token = token;
+        //   localStorage.setItem('tokenPush', this.token);
+        // }).catch( (error) => {
+        //   console.log('Error -->', error);
+        // });
     
-        FCM.onTokenRefresh().subscribe( ( token: string ) => {
-          console.log('Token actulizado -->', token);
-          this.token = token;
-          localStorage.setItem('tokenPush', this.token);
-        });
+        // FCM.onTokenRefresh().subscribe( ( token: string ) => {
+        //   console.log('Token actulizado -->', token);
+        //   this.token = token;
+        //   localStorage.setItem('tokenPush', this.token);
+        // });
     
-        FCM.onNotification().subscribe( (data) => {
-          if (data.wasTapped) {
-            //cuando nuestra app esta en segundo plano
-            console.log('Estamos en segundo plano', JSON.stringify(data));
-          } else {
-            //ocurre cuando nuestra app esta en primer plano
-            console.log('Estamos en primer plano', JSON.stringify(data));
-          }
-        }, error => {
-          console.log('Error -->', error);
-        });
+        // FCM.onNotification().subscribe( (data) => {
+        //   if (data.wasTapped) {
+        //     //cuando nuestra app esta en segundo plano
+        //     console.log('Estamos en segundo plano', JSON.stringify(data));
+        //   } else {
+        //     //ocurre cuando nuestra app esta en primer plano
+        //     console.log('Estamos en primer plano', JSON.stringify(data));
+        //   }
+        // }, error => {
+        //   console.log('Error -->', error);
+        // });
+
       }
 
       this.invitado = 1;
@@ -204,6 +210,29 @@ export class MyApp {
       }
 
     });
+  }
+
+  async requestPush() {
+    const authStatus = await FCM.requestPushPermission();
+        console.log('authStatus -->', authStatus);
+    if (authStatus == true) {
+      let fcmToken = await FCM.getAPNSToken();
+      console.log('fcmToken -->', fcmToken);
+      localStorage.setItem('tokenPush', fcmToken);
+
+      FCM.onNotification().subscribe( (data) => {
+        if (data.wasTapped) {
+          //cuando nuestra app esta en segundo plano
+          console.log('Estamos en segundo plano', JSON.stringify(data));
+        } else {
+          //ocurre cuando nuestra app esta en primer plano
+          console.log('Estamos en primer plano', JSON.stringify(data));
+        }
+      }, error => {
+        console.log('Error -->', error);
+      });
+      
+    }
   }
 
   //Menu de la aplicacion

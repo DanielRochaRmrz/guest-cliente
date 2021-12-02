@@ -59,7 +59,7 @@ export class CartaPage {
         .valueChanges()
         .subscribe(s => {
           this.sucurSel = s;
-          console.log("sucursales", s);
+          // console.log("sucursales", s);
         });
     //  this.cartas = afDB.list('bebidas').valueChanges();
     ///if (localStorage.getItem("idReservacion") != undefined) {

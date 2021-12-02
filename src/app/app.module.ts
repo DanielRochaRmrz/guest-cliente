@@ -106,7 +106,8 @@ var firebaseConfig = {
   projectId: "guestreservation-8b24b",
   storageBucket: "guestreservation-8b24b.appspot.com",
   messagingSenderId: "853477386824",
-  appId: "1:853477386824:web:7fcd8b51df5c9c17b0867d"
+  appId: "1:853477386824:web:7fcd8b51df5c9c17b0867d",
+  measurementId: "G-YLTR10V1M4"
 };
 
 @NgModule({

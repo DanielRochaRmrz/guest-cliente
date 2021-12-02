@@ -513,7 +513,7 @@ export class ResumenPage {
       .valueChanges()
       .subscribe((sucudata) => {
         this.totalsucursal = sucudata;
-        console.log("sucursales", this.totalsucursal);
+        // console.log("sucursales", this.totalsucursal);
       });
 
     //Se obteniene datos del usuario

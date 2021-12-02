@@ -44,7 +44,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="card-background-page" style="border-radius: 0px;">
 
     <br>
     <br>
@@ -67,67 +67,33 @@
                         <div *ngIf="cupones.uid == cupon">
                             <div *ngIf=" cupones.numCupones > 0">
                                 <div *ngIf=" cupones.estatus == 'Activo'">
-                                <div *ngIf="cupones.fechaExpiracion >= fechaActual">
-                                    <!-- <br> <br> -->
-                                    <!-- <ion-badge class="tamanoB" color="naranja" item-end>
-                                            Cupón de descuento {{ cupones.valorCupon | currency }}
-                                            <br>
-                                            Código {{ cupones.codigoCupon }}
-                                            <br><br>
-                                            <ion-badge color="dark">{{ cupones.estatus }}</ion-badge>
-                                            <br><br>
-                                            <ion-badge color="light" (click)="CopyText(cupones.codigoCupon)">
-                                                <ion-icon name="copy" is-active="false"></ion-icon> Copiar código
-                                            </ion-badge>
-                                        </ion-badge>
-                                        <br> -->
+                                    <div *ngIf="cupones.fechaExpiracion >= fechaActual">
+                                        <ion-card>
+                                            <img src="./assets/imgs/Vector (3).png" alt="">
+                                            <ion-grid>
+                                                <div class="card-title">
+                                                    <ion-row>
+                                                        <ion-col col-6>
+                                                            {{ cupones.valorCupon | currency}}
+                                                        </ion-col>
+                                                        <ion-col col-6 class="logoB">
+                                                            <img src="./assets/imgs/Logoblanco.png" style="margin-top:-10px;width:55px; margin-left:40px">
+                                                        </ion-col>
+                                                    </ion-row>
+                                                </div>
+                                            </ion-grid>
 
-                                    <img src="./assets/imgs/Vector (3).png" alt="" style="width:420px">
-                                    <br><br>
-                                    <div class="row" style="position:absolute;margin-top:-120px;margin-left:60px">
-                                        <div class="col-4">
-                                            <font style="color:#C88F1E" size="5"> <b>{{ cupones.valorCupon | currency
-                                                    }}</b></font>
+                                            <div class="card-subtitle">MXN de descuento &nbsp;&nbsp; Código {{ cupones.codigoCupon }}</div>
+                                            <div class="card-subtitle1">Sucursal: {{sucursal.displayName}}</div>
+                                            <div class="card-subtitle2">Vigencia: {{ cupones.fechaExpiracion }}</div>
+                                        </ion-card>
 
-                                        </div>
-                                        <div class="col-2">
-                                            <img src="./assets/imgs/Logoblanco.png"
-                                                style="margin-top:-10px;width:55px; margin-left:40px">
-                                        </div>
                                     </div>
-
-                                    <div class="row" style="position:absolute;margin-top:-80px;margin-left:50px">
-                                        <div class="col-4">
-                                            <font style="color:#C88F1E"> MXN de descuento</font>
-
-                                        </div>
-                                        <div class="col-4">
-                                            <font style="color:#C88F1E;margin-left:10px"> Código {{ cupones.codigoCupon
-                                                }}</font>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="position:absolute;margin-top:-65px;margin-left:50px">
-                                        <div class="col-4">
-                                            <font style="color:#C88F1E">
-                                                Sucursal: {{sucursal.displayName}}
-                                            </font>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="position:absolute;margin-top:-50px;margin-left:50px">
-                                        <div class="col-4">
-                                            <font style="color:#C88F1E"> Vigencia: {{ cupones.fechaExpiracion }}</font>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>

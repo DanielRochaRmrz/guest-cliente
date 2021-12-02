@@ -22,6 +22,7 @@ import { MonitoreoReservasProvider } from "../../providers/monitoreo-reservas/mo
 import { IonicSelectableComponent } from "ionic-selectable";
 import { CroquisPage } from "../croquis/croquis";
 import moment from "moment";
+import { isDefaultChangeDetectionStrategy } from "@angular/core/src/change_detection/constants";
 
 @IonicPage()
 @Component({
@@ -523,7 +524,7 @@ export class ReservacionesPage {
         //console.log("tel 10 dijitos base antes de comparar",datac.phoneNumber);
         //consulta para sacar contactos del telefono
         this.contactlist.forEach((data) => {
-          console.log("resultado number telefono", data);
+          // console.log("resultado number telefono", data);
           //estandarizar telefono a 10 digitos
           //validar que si algun telefono es nulo no pase por la comparacion
           if (data.phoneNumbers != null) {
@@ -535,7 +536,11 @@ export class ReservacionesPage {
             //comparar si el nuero en la base de datos es igual a un contacto
             //if (this.telefono3 == datac.phoneNumber) {
             // telefono3_.push({ tel: this.telefono3.toString(), name: data.displayName.toString() });
-            this.ports.push({ tel: this.telefono3, name: String(data.displayName) });
+            if (this.platform.is('android')) {
+              this.ports.push({ tel: this.telefono3, name: String(data.displayName) });
+            }else{
+              this.ports.push({ tel: this.telefono3, name: String(data.name.formatted) });
+            }
             // this.ports = [{tel:"8885555512",name:"Daniel1"},{tel:"5556106679",name:"Daniel2"},{tel:"5554787672",name:"Daniel3"},{tel:"55)7664823",name:"Daniel4"}]
             // console.log("Ports -->", JSON.stringify(this.ports));
             // console.log("Data -->", JSON.stringify(data));
@@ -554,7 +559,7 @@ export class ReservacionesPage {
   }
 
   getImagen(idx) {
-    console.log("idUsuarioHistorial: ", idx);
+    // console.log("idUsuarioHistorial: ", idx);
 
     this._providerReserva.getCroquisImg(idx).subscribe((res) => {
       console.log("Este es el resultado de imagen: ", res);

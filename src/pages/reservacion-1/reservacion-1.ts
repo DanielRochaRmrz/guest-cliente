@@ -9,6 +9,7 @@ import { EventosPage } from '../eventos/eventos';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { LoginPage } from '../login/login';
+import { ReservacionProvider } from '../../providers/reservacion/reservacion';
 
 
 @IonicPage()
@@ -44,26 +45,27 @@ export class Reservacion_1Page {
     public afs: AngularFirestore,
     private socialSharing: SocialSharing,
     public alertCtrl: AlertController,
+    private _reservacionP: ReservacionProvider
   ) {
     // this.sucursales = afDB.list('sucursales').valueChanges();
     // this.uid = this.afAuth.auth.currentUser.uid;
     // console.log("uid desde Auth", this.uid);
     this.invitado = 1;
     this.uid = localStorage.getItem('uid');
-    console.log('id del usuario en Reservacion', this.uid);
+    // console.log('id del usuario en Reservacion', this.uid);
     if(localStorage.getItem('invitado') != null){
       this.invitado = localStorage.getItem('invitado');
     }
     
-    console.log("INVITADO I",this.invitado);
+    // console.log("INVITADO I",this.invitado);
     //obtener el id del user en sesion
     this.uidUserSesion = localStorage.getItem('uid');
-    console.log('user en sucursales123', this.uidUserSesion);
+    // console.log('user en sucursales123', this.uidUserSesion);
 
     //obtener informacion de todas las sucursales
     this.afs.collection('sucursales').valueChanges().subscribe(s => {
       this.sucursales = s;
-      console.log('sucursales', this.sucursales);
+      // console.log('sucursales', this.sucursales);
       // afDB.list('sucursales').valueChanges().subscribe( s => {
       //   this.sucursales = s;
       //   console.log('sucursale', this.sucursales);
@@ -72,17 +74,17 @@ export class Reservacion_1Page {
     //obtener informacion de todos los usuarios
     this.afs.collection('users').valueChanges().subscribe(user => {
       this.usuarios = user;
-      console.log('usuarios2', this.usuarios);
+      // console.log('usuarios2', this.usuarios);
     });
 
     //sacar todas las ciudades
-    this.afs
-      .collection("ciudades")
-      .valueChanges()
-      .subscribe(dataCiudad => {
-        this.ciudades = dataCiudad;
-        console.log('cudades', this.ciudades);
-      });
+    // this.afs
+    //   .collection("ciudades")
+    //   .valueChanges()
+    //   .subscribe(dataCiudad => {
+    //     this.ciudades = dataCiudad;
+    //     // console.log('cudades', this.ciudades);
+    //   });
 
     //obtener informacion de mi user
     this.afs
@@ -90,37 +92,41 @@ export class Reservacion_1Page {
       .valueChanges()
       .subscribe(dataSu => {
         this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
+        // console.log('Datos de mi usuario', this.miUser);
       });
 
     this.opcionS = this.navParams.get('opcionS');
-    console.log("Opcion seleccionada", this.opcionS);
+    // console.log("Opcion seleccionada", this.opcionS);
 
     this.estatus = this.navParams.get('estatus');
-    console.log("Este es el estatus", this.estatus);
+    // console.log("Este es el estatus", this.estatus);
 
     //obtener informacion de todas las sucursales
     this.afs.collection('sucursales', ref => ref.where('tipo', '==', this.opcionS)).valueChanges().subscribe(su => {
       this.sucursalesS = su;
-      console.log('sucursalesS', this.sucursalesS);
+      // console.log('sucursalesS', this.sucursalesS);
     });
 
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad Reservacion_1Page');
-    console.log('filtro', this.filterPostCiudad);
-
+    //sacar todas las ciudades
+    this.getCiudades();
   }
+  
+  async getCiudades () {
+    this.ciudades = await this._reservacionP.getCiudades();
+  }
+
   reservar(idSucursal) {
-    console.log('reservacion');
+    // console.log('reservacion');
     this.afs.collection('users', ref => ref.where('uid', '==', idSucursal)).valueChanges().subscribe(su => {
       this.usuarioSu = su;
-      console.log('usuarioSu', this.usuarioSu);
+      // console.log('usuarioSu', this.usuarioSu);
 
       localStorage.setItem('playerID', this.usuarioSu[0].playerID);
-      console.log("playerID", this.usuarioSu[0].playerID);
+      // console.log("playerID", this.usuarioSu[0].playerID);
       
     });
 
@@ -160,7 +166,7 @@ export class Reservacion_1Page {
   }
 
   invitadoAlert(){
-    console.log('IMNVITADO');
+    // console.log('IMNVITADO');
 
     let alertMesas = this.alertCtrl.create({
       message:

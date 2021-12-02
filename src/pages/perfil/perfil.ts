@@ -129,7 +129,7 @@ export class PerfilPage {
     this.msg();
 
     const options: CameraOptions = {
-      quality: 70,
+      quality: 85,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
       mediaType: 2,

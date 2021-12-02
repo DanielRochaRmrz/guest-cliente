@@ -43,7 +43,7 @@ export class ProductoDetallePage {
       .valueChanges()
       .subscribe(s => {
         this.sucurSel = s;
-        console.log("sucursales", s);
+        // console.log("sucursales", s);
       });
       
     this.idProducto = navParams.get("idProducto");

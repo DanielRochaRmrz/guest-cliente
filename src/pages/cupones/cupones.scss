@@ -8,7 +8,6 @@ page-cupones {
         position: relative;
         border: none;
     }
-
     //Nuevo
     .toolbar-background {
         background-image: url('../assets/content/head.png')!important;
@@ -16,7 +15,6 @@ page-cupones {
         background-position: center center;
         background-repeat: no-repeat;
     }
-
     //Nuevo
     .botonMod {
         // background: white;
@@ -25,24 +23,19 @@ page-cupones {
         // margin-top: 5px;
         // width: 26px;
     }
-
-    .imgMenu{
+    .imgMenu {
         width: 40px;
         margin-top: 15px;
     }
-
     //Nuevo
     .colorIcon3 {
         zoom: 1;
         color: #000;
         font-size: inherit;
     }
-
     .borde {
         margin-top: 0em;
     }
-
-
     ion-list .item {
         margin-left: 3%;
         width: 88%;
@@ -155,15 +148,64 @@ page-cupones {
         color: white;
         text-align: center;
     }
-
-    .cuadro{
+    .cuadro {
         background-color: #c18c26;
         width: 85%;
         height: 160px;
         font-size: 22px;
     }
-
-    .copiar{
+    .copiar {
         font-size: large;
+    }
+    .card-background-page {
+        ion-card {
+            position: relative;
+            text-align: center;
+        }
+        .card-title {
+            position: absolute;
+            top: 10%;
+            font-size: 2.0em;
+            width: 100%;
+            font-weight: bold;
+            color: #C88F1E;
+        }
+        .card-subtitle {
+            font-size: 1.0em;
+            position: absolute;
+            top: 46%;
+            width: 100%;
+            text-align: justify;
+            padding-left: 12%;
+            color: #C88F1E;
+        }
+        .card-subtitle1 {
+            font-size: 1.0em;
+            position: absolute;
+            top: 58%;
+            width: 100%;
+            text-align: justify;
+            padding-left: 12%;
+            color: #C88F1E;
+        }
+        .card-subtitle2 {
+            font-size: 1.0em;
+            position: absolute;
+            top: 70%;
+            width: 100%;
+            text-align: justify;
+            padding-left: 12%;
+            color: #C88F1E;
+        }
+    }
+    .card-ios {
+        margin: 12px 0px;
+        width: calc(100% - 0px);
+        font-size: 1.4rem;
+        background: #fff;
+        box-shadow: 0 0px 0px;
+    }
+    .logoB {
+        margin-left: -55px;
     }
 }

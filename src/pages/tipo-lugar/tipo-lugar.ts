@@ -5,6 +5,7 @@ import {
   NavController,
   NavParams,
   MenuController,
+  Platform,
 } from "ionic-angular";
 import { PushNotiProvider } from "../../providers/push-noti/push-noti";
 import { EventosPage } from "../eventos/eventos";
@@ -27,24 +28,33 @@ export class TipoLugarPage {
     public navParams: NavParams,
     public menuCtrl: MenuController,
     public _providerPushNoti: PushNotiProvider,
-    private _providerDevice: DeviceProvider
+    private _providerDevice: DeviceProvider,
+    private platform: Platform
   ) {
-    this._providerDevice.deviceInfo();
+
+    if (this.platform.is('cordova')) {
+      this._providerDevice.deviceInfo();
+    }
+    
     this.menuCtrl.enable(true);
     //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem("uid");
-    console.log("id del usuario en eventos", this.uidUserSesion);
+    // console.log("id del usuario en eventos", this.uidUserSesion);
 
     //obtener informacion de mi user
-    this.afs
+     const u = this.afs
       .collection("users")
       .doc(this.uidUserSesion)
       .valueChanges()
       .subscribe((dataSu) => {
         this.miUser = dataSu;
-        console.log("Datos de mi usuario", this.miUser);
+        // console.log("Datos de mi usuario", this.miUser);
       });
+
+      u.unsubscribe();
   }
+
+  
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad TipoLugarPage");
@@ -56,7 +66,7 @@ export class TipoLugarPage {
 
   goToList(opcionS) {
     const estatus = 0;
-    console.log("esta es la opcion", opcionS);
+    // console.log("esta es la opcion", opcionS);
     this.navCtrl.setRoot(Reservacion_1Page, {
       opcionS: opcionS,
       estatus: estatus,

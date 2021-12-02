@@ -18,7 +18,7 @@ export class HistorialPage {
   eventos = [];
   uid: any;
   historial = [];
-  sucursal=[];
+  sucursal: any = [];
   cont: any = 0;
   suma: any;
     miUser: any = {};
@@ -75,11 +75,8 @@ modal.present();
     });
   }
 
-  getSucursal() {
-      this._providerReserva.getSucursal().subscribe(res => {
-      console.log("Este es el resultado de sucursal: ", res);
-      this.sucursal = res;
-    });
+  async getSucursal() {
+    this.sucursal = await  this._providerReserva.getSucursal();
   }
 
   contador() {

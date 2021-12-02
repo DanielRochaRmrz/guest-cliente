@@ -1,27 +1,13 @@
 <ion-header>
     <ion-navbar class="borde" hideBackButton>
         <ion-row>
-            <ion-col col-1>
-                <ion-icon name="ios-arrow-back-outline" (click)="behind()" style="color: white"></ion-icon>
+            <ion-col>
+                <ion-icon name="ios-arrow-back-outline" (click)="behind()" style="color: white; font-size: 4.2em;"></ion-icon>
             </ion-col>
-            <!-- <ion-col>
-        <-- <button ion-button class="botonMod" (click)="goBack()">
-          <ion-icon item-start name="arrow-back" class="colorIcon31"></ion-icon>
-        </button> --
-        <img src="./assets/icon/atras.png"(click)="goBack()" class="imgBack" alt="">
-      </ion-col> -->
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
             </ion-col>
             <ion-col>
-                <!-- <div align='end'>
-          <div *ngIf="miUser.provider == 'facebook'">
-            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:40%;border-radius:50%;">
-          </div>
-          <div *ngIf="miUser.provider == 'google'">
-            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
-          </div>
-        </div> -->
                 <div align="end">
                     <div *ngIf="miUser.provider == 'facebook'">
                         <div *ngIf="miUser.status_foto == 0">
@@ -146,7 +132,6 @@
                 </ion-item>
             </ion-row>
 
-
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">Iva</a>
@@ -166,11 +151,11 @@
             <ion-row class="colorRow" no-line>
                 <ion-item class="colorRow">
                     <a class="blanco_22">Total</a>
-                    <ion-badge class="negro" *ngIf="soloTotal ==''" item-end>{{(totalPropina*.039)+(totalPropina*.16)+(totalPropina) | currency}}</ion-badge>
+                    <ion-badge class="negro" *ngIf="soloTotal ==''" item-end>{{(totalPropina*.039)+(totalPropina*.16)+(totalPropina) | currency}}
+                    </ion-badge>
                     <ion-badge class="negro" *ngIf="soloTotal =='1'" item-end>{{(total*.039)+(total*.16)+(total) | currency}}</ion-badge>
                 </ion-item>
             </ion-row>
-
         </div>
         <br />
         <!--VALIDAR QUE APAREZCA CUENTA NORMAL CUANDO NO EXISTE UN CUPON-->
@@ -200,7 +185,6 @@
                         </ion-item>
                     </ion-row>
 
-
                     <ion-row class="colorRow" no-line>
                         <ion-item class="colorRow">
                             <a class="blanco_22">Iva</a>
@@ -221,7 +205,6 @@
                             <ion-badge class="negro" item-end>{{(totalPropinaCupon*.039)+(totalPropinaCupon*.16)+(totalPropinaCupon) | currency}}</ion-badge>
                         </ion-item>
                     </ion-row>
-
                 </div>
             </div>
         </div>
@@ -267,7 +250,8 @@
                                 <ion-item class="card_atras">
                                     <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
                                     <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.039)| currency}}</ion-badge>
+                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.039)| currency}}
+                                    </ion-badge>
                                     <ion-badge class="negro" item-end>{{compartidas.estatus}}</ion-badge>
                                     <!--<div *ngIf="resultadoEspera=='true'">
                          <div *ngIf="compartidas.estatus=='Aceptado'">

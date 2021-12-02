@@ -11,9 +11,9 @@ export class CroquisProvider {
 
   constructor(public http: HttpClient, private db: AngularFirestore) {}
 
-  getUser(){
+  getUser(uid: string){
     return new Promise((resolve, rejects) => {
-      let usuariosRef = this.db.collection("users").doc("HaP68VmphnVPFtzNOsLvFCk8A2o1");
+      let usuariosRef = this.db.collection("users").doc(uid);
         usuariosRef.get().subscribe((user) => {
           this.usuario = user.data();
           resolve(this.usuario);

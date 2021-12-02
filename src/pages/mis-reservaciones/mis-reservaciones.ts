@@ -23,11 +23,11 @@ export class MisReservacionesPage {
   scannedData: any = {};
   reservaciones: any;
   clientes: any;
-  uid: any;
+  uid: string;
   nombresAreas: any;
   nombresZonas: any;
   nombresSucursales: any;
-  misReservaciones: any;
+  misReservaciones: any = [];
   idArea: any;
   idSucursal: any;
   idevento: any;
@@ -68,12 +68,15 @@ export class MisReservacionesPage {
       });
 
     //consultar tabla sucursales
-    this.afs
-      .collection("sucursales")
-      .valueChanges()
-      .subscribe(data2 => {
-        this.nombresSucursales = data2;
-      });
+    // this.afs
+    //   .collection("sucursales")
+    //   .valueChanges()
+    //   .subscribe(data2 => {
+    //     this.nombresSucursales = data2;
+    //   });
+    
+
+
     //consultar tabla sucursales
     this.afs
       .collection("reservaciones")
@@ -99,7 +102,8 @@ export class MisReservacionesPage {
   }
 
   ionViewDidLoad() {
-    this.getAllReservaciones();
+    this.getAllSucursales();
+    this.getAllReservaciones_();
     this.getClientes();
     this.getTelUsuario();
     //this._providerPushNoti.init_push_noti();
@@ -113,11 +117,14 @@ export class MisReservacionesPage {
   //    });
   //  }
   //obtener todas las reservaciones de un usuario
-  getAllReservaciones() {
-    this.reservaProvider.getReservacionesCliente(this.uid).subscribe(reservacion => {
-      this.misReservaciones = reservacion;
-    });
+  async getAllReservaciones_() {
+    this.misReservaciones  = await this.reservaProvider.getReservacionesCliente_(this.uid);
   }
+  
+  async getAllSucursales() {
+    this.nombresSucursales = await this.reservaProvider.getSucursal();
+  }
+
 
   //obtener el telefono del usuario en sesion
   getTelUsuario() {
@@ -137,7 +144,7 @@ export class MisReservacionesPage {
   getClientes() {
     this.monRes.getAllClientes("users").then(c => {
       this.clientes = c;
-      console.log("Estos son los clientes: ", this.clientes);
+      // console.log("Estos son los clientes: ", this.clientes);
     });
   }
 

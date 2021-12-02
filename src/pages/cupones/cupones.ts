@@ -66,7 +66,7 @@ export class CuponesPage {
     //Se obteniene datos del sucursales
     this.afs.collection('sucursales').valueChanges().subscribe(sucudata => {
       this.totalsucursal = sucudata;
-      console.log("sucursales", this.totalsucursal);
+      // console.log("sucursales", this.totalsucursal);
     });
 
     //Se obteniene datos del usuario

@@ -17,7 +17,8 @@ export class CroquisPage {
   miUser: any = {};
   url: SafeResourceUrl;
   params: any = {};
-
+  uid: string;
+  
   constructor(
     public navCtrl        : NavController, 
     public navParams      : NavParams,
@@ -27,6 +28,7 @@ export class CroquisPage {
     ) {}
 
   ionViewDidLoad() {
+    this.uid = localStorage.getItem('uid');
     this.user();
     this.params = this.navParams.get('data');
     console.log('Params -->', this.params);
@@ -36,12 +38,11 @@ export class CroquisPage {
   }
 
   async user(){
-     this.miUser = await this.croquisService.getUser();
+     this.miUser = await this.croquisService.getUser(this.uid);
   }
 
   async irCata(){
     const rsvp: any = await this.croquisService.getRsvpHttp(this.params.idReservacion);
-    console.log(rsvp.length);
     if (rsvp.length == 0) {
       const alert = this.alertCtrl.create({
         title: 'Seleciona tu mesa para continuar',
