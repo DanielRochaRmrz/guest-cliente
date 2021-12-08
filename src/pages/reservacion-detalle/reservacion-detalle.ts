@@ -14,6 +14,8 @@ import { ModalController } from 'ionic-angular';
 import { ReservacionesPage } from '../reservaciones/reservaciones';
 import { ModalTarjetasPage } from "../modal-tarjetas/modal-tarjetas";
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
+import { UserProvider } from '../../providers/user/user';
+import { UsuarioProvider } from '../../providers/usuario/usuario';
 //import { Platform } from 'ionic-angular';
 @IonicPage()
 @Component({
@@ -71,6 +73,7 @@ export class ReservacionDetallePage {
   idSucursal: any;
   mesas: any;
   soloTotal:any;
+  tarjeta: any = [];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -82,7 +85,8 @@ export class ReservacionDetallePage {
     public menu: MenuController,
     public platform: Platform,
     public toastCtrl: ToastController,
-    private _providerReserva: ReservacionProvider
+    private _providerReserva: ReservacionProvider,
+    private _providerUserio: UsuarioProvider
   ) {
     this.soloTotal = '';
     //this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', 'M4rUKeGx7WPOHXMxOTzy')).valueChanges().subscribe(data2 => {
@@ -95,18 +99,19 @@ export class ReservacionDetallePage {
     //recibe parametro de la reservacion
     this.idReservacion = this.navParams.get("idReservacion");
     this.modal = this.navParams.get("modal");
-    console.log('este es el modal', this.modal);
     //sacar el id del usuario guardado en el local storage
     this.idUser = localStorage.getItem('uid');
     this.idSucursal = localStorage.getItem('uidSucursal');
+    console.log('Este es el uid', this.idUser);
+    
 
     //consultar tabla areas
-    this.afs
-      .collection("areas")
-      .valueChanges()
-      .subscribe(data => {
-        this.nombresAreas = data;
-      });
+    // this.afs
+    //   .collection("areas")
+    //   .valueChanges()
+    //   .subscribe(data => {
+    //     this.nombresAreas = data;
+    //   });
 
     //consultar tabla zonas
  
@@ -144,8 +149,8 @@ export class ReservacionDetallePage {
     this.afs.collection('reservaciones', ref => ref.where('idReservacion', '==', this.idReservacion)).valueChanges().subscribe(data => {
       this.reservacionLugar = data;
       this.reservacionLugar.forEach(element => {
+        console.log('Element -->', element);
         const idSucursal = element.idSucursal;
-        //console.log("esta es la sucursal", data[0].idSucursal);
         this.afs.collection('sucursales', ref => ref.where('uid', '==', idSucursal)).valueChanges().subscribe(data2 => {
           this.reservacionLugar2 = data2;
           this.reservacionLugar2.forEach(element2 => {
@@ -175,13 +180,19 @@ export class ReservacionDetallePage {
     this.menu.enable(true);
     //carga funcion cuando abre la pagina
     this.getDetails();
-    console.log("ionViewDidLoad EventoDetallePage");
     this.mostrar = true;
     this.personaAcepta();
     this.compartidaEstatusFinal();
     this.verificarEscaneo();
     this.estatusPagando();
     this.obtenerMesas();
+    this.getTarjeta();
+  }
+
+  getTarjeta () {
+    this._providerUserio.getTarjetaPagar(this.idUser).subscribe((data) => {
+      this.tarjeta = data.length;
+    });
   }
 
   compartidaEstatusFinal() {

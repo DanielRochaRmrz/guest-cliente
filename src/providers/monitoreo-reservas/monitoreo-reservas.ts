@@ -64,7 +64,7 @@ export class MonitoreoReservasProvider {
           querySnapshot.forEach(function(doc) {
             var obj = JSON.parse(JSON.stringify(doc.data()));
             obj.$key = doc.id;
-            console.log(obj);
+            // console.log(obj);
             arr.push(obj);
           });
 

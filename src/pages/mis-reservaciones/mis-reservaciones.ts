@@ -117,8 +117,10 @@ export class MisReservacionesPage {
   //    });
   //  }
   //obtener todas las reservaciones de un usuario
-  async getAllReservaciones_() {
-    this.misReservaciones  = await this.reservaProvider.getReservacionesCliente_(this.uid);
+  getAllReservaciones_() {
+    this.reservaProvider.getReservacionesCliente_(this.uid).subscribe((data) => {
+      this.misReservaciones = data;
+    });
   }
   
   async getAllSucursales() {

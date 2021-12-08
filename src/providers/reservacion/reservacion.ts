@@ -9,7 +9,6 @@ import { map } from "rxjs/operators";
 import * as moment from "moment";
 import { HttpClient } from "@angular/common/http";
 
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 
@@ -139,19 +138,36 @@ export class ReservacionProvider {
   //  ));
   //}
 
-  getReservacionesCliente_(idx: string) {
-    return new Promise((resolve, reject) => {
-      this.db
-        .collection("reservaciones")
-        .where("idUsuario", "==", idx)
-        .onSnapshot((querySnapshot) => {
-          const reservaciones = [];
-          querySnapshot.forEach((data) => {
-            reservaciones.push(data.data());
-            resolve(reservaciones);
-          });
+  // getReservacionesCliente_(idx: string) {
+    
+  //   return new Promise((resolve, reject) => {
+  //     this.af.collection("reservaciones", (ref) => ref.where("idUsuario", "==", idx))
+  //       .snapshotChanges().pipe(
+  //         map((changes) => {
+  //           return changes.map((action) => {
+  //             const data = action.payload.doc.data() as any;
+  //             data.$key = action.payload.doc.id;
+  //             resolve(data);
+  //           });
+  //         })
+  //       );
+  //   });
+  // }
+
+  public getReservacionesCliente_(idx: string) {
+    this.reservaCliente = this.af.collection<any>("reservaciones", (ref) =>
+      ref.where("idUsuario", "==", idx)
+    );
+    this._reservaCliente = this.reservaCliente.valueChanges();
+    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
         });
-    });
+      })
+    ));
   }
 
   public getReservacionesProducto(idx) {
@@ -878,8 +894,6 @@ export class ReservacionProvider {
     });
   }
 
-
-
   deleteReservacion(idReservacion) {
     this.af
       .collection("reservaciones")
@@ -1035,5 +1049,4 @@ export class ReservacionProvider {
         });
     });
   }
-  
 }
