@@ -7,9 +7,8 @@ import {
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
-// import { promises } from 'fs';
 import { HttpClient } from "@angular/common/http";
-import { rejects } from "assert";
+
 
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -869,6 +868,18 @@ export class ReservacionProvider {
     ));
   }
 
+  public getZonaHttp(idZona) {
+    return new Promise((resolve, rejects) => {
+      const url = `https://adminsoft.mx/operacion/guest/obtener_zona/${idZona}`;
+      this.http.get(url).subscribe((resp: any) => {
+        const data = resp.consulta;
+        resolve(data);
+      });
+    });
+  }
+
+
+
   deleteReservacion(idReservacion) {
     this.af
       .collection("reservaciones")
@@ -1009,4 +1020,20 @@ export class ReservacionProvider {
         });
     });
   }
+
+  getSucursalesTipo(tipo: string) {
+    return new Promise((resolve, reject) => {
+      this.db
+        .collection("sucursales")
+        .where("tipo", "==", tipo)
+        .onSnapshot((querySnapshot) => {
+          const sucursales = [];
+          querySnapshot.forEach((data) => {
+            sucursales.push(data.data());
+          });
+          resolve(sucursales);
+        });
+    });
+  }
+  
 }

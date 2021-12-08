@@ -121,7 +121,7 @@ export class MonitoreoReservasProvider {
     content: "Procesando pago."
     });//
     loading.present();
-    this.stripe.setPublishableKey('pk_test_TWx1xbw2HExTUYjy2Hz44koG00nFNYC3J4');
+    this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
     //
     let card = {
       number: numTarjeta,//numTarjeta
@@ -200,7 +200,7 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
   content: "Procesando pago."
   });//
   loading.present();
-  this.stripe.setPublishableKey('pk_test_TWx1xbw2HExTUYjy2Hz44koG00nFNYC3J4');
+  this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
   //
   let card = {
     number: numTarjeta,//numTarjeta

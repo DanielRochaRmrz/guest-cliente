@@ -43,6 +43,7 @@ export class CroquisPage {
 
   async irCata(){
     const rsvp: any = await this.croquisService.getRsvpHttp(this.params.idReservacion);
+    console.log(rsvp[0].id_zona);
     if (rsvp.length == 0) {
       const alert = this.alertCtrl.create({
         title: 'Seleciona tu mesa para continuar',
@@ -53,7 +54,7 @@ export class CroquisPage {
       this.navCtrl.push(CartaPage, {
         idReservacion: this.params.idReservacion,
         idSucursal: this.params.idSucursal,
-        zona: this.params.zona,
+        zona: rsvp[0].id_zona,
         hora: this.params.hora,
         fecha: this.params.fecha
       });

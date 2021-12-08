@@ -223,7 +223,7 @@ export class ReservacionDetallePage {
         if (info[0].propina != undefined) {
           this.propinaRe = this.total * info[0].propina;
           this.totalPropina = this.total + this.propinaRe;
-          console.log('propina', this.totalPropina);
+          console.log('Totsl propina -->', this.totalPropina);
           this.validarPropina = 'Existe';
         } else {
           this.soloTotal = 1;
@@ -313,9 +313,11 @@ export class ReservacionDetallePage {
 
   //mandar datos a la pagina del QR
   genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir) {
+    const t = totalDividido + (totalDividido * .16) + (totalDividido * .039);
+    const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(GenerarqrPage, {
       idReservacion: idReservacion,
-      totalDividido: totalDividido,
+      totalDividido: amount,
       idUsuario: idUsuario,
       telefono: telefono,
       idCompartir: idCompartir
@@ -337,9 +339,11 @@ export class ReservacionDetallePage {
 
   //mandar datos a la pagina del QR
   genararQRNormal(idReservacion, total, idUsuario) {
+    const t = total + (total * .16) + (total * .039);
+    const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(Generarqr_2Page, {
       idReservacion: idReservacion,
-      total: total,
+      total: amount,
       idUsuario: idUsuario
     });
   }

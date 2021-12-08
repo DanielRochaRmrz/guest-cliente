@@ -171,7 +171,7 @@ export class CartaPage {
   loadReservacion(idx) {
     this._providerReserva.getReservacion(idx).subscribe(reservacion => {
       console.log('Datos Reservación: ', reservacion);
-      this._getZona(reservacion.idZona);
+      this._getZona(this.zona);
     });
   }
 
@@ -185,10 +185,9 @@ export class CartaPage {
     });
   }
 
-  _getZona(idx) {
-    this._providerReserva.getZona(idx).subscribe(zona => {
-      console.log('Datos zona: ', zona);
-      this.consumo = zona.consumo;
-    });
+  async _getZona(idx) {
+    const zona = await this._providerReserva.getZonaHttp(idx);
+    console.log('esta es la sona -->', zona);
+    this.consumo = zona[0].consumo;
   }
 }

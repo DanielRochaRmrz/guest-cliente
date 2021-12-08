@@ -96,7 +96,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Device } from '@ionic-native/device';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { FCM } from '@ionic-native/fcm';
-
+import * as firebase from "firebase/app";
 
 
 var firebaseConfig = {
@@ -109,6 +109,8 @@ var firebaseConfig = {
   appId: "1:853477386824:web:7fcd8b51df5c9c17b0867d",
   measurementId: "G-YLTR10V1M4"
 };
+
+firebase.initializeApp(firebaseConfig);
 
 @NgModule({
   declarations: [

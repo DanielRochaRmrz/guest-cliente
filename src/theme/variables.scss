@@ -163,6 +163,8 @@ $card-ios-margin-right: 0px;
 $alert-ios-checkbox-label-text-color: #ffffff;
 $alert-ios-button-text-color: #ffffff;
 $alert-md-input-text-color:#ffffff;
+$loading-ios-background: #000000;
+$loading-md-spinner-ios-color:#FD9530;
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
@@ -181,6 +183,8 @@ $card-md-margin-left: 0px;
 $card-md-margin-right: 0px;
 $alert-md-button-text-color: #ffffff;
 $alert-md-input-text-color:#ffffff;
+$loading-md-background: #000000;
+$loading-md-spinner-color: #FD9530;
 ion-select {
     .option-content {
         background-color: #000;
@@ -238,7 +242,3 @@ ion-select {
 // --------------------------------------------------
 @import "roboto";
 @import "noto-sans";
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url('../assets/fonts/SourceSansPro-Regular.ttf');
-}

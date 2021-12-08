@@ -195,9 +195,9 @@ export class ReservacionesPage {
     this.fechaActual = new Date().toJSON().split("T")[0];
     console.log("horaActual Actual: ");
     //cargar funcion de coontactos
-    if (this.platform.is("cordova")) {
-      this.todosContactos();
-    }
+    // if (this.platform.is("cordova")) {
+    //   this.todosContactos();
+    // }
     this.getZonas();
     this.getImagen(this.idSucursal);
     this.goToUser();

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 // import { Observable } from 'rxjs-compat';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -33,9 +33,10 @@ export class Reservacion_1Page {
   miUser: any = {};
   opcionS: string;
   estatus: number;
-  sucursalesS = [];
+  sucursalesS: any = [];
   usuarioSu: any = {};
   invitado: any;
+  loading: any;
 
 
   constructor(public navCtrl: NavController,
@@ -45,6 +46,7 @@ export class Reservacion_1Page {
     public afs: AngularFirestore,
     private socialSharing: SocialSharing,
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     private _reservacionP: ReservacionProvider
   ) {
     // this.sucursales = afDB.list('sucursales').valueChanges();
@@ -102,21 +104,35 @@ export class Reservacion_1Page {
     // console.log("Este es el estatus", this.estatus);
 
     //obtener informacion de todas las sucursales
-    this.afs.collection('sucursales', ref => ref.where('tipo', '==', this.opcionS)).valueChanges().subscribe(su => {
-      this.sucursalesS = su;
-      // console.log('sucursalesS', this.sucursalesS);
-    });
-
+    // this.afs.collection('sucursales', ref => ref.where('tipo', '==', this.opcionS)).valueChanges().subscribe(su => {
+    //   this.sucursalesS = su;
+    // });
 
   }
 
   ionViewDidLoad() {
     //sacar todas las ciudades
     this.getCiudades();
+    this.getSucursales(this.opcionS);
   }
   
   async getCiudades () {
     this.ciudades = await this._reservacionP.getCiudades();
+  }
+
+  async getSucursales(tipo: string) {
+    this.presentLoadingSucursal();
+    this.sucursalesS = await this._reservacionP.getSucursalesTipo(tipo);
+    if (this.sucursalesS) {
+      this.loading.dismiss();
+    }
+  }
+
+  presentLoadingSucursal() {
+    this.loading = this.loadingCtrl.create({
+      showBackdrop: true
+    });
+    this.loading.present();
   }
 
   reservar(idSucursal) {

@@ -39,7 +39,7 @@ export class ResumenPage {
   uidEvento: any;
   r: any = {};
   s: any = {};
-  z: any = {};
+  z: any;
   cupon: any = {};
   mes: any;
   diasN: any;
@@ -181,11 +181,10 @@ export class ResumenPage {
     });
   }
 
-  getZona() {
-    this._resumenProvider.getZona(this.zona).subscribe((zonas) => {
-      console.log("Zona", zonas);
-      this.z = zonas;
-    });
+  async getZona() {
+    const zona = await this._providerReserva.getZonaHttp(this.zona);
+    console.log('esta es la sona -->', zona);
+    this.z = zona[0].nombre;
   }
 
   loadProductRes() {

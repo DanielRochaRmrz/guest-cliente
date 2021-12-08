@@ -226,6 +226,7 @@
           <ion-icon name="md-contact" style="color: 7a7979"></ion-icon>
         </ion-label>
         <ionic-selectable
+          (click)="todosContactos()"
           item-content
           [(ngModel)]="port"
           [isMultiple]="true"
