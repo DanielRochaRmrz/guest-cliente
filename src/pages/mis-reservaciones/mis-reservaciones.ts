@@ -124,7 +124,9 @@ export class MisReservacionesPage {
   }
   
   async getAllSucursales() {
-    this.nombresSucursales = await this.reservaProvider.getSucursal();
+    this.reservaProvider.getSucursal_().subscribe((data) => {
+      this.nombresSucursales = data;
+    });
   }
 
 

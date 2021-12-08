@@ -976,7 +976,6 @@ export class ReservacionProvider {
   }
 
   public getSucursal_() {
-    return new Promise((resolve, rejects) => {
       this.sucursal = this.af.collection<any>("sucursales");
       this._sucursal = this.sucursal.valueChanges();
       return (this._sucursal = this.sucursal.snapshotChanges().pipe(
@@ -984,24 +983,23 @@ export class ReservacionProvider {
           return changes.map((action) => {
             const data = action.payload.doc.data() as any;
             data.$key = action.payload.doc.id;
-            resolve(data);
+            return data;
           });
         })
       ));
-    });
   }
 
-  public getSucursal() {
-    return new Promise((resolve, reject) => {
-      this.db.collection("sucursales").onSnapshot((doc) => {
-        const sucursales = [];
-        doc.forEach((data) => {
-          sucursales.push(data.data());
-          resolve(sucursales);
-        });
-      });
-    });
-  }
+  // public getSucursal() {
+  //   return new Promise((resolve, reject) => {
+  //     this.db.collection("sucursales").onSnapshot((doc) => {
+  //       const sucursales = [];
+  //       doc.forEach((data) => {
+  //         sucursales.push(data.data());
+  //         resolve(sucursales);
+  //       });
+  //     });
+  //   });
+  // }
 
   obtenerMesas(id) {
     return new Promise((resolve, rejects) => {
