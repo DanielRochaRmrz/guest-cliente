@@ -123,7 +123,7 @@ export class MisReservacionesPage {
     });
   }
   
-  async getAllSucursales() {
+  getAllSucursales() {
     this.reservaProvider.getSucursal_().subscribe((data) => {
       this.nombresSucursales = data;
     });

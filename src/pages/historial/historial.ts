@@ -75,8 +75,10 @@ modal.present();
     });
   }
 
-  async getSucursal() {
-    this.sucursal = await  this._providerReserva.getSucursal();
+  getSucursal() {
+    this._providerReserva.getSucursal_().subscribe((data) => {
+      this.sucursal = data;
+    });
   }
 
   contador() {
