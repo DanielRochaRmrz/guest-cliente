@@ -126,17 +126,11 @@ export class PerfilPage {
       
 
       this.afs.collection('users').doc(this.uidUserSesion).update({
-        photoURL: this.imagenPreview
+        photoURL: this.imagenPreview,
+        status_foto: 1
       }).then(() => {
         console.log("Se actualizo la suscripcion");
-
-        this.afs.collection('users').doc(this.uidUserSesion).update({
-          status_foto: 1
-        }).then(() => {
-          console.log("Se actualizo la suscripcion");
-        });
-        
-      });
+      }).catch((err) => console.log("Error en al subir", JSON.stringify(err)));
 
       this.mostrar_toast('Archivo subido con exito');
 
