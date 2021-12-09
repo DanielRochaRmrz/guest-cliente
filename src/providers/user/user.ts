@@ -206,8 +206,7 @@ export class UserProvider {
     return new Promise((resolve, reject) => {
       this.afs
       .collection("users")
-      .doc(uid).get()
-      .subscribe((dataSu) => {
+      .doc(uid).get().subscribe((dataSu) => {
         resolve(dataSu.data());
       });
     });

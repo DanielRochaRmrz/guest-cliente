@@ -51,9 +51,10 @@ export class TipoLugarPage {
     this.getInfouser(this.uidUserSesion);
   }
 
+  ionViewWillUnload() {  }
+
   async getInfouser(uid: string) {
     this.miUser = await this._providerUser.getUser(uid);
-    console.log('Mi usurio -->', this.miUser);
   }
 
   goToEvento() {

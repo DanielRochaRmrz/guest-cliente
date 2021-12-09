@@ -4,12 +4,6 @@ import { PerfilPage } from '../perfil/perfil';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore } from "@angular/fire/firestore";
 import { UsuarioProvider } from '../../providers/usuario/usuario';
-/**
- * Generated class for the PerfilEditarPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -63,12 +57,7 @@ export class PerfilEditarPage {
      this.userioP.updatePerfil(id, info).then((respuesta: any) => {
         
         if (respuesta.success == true) {
-          this.navCtrl.push(PerfilPage, {
-            //enviar parametros a vista
-            // idReservacion: this.idReservacion,
-            // uid: this.evento,
-    
-          });
+          this.navCtrl.setRoot(PerfilPage, {});
         } else {
         }
 
@@ -86,9 +75,9 @@ export class PerfilEditarPage {
     //obtener informacion de mi user
     this.afs
       .collection("users").doc(uid)
-      .valueChanges()
+      .get()
       .subscribe(dataSu => {
-        this.miUser = dataSu;
+        this.miUser = dataSu.data();
         console.log('Datos de mi usuario', this.miUser.phoneNumber);
         this.telefono=this.miUser.phoneNumber;
         this.nombre =this.miUser.displayName;

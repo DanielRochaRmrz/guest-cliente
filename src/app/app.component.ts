@@ -151,9 +151,9 @@ export class MyApp {
           this.afs
           .collection("users")
           .doc(this.uidUserSesion)
-          .valueChanges()
+          .get()
           .subscribe((data) => {
-            this.nombresUserss = data;
+            this.nombresUserss = data.data();
             console.log(
               "dato usuario existente",
               this.nombresUserss,
@@ -195,9 +195,9 @@ export class MyApp {
         this.afs
           .collection("users")
           .doc(this.uidUserSesion)
-          .valueChanges()
+          .get()
           .subscribe((data) => {
-            this.nombresUserss = data;
+            this.nombresUserss = data.data();
             this.foto == 1;
             console.log(" foto es 1");
             console.log("Datos del usuario app", this.nombresUserss);

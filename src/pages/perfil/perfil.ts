@@ -43,14 +43,6 @@ export class PerfilPage {
     public toastCtrl: ToastController,
     public afs: AngularFirestore) {
 
-    // console.log(this.usuarioProv.usuario);
-    // this.user = this.usuarioProv.usuario;
-
-    // this.afAuth.authState.subscribe(user => {
-    //   console.log('AFAUTH!!');
-    //   console.log(JSON.stringify(user));
-    // });
-
     this.uidUserSesion = localStorage.getItem('uid');
     this.invitado = localStorage.getItem('invitado');
     console.log('id del usuario en localStorage', this.uidUserSesion);
@@ -61,14 +53,6 @@ export class PerfilPage {
       .subscribe(dataSu => {
         this.user = dataSu;
         console.log('Datos de mi usuario', this.user);
-      });
-
-    //consultar tabla usuarios
-    this.afs
-      .collection("users")
-      .valueChanges()
-      .subscribe(data => {
-        this.nombresUsers = data;
       });
 
     //consultar tabla tarjetas
@@ -113,13 +97,10 @@ export class PerfilPage {
 
 
   getAllTarjetas() {
-    //console.log('miuser',this.uid);
     this.usuarioProv.getTarjetasUser(this.uidUserSesion).subscribe(tarjeta => {
       this.misTarjetas = tarjeta;
       this.numTarjetas = this.misTarjetas.length;
       console.log('misTarjetas', this.numTarjetas);
-      //this.tarjetaAnterior = localStorage.getItem('TarjetaId');
-      //console.log('misTarjetas',this.misTarjetas);
     });
   }
 
