@@ -113,8 +113,7 @@ export class PerfilPage {
       quality: 85,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      mediaType: 2,
-      saveToPhotoAlbum: false,
+      mediaType: 0
     }
 
     this.camera.getPicture(options).then((imageData) => {
