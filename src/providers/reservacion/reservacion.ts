@@ -9,12 +9,8 @@ import { map } from "rxjs/operators";
 import * as moment from "moment";
 import { HttpClient } from "@angular/common/http";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-
 @Injectable()
 export class ReservacionProvider {
-  db = firebase.firestore();
 
   areas: AngularFirestoreCollection<any[]>;
   _areas: Observable<any>;
@@ -1034,17 +1030,17 @@ export class ReservacionProvider {
   }
 
   getSucursalesTipo(tipo: string) {
-    return new Promise((resolve, reject) => {
-      this.db
-        .collection("sucursales")
-        .where("tipo", "==", tipo)
-        .onSnapshot((querySnapshot) => {
-          const sucursales = [];
-          querySnapshot.forEach((data) => {
-            sucursales.push(data.data());
+    this.sucursal = this.af.collection<any>("sucursales", (ref) =>
+    ref.where("tipo", "==", tipo));
+      this._sucursal = this.sucursal.valueChanges();
+      return (this._sucursal = this.sucursal.snapshotChanges().pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.$key = action.payload.doc.id;
+            return data;
           });
-          resolve(sucursales);
-        });
-    });
+        })
+      ));
   }
 }

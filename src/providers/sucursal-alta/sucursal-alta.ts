@@ -176,7 +176,6 @@ export class SucursalAltaProvider {
             .catch(error => {
               console.log(error);
             });
-          resolve();
         }
       );
     });

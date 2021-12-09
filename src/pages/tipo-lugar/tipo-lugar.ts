@@ -11,6 +11,7 @@ import { PushNotiProvider } from "../../providers/push-noti/push-noti";
 import { EventosPage } from "../eventos/eventos";
 import { Reservacion_1Page } from "../reservacion-1/reservacion-1";
 import { DeviceProvider } from "../../providers/device/device";
+import { UserProvider } from "../../providers/user/user";
 
 @IonicPage()
 @Component({
@@ -29,6 +30,7 @@ export class TipoLugarPage {
     public menuCtrl: MenuController,
     public _providerPushNoti: PushNotiProvider,
     private _providerDevice: DeviceProvider,
+    private _providerUser: UserProvider,
     private platform: Platform
   ) {
 
@@ -40,24 +42,18 @@ export class TipoLugarPage {
     //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem("uid");
     // console.log("id del usuario en eventos", this.uidUserSesion);
-
-    //obtener informacion de mi user
-     const u = this.afs
-      .collection("users")
-      .doc(this.uidUserSesion)
-      .valueChanges()
-      .subscribe((dataSu) => {
-        this.miUser = dataSu;
-        // console.log("Datos de mi usuario", this.miUser);
-      });
-
-      u.unsubscribe();
   }
 
   
 
   ionViewDidLoad() {
     console.log("ionViewDidLoad TipoLugarPage");
+    this.getInfouser(this.uidUserSesion);
+  }
+
+  async getInfouser(uid: string) {
+    this.miUser = await this._providerUser.getUser(uid);
+    console.log('Mi usurio -->', this.miUser);
   }
 
   goToEvento() {

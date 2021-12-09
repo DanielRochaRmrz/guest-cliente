@@ -50,7 +50,6 @@ export class CargaCroquisProvider {
            }).catch((error) => {
                     console.log(error);
            });
-            resolve();
         }
 
 

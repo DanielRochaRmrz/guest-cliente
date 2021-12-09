@@ -120,12 +120,14 @@ export class Reservacion_1Page {
     this.ciudades = await this._reservacionP.getCiudades();
   }
 
-  async getSucursales(tipo: string) {
+  getSucursales(tipo: string) {
     this.presentLoadingSucursal();
-    this.sucursalesS = await this._reservacionP.getSucursalesTipo(tipo);
-    if (this.sucursalesS) {
-      this.loading.dismiss();
-    }
+   this._reservacionP.getSucursalesTipo(tipo).subscribe((data) => {
+      this.sucursalesS = data;
+      if (this.sucursalesS) {
+        this.loading.dismiss();
+      }
+    });
   }
 
   presentLoadingSucursal() {
