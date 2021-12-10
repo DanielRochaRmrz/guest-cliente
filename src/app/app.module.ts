@@ -79,7 +79,6 @@ import { AppVersion } from '@ionic-native/app-version';
 import { Facebook } from '@ionic-native/facebook';
 import { SMS } from '@ionic-native/sms';
 import { Contacts } from '@ionic-native/contacts';
-import { ImagePicker } from '@ionic-native/image-picker';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { OneSignal } from "@ionic-native/onesignal";
 import { HttpModule } from '@angular/http';
@@ -227,7 +226,6 @@ firebase.initializeApp(firebaseConfig);
     AuthProvider,
     UserProvider,
     Camera,
-    ImagePicker,
     SocialSharing,
     CargaArchivoProvider,
     CartaAddProvider,

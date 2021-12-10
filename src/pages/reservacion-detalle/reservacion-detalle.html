@@ -363,21 +363,21 @@
 
     <!-- CREACIÓN DE BOTON CANCELAR UNA RESERVACIÓN -->
     <div *ngFor="let reservaciones of infoReservaciones">
-        <div *ngIf="reservaciones.estatus=='Creando'">
+        <div *ngIf="reservaciones.estatus =='Creando' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined ">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='Compartida'">
+        <div *ngIf="reservaciones.estatus=='Compartida' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='CreadaCompartida'">
+        <div *ngIf="reservaciones.estatus=='CreadaCompartida' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>

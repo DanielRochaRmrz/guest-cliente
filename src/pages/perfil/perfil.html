@@ -67,18 +67,18 @@
     <div align="center">
         <div *ngIf="nombresUserss.provider == 'facebook'">
             <div *ngIf="nombresUserss.status_foto == 0">
-                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamara();">
             </div>
             <div *ngIf="nombresUserss.status_foto == 1">
-                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamara();">
             </div>
         </div>
         <div *ngIf="nombresUserss.provider == 'google'">
             <div *ngIf="nombresUserss.status_foto == 0">
-                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="loadinCamar(); mostrar_camara();">
+                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="loadinCamara();">
             </div>
             <div *ngIf="nombresUserss.status_foto == 1">
-                <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
+                <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="loadinCamara();">
             </div>
         </div>
     </div>

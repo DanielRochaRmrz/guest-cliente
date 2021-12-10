@@ -68,6 +68,7 @@ export class PropinaPage {
     console.log('propina', this.propina);
     this.afs.collection("reservaciones").doc(this.idReservacion).update({
       "propina": this.propina,
+      "estatus": "Creando",
       "playerIDs": localStorage.getItem('playerID')
     })
       .then(function () {

@@ -509,9 +509,18 @@ export class ReservacionesPage {
       this.ocultar = false;
     }
   }
+
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      showBackdrop: true
+    });
+    this.loading.present();
+    setTimeout(() => {
+      this.todosContactos();
+    }, 3000);
+  }
   //Cargar todos los contactos del telefono
   todosContactos() {
-    this.presentLoading();
     //console.log("Cargo funcion varios contactos");
     this.contacts
       .find(["displayName", "phoneNumbers"], { multiple: true })
@@ -564,12 +573,6 @@ export class ReservacionesPage {
       });
   }
 
-  presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      showBackdrop: true
-    });
-    this.loading.present();
-  }
 
   getImagen(idx) {
     // console.log("idUsuarioHistorial: ", idx);

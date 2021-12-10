@@ -9,7 +9,6 @@ import { UsuarioProvider, Credenciales } from "../../providers/usuario/usuario";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { PerfilEditarPage } from '../perfil-editar/perfil-editar';
 import * as firebase from 'firebase';
@@ -35,6 +34,7 @@ export class PerfilPage {
   mes: any;
   invitado: any;
   loading : any;
+  loadingC: any;
 
 
   constructor(public navCtrl: NavController,
@@ -42,7 +42,6 @@ export class PerfilPage {
     private afAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     private camera: Camera,
-    private imagePicker: ImagePicker,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public afs: AngularFirestore
@@ -108,7 +107,17 @@ export class PerfilPage {
       console.log('misTarjetas', this.numTarjetas);
     });
   }
-  
+
+  loadinCamara() {
+    this.loadingC = this.loadingCtrl.create({
+      spinner: "bubbles"
+    });
+    this.loadingC.present();
+    setTimeout(() => {
+      this.mostrar_camara();
+    }, 5000);
+  }
+
   loadinCamar() {
     this.loading = this.loadingCtrl.create({
       spinner: "bubbles"
@@ -119,7 +128,7 @@ export class PerfilPage {
   mostrar_camara() {
 
     
-    this.loading.dismiss();
+    this.loadingC.dismiss();
 
     const options: CameraOptions = {
         quality: 50,
