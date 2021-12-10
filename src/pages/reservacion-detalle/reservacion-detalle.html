@@ -370,14 +370,14 @@
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='Compartida' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined">
+        <div *ngIf="reservaciones.estatus=='Compartida'">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='CreadaCompartida' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined">
+        <div *ngIf="reservaciones.estatus=='CreadaCompartida'">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
