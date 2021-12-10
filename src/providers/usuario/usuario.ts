@@ -161,7 +161,7 @@ export class UsuarioProvider {
   }
 
   //obtener el ID del usuario con el numero de telefono recibido
-  public getUsuarioID(idx) {
+  public getUsuarioID(idx: string) {
     this.usuarioID = this.afs.collection<any>("users", (ref) =>
       ref.where("phoneNumber", "==", idx)
     );

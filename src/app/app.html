@@ -6,21 +6,21 @@
             <div *ngIf="uidUserSesion != undefined">
                 <div *ngIf="nombresUserss.provider == 'facebook'">
                     <div *ngIf="nombresUserss.status_foto == 0">
-                        <img [src]="nombresUserss.photoURL" class="imgRedonda">
+                        <img [src]="userImage" class="imgRedonda">
                         <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
                     </div>
                     <div *ngIf="nombresUserss.status_foto == 1">
-                        <img class="imgRedonda" src="{{nombresUserss.photoURL}}">
+                        <img class="imgRedonda" src="{{userImage}}">
                         <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
                     </div>
                 </div>
                 <div *ngIf="nombresUserss.provider == 'google'">
                     <div *ngIf="nombresUserss.status_foto == 0">
-                        <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720">
+                        <img class="imgRedondas" src="{{userImage}}?type=large&width=720&height=720">
                         <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
                     </div>
                     <div *ngIf="nombresUserss.status_foto == 1">
-                        <img class="imgFotogoogle" src="{{nombresUserss.photoURL}}">
+                        <img class="imgFotogoogle" src="{{userImage}}">
                         <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
                     </div>
                 </div>

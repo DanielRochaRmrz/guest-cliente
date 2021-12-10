@@ -23,6 +23,7 @@ import { IonicSelectableComponent } from "ionic-selectable";
 import { CroquisPage } from "../croquis/croquis";
 import moment from "moment";
 import { isDefaultChangeDetectionStrategy } from "@angular/core/src/change_detection/constants";
+import { LoadingController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -95,12 +96,14 @@ export class ReservacionesPage {
   hora: string = "05:00";
 
   zona_consumo: number;
+  loading: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
+    public loadingCtrl: LoadingController,
     public afDB: AngularFireDatabase,
     public fb: FormBuilder,
     public _cap: CargaArchivoProvider,
@@ -508,12 +511,15 @@ export class ReservacionesPage {
   }
   //Cargar todos los contactos del telefono
   todosContactos() {
+    this.presentLoading();
     //console.log("Cargo funcion varios contactos");
     this.contacts
       .find(["displayName", "phoneNumbers"], { multiple: true })
       .then((contacts) => {
         this.contactlist = contacts;
-        console.log("Cargo funcion varios contactos", this.contactlist);
+        if (this.contactlist) {
+          this.loading.dismiss();
+        }
         const telefono3_ = [];
         //consultar tabla users de la base de datos y sacar numeros de telefono registrados
         //this.monRes.getAllClientes("users").then(c => {
@@ -556,6 +562,13 @@ export class ReservacionesPage {
         //console.log("contacts list:-->"+ JSON.stringify(contacts));
         //console.log('lista contactos',contacts);
       });
+  }
+
+  presentLoading() {
+    this.loading = this.loadingCtrl.create({
+      showBackdrop: true
+    });
+    this.loading.present();
   }
 
   getImagen(idx) {

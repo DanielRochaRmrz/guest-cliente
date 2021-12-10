@@ -122,7 +122,7 @@ export class Reservacion_1Page {
 
   getSucursales(tipo: string) {
     this.presentLoadingSucursal();
-   this._reservacionP.getSucursalesTipo(tipo).subscribe((data) => {
+    this._reservacionP.getSucursalesTipo(tipo).subscribe((data) => {
       this.sucursalesS = data;
       if (this.sucursalesS) {
         this.loading.dismiss();

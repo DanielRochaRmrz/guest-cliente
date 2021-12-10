@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { LoginPage } from "../login/login";
@@ -9,9 +9,10 @@ import { UsuarioProvider, Credenciales } from "../../providers/usuario/usuario";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { ImagePicker, ImagePickerOptions } from '@ionic-native/image-picker';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { PerfilEditarPage } from '../perfil-editar/perfil-editar';
-
+import * as firebase from 'firebase';
 @IonicPage()
 @Component({
   selector: 'page-perfil',
@@ -33,6 +34,7 @@ export class PerfilPage {
   imagen64: string;
   mes: any;
   invitado: any;
+  loading : any;
 
 
   constructor(public navCtrl: NavController,
@@ -40,8 +42,11 @@ export class PerfilPage {
     private afAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     private camera: Camera,
+    private imagePicker: ImagePicker,
     public toastCtrl: ToastController,
-    public afs: AngularFirestore) {
+    public loadingCtrl: LoadingController,
+    public afs: AngularFirestore
+    ) {
 
     this.uidUserSesion = localStorage.getItem('uid');
     this.invitado = localStorage.getItem('invitado');
@@ -103,36 +108,69 @@ export class PerfilPage {
       console.log('misTarjetas', this.numTarjetas);
     });
   }
-
+  
+  loadinCamar() {
+    this.loading = this.loadingCtrl.create({
+      spinner: "bubbles"
+    });
+    this.loading.present();
+  }
 
   mostrar_camara() {
 
-    this.msg();
+    
+    this.loading.dismiss();
 
     const options: CameraOptions = {
-      quality: 85,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      mediaType: 0
+        quality: 50,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
     }
 
     this.camera.getPicture(options).then((imageData) => {
       // imageData is either a base64 encoded string or a file URI
       // If it's base64 (DATA_URL):
       this.imagenPreview = 'data:image/jpeg;base64,' + imageData;
-      this.imagen64 = imageData;
+      this.imagen64 = imageData.replace(/\s/g, '');
 
       console.log("Este es mi imagen", this.imagenPreview);
-      
 
-      this.afs.collection('users').doc(this.uidUserSesion).update({
-        photoURL: this.imagenPreview,
-        status_foto: 1
-      }).then(() => {
-        console.log("Se actualizo la suscripcion");
-      }).catch((err) => console.log("Error en al subir", JSON.stringify(err)));
+      this.mostrar_toast('Cargando...');
 
-      this.mostrar_toast('Archivo subido con exito');
+      let storeRef = firebase.storage().ref();
+      let nombreArchivo:string = new Date().valueOf().toString(); // 1231231231
+      this.loadinCamar();
+      let uploadTask: firebase.storage.UploadTask =
+          storeRef.child(`img/${ nombreArchivo }`)
+                  .putString( this.imagen64, 'base64', { contentType: 'image/jpeg' }  );
+
+         uploadTask.on( firebase.storage.TaskEvent.STATE_CHANGED,
+            ()=>{ }, // saber el % de cuantos Mbs se han subido
+            ( error ) =>{
+              // manejo de error
+              console.log("ERROR EN LA CARGA");
+              console.log(JSON.stringify( error ));
+              this.mostrar_toast(JSON.stringify( error ));
+            },
+            ()=>{
+              // TODO BIEN!
+              uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+                firebase.firestore().collection('users').doc(this.uidUserSesion).update({
+                  photoURL: downloadURL,
+                  status_foto: 1
+                }).then(() => {
+                  this.loading.dismiss();
+                  console.log("Se actualizo la suscripcion");
+                }).catch((err) => console.log("Error en al subir", JSON.stringify(err)));
+
+                this.mostrar_toast('Imagen cargada correctamente');
+              });
+              
+            }
+
+          )
 
      }, (err) => {
       // Handle error

@@ -67,22 +67,18 @@
     <div align="center">
         <div *ngIf="nombresUserss.provider == 'facebook'">
             <div *ngIf="nombresUserss.status_foto == 0">
-                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
-                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
             </div>
             <div *ngIf="nombresUserss.status_foto == 1">
-                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
-                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+                <img class="imgRedonda" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
             </div>
         </div>
         <div *ngIf="nombresUserss.provider == 'google'">
             <div *ngIf="nombresUserss.status_foto == 0">
-                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="mostrar_camara()">
-                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="loadinCamar(); mostrar_camara();">
             </div>
             <div *ngIf="nombresUserss.status_foto == 1">
-                <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="mostrar_camara()">
-                <!-- <ion-icon name="camera" class="camera" (click)="mostrar_camara()"></ion-icon> -->
+                <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="loadinCamar(); mostrar_camara();">
             </div>
         </div>
     </div>
