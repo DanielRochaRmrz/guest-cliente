@@ -522,10 +522,7 @@ export class ReservacionDetallePage {
   }
 
   async eliminar_rsvp(idReservacion){
-    const rsvp = {
-      idReservacion: idReservacion
-    };
-    const r = await this._providerReserva.eliminar_rsvp(rsvp);
+    const r = await this._providerReserva.eliminar_rsvp(idReservacion);
     console.log( 'RSVP -->', r);
   }
 

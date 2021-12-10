@@ -24,13 +24,14 @@ import { AppVersion } from "@ionic-native/app-version";
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
-
+import { ReservacionProvider } from "../providers/reservacion/reservacion";
+import * as firebase from "firebase";
 @Component({
   templateUrl: "app.html",
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-
+  db = firebase.firestore();
   user: Credenciales = {};
   rootPage: any;
   home = TipoLugarPage;
@@ -61,6 +62,7 @@ export class MyApp {
     public usuarioProv: UsuarioProvider,
     private afAuth: AngularFireAuth,
     public _providerPushNoti: PushNotiProvider,
+    private _providerReservacion: ReservacionProvider,
     public afs: AngularFirestore,
     private androidPermissions: AndroidPermissions,
     public SMS: SMS,
@@ -228,6 +230,20 @@ export class MyApp {
           .subscribe((data: any) => {
             this.userImage = data.photoURL;
           });
+          
+          this.db.collection("reservaciones").where("idUsuario", "==", this.uidUserSesion).where("estatusFinal", "==", "rsv_incompleta")
+            .get().then((data) => {
+              data.forEach((doc) => {
+                console.log(doc.data());
+                const reservacion = doc.data();
+                const idReservacion = reservacion.idReservacion;
+                if (idReservacion) {
+                  this._providerReservacion.deleteReservacion(idReservacion);
+                } else {
+                  console.log('No hay');
+                }
+              });
+            });
       }
     });
   }

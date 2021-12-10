@@ -152,7 +152,7 @@ export class ReservacionProvider {
 
   public getReservacionesCliente_(idx: string) {
     this.reservaCliente = this.af.collection<any>("reservaciones", (ref) =>
-      ref.where("idUsuario", "==", idx)
+      ref.where("idUsuario", "==", idx).where("estatusFinal", "==", "rsv_copletada")
     );
     this._reservaCliente = this.reservaCliente.valueChanges();
     return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
@@ -363,7 +363,7 @@ export class ReservacionProvider {
   //obtener reservacion compartida en la que esta el usuario
   public getReservacionCompartida(idx) {
     this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
-      ref.where("telefono", "==", idx)
+      ref.where("telefono", "==", idx).where("estatusFinal", "==", "rsv_copletada")
     );
     this._resCompartida = this.resCompartida.valueChanges();
     return (this._resCompartida = this.resCompartida.snapshotChanges().pipe(
@@ -500,7 +500,8 @@ export class ReservacionProvider {
           hora: hora,
           fechaR: reservacion.fecha,
           fechaR_: fecha,
-          // estatus: "Creando",
+          estatus: "Creando",
+          estatusFinal: "rsv_incompleta",
           // idArea: reservacion.area,
           idZona: reservacion.zona,
           idSucursal: reservacion.idSucursal,
@@ -531,6 +532,7 @@ export class ReservacionProvider {
           totalDividido: 0,
           playerId: player,
           estatus_escaneo: "NO",
+          estatusFinal: "rsv_incompleta",
         })
         .then((reserva) => {
           console.log("Compartido exitoso: ", reserva.id);
@@ -554,6 +556,7 @@ export class ReservacionProvider {
           estatus: "Espera",
           totalDividido: 0,
           estatus_escaneo: "NO",
+          estatusFinal: "rsv_incompleta",
         })
         .then((reserva) => {
           console.log("Compartido exitoso: ", reserva.id);
@@ -569,6 +572,7 @@ export class ReservacionProvider {
   //insertar el numero del ususrio en sesion en la tabla al compartir una cuenta
   public saveCompartirPropio(telefono, idReservacion, idUsuario) {
     return new Promise((resolve, reject) => {
+      localStorage.setItem('compartida', 'true');
       this.af
         .collection("compartidas")
         .add({
@@ -579,6 +583,7 @@ export class ReservacionProvider {
           totalDividido: 0,
           playerId: "ok",
           estatus_escaneo: "NO",
+          estatusFinal: "rsv_incompleta",
         })
         .then((reserva) => {
           console.log("Compartido exitoso: ", reserva.id);
@@ -606,7 +611,8 @@ export class ReservacionProvider {
           hora: hora,
           fechaR: reservacion.fecha,
           fechaR_: fecha,
-          // estatus: "Creando",
+          estatus: "Creando",
+          estatusFinal: "rsv_incompleta",
           // idArea: reservacion.area,
           idZona: reservacion.zona,
           idSucursal: reservacion.idSucursal,
@@ -911,6 +917,9 @@ export class ReservacionProvider {
         doc.ref.delete();
       });
     });
+
+    this.eliminar_rsvp(idReservacion);
+
   }
 
   deleteProduct(idReservacion) {
@@ -1007,13 +1016,16 @@ export class ReservacionProvider {
     });
   }
 
-  eliminar_rsvp(rsvp) {
+  eliminar_rsvp(rsvp: string) {
     return new Promise((resolve, rejects) => {
       console.log("RSVP -->", rsvp);
+      const data = {
+        idReservacion: rsvp
+      };
       const url = `https://adminsoft.mx/operacion/guest/eliminar_rsvp/`;
-      this.http.post(url, rsvp).subscribe((resp: any) => {
+      this.http.post(url, data).subscribe((resp: any) => {
         const data = resp.datos;
-        resolve(data);
+        console.log(data);
       });
     });
   }

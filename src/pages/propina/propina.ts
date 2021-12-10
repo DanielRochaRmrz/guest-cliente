@@ -7,7 +7,7 @@ import { ReservacionProvider } from '../../providers/reservacion/reservacion';
 import { EventosPage } from '../eventos/eventos';
 import { MisReservacionesPage } from '../mis-reservaciones/mis-reservaciones';
 import { DetallePropinaPage } from '../detalle-propina/detalle-propina';
-
+import * as firebase from "firebase";
 
 
 @IonicPage()
@@ -16,7 +16,7 @@ import { DetallePropinaPage } from '../detalle-propina/detalle-propina';
   templateUrl: 'propina.html',
 })
 export class PropinaPage {
-
+  db = firebase.firestore();
   idReservacion: any;
   propina: any;
   myForm: FormGroup;
@@ -68,12 +68,31 @@ export class PropinaPage {
     console.log('propina', this.propina);
     this.afs.collection("reservaciones").doc(this.idReservacion).update({
       "propina": this.propina,
-      "estatus": "Creando",
-      "playerIDs": localStorage.getItem('playerID')
+      "estatusFinal": "rsv_copletada",
+      "playerIDs": localStorage.getItem('playerID'),
     })
       .then(function () {
         console.log("se adjunto la propina!");
       });
+      if(localStorage.getItem('compartida')){
+
+        this.db.collection("compartidas").where("idReservacion", "==", this.idReservacion)
+            .get().then((data) => {
+              data.forEach((doc) => {
+                console.log(doc.data());
+                const compartidas = doc.data();
+                const idCompartidas = compartidas.idCompartir;
+                if (idCompartidas) {
+                 this.db.collection('compartidas').doc(idCompartidas).update({
+                  "estatusFinal": "rsv_copletada"
+                 }).then(() => console.log('Comaprtidas actulizadas'))
+                } else {
+                  console.log('No hay');
+                }
+              });
+            });
+        
+      }
     //SABER SI SE USO UN cupon en la reservacion
     this.providerReserva.getInfo(this.idReservacion).subscribe(info => {
       this.infoReservaciones = info;
