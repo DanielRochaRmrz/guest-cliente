@@ -294,7 +294,7 @@
                             Pagar mi parte
                           </button>
                                                 </div>
-                                                <div *ngIf="compartidas.estatus_pago!=undefined">
+                                                <div *ngIf=" countCompartidas == countComPagadas">
                                                     <button ion-button class="tamanoBoton" (click)="genararQR_Pagado(reservaciones.idReservacion,compartidas.idCompartir)">
                             QR generado
                           </button>
@@ -363,21 +363,28 @@
 
     <!-- CREACIÓN DE BOTON CANCELAR UNA RESERVACIÓN -->
     <div *ngFor="let reservaciones of infoReservaciones">
-        <div *ngIf="reservaciones.estatus =='Creando' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined ">
+        <div *ngIf="reservaciones.estatus =='Creando' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined && reservaciones.idUsuario == idUser">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='Compartida'">
+        <div *ngIf="reservaciones.estatus == 'Compartida' && reservaciones.idUsuario == idUser">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
             </div>
         </div>
-        <div *ngIf="reservaciones.estatus=='CreadaCompartida'">
+        <div *ngIf="reservaciones.estatus=='CreadaCompartida' && reservaciones.idUsuario == idUser">
+            <div class="centradoB2">
+                <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
+          <p class="pagar">Cancelar la reservación</p>
+        </button>
+            </div>
+        </div>
+        <div *ngIf="reservaciones.estatus == 'AceptadoCompartida' && countComPagadas == 0 && reservaciones.idUsuario == idUser">
             <div class="centradoB2">
                 <button class="tamanoBoton2" ion-button (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
           <p class="pagar">Cancelar la reservación</p>

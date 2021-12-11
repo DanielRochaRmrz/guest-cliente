@@ -230,20 +230,38 @@ export class MyApp {
           .subscribe((data: any) => {
             this.userImage = data.photoURL;
           });
-          
-          this.db.collection("reservaciones").where("idUsuario", "==", this.uidUserSesion).where("estatusFinal", "==", "rsv_incompleta")
-            .get().then((data) => {
-              data.forEach((doc) => {
-                console.log(doc.data());
-                const reservacion = doc.data();
-                const idReservacion = reservacion.idReservacion;
-                if (idReservacion) {
-                  this._providerReservacion.deleteReservacion(idReservacion);
-                } else {
-                  console.log('No hay');
-                }
-              });
+
+        this.db
+          .collection("reservaciones")
+          .where("idUsuario", "==", this.uidUserSesion)
+          .where("estatusFinal", "==", "rsv_incompleta")
+          .get()
+          .then((data) => {
+            data.forEach((doc) => {
+              console.log(doc.data());
+              const reservacion = doc.data();
+              const idReservacion = reservacion.idReservacion;
+              if (idReservacion) {
+                this._providerReservacion.deleteReservacion(idReservacion);
+              } else {
+                console.log("No hay");
+              }
             });
+          });
+
+        const ref = this.db
+          .collection("compartidas")
+          .where("idUsuario", "==", this.uidUserSesion)
+          .where("estatusFinal", "==", "rsv_incompleta");
+        ref.get().then((data) => {
+          data.forEach((compartidas) => {
+            if (compartidas) {
+              compartidas.ref.delete();
+            } else {
+              console.log("No hay");
+            }
+          });
+        });
       }
     });
   }

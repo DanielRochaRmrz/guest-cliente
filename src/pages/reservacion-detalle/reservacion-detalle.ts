@@ -74,6 +74,8 @@ export class ReservacionDetallePage {
   mesas: any;
   soloTotal:any;
   tarjeta: any = [];
+  countCompartidas: number = 0;
+  countComPagadas: number = 0;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -186,14 +188,22 @@ export class ReservacionDetallePage {
     this.verificarEscaneo();
     this.estatusPagando();
     this.obtenerMesas();
-    this.getTarjeta();
+    this.getTarjeta(this.idUser);
+    this.getCompatidasPagadas(this.idReservacion);
   }
 
-  getTarjeta () {
-    this._providerUserio.getTarjetaPagar(this.idUser).subscribe((data) => {
+  getTarjeta(uid: string) {
+    this._providerUserio.getTarjetaPagar(uid).subscribe((data) => {
       this.tarjeta = data.length;
     });
   }
+
+  getCompatidasPagadas(rsv: string) {
+    this.reservaProvider.getCompartidaPagada(rsv).subscribe((data) => {
+      this.countComPagadas = data.length;
+      console.log('Pagadas -->', this.countComPagadas);
+    });    
+  } 
 
   compartidaEstatusFinal() {
     //consultar ya ninguna persona esta en espera se cambia el estatus de la reservacion
@@ -377,6 +387,7 @@ export class ReservacionDetallePage {
 
     //obtener el nombre del lugar
     this.afs.collection('compartidas', ref => ref.where('idReservacion', '==', this.idReservacion)).valueChanges().subscribe(data10 => {
+      this.countCompartidas = data10.length;
       this.reservacionC = data10;
       console.log("existe compartidas", this.reservacionC.length);
       if (this.reservacionC.length != 0) {

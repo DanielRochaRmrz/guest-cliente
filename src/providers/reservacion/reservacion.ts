@@ -427,6 +427,24 @@ export class ReservacionProvider {
       })
     ));
   }
+
+  //obtener reservacion compartida aceptada por el usuario
+  public getCompartidaPagada(idx) {
+    this.comAceptadas = this.af.collection<any>("compartidas", (ref) =>
+      ref.where("idReservacion", "==", idx).where("estatus_pago", "==", "Pagado")
+    );
+    this._comAceptadas = this.comAceptadas.valueChanges();
+    return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
   public consultarEstatusRe(idx) {
     this.comRes = this.af.collection<any>("reservaciones", (ref) =>
       ref.where("idReservacion", "==", idx)
