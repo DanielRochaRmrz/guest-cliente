@@ -113,7 +113,7 @@ export class MonitoreoReservasProvider {
   }
 
   //hacer el pago en stripe de una cuenta compartida
-  cambiaPagando(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir) {
+  cambiaPagando(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio) {
     console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir);
     // Poppup de carga para procesar el metodo
     let loading = this.loadinCtl.create({
@@ -121,7 +121,7 @@ export class MonitoreoReservasProvider {
     content: "Procesando pago."
     });//
     loading.present();
-    this.stripe.setPublishableKey('pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd');
+    this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
     //
     let card = {
       number: numTarjeta,//numTarjeta
@@ -139,7 +139,8 @@ export class MonitoreoReservasProvider {
     let data = JSON.stringify({
       cardToken: token.id,
       amount: montoReservacion, //montoReservacion
-      accion: 'stripe_prueba'
+      accion: 'stripe',
+      folio: folio
     });
     this.http.post(url, data, options).subscribe(res => {
       console.log('Este es el mensaje', JSON.stringify(res));
@@ -192,7 +193,7 @@ export class MonitoreoReservasProvider {
 }
 
 //hacer el pago en stripe de una cuenta normal
-cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion) {
+cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,folio) {
   console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
   // Poppup de carga para procesar el metodo
   let loading = this.loadinCtl.create({
@@ -200,7 +201,7 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
   content: "Procesando pago."
   });//
   loading.present();
-  this.stripe.setPublishableKey('pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd');
+  this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
   //
   let card = {
     number: numTarjeta,//numTarjeta
@@ -218,7 +219,8 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
   let data = JSON.stringify({
     cardToken: token.id,
     amount: montoReservacion, //montoReservacion
-    accion: 'stripe_prueba'
+    accion: 'stripe',
+    folio: folio
   });
   this.http.post(url, data, options).subscribe(res => {
     console.log('Este es el mensaje', JSON.stringify(res));

@@ -16,6 +16,7 @@ export class Generarqr_2Page {
     public idUsuario: string = null;
     public tarjeta: string = null;
     tarjetaPagar: any;
+    folio: any;
     //Crear variables para guardar los datos que se reciban de la reservacion
     private created_code= null;
     private qr_data = {
@@ -31,6 +32,7 @@ export class Generarqr_2Page {
     this.idReservacion = this.navParams.get("idReservacion");
     this.total = this.navParams.get("total");
     this.idUsuario = this.navParams.get("idUsuario");
+    this.folio = this.navParams.get("folio");
     //con id del usuario buscar su tarjeta registrada y activa para hacer el pago
       this.usuarioProv.getTarjetaPagar2(this.idUsuario).subscribe(pago => {
         this.tarjetaPagar = pago[0].idTarjeta;
@@ -39,8 +41,9 @@ export class Generarqr_2Page {
         const anioExpiracion = pago[0].anioExpiracion;
         const cvc = pago[0].cvc;
         const montoReservacion= this.total;
+        const folio = this.folio;
         console.log('tarjeta pagar',numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
-        this.servMon.cambiaPagandoNormal(this.idReservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
+        this.servMon.cambiaPagandoNormal(this.idReservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,folio);
         //guardar datos recibidos en el arreglo creado qr_data
         //this.qr_data.idReservacion = this.idReservacion;
         //this.qr_data.total = this.total;

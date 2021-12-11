@@ -243,7 +243,7 @@ export class ResumenPage {
             //this.sms.send('416123456', 'Hello world!')
             this.sms.send(
               numeroEnviar.toString(),
-              "Descarga GuestResy!  https://play.google.com/store/apps/details?id=com.guestreservations.guest03"
+              "Descarga GuestResy!  https://play.google.com/store/apps/details?id=com.guestreservations.guest03 https://apps.apple.com/us/app/guest-resy/id1526404114"
             );
             //whats app mensaje
             //this.socialSharing.shareViaWhatsAppToReceiver(numeroWhats, 'GuestResy.com!').then(() => {

@@ -287,7 +287,7 @@
                                         <div *ngIf="compartidas.estatus=='Aceptado'">
                                             <div *ngIf="idUser==users.uid">
                                                 <div *ngIf="compartidas.estatus_pago==undefined">
-                                                    <button *ngIf="this.tarjeta==1" ion-button class="tamanoBoton" (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir)">
+                                                    <button *ngIf="this.tarjeta==1" ion-button class="tamanoBoton" (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir,reservaciones.folio)">
                             Pagar mi parte
                           </button>
                                                     <button *ngIf="this.tarjeta==0" ion-button class="tamanoBoton" (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
@@ -318,7 +318,7 @@
                             <ion-card class="card_atras">
                                 <ion-item class="card_atras">
                                     <div class="centradoB2">
-                                        <button *ngIf="this.tarjeta==1" class="tamanoBoton" ion-button (click)="genararQRNormal(reservaciones.idReservacion,totalPropinaCupon,reservaciones.idUsuario)">
+                                        <button *ngIf="this.tarjeta==1" class="tamanoBoton" ion-button (click)="genararQRNormal(reservaciones.idReservacion,totalPropinaCupon,reservaciones.idUsuario,reservaciones.folio)">
                       <p class="pagar">Pagar cuenta</p>
                     </button>
                                         <button *ngIf="this.tarjeta==0" class="tamanoBoton" ion-button (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">
@@ -334,7 +334,7 @@
                     <ion-card class="card_atras">
                         <ion-item class="card_atras">
                             <div class="centradoB2">
-                                <button *ngIf="this.tarjeta==1" class="tamanoBoton" ion-button (click)="genararQRNormal(reservaciones.idReservacion,totalPropina,reservaciones.idUsuario)">
+                                <button *ngIf="this.tarjeta==1" class="tamanoBoton" ion-button (click)="genararQRNormal(reservaciones.idReservacion,totalPropina,reservaciones.idUsuario,reservaciones.folio)">
                   <p class="pagar">Pagar cuenta</p>
                 </button>
                                 <button *ngIf="this.tarjeta==0" class="tamanoBoton" ion-button (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">

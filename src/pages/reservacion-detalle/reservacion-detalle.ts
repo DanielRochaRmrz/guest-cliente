@@ -333,7 +333,7 @@ export class ReservacionDetallePage {
   }//termina funcion principal
 
   //mandar datos a la pagina del QR
-  genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir) {
+  genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir, folio) {
     const t = totalDividido + (totalDividido * .16) + (totalDividido * .039);
     const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(GenerarqrPage, {
@@ -341,7 +341,8 @@ export class ReservacionDetallePage {
       totalDividido: amount,
       idUsuario: idUsuario,
       telefono: telefono,
-      idCompartir: idCompartir
+      idCompartir: idCompartir,
+      folio: folio
     });
   }
 
@@ -359,13 +360,14 @@ export class ReservacionDetallePage {
   }
 
   //mandar datos a la pagina del QR
-  genararQRNormal(idReservacion, total, idUsuario) {
+  genararQRNormal(idReservacion, total, idUsuario, folio) {
     const t = total + (total * .16) + (total * .039);
     const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(Generarqr_2Page, {
       idReservacion: idReservacion,
       total: amount,
-      idUsuario: idUsuario
+      idUsuario: idUsuario,
+      folio: folio
     });
   }
   genararQRNormal_revisarTarjeta(idReservacion) {
