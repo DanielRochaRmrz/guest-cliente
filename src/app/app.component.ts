@@ -270,9 +270,21 @@ export class MyApp {
     const authStatus = await FCM.requestPushPermission();
     console.log("authStatus -->", authStatus);
     if (authStatus == true) {
-      let fcmToken = await FCM.getAPNSToken();
-      console.log("fcmToken -->", fcmToken);
-      localStorage.setItem("tokenPush", fcmToken);
+
+      FCM.subscribeToTopic('DaniDev');
+
+      if (this.platform.is('ios')) {
+        let fcmToken = await FCM.getAPNSToken();
+        console.log("fcmToken -->", fcmToken);
+        localStorage.setItem("tokenPush", fcmToken);
+      }
+      
+      if (this.platform.is('android')) {
+        let fcmToken = await FCM.getToken();
+        console.log("fcmToken -->", fcmToken);
+        localStorage.setItem("tokenPush", fcmToken);
+      }
+
 
       FCM.onNotification().subscribe(
         (data) => {

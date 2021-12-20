@@ -35,7 +35,10 @@
 
 <ion-content padding>
     <div class="contenedor-responsivo">
-        <iframe #iframe [src]="url" class="iframe-responsivo" frameBorder="0"></iframe>
+        <div class="mask" *ngIf="showLoading">
+            <i class="pei pei-spinner"></i>
+        </div>
+        <iframe #iframe [src]="url" class="iframe-responsivo" frameBorder="0" (load)="onLoad()"></iframe>
     </div>
 </ion-content>
 

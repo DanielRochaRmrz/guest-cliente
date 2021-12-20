@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 import { CartaPage } from '../carta/carta';
@@ -18,16 +18,19 @@ export class CroquisPage {
   url: SafeResourceUrl;
   params: any = {};
   uid: string;
+  showLoading = false;
   
   constructor(
     public navCtrl        : NavController, 
     public navParams      : NavParams,
     public alertCtrl      : AlertController,
+    public loadingCtrl    : LoadingController,
     public croquisService : CroquisProvider,
     private sanitizer     : DomSanitizer
     ) {}
 
   ionViewDidLoad() {
+    this.showLoading = true;
     this.uid = localStorage.getItem('uid');
     this.user();
     this.params = this.navParams.get('data');
@@ -69,6 +72,10 @@ export class CroquisPage {
       hora: this.params.hora,
       fecha: this.params.fecha
     });
+  }
+  
+  onLoad() {
+    this.showLoading = false;
   }
 
 }
