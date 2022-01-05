@@ -12,6 +12,8 @@ import { EventosPage } from "../eventos/eventos";
 import { Reservacion_1Page } from "../reservacion-1/reservacion-1";
 import { DeviceProvider } from "../../providers/device/device";
 import { UserProvider } from "../../providers/user/user";
+import { LoginPage } from '../login/login';
+import { SMS } from "@ionic-native/sms";
 
 @IonicPage()
 @Component({
@@ -22,6 +24,7 @@ export class TipoLugarPage {
   uidUserSesion: any;
   usuarios: any;
   miUser: any = {};
+  user:any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -31,7 +34,8 @@ export class TipoLugarPage {
     public _providerPushNoti: PushNotiProvider,
     private _providerDevice: DeviceProvider,
     private _providerUser: UserProvider,
-    private platform: Platform
+    private platform: Platform,
+    public SMS: SMS,
   ) {
 
     if (this.platform.is('cordova')) {
@@ -42,6 +46,30 @@ export class TipoLugarPage {
     //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem("uid");
     // console.log("id del usuario en eventos", this.uidUserSesion);
+
+    this.afs
+          .collection("users")
+          .doc(this.uidUserSesion)
+          .get()
+          .subscribe((data) => {
+            this.user = data.data();
+            console.log(
+              "dato usuario existente",
+              this.user,
+              this.user.uid
+            );
+
+            if (this.user.active == false) {
+              this.navCtrl.setRoot(LoginPage);
+              this.menuCtrl.close();
+              if (this.platform.is('cordova')) {
+                let tel = String(this.user.phoneNumber);
+                this.sendMessage(tel, "Cuenta inactiva, ponte en contactos con nosotros GuestResy.");
+              }
+              return;
+            }
+          });
+
   }
 
   
@@ -69,4 +97,17 @@ export class TipoLugarPage {
       estatus: estatus,
     });
   }
+
+  sendMessage(tel: string, msj: string) {
+    if (this.SMS) {
+      this.SMS.send(tel, msj)
+        .then((succes) => {
+          console.log(succes);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
 }

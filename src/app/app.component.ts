@@ -21,7 +21,6 @@ import { AndroidPermissions } from "@ionic-native/android-permissions";
 import { SMS } from "@ionic-native/sms";
 
 import { AppVersion } from "@ionic-native/app-version";
-import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic";
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
 import { ReservacionProvider } from "../providers/reservacion/reservacion";
@@ -85,14 +84,14 @@ export class MyApp {
                   )
                   .then(
                     (success) => {
-                      this.sendMessage();
+                      // this.sendMessage();
                     },
                     (err) => {
                       console.error(err);
                     }
                   );
               } else {
-                this.sendMessage();
+                // this.sendMessage();
               }
             },
             (err) => {
@@ -100,10 +99,10 @@ export class MyApp {
                 .requestPermission(this.androidPermissions.PERMISSION.SEND_SMS)
                 .then(
                   (success) => {
-                    this.sendMessage();
+                    // this.sendMessage();
                   },
                   (err) => {
-                    console.error(err);
+                    // console.error(err);
                   }
                 );
             }
@@ -117,34 +116,6 @@ export class MyApp {
           this.version = res;
           localStorage.setItem("versionApp", this.version);
         });
-
-        this.requestPush();
-
-        // FCM.getToken().then( (token: string) => {
-        //   console.log('Token -->', token);
-        //   this.token = token;
-        //   localStorage.setItem('tokenPush', this.token);
-        // }).catch( (error) => {
-        //   console.log('Error -->', error);
-        // });
-
-        // FCM.onTokenRefresh().subscribe( ( token: string ) => {
-        //   console.log('Token actulizado -->', token);
-        //   this.token = token;
-        //   localStorage.setItem('tokenPush', this.token);
-        // });
-
-        // FCM.onNotification().subscribe( (data) => {
-        //   if (data.wasTapped) {
-        //     //cuando nuestra app esta en segundo plano
-        //     console.log('Estamos en segundo plano', JSON.stringify(data));
-        //   } else {
-        //     //ocurre cuando nuestra app esta en primer plano
-        //     console.log('Estamos en primer plano', JSON.stringify(data));
-        //   }
-        // }, error => {
-        //   console.log('Error -->', error);
-        // });
       }
 
       this.invitado = 1;
@@ -172,6 +143,16 @@ export class MyApp {
               this.nombresUserss,
               this.nombresUserss.uid
             );
+
+            // if (this.nombresUserss.active == false) {
+            //   this.nav.setRoot(LoginPage);
+            //   this.menuCtrl.close();
+            //   if (this.platform.is('cordova')) {
+            //     let tel = String(this.nombresUserss.phoneNumber);
+            //     this.sendMessage(tel, "Cuenta inactiva, ponte en contactos con nosotros GuestResy.");
+            //   }
+            //   return;
+            // }
 
             if (
               this.nombresUserss.uid != null ||
@@ -264,43 +245,6 @@ export class MyApp {
         });
       }
     });
-  }
-
-  async requestPush() {
-    const authStatus = await FCM.requestPushPermission();
-    console.log("authStatus -->", authStatus);
-    if (authStatus == true) {
-
-      FCM.subscribeToTopic('DaniDev');
-
-      if (this.platform.is('ios')) {
-        let fcmToken = await FCM.getAPNSToken();
-        console.log("fcmToken -->", fcmToken);
-        localStorage.setItem("tokenPush", fcmToken);
-      }
-      
-      if (this.platform.is('android')) {
-        let fcmToken = await FCM.getToken();
-        console.log("fcmToken -->", fcmToken);
-        localStorage.setItem("tokenPush", fcmToken);
-      }
-
-
-      FCM.onNotification().subscribe(
-        (data) => {
-          if (data.wasTapped) {
-            //cuando nuestra app esta en segundo plano
-            console.log("Estamos en segundo plano", JSON.stringify(data));
-          } else {
-            //ocurre cuando nuestra app esta en primer plano
-            console.log("Estamos en primer plano", JSON.stringify(data));
-          }
-        },
-        (error) => {
-          console.log("Error -->", error);
-        }
-      );
-    }
   }
 
   //Menu de la aplicacion
@@ -414,9 +358,10 @@ export class MyApp {
     this.rootPage = rootPage;
     this.menuCtrl.close();
   }
-  sendMessage() {
+
+  sendMessage(tel: string, msj: string) {
     if (this.SMS) {
-      this.SMS.send("4772550562", "Hello world!")
+      this.SMS.send(tel, msj)
         .then((succes) => {
           console.log(succes);
         })
