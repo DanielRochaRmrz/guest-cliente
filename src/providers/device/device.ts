@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Device } from "@ionic-native/device";
+import { rejects } from "assert";
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic";
 import { Platform } from 'ionic-angular';
 
@@ -25,6 +26,7 @@ export class DeviceProvider {
   async deviceInfo()  {
     console.log('Device ID', this.device.uuid);
     const playerID = String(this.device.uuid);
+    localStorage.setItem("playerID", playerID);
     this.updatePlayerID(playerID);
     const authStatus = await FCM.requestPushPermission();
     console.log("authStatus -->", authStatus);
@@ -69,6 +71,19 @@ export class DeviceProvider {
       console.log("Se actualizo");
     }).catch( (error) => {
       console.log(JSON.stringify(error));
+    });
+  }
+
+  sendPushNoti (data: any) {
+    return new Promise((resolve, rejects) => {
+      const noti = {
+          topic : data.topic,
+          title : data.title,
+          body  : data.body
+      };
+      this.http.post(this.apiURL, noti).subscribe((res: any) => { 
+        resolve(res);
+      });
     });
   }
   

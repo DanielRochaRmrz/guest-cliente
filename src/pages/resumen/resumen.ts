@@ -22,6 +22,7 @@ import { SMS } from "@ionic-native/sms";
 import { PropinaPage } from "../../pages/propina/propina";
 import { CuponesProvider } from "../../providers/cupones/cupones";
 import { PoliticasPage } from "../politicas/politicas";
+import { DeviceProvider } from "../../providers/device/device";
 
 interface Publica {
   codigoCupon: number;
@@ -95,7 +96,8 @@ export class ResumenPage {
     private sms: SMS,
     public cupProv: CuponesProvider,
     //private socialSharing: SocialSharing,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    public _deviceProvider: DeviceProvider
   ) {
     //para ocultar las tabs en la pantalla de resumen
     this.tabBarElement = document.querySelector(".tabbar.show-tabbar");
@@ -183,7 +185,7 @@ export class ResumenPage {
 
   async getZona() {
     const zona = await this._providerReserva.getZonaHttp(this.zona);
-    console.log('esta es la sona -->', zona);
+    console.log("esta es la sona -->", zona);
     this.z = zona[0].nombre;
   }
 
@@ -267,23 +269,12 @@ export class ResumenPage {
           if (usersCom.playerId != undefined) {
             console.log("notificacion  a", usersCom.playerId);
             if (this.platform.is("cordova")) {
-              let noti = {
-                app_id: "de05ee4f-03c8-4ff4-8ca9-c80c97c5c0d9",
-                include_player_ids: [usersCom.playerId],
-                data: { foo: "bar" },
-                contents: {
-                  en: "Han compartido una reservación contigo",
-                },
+              const data = {
+                topic: usersCom.playerId,
+                title: "Reservación compartida",
+                body: "Han compartido una reservación contigo",
               };
-              window["plugins"].OneSignal.postNotification(
-                noti,
-                function (successResponse) {
-                  console.log("Notification Post Success:", successResponse);
-                },
-                function (failedResponse: any) {
-                  console.log("Notification Post Failed: ", failedResponse);
-                }
-              );
+              this._deviceProvider.sendPushNoti(data);
             } else {
               console.log("Solo funciona en dispositivos");
             }
