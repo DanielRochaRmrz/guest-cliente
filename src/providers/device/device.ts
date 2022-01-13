@@ -12,7 +12,7 @@ import { Platform } from 'ionic-angular';
 @Injectable()
 export class DeviceProvider {
   
-  apiURL: string = 'https://adminsoft.mx/operacion/guest';
+  apiURL: string = 'https://fcmpush-115c1.web.app';
   userId: string = localStorage.getItem('uid');
 
   constructor(
@@ -81,7 +81,8 @@ export class DeviceProvider {
           title : data.title,
           body  : data.body
       };
-      this.http.post(this.apiURL, noti).subscribe((res: any) => { 
+      const url = `${this.apiURL}/fcm`;
+      this.http.post(url, noti).subscribe((res: any) => { 
         resolve(res);
       });
     });
