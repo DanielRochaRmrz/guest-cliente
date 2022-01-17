@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:853477386824:ios:00c40b96ad4eb961b0867d</string>
+	<string>1:853477386824:ios:a6ce748f0493eb62b0867d</string>
 	<key>DATABASE_URL</key>
 	<string>https://guestreservation-8b24b.firebaseio.com</string>
 </dict>
