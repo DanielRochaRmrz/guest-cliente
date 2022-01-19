@@ -78,43 +78,10 @@ page-login {
     .login {
         z-index: 1;
     }
-    // ion-content{
-    //   background-image: url('../assets/imgs/Guest 159 1.png');
-    //   background-repeat: no-repeat;
-    //   background-size: cover;
-    //   width: 100%;
-    //   position: relative;
-    //   border: none;
-    // }
-    // .blanco{
-    //   color: #000;
-    //   font: lighter;
-    //   letter-spacing: 0.25em;
-    //   font-weight: 100;
-    //   border-radius:20px;
-    // }
-    // .margen{
-    //     margin-top: 30px;
-    // }
-    // .text{
-    //   color: #ffffff;
-    //   font: bold;
-    //   font-weight: 900;
-    //   text-align: center;
-    // }
-    // .ima{
-    //   height: 25px;
-    //   width: 25px;
-    //   background-color: transparent;
-    // }
-    // .esquina{
-    //   text-align: right;
-    //   margin-left: 40%;
-    //   background-color: transparent;
-    // }
-    // .button{
-    //   background-color: transparent;
-    // }
+    .registrate {
+        z-index: 1;
+        color: #FD9530;
+    }
     .registrar_correo {
         display: flex;
         justify-content: flex-end;

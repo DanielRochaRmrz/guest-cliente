@@ -34,7 +34,7 @@
 
         <br />
         <h3 ion-text color="blanco" class="login">Iniciar sesión</h3>
-        <br>
+        <br />
         <div *ngIf="botones_inicio.activado == 1">
             <ion-row style="margin-top: -10px">
                 <ion-col>
@@ -63,48 +63,55 @@
             <ion-col>
                 <div class="" align="center">
                     <button class="blanco" style="background-color: #ffffff; width: 280px" (click)="signInWithCorreo('inicio_sesion')" ion-button icon-left block>
-                            <ion-icon name="at"></ion-icon>
-                Correo Electrónico
-            </button>
+            <ion-icon name="at"></ion-icon>
+            Correo Electrónico
+          </button>
                 </div>
             </ion-col>
         </ion-row>
-        <ion-row>
+        <!-- <ion-row>
             <ion-col>
                 <div align="center">
                     <button class="blanco" style="background-color: #ffffff; width: 280px" (click)="InicioTelfono()" ion-button icon-left block>
-                            <ion-icon name="call"></ion-icon>
-                Número celular
-              </button>
+            <ion-icon name="call"></ion-icon>
+            Número celular
+          </button>
                 </div>
             </ion-col>
-
-        </ion-row>
+        </ion-row> -->
         <ion-row>
             <ion-col>
                 <div align="center">
                     <button class="blanco" style="background-color: #ffffff; width: 280px" (click)="signInvitado('invitado')" ion-button icon-left block>
-                        <ion-icon name="person"></ion-icon>
+            <ion-icon name="person"></ion-icon>
             Invitado
           </button>
                 </div>
             </ion-col>
         </ion-row>
-
+        <br />
         <ion-row>
             <ion-col>
-                <h3 ion-text color="blanco" class="login">Registrate</h3>
+                <h3 ion-text class="registrate">ó registrate</h3>
             </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col col-6>
+            <ion-col col-12>
+                <div align="center">
+                    <button class="blanco" style="background-color: #FD9530; width: 280px" (click)="signInWithCorreo('registro')" ion-button icon-left block>
+                        <ion-icon name="at"></ion-icon>
+                        Correo Electrónico
+                    </button>
+                </div>
+            </ion-col>
+            <!-- <ion-col col-6>
                 <div class="registrar_correo">
                     <ion-fab>
                         <button ion-fab (click)="signInWithCorreo('registro')">
-                            <ion-icon name="at" size="large"></ion-icon>
-                        </button>
+              <ion-icon name="at" size="large"></ion-icon>
+            </button>
                     </ion-fab>
-                    <br>
+                    <br />
                     <h5 color="blanco">Correo</h5>
                 </div>
             </ion-col>
@@ -112,11 +119,11 @@
                 <div class="registrar_tel">
                     <ion-fab>
                         <button ion-fab (click)="signTelefono()">
-                            <ion-icon name="call" size="large"></ion-icon>
-                        </button>
+              <ion-icon name="call" size="large"></ion-icon>
+            </button>
                     </ion-fab>
                 </div>
-            </ion-col>
+            </ion-col> -->
         </ion-row>
     </ion-grid>
 </ion-content>
