@@ -274,7 +274,9 @@ export class ResumenPage {
                 title: "Reservación compartida",
                 body: "Han compartido una reservación contigo",
               };
-              this._deviceProvider.sendPushNoti(data);
+              this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+                console.log('Respuesta noti fcm', resp);
+              });
             } else {
               console.log("Solo funciona en dispositivos");
             }

@@ -516,6 +516,7 @@ export class ReservacionesPage {
     });
     this.loading.present();
     setTimeout(() => {
+      this.ports = [];
       this.todosContactos();
     }, 3000);
   }
