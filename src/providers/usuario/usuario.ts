@@ -328,6 +328,21 @@ export class UsuarioProvider {
         });
     });
   }
+
+  buscarTelefono() {
+    return new Promise((resolve, reject) => {
+      this.afs
+        .collection("users", (ref) =>
+          ref.where("phoneNumber", "==", "477255056")
+        )
+        .valueChanges()
+        .subscribe((data: any) => {
+          const telefono = data;
+          resolve(data);
+        });
+    });
+  }
+
 }
 
 export interface Credenciales {

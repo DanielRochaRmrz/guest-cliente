@@ -83,6 +83,7 @@ export class ResumenPage {
   ocultar2: boolean = true;
   codigoSel: any;
   mesas: any;
+  codi: any;
 
   constructor(
     public navCtrl: NavController,
@@ -127,10 +128,10 @@ export class ResumenPage {
 
   //funciones para ocultar las tabs
   ionViewWillEnter() {
-    this.tabBarElement.style.display = "none";
+    // this.tabBarElement.style.display = "none";
   }
   ionViewWillLeave() {
-    this.tabBarElement.style.display = "flex";
+    // this.tabBarElement.style.display = "flex";
   }
 
   goToUser() {
@@ -153,7 +154,6 @@ export class ResumenPage {
     this.idSucursal = this.navParams.get("idSucursal");
     this.idReservacion = this.navParams.get("idReservacion");
     this.uidEvento = this.navParams.get("uid");
-    this.area = this.navParams.get("area");
     this.zona = this.navParams.get("zona");
 
     console.log("zona", this.zona, "area", this.area);
@@ -183,11 +183,18 @@ export class ResumenPage {
     });
   }
 
-  async getZona() {
-    const zona = await this._providerReserva.getZonaHttp(this.zona);
-    console.log("esta es la sona -->", zona);
-    this.z = zona[0].nombre;
+  // async getZona() {
+  //   const zona = await this._providerReserva.getZonaHttp(this.zona);
+  //   console.log("esta es la sona -->", zona);
+  //   this.z = zona[0].nombre;
+  // }
+  
+  getZona() {
+    this._providerReserva.getZona(this.zona).subscribe((zonaData) => {
+      this.z = zonaData.nombre;
+    });
   }
+
 
   loadProductRes() {
     this._providerReserva
@@ -201,23 +208,9 @@ export class ResumenPage {
   }
 
   saveReserva() {
-    //let alertMesas = this.alertCtrl.create({
-    //  message:
-    //    "Gracias por reservar en Guest Resy te notificaremos cuando tu reservación haya sido aceptada.",
-    //  buttons: [
-    //    {
-    //    text: "Aceptar",
-    //  handler: () => {
-    //    console.log("Buy clicked");
     this.notiReservaCompartida();
     this.enviarMensaje();
-    //this.navCtrl.setRoot(TabsPage);
     localStorage.removeItem("reservacion");
-    //}
-    //}
-    //]
-    //});
-    //alertMesas.present();
     // despues del resumen va alas propinas
     this.navCtrl.setRoot(PropinaPage, {
       idReservacion: this.idReservacion,

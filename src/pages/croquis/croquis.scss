@@ -68,4 +68,9 @@ page-croquis {
             transform: rotate(360deg);
         }
     }
+    ion-scroll {
+        position: relative;
+        overflow: hidden;
+        padding-top: 140%;
+    }
 }

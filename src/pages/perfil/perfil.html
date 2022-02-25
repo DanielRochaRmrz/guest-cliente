@@ -133,13 +133,11 @@
                 <ion-col col-10>
                     <h4 class="letras">Teléfono:</h4>
 
-                    <div *ngFor="let users of nombresUsers">
-                        <div *ngIf="users.uid==user.uid">
-                            <div class="usuarioN">
-                                {{users.phoneNumber}}
-                            </div>
-                        </div>
+
+                    <div class="usuarioN">
+                        {{user.phoneNumber}}
                     </div>
+
                 </ion-col>
             </ion-row>
 

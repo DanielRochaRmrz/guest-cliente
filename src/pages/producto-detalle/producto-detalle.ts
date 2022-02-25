@@ -11,6 +11,7 @@ import { CartaPage } from '../carta/carta';
   templateUrl: "producto-detalle.html"
 })
 export class ProductoDetallePage {
+
   idProducto: any;
   product: any = {};
   pisto = 0;
@@ -29,6 +30,9 @@ export class ProductoDetallePage {
   usuarios: any;
   miUser: any = {};
   sucurSel: any;
+  consumo: number;
+  fecha: string = '';
+  hora: string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -52,6 +56,9 @@ export class ProductoDetallePage {
     this.idSucursal = navParams.get("idSucursal");
     this.area = navParams.get("area");
     this.zona = navParams.get("zona");
+    this.consumo = navParams.get("consumo");
+    this.fecha = navParams.get("fecha");
+    this.hora = navParams.get("hora");
     console.log("zona", this.zona, "area", this.area);
     //para ocultar las tabs en la pantalla de resumen
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -144,6 +151,9 @@ export class ProductoDetallePage {
           idSucursal: this.idSucursal,
           area: this.area,
           zona: this.zona,
+          consumo: this.consumo,
+          hora: this.hora,
+          fecha: this.fecha,
         });
       } else {
       }
@@ -173,6 +183,9 @@ export class ProductoDetallePage {
             idSucursal: this.idSucursal,
             area: this.area,
             zona: this.zona,
+            consumo: this.consumo,
+            hora: this.hora,
+            fecha: this.fecha,
           });
         } else {
         }
@@ -202,6 +215,9 @@ export class ProductoDetallePage {
             idSucursal: this.idSucursal,
             area: this.area,
             zona: this.zona,
+            consumo: this.consumo,
+            hora: this.hora,
+            fecha: this.fecha,
           });
         } else {
         }
@@ -216,6 +232,9 @@ export class ProductoDetallePage {
       idSucursal: this.idSucursal,
       area: this.area,
       zona: this.zona,
+      consumo: this.consumo,
+      hora: this.hora,
+      fecha: this.fecha,
     });
   }
 }

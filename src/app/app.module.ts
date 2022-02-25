@@ -96,7 +96,7 @@ import { Device } from '@ionic-native/device';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { FCM } from '@ionic-native/fcm';
 import * as firebase from "firebase/app";
-
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 var firebaseConfig = {
   apiKey: "AIzaSyBixlCb21nNbPSurY-Pvqu3hZB80Icl9Pk",
@@ -252,7 +252,8 @@ firebase.initializeApp(firebaseConfig);
     DeviceProvider,
     AppVersion,
     UniqueDeviceID,
-    FCM
+    FCM,
+    PhotoViewer
   ]
 })
 export class AppModule {}

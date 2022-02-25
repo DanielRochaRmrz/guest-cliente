@@ -20,6 +20,7 @@ export class GenerarqrPage {
   usuarioID: any;
   idCompartir: any;
   folio:any;
+  displayNames: any;
   //Crear variables para guardar los datos que se reciban de la reservacion
   private created_code= null;
     private qr_data = {
@@ -42,6 +43,7 @@ export class GenerarqrPage {
     this.idCompartir = this.navParams.get("idCompartir");
     this.idCompartir = this.navParams.get("idCompartir");
     this.folio = this.navParams.get("folio");
+    this.displayNames = this.navParams.get("displayNames");
 
 
     //obtener primero el id del usuario con el telefono recibido de la tabla compartidas
@@ -60,7 +62,7 @@ export class GenerarqrPage {
           const idCompartir=this.idCompartir;
           const folio = this.folio;
           console.log('tarjeta pagar',numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir);
-          this.servMon.cambiaPagando(this.idReservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio);
+          this.servMon.cambiaPagando(this.idReservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio, this.displayNames);
           //guardar datos recibidos en el arreglo creado qr_data
           this.qr_data.idReservacion = this.idReservacion;
           this.qr_data.mensaje = "Reservacion pagada";

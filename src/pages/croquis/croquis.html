@@ -3,28 +3,28 @@
         <ion-row>
             <ion-col>
                 <button ion-button menuToggle class="botonMod">
-                  <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
-              </button>
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
             </ion-col>
             <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" style="width: 60%;" alt="">
+                <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
             </ion-col>
             <ion-col>
-                <div align='end'>
+                <div align="end">
                     <div *ngIf="miUser.provider == 'facebook'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
                         </div>
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
                         </div>
                     </div>
                 </div>
@@ -34,12 +34,31 @@
 </ion-header>
 
 <ion-content padding>
-    <div class="contenedor-responsivo">
+    <!-- <div class="contenedor-responsivo">
         <div class="mask" *ngIf="showLoading">
             <i class="pei pei-spinner"></i>
         </div>
-        <iframe #iframe [src]="url" class="iframe-responsivo" frameBorder="0" (load)="onLoad()"></iframe>
-    </div>
+        <iframe #iframe [src]="url" class="iframe-responsivo" frameborder="0" (load)="onLoad()"></iframe>
+    </div> -->
+    <ion-scroll scrollX="true" scrollY="true" zoom="true">
+        <ion-img [src]="CroquisImg" class="iframe-responsivo" (click)="showImagCroquis(CroquisImg)"></ion-img>
+    </ion-scroll>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <form [formGroup]="zonaForm">
+                    <ion-list>
+                        <ion-item>
+                            <ion-label>Zonas</ion-label>
+                            <ion-select cancelText="Cancelar" okText="Aceptar" [(ngModel)]="zona" name="zona" formControlName="zona" (ngModelChange)="getZona($event)">
+                                <ion-option [value]="zona.uid" *ngFor="let zona of zonas">{{zona.nombre}}</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-list>
+                </form>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>
 
 <ion-footer no-border>
@@ -47,12 +66,16 @@
         <ion-row>
             <ion-col col-6>
                 <div text-center>
-                    <button ion-button round block color="dark" (click)="(irReservaciones())">Atras</button>
+                    <button ion-button round block color="dark" (click)="(irReservaciones())">
+            Atras
+          </button>
                 </div>
             </ion-col>
             <ion-col col-6>
                 <div text-center>
-                    <button ion-button round block color="dark" (click)="(irCata())"> Continuar </button>
+                    <button ion-button round block color="dark" (click)="(updateZona())" [disabled]="!zonaForm.valid">
+            Continuar
+          </button>
                 </div>
             </ion-col>
         </ion-row>

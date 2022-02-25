@@ -3,10 +3,12 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from "firebase/app";
 import 'firebase/firestore'; 
 import { Stripe } from "@ionic-native/stripe";
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, Platform } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from "@angular/http";
 import { AlertController } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
+import { ReservacionProvider } from '../reservacion/reservacion';
+import { DeviceProvider } from '../device/device';
 
 @Injectable()
 export class MonitoreoReservasProvider {
@@ -19,6 +21,9 @@ export class MonitoreoReservasProvider {
     public http: Http,
     public alertCtrl: AlertController,
     private modalCtrl: ModalController,
+    public platform: Platform,
+    public _providerReserva: ReservacionProvider,
+    public _deviceProvider: DeviceProvider
     ) {
     console.log('Hello MonitoreoReservasProvider Provider');
   }
@@ -113,7 +118,7 @@ export class MonitoreoReservasProvider {
   }
 
   //hacer el pago en stripe de una cuenta compartida
-  cambiaPagando(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio) {
+  cambiaPagando(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio, displayNames) {
     console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir);
     // Poppup de carga para procesar el metodo
     let loading = this.loadinCtl.create({
@@ -121,7 +126,8 @@ export class MonitoreoReservasProvider {
     content: "Procesando pago."
     });//
     loading.present();
-    this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+    // this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+    this.stripe.setPublishableKey('pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd');
     //
     let card = {
       number: numTarjeta,//numTarjeta
@@ -139,24 +145,35 @@ export class MonitoreoReservasProvider {
     let data = JSON.stringify({
       cardToken: token.id,
       amount: montoReservacion, //montoReservacion
-      accion: 'stripe',
+      accion: 'stripe_prueba',
       folio: folio
     });
     this.http.post(url, data, options).subscribe(res => {
       console.log('Este es el mensaje', JSON.stringify(res));
       //IF PAGO CON EXITO
       if (res.json().status == "succeeded") {
-        const alert = this.alertCtrl.create({
-         title: '¡ Pago con exito !',
-         //subTitle: 'Your friend, Obi wan Kenobi, just accepted your friend request!',
-         buttons: ['OK']
-        });
-        alert.present();
+        
         //SI EL PAGO SE REALIZO CON EXITO SE CAMBIAN LOS ESTATUS A PAGADO
         /* Cambiando estatus del idCompartir a pagado */
         this.afs.collection('compartidas').doc(idCompartir).update({
-          estatus_pago: 'Pagado'
+          estatus_pago: 'Pagado',
+          pagoEstatus: true
         });
+
+        const alert = this.alertCtrl.create({
+         title: '¡ Pago con exito !',
+         buttons: [
+           {
+             text: 'Aceptar',
+             handler: () => {
+                this.notiReservaCompartida(uidRerservacion, displayNames);
+                this.notiReservaPago(displayNames);
+             }
+           }
+         ]
+        });
+        alert.present();
+        
 
       }
        //IF SALDO INSUFICIENTE
@@ -192,6 +209,48 @@ export class MonitoreoReservasProvider {
    }, 3000);
 }
 
+notiReservaCompartida(idReservacion: string, displayNames: string) {
+  this._providerReserva
+    .getCompartidaPagadaNoti(idReservacion)
+    .subscribe((usersCom) => {
+      const usersCompartido = usersCom;
+      console.log("Usuarios compartidos: ", usersCompartido);
+      usersCompartido.forEach((usersCom) => {
+        console.log("PlayerID:", usersCom.playerId);
+        if (usersCom.playerId != undefined) {
+          console.log("notificacion  a", usersCom.playerId);
+          if (this.platform.is("cordova")) {
+            const data = {
+              topic: usersCom.playerId,
+              title: "Resumen de pago",
+              body: "Personas faltantes de completar su pago: " + displayNames.toString(),
+            };
+            this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+              console.log('Respuesta noti fcm', resp);
+            });
+          } else {
+            console.log("Solo funciona en dispositivos");
+          }
+        }
+      });
+    });
+}
+
+notiReservaPago(displayNames: string) {
+  if (this.platform.is("cordova")) {
+    const data = {
+      topic: localStorage.getItem('playerID'),
+      title: "Pago exitoso",
+      body: "Personas faltantes de completar su pago: " + displayNames.toString(),
+    };
+    this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+      console.log('Respuesta noti fcm', resp);
+    });
+  } else {
+    console.log("Solo funciona en dispositivos");
+  }
+}
+
 //hacer el pago en stripe de una cuenta normal
 cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,folio) {
   console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
@@ -201,7 +260,9 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
   content: "Procesando pago."
   });//
   loading.present();
-  this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+  // this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+  this.stripe.setPublishableKey('pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd');
+
   //
   let card = {
     number: numTarjeta,//numTarjeta
@@ -219,7 +280,7 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
   let data = JSON.stringify({
     cardToken: token.id,
     amount: montoReservacion, //montoReservacion
-    accion: 'stripe',
+    accion: 'stripe_prueba',
     folio: folio
   });
   this.http.post(url, data, options).subscribe(res => {

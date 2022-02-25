@@ -15,6 +15,9 @@ export class ReservacionProvider {
   areas: AngularFirestoreCollection<any[]>;
   _areas: Observable<any>;
 
+  carta: AngularFirestoreCollection<any[]>;
+  _carta: Observable<any>;
+
   areasNombre: AngularFirestoreCollection<any[]>;
   _areasNombre: Observable<any>;
 
@@ -445,6 +448,41 @@ export class ReservacionProvider {
     ));
   }
 
+  //obtener reservacion compartida aceptada por el usuario
+  public getCompartidaPagadaNoti(idx) {
+    this.comAceptadas = this.af.collection<any>("compartidas", (ref) =>
+      ref.where("idReservacion", "==", idx).where("pagoEstatus", "==", false)
+    );
+    this._comAceptadas = this.comAceptadas.valueChanges();
+    return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  //obtener reservacion compartida aceptada por el usuario
+  public getCompartidaPagoNoti(idx) {
+    this.comAceptadas = this.af.collection<any>("compartidas", (ref) =>
+      ref.where("idReservacion", "==", idx).where("pagoEstatus", "==", true)
+    );
+    this._comAceptadas = this.comAceptadas.valueChanges();
+    return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+
   public consultarEstatusRe(idx) {
     this.comRes = this.af.collection<any>("reservaciones", (ref) =>
       ref.where("idReservacion", "==", idx)
@@ -520,8 +558,6 @@ export class ReservacionProvider {
           fechaR_: fecha,
           estatus: "Creando",
           estatusFinal: "rsv_incompleta",
-          // idArea: reservacion.area,
-          idZona: reservacion.zona,
           idSucursal: reservacion.idSucursal,
           idevento: reservacion.idevento,
           idUsuario: idUsuario,
@@ -575,6 +611,7 @@ export class ReservacionProvider {
           totalDividido: 0,
           estatus_escaneo: "NO",
           estatusFinal: "rsv_incompleta",
+          pagoEstatus: false
         })
         .then((reserva) => {
           console.log("Compartido exitoso: ", reserva.id);
@@ -591,6 +628,7 @@ export class ReservacionProvider {
   public saveCompartirPropio(telefono, idReservacion, idUsuario) {
     return new Promise((resolve, reject) => {
       localStorage.setItem('compartida', 'true');
+      const playerID = localStorage.getItem('playerID');
       this.af
         .collection("compartidas")
         .add({
@@ -599,9 +637,10 @@ export class ReservacionProvider {
           idUsuario: idUsuario,
           estatus: "Aceptado",
           totalDividido: 0,
-          playerId: "ok",
+          playerId: playerID,
           estatus_escaneo: "NO",
           estatusFinal: "rsv_incompleta",
+          pagoEstatus: false
         })
         .then((reserva) => {
           console.log("Compartido exitoso: ", reserva.id);
@@ -619,7 +658,6 @@ export class ReservacionProvider {
       const fecha = moment(reservacion.fecha).format("x");
       const hora = moment(reservacion.hora, "HH:mm").format("hh:mm a");
       const idUsuario = localStorage.getItem("uid");
-      console.log("Evento: ", reservacion.idevento);
 
       this.af
         .collection("reservaciones")
@@ -631,8 +669,6 @@ export class ReservacionProvider {
           fechaR_: fecha,
           estatus: "Creando",
           estatusFinal: "rsv_incompleta",
-          // idArea: reservacion.area,
-          idZona: reservacion.zona,
           idSucursal: reservacion.idSucursal,
           idevento: reservacion.idevento,
           idUsuario: idUsuario,
@@ -888,9 +924,8 @@ export class ReservacionProvider {
     ));
   }
 
-  public getZona(idx) {
-    this.zona = this.af.doc<any>(`zonas/${idx}`);
-    // this.pedidoDoc = this.afs.collection<Servicios>('servicios').doc(`/${idPedido}`).collection<Pedidos>('pedidos');
+  public getZona(idZona: string) {
+    this.zona = this.af.doc<any>(`zonas/${idZona}`);
     return (this._zona = this.zona.snapshotChanges().pipe(
       map((action) => {
         if (action.payload.exists === false) {
@@ -904,7 +939,7 @@ export class ReservacionProvider {
     ));
   }
 
-  public getZonaHttp(idZona) {
+  public getZonaHttp(idZona: string) {
     return new Promise((resolve, rejects) => {
       const url = `https://adminsoft.mx/operacion/guest/obtener_zona/${idZona}`;
       this.http.get(url).subscribe((resp: any) => {
@@ -981,13 +1016,27 @@ export class ReservacionProvider {
   }
 
   public getCroquisImg(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idSucursal", idx);
     this.areas = this.af.collection<any>("croquis_img", (ref) =>
       ref.where("idSucursal", "==", idx)
     );
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  public getCartaSucursal(uidSucursal: string) {
+    this.carta = this.af.collection<any>("cartas", (ref) =>
+      ref.where("uidSucursal", "==", uidSucursal)
+    );
+    this._carta = this.carta.valueChanges();
+    return (this._carta = this.carta.snapshotChanges().pipe(
       map((changes) => {
         return changes.map((action) => {
           const data = action.payload.doc.data() as any;
@@ -1036,7 +1085,6 @@ export class ReservacionProvider {
 
   eliminar_rsvp(rsvp: string) {
     return new Promise((resolve, rejects) => {
-      console.log("RSVP -->", rsvp);
       const data = {
         idReservacion: rsvp
       };
@@ -1073,4 +1121,20 @@ export class ReservacionProvider {
         })
       ));
   }
+
+  getSucursal(uidSucursal: string) {
+    this.sucursal = this.af.collection<any>("sucursales", (ref) =>
+    ref.where("uid", "==", uidSucursal));
+      this._sucursal = this.sucursal.valueChanges();
+      return (this._sucursal = this.sucursal.snapshotChanges().pipe(
+        map((changes) => {
+          return changes.map((action) => {
+            const data = action.payload.doc.data() as any;
+            data.$key = action.payload.doc.id;
+            return data;
+          });
+        })
+      ));
+  }
+
 }

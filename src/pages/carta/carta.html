@@ -53,14 +53,13 @@
     <ion-row>
         <ion-col col-1></ion-col>
         <ion-col>
-          <div *ngFor="let sucur of sucurSel">
-             <p class="lugar" *ngIf="sucur.uid == idSucursal">
-                 LUGAR: {{ sucur.displayName}} {{eventoSel.titulo}}
-                 <br>
-                 <!-- <span style="position:absolute;margin-top:-10px">________________</span> -->
-                 <img src="./assets/icon/Vector10.png" style="width: 40%;" alt="">
-             </p>
-          </div>
+            <div *ngFor="let sucur of sucurSel">
+                <p class="lugar">
+                    LUGAR: {{ sucur.displayName}} {{eventoSel.titulo}}
+                    <br>
+                    <img src="./assets/icon/Vector10.png" style="width: 40%;" alt="">
+                </p>
+            </div>
         </ion-col>
         <ion-col col-1></ion-col>
     </ion-row>
@@ -135,20 +134,20 @@
 
 <ion-footer no-border>
     <!-- <ion-toolbar> -->
-        <ion-grid>
-            <ion-row>
-                <ion-col col-6>
-                    <div text-center>
-                        <button ion-button round block color="dark" (click)="(goBack())">Atras</button>
-                    </div>
-                </ion-col>
-                <ion-col col-6>
-                    <div text-center>
-                        <button ion-button round block color="dark" (click)="(goToResumen(consumo, total))">{{total | currency}} <ion-icon
+    <ion-grid>
+        <ion-row>
+            <ion-col col-6>
+                <div text-center>
+                    <button ion-button round block color="dark" (click)="(goBack())">Atras</button>
+                </div>
+            </ion-col>
+            <ion-col col-6>
+                <div text-center>
+                    <button ion-button round block color="dark" (click)="(goToResumen(consumo, total))">{{total | currency}} <ion-icon
                               name="arrow-dropright" class="total"></ion-icon></button>
-                    </div>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
     <!-- </ion-toolbar> -->
 </ion-footer>

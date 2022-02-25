@@ -51,6 +51,7 @@ export class ReservacionesPage {
   people = 0;
   fechaActual: any;
   disabledFecha: boolean = false;
+  disabledHora: boolean = false;
   idReservacion: any;
   contact = {
     displayName: null,
@@ -74,7 +75,7 @@ export class ReservacionesPage {
   compartirID: any;
   phoneuser: any;
   tabBarElement: any = "";
-  zonasnav: any;
+  zonasnav: string = "";
   img2 = [];
   resultCompartidas: any;
   usertel: any;
@@ -92,8 +93,8 @@ export class ReservacionesPage {
   uidSucursal: string = "gbqtsea15rhu1BukxbekFEBohJv2";
   uidReservacion: string = "1IwVw10qn5CqlrSxpTEz";
   personas: number = 3;
-  fecha: string = "2021-06-03";
-  hora: string = "05:00";
+  fecha: string = '';
+  hora: string = '';
 
   zona_consumo: number;
   loading: any;
@@ -117,8 +118,13 @@ export class ReservacionesPage {
     this.evento = this.navParams.get("uid");
     this.idReservacion = this.navParams.get("idReservacion");
     this.zonasnav = this.navParams.get("zona");
+    
+    this.fecha = this.navParams.get('fecha');
+    this.hora = this.navParams.get('hora');
+
     if (this.evento != null) {
       this.evento = this.navParams.get("uid");
+      
     } else {
       this.evento = null;
     }
@@ -151,8 +157,6 @@ export class ReservacionesPage {
     this.myForm = this.fb.group({
       hora: ["", [Validators.required]],
       fecha: ["", [Validators.required]],
-      area: [" ", [Validators.required]],
-      zona: ["", [Validators.required]],
       compartir: ["", []],
     });
 
@@ -171,37 +175,25 @@ export class ReservacionesPage {
   }
 
   ionViewDidLoad() {
-    this.afs
-      .collection("sistema")
-      .doc("campo_evento")
-      .valueChanges()
-      .subscribe((data: any) => {
-        this.campo_evento = data.activo;
-        console.log("campo_evento", this.campo_evento);
-      });
+    
 
     if (this.evento != null) {
       this.getDetails();
-      if (this.campo_evento == 0) {
-        this.disabledFecha = true;
-        console.log("IF -->", this.disabledFecha);
-      } else {
-        this.disabledFecha = false;
-        console.log("ELSE -->", this.disabledFecha);
-      }
+      this.disabledFecha = true;
+      this.disabledHora = true;
+    } else {
+      this.disabledFecha = false;
+      this.disabledHora = false;
     }
+
     if (this.idReservacion != null) {
       this.loadReservacion(this.idReservacion);
     }
-    this.getAreas(this.idSucursal);
+    // this.getAreas(this.idSucursal);
     console.log("ionViewDidLoad EventoDetallePage");
     this.fechaActual = new Date().toJSON().split("T")[0];
     console.log("horaActual Actual: ");
-    //cargar funcion de coontactos
-    // if (this.platform.is("cordova")) {
-    //   this.todosContactos();
-    // }
-    this.getZonas();
+    // this.getZonas();
     this.getImagen(this.idSucursal);
     this.goToUser();
   }
@@ -247,9 +239,8 @@ export class ReservacionesPage {
     this._providerReserva.getReservacion(idx).subscribe((reservacion) => {
       if (reservacion != null) {
         this.people = reservacion.numPersonas;
-        this.data.hora = reservacion.hora;
+        this.hora = reservacion.hora;
         this.data.area = reservacion.idArea;
-        this.data.zona = reservacion.idZona;
       }
     });
   }
@@ -366,7 +357,6 @@ export class ReservacionesPage {
 
   reservacionAdd() {
     let temp = [];
-    console.log("reservacion add selectMult", this.telSelectMul);
     for (var i = 0; i < this.telSelectMul.length; i++) {
       console.log(this.telSelectMul[i].tel);
       temp.push(this.telSelectMul[i].tel);
@@ -374,12 +364,11 @@ export class ReservacionesPage {
       console.log("This compartir aquí -->", this.compartir);
       
     }
-    const hora = moment(this.data.hora, ["h:mm A"]).format("HH:mm");
+    const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
     let info = {
       numPersonas: this.people,
-      hora: this.data.hora,
-      fecha: this.data.fecha,
-      zona: this.data.zona,
+      hora: this.hora,
+      fecha: this.fecha,
       idSucursal: this.idSucursal,
       idevento: this.evento,
     };
@@ -445,29 +434,25 @@ export class ReservacionesPage {
         localStorage.setItem("uidEvento", this.evento);
         localStorage.setItem("reservacion", "true");
         localStorage.setItem("zona", this.data.zona);
-        console.log("zona", this.data.zona, "area", this.data.area);
         
         this.navCtrl.push(CroquisPage, {
-          data: {
             idReservacion: respuesta.idReservacion,
             idSucursal: this.idSucursal,
-            zona: this.data.zona,
+            zona: this.zonasnav,
             hora: hora,
-            fecha: this.data.fecha,
+            fecha: this.fecha,
             zona_consumo: this.zona_consumo,
-          },
         });
       }
     });
   }
 
   reservacionUpdate(idReservacion) {
-    const hora = moment(this.data.hora, ["h:mm A"]).format("HH:mm");
+    const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
     let info = {
       numPersonas: this.people,
-      hora: this.data.hora,
-      fecha: this.data.fecha,
-      zona: this.zonasnav,
+      hora: this.hora,
+      fecha: this.fecha,
       idSucursal: this.idSucursal,
       idevento: this.evento
     };
@@ -479,13 +464,14 @@ export class ReservacionesPage {
         if (respuesta.success == true) {
           console.log("Success: ", respuesta.success);
           localStorage.setItem("idReservacion", idReservacion);
-          this.navCtrl.push(CroquisPage, {data: {
+          this.navCtrl.push(CroquisPage, {
             idReservacion: idReservacion,
             idSucursal: this.idSucursal,
-            zona: this.data.zona,
+            zona: this.zonasnav,
             hora: hora,
-            fecha: this.data.fecha,
-        }});
+            fecha: this.fecha,
+            zona_consumo: this.zona_consumo
+        });
         }
       });
   }
@@ -577,7 +563,6 @@ export class ReservacionesPage {
 
   getImagen(idx) {
     // console.log("idUsuarioHistorial: ", idx);
-
     this._providerReserva.getCroquisImg(idx).subscribe((res) => {
       console.log("Este es el resultado de imagen: ", res);
       this.img2 = res;

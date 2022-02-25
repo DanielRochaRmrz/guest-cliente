@@ -76,6 +76,7 @@ export class ReservacionDetallePage {
   tarjeta: any = [];
   countCompartidas: number = 0;
   countComPagadas: number = 0;
+  nombreUsuarios: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -190,6 +191,7 @@ export class ReservacionDetallePage {
     this.obtenerMesas();
     this.getTarjeta(this.idUser);
     this.getCompatidasPagadas(this.idReservacion);
+    this.loadUsersCompartidos(this.idReservacion);
   }
 
   getTarjeta(uid: string) {
@@ -204,6 +206,25 @@ export class ReservacionDetallePage {
       console.log('Pagadas -->', this.countComPagadas);
     });    
   } 
+
+  loadUsersCompartidos(idReservacion: string) {
+    this._providerReserva.getCompartidaAceptada(idReservacion).subscribe((dataCompartidas) => {
+      const dataCom = dataCompartidas;
+      dataCom.forEach((res: any) => {
+        const telefono = res.telefono;
+        const miTelefono = this.miUser.phoneNumber;
+        if (telefono != miTelefono) {
+          this._providerReserva.getTelefono(telefono).subscribe((dataUser: any) => {
+            this.nombreUsuarios = [];
+            dataUser.forEach((names: any) => {
+              const displayName = names.displayName;
+              this.nombreUsuarios.push(displayName);
+            });
+          });
+        }
+      });
+    });
+  }
 
   compartidaEstatusFinal() {
     //consultar ya ninguna persona esta en espera se cambia el estatus de la reservacion
@@ -333,7 +354,7 @@ export class ReservacionDetallePage {
   }//termina funcion principal
 
   //mandar datos a la pagina del QR
-  genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir, folio) {
+  genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir, folio, displayNames) {
     const t = totalDividido + (totalDividido * .16) + (totalDividido * .039);
     const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(GenerarqrPage, {
@@ -342,7 +363,8 @@ export class ReservacionDetallePage {
       idUsuario: idUsuario,
       telefono: telefono,
       idCompartir: idCompartir,
-      folio: folio
+      folio: folio,
+      displayNames: displayNames
     });
   }
 

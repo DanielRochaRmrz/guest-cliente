@@ -167,16 +167,12 @@ export class LoginCorreoPage {
 
   LoginToEmail() {
 
-    console.log("correo", this.email_lo, "password", this.pass_lo);
-
     try {
       const result = this.afAuth.auth.signInWithEmailAndPassword(this.email_lo, this.pass_lo).then((user: any) => {
         localStorage.setItem("isLogin", 'true');
         if (result) {
           this.us = result;
-          console.log('Usuario: ', JSON.stringify(user));
           localStorage.setItem("uid", user.user.uid);
-          console.log("Este es el usuario", JSON.stringify(user.user.uid), "cual de los dos sera", user.user.uid);
           this.navCtrl.setRoot(TipoLugarPage, { 'uid': user.user.uid });
         }
       });

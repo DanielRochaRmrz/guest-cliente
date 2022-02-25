@@ -172,9 +172,10 @@
                     item-end
                     displayFormat="hh:mm a"
                     minuteValues="0,30"
-                    [(ngModel)]="data.hora"
+                    [(ngModel)]="hora"
                     name="hora"
                     formControlName="hora"
+                    [disabled]="disabledHora"
                     doneText="Aceptar"
                     cancelText="Cancelar"
                   >
@@ -202,7 +203,7 @@
                   <ion-datetime
                     item-end
                     displayFormat="DD/MM/YYYY"
-                    [(ngModel)]="data.fecha"
+                    [(ngModel)]="fecha"
                     name="fecha"
                     formControlName="fecha"
                     [disabled]="disabledFecha"
@@ -215,11 +216,8 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          <ion-input hidden formControlName="zona" [(ngModel)]="data.zona" name="zona" value="VIRpfs1ufSJEFOGj7sMw"></ion-input>
         </ion-list>
       </form>
-    </ion-list>
-    <ion-row *ngSwitchCase="'reservar'">
       <ion-item>
         <ion-label style="color: black"
           >Compartir
@@ -238,8 +236,10 @@
         >
         </ionic-selectable>
       </ion-item>
-    </ion-row>
-
+    </ion-list>
+    <!-- <ion-row *ngSwitchCase="'reservar'">
+      
+    </ion-row> -->
     <ion-list *ngSwitchCase="'informacion'">
       <br />
       <ion-row>
