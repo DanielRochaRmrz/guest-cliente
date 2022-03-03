@@ -4,6 +4,7 @@ import { AlertController } from 'ionic-angular';
 import { ReservacionDetallePage } from "../../pages/reservacion-detalle/reservacion-detalle";
 import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { MonitoreoReservasProvider } from '../../providers/monitoreo-reservas/monitoreo-reservas';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -33,7 +34,9 @@ export class GenerarqrPage {
               public servMon: MonitoreoReservasProvider,
               private modalCtrl: ModalController,
               public alertCtrl: AlertController,
-              public usuarioProv: UsuarioProvider){
+              public usuarioProv: UsuarioProvider,
+              public userProv: UserProvider
+              ){
 
     //recibir datos de la reservacion compartida
     this.idReservacion = this.navParams.get("idReservacion");
@@ -47,11 +50,11 @@ export class GenerarqrPage {
 
 
     //obtener primero el id del usuario con el telefono recibido de la tabla compartidas
-    this.usuarioProv.getUsuarioID(this.telefono).subscribe(user => {
-      this.usuarioID = user[0].uid;
+    // this.userProv.getUser(this.telefono).then(user => {
+    //   this.usuarioID = user[0].uid;
       //console.log('id del usuario por telefono',this.usuarioID);
       //obtenido el id del usuario buscar su tarjeta registrada y activa para hacer el pago
-        this.usuarioProv.getTarjetaPagar(this.usuarioID).subscribe(pago => {
+        this.usuarioProv.getTarjetaPagar(this.idUsuario).subscribe(pago => {
           //console.log('pago',pago.length);
           this.tarjetaPagar = pago[0].idTarjeta;
           const numTarjeta = pago[0].numTarjeta;
@@ -71,7 +74,7 @@ export class GenerarqrPage {
           //this.qr_data.telefono = this.telefono;
           //this.qr_data.tarjeta = this.tarjetaPagar;
         });
-     });
+    //  });
     //obtener los datos del QR y sacarlo de uno por uno en la variable que manda el scanner
        //const dataCode = JSON.parse(this.created_code);
        //console.lo('dataCode: ', dataCode.idReservacion);
