@@ -72,8 +72,8 @@
             <ion-card>
                 <form [formGroup]="myForm" novalidate class="">
                     <ion-list no-lines>
+                        <ion-label class="blanco_12"><b>Ajusta tu porcentaje</b></ion-label>
                         <ion-item>
-                            <ion-label class="blanco_12"><b>Ajusta tu porcentaje</b></ion-label>
                             <ion-select class="select-propina" [(ngModel)]="propina" multiple="false" cancelText="Cancelar" okText="Aceptar" name="propina" formControlName="propina">
                                 <div>
                                     <!-- <ion-option value="0.05">5%</ion-option> -->
@@ -82,7 +82,7 @@
                                     <ion-option value="0.20">20%</ion-option>
                                 </div>
                             </ion-select>
-                        </ion-item>
+                        </ion-item>                        
                     </ion-list>
                 </form>
                 <br>
@@ -90,6 +90,47 @@
         </ion-col>
         <ion-col col-1></ion-col>
     </ion-row>
+
+    <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col>
+            <p class="lugar">
+                Código de invitación
+                <br>
+                <!-- <span style="position:absolute;margin-top:-10px">________________</span> -->
+                <img src="./assets/icon/Vector10.png" style="width: 40%;" alt="">
+            </p>
+
+        </ion-col>
+        <ion-col col-1></ion-col>
+    </ion-row>
+
+    <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col col-3>
+            <ion-card style="width: 100%;">
+                <ion-label class="blanco_1"><b>Código RP</b></ion-label>
+                <ion-icon name="barcode-outline" class="ion-icon"></ion-icon>
+            </ion-card>
+        </ion-col>
+        <ion-col col-7>
+            <ion-card>
+                <form [formGroup]="myForm" novalidate class="">
+                    <ion-list no-lines>
+                        <ion-label class="blanco_12"><b>Ingresa el código </b></ion-label>
+                        <ion-item>
+                            <ion-input type="text" class="lugar" name="codigoRp" formControlName="codigoRp" [(ngModel)]="codigoRp"></ion-input>   
+                        </ion-item>                        
+                    </ion-list>
+                </form>
+                <br>
+            </ion-card>
+        </ion-col>
+        <ion-col col-1></ion-col>
+    </ion-row>
+
+    
+    
 
 
 
