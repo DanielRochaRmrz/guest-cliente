@@ -31,9 +31,10 @@ export class PropinaPage {
   miUser: any = {};
   codigoRp: any;
   codigoRpUsers: any;
+
   // DATOS PARA TABLA DE CONTCODIGOSRP
 
-  uid: any;
+  uid: any = {};
   uidUser: any;
   uidRP: any;
   fecha: any;
@@ -54,7 +55,7 @@ export class PropinaPage {
     //validar que los inputs del formulario no esten vacios
     this.myForm = this.fb.group({
       propina: ["", [Validators.required]],
-      codigoRp: [""]
+      codigoRp: ["", [Validators.required]]
     });
 
     //sacar el id del usuario del local storage
@@ -84,13 +85,15 @@ export class PropinaPage {
 
     if(this.codigoRp != ""){
 
-      const codigoRpUser = this.codigoRp 
+      const codigoRpUser = this.codigoRp; 
+
+      // VERIFICA SI EL CODIGO INGRESADO POR EL USUARIO EXISTE EN LA BASE DE DATOS
 
       this.afs.collection('codigosRp', ref => ref.where('codigo', '==', codigoRpUser)).valueChanges().subscribe(data =>{
 
         this.codigoRpUsers = data;
 
-        // console.log("CODIGO RP", this.codigoRpUsers);        
+        console.log("CODIGO RP", this.codigoRpUsers);    
 
         this.codigoRpUsers.forEach(element => {
 
@@ -101,21 +104,36 @@ export class PropinaPage {
 
             // SI EL CODIGO YA FUE USADO POR EL USUARIO 
 
-            this.afs.collection('contCodigosRp', ref => ref.where('uid', '==', codigoRP).where('uidRP', '==', uidRp)).valueChanges().subscribe(data =>{
+            console.log("USERSESSION", this.uidUserSesion);
+            console.log("uid", codigoRP);
+            console.log("uidRp", uidRp);            
+
+            this.afs.collection('contCodigosRp', ref => ref.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion)).valueChanges().subscribe(data =>{
 
               this.rowConCode = data;
+
+              console.log("conCodigosRp", this.rowConCode);              
 
               // console.log("ROWCONCODE", this.rowConCode);
               
               // console.log("lenght rowconcode",this.rowConCode.length);  
 
-                if(this.rowConCode.length == 0){
+                if(this.rowConCode.length == 0){                  
+
+                  let result = '';
+                  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                  const charactersLength = characters.length;
+                  for (let i = 40; i < charactersLength; i++) {
+                      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                  }
+        
+                  this.uid = result;
 
                   let today = Date.now();
 
-                  this.afs.collection("contCodigosRp").doc(codigoRP).set({
-      
-                    uid: codigoRP,
+                  this.afs.collection("contCodigosRp").doc(this.uid).set({
+
+                    uid: this.uid,
                     uidUser: this.uidUserSesion,
                     uidRP: uidRp,
                     fecha: today,
