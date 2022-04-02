@@ -145,6 +145,7 @@ export class PropinaPage {
 
                   this.afs.collection("reservaciones").doc(this.idReservacion).update({
                     "propina": this.propina,
+                    "codigoRP": codigoRP,
                     "estatusFinal": "rsv_copletada",
                     "playerIDs": localStorage.getItem('playerID'),
                   })
