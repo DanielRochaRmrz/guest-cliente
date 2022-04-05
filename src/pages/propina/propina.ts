@@ -120,24 +120,26 @@ export class PropinaPage {
 
                 if(this.rowConCode.length == 0){                  
 
-                  let result = '';
-                  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                  const charactersLength = characters.length;
-                  for (let i = 40; i < charactersLength; i++) {
-                      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                  }
+                  // let result = '';
+                  // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                  // const charactersLength = characters.length;
+                  // for (let i = 40; i < charactersLength; i++) {
+                  //     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                  // }
         
-                  this.uid = result;
+                  // this.uid = result;
 
                   let today = Date.now();
 
-                  this.afs.collection("contCodigosRp").doc(this.uid).set({
+                  this.afs.collection("contCodigosRp").doc(this.idReservacion).set({
 
-                    uid: this.uid,
+                    estatus: 0,
+                    uid: this.idReservacion,
                     uidUser: this.uidUserSesion,
                     uidRP: uidRp,
                     fecha: today,
-                    codigoRpUser: codigoRP
+                    codigoRpUser: codigoRP,
+                    uidReservacion: this.idReservacion
       
                   });
 

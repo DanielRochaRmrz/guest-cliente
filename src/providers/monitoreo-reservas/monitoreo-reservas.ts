@@ -297,6 +297,15 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
       this.afs.collection('reservaciones').doc(uidRerservacion).update({
         estatus_pago: 'Pagado'
       });
+
+      // ACTUALIZAMOS EL ESTATUS DEL CODIGO USADO PARA LA RESERVACIÓN PARA QUE PUEDA SER CONTADO EN LOS CORTES
+
+      this.afs.collection('contCodigosRp').doc(uidRerservacion).update({
+
+        estatus: 1
+
+      });
+
     }
     //IF SALDO INSUFICIENTE
     if (res.json().raw.decline_code == "insufficient_funds") {
