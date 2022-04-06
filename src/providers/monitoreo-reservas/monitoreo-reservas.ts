@@ -141,7 +141,7 @@ export class MonitoreoReservasProvider {
       "Content-Type": "application/json"
     });
     let options = new RequestOptions({ headers: headers });
-    let url = "https://proyectosinternos.com/guest_pagos/stripe_config.php";
+    let url = "https://guestresy.com/code/guest_pagos/stripe_config.php";
     let data = JSON.stringify({
       cardToken: token.id,
       amount: montoReservacion, //montoReservacion
@@ -276,7 +276,7 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
     "Content-Type": "application/json"
   });
   let options = new RequestOptions({ headers: headers });
-  let url = "https://proyectosinternos.com/guest_pagos/stripe_config.php";
+  let url = "https://guestresy.com/code/guest_pagos/stripe_config.php";
   let data = JSON.stringify({
     cardToken: token.id,
     amount: montoReservacion, //montoReservacion
