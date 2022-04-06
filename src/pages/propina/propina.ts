@@ -39,6 +39,7 @@ export class PropinaPage {
   uidRP: any;
   fecha: any;
   codigoRpUser: any;
+  nombreUsuario: any;
 
   rowConCode: any;
 
@@ -69,6 +70,9 @@ export class PropinaPage {
       .subscribe(dataSu => {
         this.miUser = dataSu;
         console.log('Datos de mi usuario', this.miUser);
+
+        this.nombreUsuario = this.miUser.displayName;
+
       });
   }
 
@@ -106,7 +110,9 @@ export class PropinaPage {
 
             console.log("USERSESSION", this.uidUserSesion);
             console.log("uid", codigoRP);
-            console.log("uidRp", uidRp);            
+            console.log("uidRp", uidRp);   
+            console.log("NOMBRE USUARIO", this.nombreUsuario);
+                     
 
             this.afs.collection('contCodigosRp', ref => ref.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion)).valueChanges().subscribe(data =>{
 
@@ -136,6 +142,7 @@ export class PropinaPage {
                     estatus: 0,
                     uid: this.idReservacion,
                     uidUser: this.uidUserSesion,
+                    nombreUsuario: this.nombreUsuario,
                     uidRP: uidRp,
                     fecha: today,
                     codigoRpUser: codigoRP,
