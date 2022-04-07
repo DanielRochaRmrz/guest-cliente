@@ -160,6 +160,12 @@ export class MonitoreoReservasProvider {
           pagoEstatus: true
         });
 
+        this.afs.collection('contCodigosRp').doc(uidRerservacion).update({
+
+          estatus: 1
+  
+        });
+
         const alert = this.alertCtrl.create({
          title: '¡ Pago con exito !',
          buttons: [
