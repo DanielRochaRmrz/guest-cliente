@@ -476,6 +476,13 @@ export class ReservacionDetallePage {
   eliminarReservacion(idReservacion, playerIDs) {
     this.eliminar_rsvp(idReservacion);
     // this.getUsersPusCancelar(playerIDs);
+
+    // SE ELIMINA EL CODIGO DE RP USADO POR EL USUARIO
+
+    this.eliminarCodigoRP(idReservacion);
+
+    // SE ELIMINA RESERVACION
+
     this.afs.collection("reservaciones").doc(idReservacion).delete().then(() => {
       console.log("Document successfully deleted!");
 
@@ -486,6 +493,23 @@ export class ReservacionDetallePage {
     }).catch((error) => {
       // console.error("Error removing document: ", error);
     });
+
+  }
+
+  eliminarCodigoRP(idReservacion){
+
+    this.afs.collection("contCodigosRp").doc(idReservacion).delete().then(() => {
+
+      console.log("Se borro regsitro en contCodigosRp");
+      
+
+    }).catch(function(error) {
+
+      console.log("No se pudo en contCodigosRp");
+      
+
+    });
+
   }
 
 
