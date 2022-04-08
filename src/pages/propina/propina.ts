@@ -93,7 +93,8 @@ export class PropinaPage {
 
       // VERIFICA SI EL CODIGO INGRESADO POR EL USUARIO EXISTE EN LA BASE DE DATOS
 
-      this.afs.collection('codigosRp', ref => ref.where('codigo', '==', codigoRpUser)).valueChanges().subscribe(data =>{
+    const consul = this.afs.collection('codigosRp').ref; 
+    consul.where('codigo', '==', codigoRpUser).get().then(data =>{
 
         this.codigoRpUsers = data;
 
@@ -101,8 +102,10 @@ export class PropinaPage {
 
         this.codigoRpUsers.forEach(element => {
 
-          const codigoRP = element.codigo;
-          const uidRp = element.uidRp;
+          const elem = element.data()
+
+          const codigoRP = elem.codigo;
+          const uidRp = elem.uidRp;
           
           if(codigoRP.length != 0){
 
@@ -113,18 +116,20 @@ export class PropinaPage {
             console.log("uidRp", uidRp);   
             console.log("NOMBRE USUARIO", this.nombreUsuario);
                      
+            
+            const consul2 = this.afs.collection('contCodigosRp').ref;
+            consul2.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion).get().then(data =>{
 
-            this.afs.collection('contCodigosRp', ref => ref.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion)).valueChanges().subscribe(data =>{
+              
 
-              this.rowConCode = data;
+              this.rowConCode = data.empty;
 
               console.log("conCodigosRp", this.rowConCode);              
 
               // console.log("ROWCONCODE", this.rowConCode);
               
               // console.log("lenght rowconcode",this.rowConCode.length);  
-
-                if(this.rowConCode.length == 0){                  
+                if(this.rowConCode == true){                  
 
                   // let result = '';
                   // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -250,12 +255,12 @@ export class PropinaPage {
           }
           
         });
-        if(this.codigoRpUsers.length == 0){
+        if(this.codigoRpUsers.empty == true){
 
           this.mostrar_toast('EL CÓDIGO QUE INGRESASTE NO COINCIDE CON NUESTROS REGISTROS');  
           // console.log("NO HAY COINCIDENCIAS");                   
 
-        }else if(this.codigoRpUsers.length == 1){
+        }else if(this.codigoRpUsers.empty == false){
 
           this.mostrar_toast('EL CÓDIGO QUE INGRESASTE YA LO HAS UTILIZADO');
 
