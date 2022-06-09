@@ -90,13 +90,7 @@ export class ResumenProvider {
   }
 
 
-  // this.db.collection("canjeo")
-  // .where("codigoCupon", "==", data).where("uid", "==", this.uid)
-
-
-
-
-  getSucursal(idx) {
+  getSucursal(idx: string) {
     this.sucursales = this.af.doc<any>(`sucursales/${idx}`);
     // this.pedidoDoc = this.afs.collection<Servicios>('servicios').doc(`/${idPedido}`).collection<Pedidos>('pedidos');
     return (this._sucursales = this.sucursales.snapshotChanges().pipe(

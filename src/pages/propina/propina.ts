@@ -26,6 +26,7 @@ export class PropinaPage {
   total: any;
   totalPropina: any;
   totalPropina2: any;
+
   productos: any;
   uidUserSesion: any;
   miUser: any = {};
@@ -378,18 +379,18 @@ export class PropinaPage {
         }
       };
 
-      window["plugins"].OneSignal.postNotification(
-        noti,
-        function (successResponse) {
-          console.log(
-            "Notification Post Success:",
-            successResponse
-          );
-        },
-        function (failedResponse: any) {
-          console.log("Notification Post Failed: ", failedResponse);
-        }
-      );
+      // window["plugins"].OneSignal.postNotification(
+      //   noti,
+      //   function (successResponse) {
+      //     console.log(
+      //       "Notification Post Success:",
+      //       successResponse
+      //     );
+      //   },
+      //   function (failedResponse: any) {
+      //     console.log("Notification Post Failed: ", failedResponse);
+      //   }
+      // );
     } else {
       console.log("Solo funciona en dispositivos");
     }

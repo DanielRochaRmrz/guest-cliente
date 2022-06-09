@@ -99,9 +99,9 @@ export class SucursalAltaProvider {
     this.sucursal.tel = tel;
     this.sucursal.uid = uid;
   }
+
+
   public getSucursal(uid) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("uid", uid);
     this.sucursalDoc = this.afs.collection<any>("sucursales", ref =>
       ref.where("uid", "==", uid)
     );
@@ -115,6 +115,18 @@ export class SucursalAltaProvider {
         });
       })
     ));
+  }
+
+  getDataSucursal(idSucursal :string){
+    return new Promise((resolve, reject) => {
+      let reservaciones = this.afs.collection("sucursales").doc(idSucursal);
+      reservaciones
+        .get()
+        .subscribe((user) => {
+          const us = user.data();
+            resolve(JSON.stringify(us));
+        });
+    });
   }
  
   getOneSucursal(idx) {
@@ -530,6 +542,18 @@ updateZonaIDX(idx) {
         }
       })
     ));
+  }
+
+  getDataZona(idZona :string){
+    return new Promise((resolve, reject) => {
+      let reservaciones = this.afs.collection("zonas").doc(idZona);
+      reservaciones
+        .get()
+        .subscribe((user) => {
+          const us = user.data();
+            resolve(JSON.stringify(us));
+        });
+    });
   }
 
   getMesas(idx) {    

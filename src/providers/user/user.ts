@@ -185,7 +185,7 @@ export class UserProvider {
 
     return (this._users = this.users.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -207,7 +207,8 @@ export class UserProvider {
       this.afs
       .collection("users")
       .doc(uid).get().subscribe((dataSu) => {
-        resolve(dataSu.data());
+        const data = dataSu.data() as any;
+        resolve(data);
       });
     });
   }

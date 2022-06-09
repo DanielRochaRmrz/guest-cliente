@@ -7,8 +7,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { CartaEditarPage } from "../carta-editar/carta-editar";
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
-//import { PushNotiProvider } from '../../providers/push-noti/push-noti';
-//import { UserProvider } from '../../providers/user/user';
+import { UserProvider } from '../../providers/user/user';
 
 
 
@@ -18,25 +17,13 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
   templateUrl: 'mis-reservaciones.html',
 })
 export class MisReservacionesPage {
-  encodText: string = '';
-  encodeData: any = {};
-  scannedData: any = {};
-  reservaciones: any;
-  clientes: any;
   uid: string;
-  nombresAreas: any;
-  nombresZonas: any;
-  nombresSucursales: any;
   misReservaciones: any = [];
-  idArea: any;
   idSucursal: any;
   idevento: any;
-  telUser: any;
+  public telUser: string;
   resCompartidas: any;
-  infoResevaciones: any;
   miUser: any = {};
-  //playerID: any;
-  //userID: any;
 
 
 
@@ -45,111 +32,37 @@ export class MisReservacionesPage {
     public monRes: MonitoreoReservasProvider,
     public reservaProvider: ReservacionProvider,
     public afDB: AngularFireDatabase,
-    public afs: AngularFirestore
-    //public _providerPushNoti: PushNotiProvider,
-    //public _providerUser: UserProvider
-  ) {
-    //sacar el id del usuario del local storage
-    this.uid = localStorage.getItem('uid');
-    //consultar tabla areas
-    this.afs
-      .collection("areas")
-      .valueChanges()
-      .subscribe(data => {
-        this.nombresAreas = data;
-      });
-
-    //consultar tabla zonas
-    this.afs
-      .collection("zonas")
-      .valueChanges()
-      .subscribe(data1 => {
-        this.nombresZonas = data1;
-      });
-
-    //consultar tabla sucursales
-    // this.afs
-    //   .collection("sucursales")
-    //   .valueChanges()
-    //   .subscribe(data2 => {
-    //     this.nombresSucursales = data2;
-    //   });
-    
-
-
-    //consultar tabla sucursales
-    this.afs
-      .collection("reservaciones")
-      .valueChanges()
-      .subscribe(data3 => {
-        this.infoResevaciones = data3;
-        console.log('realizo consulta');
-        console.log('tabla reservaciones', this.infoResevaciones);
-      });
-    //this.playerID=localStorage.getItem("playerID");
-    //console.log('playerID user sesion eventos',this.playerID);
-    //this.userID=localStorage.getItem("uid");
-    //console.log('userID user sesion eventos',this.userID);
-
-    //obtener informacion de mi user
-    this.afs
-      .collection("users").doc(this.uid)
-      .valueChanges()
-      .subscribe(dataSu => {
-        this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
-      });
-  }
+    public afs: AngularFirestore,
+    public userProvider: UserProvider
+  ) {}
 
   ionViewDidLoad() {
-    this.getAllSucursales();
-    this.getAllReservaciones_();
-    this.getClientes();
-    this.getTelUsuario();
-    //this._providerPushNoti.init_push_noti();
-    //this.guardarPlayerID();
+    //sacar el id del usuario del local storage
+    this.uid = localStorage.getItem('uid');
+    this.getUsuario();
+    this.getAllReservaciones();
   }
-  //  guardarPlayerID(){
-  //      console.log('playerID user sesion eventos llego',this.playerID);
-  //      console.log('userID user sesion eventos llego',this.userID);
-  //    this._providerUser.insertarIDplayer(this.userID,this.playerID).then((respuesta2: any) => {
-  //    console.log("Respuesta player insertado: ", respuesta2);
-  //    });
-  //  }
-  //obtener todas las reservaciones de un usuario
-  getAllReservaciones_() {
-    this.reservaProvider.getReservacionesCliente_(this.uid).subscribe((data) => {
-      this.misReservaciones = data;
-    });
+
+  async getUsuario() {
+    this.miUser = await this.userProvider.getUser(this.uid);
+    this.telUser = this.miUser.phoneNumber;
+    this.getReservacionCompartida(this.telUser);
   }
   
-  getAllSucursales() {
-    this.reservaProvider.getSucursal_().subscribe((data) => {
-      this.nombresSucursales = data;
+  //obtener todas las reservaciones de un usuario
+  getAllReservaciones() {
+    this.reservaProvider.getReservacionesCliente(this.uid).subscribe((data) => {
+      this.misReservaciones = data;
     });
   }
 
 
   //obtener el telefono del usuario en sesion
-  getTelUsuario() {
-    this.reservaProvider.getTelUser(this.uid).subscribe(tel => {
-      this.telUser = tel;
-      this.telUser.forEach(data => {
-        console.log('tel del usuario en sesion', data.phoneNumber);
+  getReservacionCompartida(telefono: string) {
         //obtener reservaciones compartidas en las que esta el usuario
-        this.reservaProvider.getReservacionCompartida(data.phoneNumber).subscribe(resCom => {
+        this.reservaProvider.getReservacionCompartida(telefono).subscribe((resCom) => {
           this.resCompartidas = resCom;
-          console.log("compartidas ", this.resCompartidas);
         });
-      });
-    });
-  }
-
-  getClientes() {
-    this.monRes.getAllClientes("users").then(c => {
-      this.clientes = c;
-      // console.log("Estos son los clientes: ", this.clientes);
-    });
   }
 
   verDetalle(idReservacion) {

@@ -63,7 +63,7 @@ export class UsuarioProvider {
     this._codigo = this.codigo.valueChanges();
     return (this._codigo = this.codigo.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc;
           return data;
@@ -168,7 +168,7 @@ export class UsuarioProvider {
     this._usuarioID = this.usuarioID.valueChanges();
     return (this._usuarioID = this.usuarioID.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -185,7 +185,7 @@ export class UsuarioProvider {
     this._tarjetaPagar = this.tarjetaPagar.valueChanges();
     return (this._tarjetaPagar = this.tarjetaPagar.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -202,7 +202,7 @@ export class UsuarioProvider {
     this._tarjetaPagar2 = this.tarjetaPagar2.valueChanges();
     return (this._tarjetaPagar2 = this.tarjetaPagar2.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -221,7 +221,7 @@ export class UsuarioProvider {
     this._tarjetas = this.tarjetas.valueChanges();
     return (this._tarjetas = this.tarjetas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -242,7 +242,7 @@ export class UsuarioProvider {
       .snapshotChanges()
       .pipe(
         map((changes) => {
-          return changes.map((action) => {
+          return changes.map((action: any) => {
             const data = action.payload.doc.data() as any;
             data.$key = action.payload.doc.id;
             return data;

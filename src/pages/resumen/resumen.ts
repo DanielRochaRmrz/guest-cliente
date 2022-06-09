@@ -8,9 +8,7 @@ import {
 import * as moment from "moment";
 import { ResumenProvider } from "../../providers/resumen/resumen";
 import { ReservacionProvider } from "../../providers/reservacion/reservacion";
-import { TabsPage } from "../tabs/tabs";
-import { OneSignal } from "@ionic-native/onesignal";
-import { ViewController, Platform } from "ionic-angular";
+import { Platform } from "ionic-angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
   AngularFirestore,
@@ -91,7 +89,6 @@ export class ResumenPage {
     public alertCtrl: AlertController,
     public _resumenProvider: ResumenProvider,
     public _providerReserva: ReservacionProvider,
-    private oneSignal: OneSignal,
     public platform: Platform,
     public fb: FormBuilder,
     private sms: SMS,

@@ -75,7 +75,7 @@ export class CartaEditarPage {
       idReservacion: this.idReservacion,
       idSucursal: this.idSucursal,
       uid: this.evento
-    });
+    }, { animate: true, direction: "back" });
   }
 
   goToResumen(consumo, total){
@@ -90,7 +90,7 @@ export class CartaEditarPage {
         idReservacion: this.idReservacion,
         idSucursal: this.idSucursal,
         uid: this.evento
-      });
+      }, { animate: true, direction: "forward" });
     } else {
       let alertMesas = this.alertCtrl.create({
         message:
@@ -129,7 +129,7 @@ export class CartaEditarPage {
       idReservacion: this.idReservacion,
       uid: this.evento,
       idSucursal: this.idSucursal
-    });
+    }, { animate: true, direction: "forward" });
   }
 
   loadReservacion(idx) {

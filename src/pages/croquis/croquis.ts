@@ -6,11 +6,9 @@ import {
   AlertController,
   LoadingController,
 } from "ionic-angular";
-import { SafeResourceUrl, DomSanitizer } from "@angular/platform-browser";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PhotoViewer } from '@ionic-native/photo-viewer';
-
-import { CartaPage } from "../carta/carta";
+import { MenuPage } from '../menu/menu';
 import { ReservacionesPage } from "../reservaciones/reservaciones";
 
 import { CroquisProvider } from "../../providers/croquis/croquis";
@@ -23,7 +21,6 @@ import { CroquisProvider } from "../../providers/croquis/croquis";
 export class CroquisPage {
 
   miUser: any = {};
-  url: SafeResourceUrl;
   params: any = {};
   uid: string;
   showLoading: boolean = false;
@@ -35,6 +32,7 @@ export class CroquisPage {
   CroquisImg: string = '';
   imgCroquis: any = {};
   idSucursal: string = "";
+  ClaveInstancia: string = "";
   fecha: string = "";
   hora: string = "";
   idReservacion: string = "";
@@ -47,7 +45,6 @@ export class CroquisPage {
     public croquisService: CroquisProvider,
     public formBuilder: FormBuilder,
     public photoViewer: PhotoViewer,
-    private sanitizer: DomSanitizer
   ) {
     this.zonaForm = this.formBuilder.group({
       zona: ["", [Validators.required]],
@@ -59,15 +56,14 @@ export class CroquisPage {
     this.uid = localStorage.getItem("uid");
     this.user();
     this.idSucursal = this.navParams.get("idSucursal");
+    this.ClaveInstancia = this.navParams.get("ClaveInstancia");
+    console.log(this.ClaveInstancia);
     this.fecha = this.navParams.get("fecha");
     this.hora = this.navParams.get("hora");
     this.idReservacion = this.navParams.get("idReservacion");
     this.zona = this.navParams.get("zona");
     this.getZonas(this.idSucursal);
     this.getCroquisImg(this.idSucursal);
-    // this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //   `https://adminsoft.mx/operacion/login/cuadricula_cliente/${this.params.idSucursal}/${this.params.idReservacion}/${this.params.zona}/${this.params.zona_consumo}/${this.params.fecha}/${this.params.hora}`
-    // );
   }
 
   async user() {
@@ -93,7 +89,6 @@ export class CroquisPage {
       dataImg.forEach(data => {
         this.CroquisImg = data.imagenes;
         this.showLoading = false;
-        console.log('Croquis -->', this.CroquisImg);
       });      
     });
 
@@ -131,21 +126,22 @@ alertConsumo(consumo: number) {
 
   async updateZona() {
     const resultado = await this.croquisService.updateZona(this.idReservacion, this.zona);
-    console.log('Update resultado -->', resultado);
     if (resultado == true) {
-      this.irCata();
+      this.irMenu();
     }
   }
 
-  irCata() {
-    this.navCtrl.push(CartaPage, {
+
+  irMenu() {
+    this.navCtrl.push(MenuPage, {
       consumo: this.consumo,
       fecha: this.fecha,
       hora: this.hora,
       idReservacion: this.idReservacion,
       idSucursal: this.idSucursal,
+      ClaveInstancia: this.ClaveInstancia,
       zona: this.zona,
-    });
+    }, { animate: true, direction: "forward" });
   }
 
   irReservaciones() {
@@ -154,8 +150,9 @@ alertConsumo(consumo: number) {
       hora: this.hora,
       idReservacion: this.idReservacion,
       idSucursal: this.idSucursal,
+      ClaveInstancia: this.ClaveInstancia,
       zona: this.zona,
-    });
+    }, { animate: true, direction: "back" });
   }
 
   onLoad() {

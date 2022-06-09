@@ -11,9 +11,11 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class ReservacionProvider {
-
   areas: AngularFirestoreCollection<any[]>;
   _areas: Observable<any>;
+
+  productos: AngularFirestoreCollection<any[]>;
+  _productos: Observable<any>;
 
   carta: AngularFirestoreCollection<any[]>;
   _carta: Observable<any>;
@@ -80,20 +82,21 @@ export class ReservacionProvider {
   sucursal: AngularFirestoreCollection<any[]>;
   _sucursal: Observable<any>;
 
+  reservacionesCollection: AngularFirestoreCollection<any>;
+  collection: Observable<any>;
+
   constructor(public af: AngularFirestore, public http: HttpClient) {
     console.log("Hello ReservacionProvider Provider");
   }
 
   public getHistorial(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    //(console.log("idSucursal", idx);
     this.historial = this.af.collection<any>("reservaciones", (ref) =>
       ref.where("estatus", "==", "Pagando").where("idUsuario", "==", idx)
     );
     this._historial = this.historial.valueChanges();
     return (this._historial = this.historial.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -103,64 +106,13 @@ export class ReservacionProvider {
   }
 
   public getAreas(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idSucursal", idx);
     this.areas = this.af.collection<any>("areas", (ref) =>
       ref.where("uidSucursal", "==", idx)
     );
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
-          const data = action.payload.doc.data() as any;
-          data.$key = action.payload.doc.id;
-          return data;
-        });
-      })
-    ));
-  }
-
-  //  public getNombreArea() {
-  // return this.afiredatabase.object("sucursales/" + uid);
-  //  this.areasNombre = this.af.collection<any>("areas", ref =>
-  //    ref.where("uid", "==", idx)
-  //  );
-  //  this._areasNombre = this.areasNombre.valueChanges();
-  //  return (this._areasNombre = this.areasNombre.snapshotChanges().pipe(
-  //  map(changes => {
-  //    return changes.map(action => {
-  //      const data = action.payload.doc.data() as any;
-  //    data.$key = action.payload.doc.id;
-  //    return data;
-  //  });
-  //  })
-  //  ));
-  //}
-
-  // getReservacionesCliente_(idx: string) {
-    
-  //   return new Promise((resolve, reject) => {
-  //     this.af.collection("reservaciones", (ref) => ref.where("idUsuario", "==", idx))
-  //       .snapshotChanges().pipe(
-  //         map((changes) => {
-  //           return changes.map((action) => {
-  //             const data = action.payload.doc.data() as any;
-  //             data.$key = action.payload.doc.id;
-  //             resolve(data);
-  //           });
-  //         })
-  //       );
-  //   });
-  // }
-
-  public getReservacionesCliente_(idx: string) {
-    this.reservaCliente = this.af.collection<any>("reservaciones", (ref) =>
-      ref.where("idUsuario", "==", idx).where("estatusFinal", "==", "rsv_copletada")
-    );
-    this._reservaCliente = this.reservaCliente.valueChanges();
-    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
-      map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -170,15 +122,13 @@ export class ReservacionProvider {
   }
 
   public getReservacionesProducto(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("Id", idx);
     this.reservaProducto = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idx)
     );
     this._reservaProducto = this.reservaProducto.valueChanges();
     return (this._reservaProducto = this.reservaProducto.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -187,34 +137,14 @@ export class ReservacionProvider {
     ));
   }
 
-  // public getZonas(idx, area) {
-  //   // return this.afiredatabase.object("sucursales/" + uid);
-  //   console.log("idSucursal", idx);
-  //   this.areas = this.af.collection<any>("zonas", ref =>
-  //     ref.where("uidSucursal", "==", idx).where("uidArea", "==", area)
-  //   );
-  //   this._areas = this.areas.valueChanges();
-  //   return (this._areas = this.areas.snapshotChanges().pipe(
-  //     map(changes => {
-  //       return changes.map(action => {
-  //         const data = action.payload.doc.data() as any;
-  //         data.$key = action.payload.doc.id;
-  //         return data;
-  //       });
-  //     })
-  //   ));
-  // }
-
   public getZonas(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idSucursal", idx);
     this.areas = this.af.collection<any>("zonas", (ref) =>
       ref.where("uidSucursal", "==", idx)
     );
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -223,16 +153,32 @@ export class ReservacionProvider {
     ));
   }
 
-  public getProductos(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idSucursal", idx);
+  public getProductos(idx: string) {
     this.areas = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idx)
     );
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  public getProductosAdd(claveProducto: string, idReservacion: string) {
+    this.productos = this.af.collection<any>("productos", (ref) =>
+      ref
+        .where("idReservacion", "==", idReservacion)
+        .where("idProducto", "==", claveProducto)
+    );
+    this._productos = this.productos.valueChanges();
+    return (this._productos = this.productos.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -242,15 +188,13 @@ export class ReservacionProvider {
   }
 
   public getInfo(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idReservacion", idx);
     this.reservaInfo = this.af.collection<any>("reservaciones", (ref) =>
       ref.where("idReservacion", "==", idx)
     );
     this._reservaInfo = this.reservaInfo.valueChanges();
     return (this._reservaInfo = this.reservaInfo.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -259,15 +203,13 @@ export class ReservacionProvider {
     ));
   }
   public getReserCom(idx) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idReservacion", idx);
     this.reservaInfo2 = this.af.collection<any>("compartidas", (ref) =>
       ref.where("idReservacion", "==", idx)
     );
     this._reservaInfo2 = this.reservaInfo2.valueChanges();
     return (this._reservaInfo2 = this.reservaInfo2.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -284,7 +226,7 @@ export class ReservacionProvider {
     this._telefonos = this.telefonos.valueChanges();
     return (this._telefonos = this.telefonos.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -301,7 +243,7 @@ export class ReservacionProvider {
     this._playerID = this.playerID.valueChanges();
     return (this._playerID = this.playerID.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -309,25 +251,6 @@ export class ReservacionProvider {
       })
     ));
   }
-
-  //buscar el id del registro compartir
-  //public buscarIDcompartir(telefono,idReservacion) {
-  //      this.idCompartir = this.af.collection<any>("compartidas", ref =>
-  //      ref
-  //      .where("telefono", "==", telefono)
-  //      .where("idReservacion", "==", idReservacion)
-  //     );
-  //      this._idCompartir = this.idCompartir.valueChanges();
-  //     return (this._idCompartir = this.idCompartir.snapshotChanges().pipe(
-  //         map(changes => {
-  //         return changes.map(action => {
-  //           const data = action.payload.doc.data() as any;
-  //           data.$key = action.payload.doc.id;
-  //          return data;
-  //       });
-  //      })
-  //   ));
-  //}
 
   //obtener numero de telefono
   public getTelUser(idx) {
@@ -337,7 +260,7 @@ export class ReservacionProvider {
     this._teluser = this.teluser.valueChanges();
     return (this._teluser = this.teluser.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -354,7 +277,26 @@ export class ReservacionProvider {
     this._telpropio = this.telpropio.valueChanges();
     return (this._telpropio = this.telpropio.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  public getReservacionesCliente(idx: string) {
+    this.reservaCliente = this.af.collection<any>("reservaciones", (ref) =>
+      ref
+        .where("idUsuario", "==", idx)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", "in", ["Creando", "Modificado", "Aceptado"])
+    );
+    this._reservaCliente = this.reservaCliente.valueChanges();
+    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -364,14 +306,37 @@ export class ReservacionProvider {
   }
 
   //obtener reservacion compartida en la que esta el usuario
-  public getReservacionCompartida(idx) {
+  public getReservacionCompartida(telefono: string) {
     this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
-      ref.where("telefono", "==", idx).where("estatusFinal", "==", "rsv_copletada")
+      ref
+        .where("telefono", "==", telefono)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", "in", ["Espera", "Aceptado"])
     );
     this._resCompartida = this.resCompartida.valueChanges();
     return (this._resCompartida = this.resCompartida.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  //obtener reservacion compartida en la que esta el usuario
+  public getCompartidaIdReserva(idReservacion: string) {
+    this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
+      ref
+        .where("idReservacion", "==", idReservacion)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", "in", ["Espera", "Aceptado"])
+    );
+    this._resCompartida = this.resCompartida.valueChanges();
+    return (this._resCompartida = this.resCompartida.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -388,7 +353,7 @@ export class ReservacionProvider {
     this._comAceptadas = this.comAceptadas.valueChanges();
     return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -405,7 +370,7 @@ export class ReservacionProvider {
     this._comEscaneos = this.comEscaneos.valueChanges();
     return (this._comEscaneos = this.comEscaneos.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -422,7 +387,7 @@ export class ReservacionProvider {
     this._comEspera = this.comEspera.valueChanges();
     return (this._comEspera = this.comEspera.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -434,12 +399,14 @@ export class ReservacionProvider {
   //obtener reservacion compartida aceptada por el usuario
   public getCompartidaPagada(idx) {
     this.comAceptadas = this.af.collection<any>("compartidas", (ref) =>
-      ref.where("idReservacion", "==", idx).where("estatus_pago", "==", "Pagado")
+      ref
+        .where("idReservacion", "==", idx)
+        .where("estatus_pago", "==", "Pagado")
     );
     this._comAceptadas = this.comAceptadas.valueChanges();
     return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -456,7 +423,7 @@ export class ReservacionProvider {
     this._comAceptadas = this.comAceptadas.valueChanges();
     return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -473,7 +440,7 @@ export class ReservacionProvider {
     this._comAceptadas = this.comAceptadas.valueChanges();
     return (this._comAceptadas = this.comAceptadas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -482,7 +449,6 @@ export class ReservacionProvider {
     ));
   }
 
-
   public consultarEstatusRe(idx) {
     this.comRes = this.af.collection<any>("reservaciones", (ref) =>
       ref.where("idReservacion", "==", idx)
@@ -490,7 +456,7 @@ export class ReservacionProvider {
     this._comRes = this.comRes.valueChanges();
     return (this._comRes = this.comRes.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -507,7 +473,7 @@ export class ReservacionProvider {
     this._userCompartido = this.userCompartido.valueChanges();
     return (this._userCompartido = this.userCompartido.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -517,8 +483,6 @@ export class ReservacionProvider {
   }
 
   public getMesas(idx, area, zona) {
-    // return this.afiredatabase.object("sucursales/" + uid);
-    console.log("idSucursal", idx);
     this.areas = this.af.collection<any>("mesas", (ref) =>
       ref
         .where("uidSucursal", "==", idx)
@@ -528,7 +492,7 @@ export class ReservacionProvider {
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -547,8 +511,6 @@ export class ReservacionProvider {
       const fecha = moment(reservacion.fecha).format("x");
       const hora = moment(reservacion.hora, "HH:mm").format("hh:mm a");
       const idUsuario = localStorage.getItem("uid");
-      console.log("Evento: ", reservacion.idevento);
-      console.log("HIzo consulta agregar reservacion");
       this.af
         .collection("reservaciones")
         .add({
@@ -564,7 +526,6 @@ export class ReservacionProvider {
           folio: "R" + folio,
         })
         .then((reserva) => {
-          console.log("Reservación exitosa: ", reserva.id);
           this.updateReservaId(reserva.id);
           resolve({ success: true, idReservacion: reserva.id });
         })
@@ -589,7 +550,6 @@ export class ReservacionProvider {
           estatusFinal: "rsv_incompleta",
         })
         .then((reserva) => {
-          console.log("Compartido exitoso: ", reserva.id);
           this.updateCompartirId(reserva.id);
           resolve({ success: true, idCompartir: reserva.id });
         })
@@ -599,7 +559,7 @@ export class ReservacionProvider {
     });
   }
 
-  public saveCompartirTodos(telefono, idReservacion, idUsuario) {
+  public saveCompartirTodos(telefono, idReservacion, idUsuario, idSucursal) {
     return new Promise((resolve, reject) => {
       this.af
         .collection("compartidas")
@@ -611,10 +571,10 @@ export class ReservacionProvider {
           totalDividido: 0,
           estatus_escaneo: "NO",
           estatusFinal: "rsv_incompleta",
-          pagoEstatus: false
+          pagoEstatus: false,
+          idSucursal: idSucursal,
         })
         .then((reserva) => {
-          console.log("Compartido exitoso: ", reserva.id);
           this.updateCompartirId(reserva.id);
           resolve({ success: true, idCompartir: reserva.id });
         })
@@ -625,10 +585,10 @@ export class ReservacionProvider {
   }
 
   //insertar el numero del ususrio en sesion en la tabla al compartir una cuenta
-  public saveCompartirPropio(telefono, idReservacion, idUsuario) {
+  public saveCompartirPropio(telefono, idReservacion, idUsuario, idSucursal) {
     return new Promise((resolve, reject) => {
-      localStorage.setItem('compartida', 'true');
-      const playerID = localStorage.getItem('playerID');
+      localStorage.setItem("compartida", "true");
+      const playerID = localStorage.getItem("playerID");
       this.af
         .collection("compartidas")
         .add({
@@ -640,10 +600,10 @@ export class ReservacionProvider {
           playerId: playerID,
           estatus_escaneo: "NO",
           estatusFinal: "rsv_incompleta",
-          pagoEstatus: false
+          pagoEstatus: false,
+          idSucursal: idSucursal,
         })
         .then((reserva) => {
-          console.log("Compartido exitoso: ", reserva.id);
           this.updateCompartirId(reserva.id);
           resolve({ success: true, idCompartir: reserva.id });
         })
@@ -674,7 +634,6 @@ export class ReservacionProvider {
           idUsuario: idUsuario,
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -693,7 +652,6 @@ export class ReservacionProvider {
           estatus: "Aceptado",
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -711,7 +669,6 @@ export class ReservacionProvider {
           estatus: "Cancelado",
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -730,7 +687,6 @@ export class ReservacionProvider {
           estatus: "Aceptado",
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -749,7 +705,6 @@ export class ReservacionProvider {
           estatus: "Rechazado",
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -767,10 +722,6 @@ export class ReservacionProvider {
           estatus: "CreadaCompartida",
         })
         .then((reserva) => {
-          console.log(
-            "Reservación actualizada CreadaCompartida: ",
-            JSON.stringify(reserva)
-          );
           resolve({ success: true });
         })
         .catch((err) => {
@@ -789,7 +740,6 @@ export class ReservacionProvider {
           totalDividido: totalDividido,
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -797,25 +747,6 @@ export class ReservacionProvider {
         });
     });
   }
-
-  //Insertar el playerID de cada usuario en tabla compartidas
-  //public savePlayerid(idCompartir,player) {
-  //   return new Promise((resolve, reject) => {
-  //     this.af
-  //       .collection("compartidas")
-  //       .doc(idCompartir)
-  //       .update({
-  //         playerID: player
-  //       })
-  //         .then(reserva => {
-  //           console.log("Reservación actualizada: ", JSON.stringify(reserva));
-  //           resolve({ success: true });
-  //         })
-  //         .catch(err => {
-  //           reject(err);
-  //         });
-  //     });
-  //   }
 
   //Cambiar estatus de la reservacion a compartida
   public updateReservacionCompartida(idx) {
@@ -827,7 +758,6 @@ export class ReservacionProvider {
           estatus: "Compartida",
         })
         .then((reserva) => {
-          console.log("Reservación actualizada: ", JSON.stringify(reserva));
           resolve({ success: true });
         })
         .catch((err) => {
@@ -838,7 +768,6 @@ export class ReservacionProvider {
 
   public addProducto(producto) {
     return new Promise((resolve, reject) => {
-      console.log("Evento: ", JSON.stringify(producto));
       this.af
         .collection("productos")
         .add({
@@ -851,37 +780,30 @@ export class ReservacionProvider {
           img: producto.img,
         })
         .then((reserva) => {
-          console.log("Producto exitoso: ", reserva.id);
           this.updateReservaId(reserva.id);
           resolve({ success: true, idReservacion: reserva.id });
         })
         .catch((err) => {
           reject(err);
-          console.log("Este es un error", JSON.stringify(err));
         });
     });
   }
 
-  public updateProducto(producto, ID) {
+  public updateProducto(producto: any, ID: string) {
     return new Promise((resolve, reject) => {
       this.af
         .collection("productos")
         .doc(ID)
         .update({
-          producto: producto.producto,
           cantidad: producto.cantidad,
-          total: producto.total,
           costo: producto.costo,
-          idProducto: producto.idProducto,
-          idReservacion: producto.idReservacion,
+          total: producto.total,
         })
-        .then((producto) => {
-          console.log("Producto exitoso: ", producto);
+        .then(() => {
           resolve({ success: true });
         })
         .catch((err) => {
           reject(err);
-          console.log("Este es un error", JSON.stringify(err));
         });
     });
   }
@@ -912,7 +834,7 @@ export class ReservacionProvider {
     this.reservacion = this.af.doc<any>(`reservaciones/${idx}`);
     // this.pedidoDoc = this.afs.collection<Servicios>('servicios').doc(`/${idPedido}`).collection<Pedidos>('pedidos');
     return (this._reservacion = this.reservacion.snapshotChanges().pipe(
-      map((action) => {
+      map((action: any) => {
         if (action.payload.exists === false) {
           return null;
         } else {
@@ -927,7 +849,7 @@ export class ReservacionProvider {
   public getZona(idZona: string) {
     this.zona = this.af.doc<any>(`zonas/${idZona}`);
     return (this._zona = this.zona.snapshotChanges().pipe(
-      map((action) => {
+      map((action: any) => {
         if (action.payload.exists === false) {
           return null;
         } else {
@@ -954,12 +876,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {
-        // console.log("Document successfully deleted!");
-      })
-      .catch(function (error) {
-        // console.error("Error removing document: ", error);
-      });
+      .then(function () {})
+      .catch(function (error) {});
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -972,7 +890,6 @@ export class ReservacionProvider {
     });
 
     this.eliminar_rsvp(idReservacion);
-
   }
 
   deleteProduct(idReservacion) {
@@ -980,12 +897,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {
-        // console.log("Document successfully deleted!");
-      })
-      .catch(function (error) {
-        // console.error("Error removing document: ", error);
-      });
+      .then(function () {})
+      .catch(function (error) {});
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1005,11 +918,9 @@ export class ReservacionProvider {
         .doc(keyProducto)
         .delete()
         .then(function () {
-          console.log("Document successfully deleted!");
           resolve({ success: true });
         })
         .catch(function (error) {
-          console.error("Error removing document: ", error);
           reject(error);
         });
     });
@@ -1022,7 +933,7 @@ export class ReservacionProvider {
     this._areas = this.areas.valueChanges();
     return (this._areas = this.areas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -1038,7 +949,7 @@ export class ReservacionProvider {
     this._carta = this.carta.valueChanges();
     return (this._carta = this.carta.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -1048,30 +959,18 @@ export class ReservacionProvider {
   }
 
   public getSucursal_() {
-      this.sucursal = this.af.collection<any>("sucursales");
-      this._sucursal = this.sucursal.valueChanges();
-      return (this._sucursal = this.sucursal.snapshotChanges().pipe(
-        map((changes) => {
-          return changes.map((action) => {
-            const data = action.payload.doc.data() as any;
-            data.$key = action.payload.doc.id;
-            return data;
-          });
-        })
-      ));
+    this.sucursal = this.af.collection<any>("sucursales");
+    this._sucursal = this.sucursal.valueChanges();
+    return (this._sucursal = this.sucursal.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
   }
-
-  // public getSucursal() {
-  //   return new Promise((resolve, reject) => {
-  //     this.db.collection("sucursales").onSnapshot((doc) => {
-  //       const sucursales = [];
-  //       doc.forEach((data) => {
-  //         sucursales.push(data.data());
-  //         resolve(sucursales);
-  //       });
-  //     });
-  //   });
-  // }
 
   obtenerMesas(id) {
     return new Promise((resolve, rejects) => {
@@ -1086,12 +985,11 @@ export class ReservacionProvider {
   eliminar_rsvp(rsvp: string) {
     return new Promise((resolve, rejects) => {
       const data = {
-        idReservacion: rsvp
+        idReservacion: rsvp,
       };
       const url = `https://adminsoft.mx/operacion/guest/eliminar_rsvp/`;
       this.http.post(url, data).subscribe((resp: any) => {
         const data = resp.datos;
-        console.log(data);
       });
     });
   }
@@ -1109,32 +1007,33 @@ export class ReservacionProvider {
 
   getSucursalesTipo(tipo: string) {
     this.sucursal = this.af.collection<any>("sucursales", (ref) =>
-    ref.where("tipo", "==", tipo));
-      this._sucursal = this.sucursal.valueChanges();
-      return (this._sucursal = this.sucursal.snapshotChanges().pipe(
-        map((changes) => {
-          return changes.map((action) => {
-            const data = action.payload.doc.data() as any;
-            data.$key = action.payload.doc.id;
-            return data;
-          });
-        })
-      ));
+      ref.where("tipo", "==", tipo)
+    );
+    this._sucursal = this.sucursal.valueChanges();
+    return (this._sucursal = this.sucursal.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
   }
 
   getSucursal(uidSucursal: string) {
     this.sucursal = this.af.collection<any>("sucursales", (ref) =>
-    ref.where("uid", "==", uidSucursal));
-      this._sucursal = this.sucursal.valueChanges();
-      return (this._sucursal = this.sucursal.snapshotChanges().pipe(
-        map((changes) => {
-          return changes.map((action) => {
-            const data = action.payload.doc.data() as any;
-            data.$key = action.payload.doc.id;
-            return data;
-          });
-        })
-      ));
+      ref.where("uid", "==", uidSucursal)
+    );
+    this._sucursal = this.sucursal.valueChanges();
+    return (this._sucursal = this.sucursal.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
   }
-
 }

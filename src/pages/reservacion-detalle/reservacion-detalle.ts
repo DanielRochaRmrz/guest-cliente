@@ -108,23 +108,6 @@ export class ReservacionDetallePage {
     console.log('Este es el uid', this.idUser);
     
 
-    //consultar tabla areas
-    // this.afs
-    //   .collection("areas")
-    //   .valueChanges()
-    //   .subscribe(data => {
-    //     this.nombresAreas = data;
-    //   });
-
-    //consultar tabla zonas
- 
-
-    this.afs
-      .collection("zonas")
-      .valueChanges()
-      .subscribe(data1 => {
-        this.nombresZonas = data1;
-      });
     //consultar tabla users
     this.afs
       .collection("users")
@@ -192,6 +175,13 @@ export class ReservacionDetallePage {
     this.getTarjeta(this.idUser);
     this.getCompatidasPagadas(this.idReservacion);
     this.loadUsersCompartidos(this.idReservacion);
+    this.getCompartidaIdReserva(this.idReservacion);
+  }
+
+  getCompartidaIdReserva(idReservacion: string) {
+    this._providerReserva.getCompartidaIdReserva(idReservacion).subscribe((resp: any) => {
+      console.log('RespuestaCompartida -->', resp);
+    });
   }
 
   getTarjeta(uid: string) {
@@ -355,7 +345,7 @@ export class ReservacionDetallePage {
 
   //mandar datos a la pagina del QR
   genararQR(idReservacion, totalDividido, idUsuario, telefono, idCompartir, folio, displayNames) {
-    const t = totalDividido + (totalDividido * .16) + (totalDividido * .039);
+    const t = totalDividido + (totalDividido * .16) + (totalDividido * .059);
     const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(GenerarqrPage, {
       idReservacion: idReservacion,
@@ -383,7 +373,7 @@ export class ReservacionDetallePage {
 
   //mandar datos a la pagina del QR
   genararQRNormal(idReservacion, total, idUsuario, folio) {
-    const t = total + (total * .16) + (total * .039);
+    const t = total + (total * .16) + (total * .059);
     const amount = (Number(t) * 100).toFixed(0);
     this.navCtrl.setRoot(Generarqr_2Page, {
       idReservacion: idReservacion,
@@ -553,18 +543,18 @@ export class ReservacionDetallePage {
         }
       };
 
-      window["plugins"].OneSignal.postNotification(
-        noti,
-        function (successResponse) {
-          console.log(
-            "Notification Post Success:",
-            successResponse
-          );
-        },
-        function (failedResponse: any) {
-          console.log("Notification Post Failed: ", failedResponse);
-        }
-      );
+      // window["plugins"].OneSignal.postNotification(
+      //   noti,
+      //   function (successResponse) {
+      //     console.log(
+      //       "Notification Post Success:",
+      //       successResponse
+      //     );
+      //   },
+      //   function (failedResponse: any) {
+      //     console.log("Notification Post Failed: ", failedResponse);
+      //   }
+      // );
     } else {
       console.log("Solo funciona en dispositivos");
     }

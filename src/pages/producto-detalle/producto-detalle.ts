@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { CartaProvider } from '../../providers/carta/carta';
-import { ReservacionProvider } from '../../providers/reservacion/reservacion';
-import { CartaPage } from '../carta/carta';
+import { Component } from "@angular/core";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { CartaApiProvider } from "../../providers/carta-api/carta-api";
+import { CartaProvider } from "../../providers/carta/carta";
+import { ReservacionProvider } from "../../providers/reservacion/reservacion";
+import { CartaPage } from "../carta/carta";
 
 @IonicPage()
 @Component({
   selector: "page-producto-detalle",
-  templateUrl: "producto-detalle.html"
+  templateUrl: "producto-detalle.html",
 })
 export class ProductoDetallePage {
-
   idProducto: any;
   product: any = {};
   pisto = 0;
@@ -19,6 +19,10 @@ export class ProductoDetallePage {
   disableButton: any = true;
   evento: any;
   idSucursal: any;
+  ClaveInstancia: string = "";
+  ClaveMenuDigitalDetalle: string = "";
+  claveMenuDigitalDetalleArbol: string = "";
+  claveProducto: string = "";
   productos: any;
   modificar: any;
   key: any;
@@ -31,95 +35,90 @@ export class ProductoDetallePage {
   miUser: any = {};
   sucurSel: any;
   consumo: number;
-  fecha: string = '';
-  hora: string = '';
+  fecha: string = "";
+  hora: string = "";
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public afs: AngularFirestore,
     public _providerCarta: CartaProvider,
-    public _providerReservacion: ReservacionProvider
+    public _providerReservacion: ReservacionProvider,
+    public cartaApi: CartaApiProvider
   ) {
-
     this.afs
       .collection("sucursales")
       .valueChanges()
-      .subscribe(s => {
+      .subscribe((s) => {
         this.sucurSel = s;
-        // console.log("sucursales", s);
       });
-      
+
     this.idProducto = navParams.get("idProducto");
     this.idReservacion = navParams.get("idReservacion");
     this.evento = navParams.get("uid");
     this.idSucursal = navParams.get("idSucursal");
+    this.ClaveInstancia = navParams.get("ClaveInstancia");
+    this.ClaveMenuDigitalDetalle = navParams.get("ClaveMenuDigitalDetalle");
+    this.claveMenuDigitalDetalleArbol = navParams.get(
+      "claveMenuDigitalDetalleArbol"
+    );
+    this.claveProducto = navParams.get("claveProducto");
     this.area = navParams.get("area");
     this.zona = navParams.get("zona");
     this.consumo = navParams.get("consumo");
     this.fecha = navParams.get("fecha");
     this.hora = navParams.get("hora");
-    console.log("zona", this.zona, "area", this.area);
     //para ocultar las tabs en la pantalla de resumen
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+    this.tabBarElement = document.querySelector(".tabbar.show-tabbar");
 
     //sacar el id del usuario del local storage
-    this.uidUserSesion = localStorage.getItem('uid');
-    console.log('id del usuario en eventos', this.uidUserSesion);
+    this.uidUserSesion = localStorage.getItem("uid");
 
-     //obtener informacion de mi user
-     this.afs
-     .collection("users").doc(this.uidUserSesion)
-     .valueChanges()
-     .subscribe(dataSu => {
-       this.miUser = dataSu;
-       console.log('Datos de mi usuario', this.miUser);
-     });
+    //obtener informacion de mi user
+    this.afs
+      .collection("users")
+      .doc(this.uidUserSesion)
+      .valueChanges()
+      .subscribe((dataSu) => {
+        this.miUser = dataSu;
+      });
 
-   //Obtener el nombre del evento
-   if(this.evento != null){
-     this.afs
-     .collection("evento").doc(this.evento)
-     .valueChanges()
-     .subscribe(dataSu => {
-       this.eventoSel = dataSu;
-       console.log('Datos de mi evento', this.eventoSel);
-     });
-   }
-
+    //Obtener el nombre del evento
+    if (this.evento != null) {
+      this.afs
+        .collection("evento")
+        .doc(this.evento)
+        .valueChanges()
+        .subscribe((dataSu) => {
+          this.eventoSel = dataSu;
+        });
+    }
   }
 
   ionViewDidLoad() {
-    console.log("ionViewDidLoad ProductoDetallePage");
-    this.getProduct(this.idProducto, this.idReservacion);
+    this.getProducto(this.ClaveInstancia, this.claveProducto);
+    this.getProductoAdd(this.claveProducto, this.idReservacion);
   }
-  //funciones para ocultar las tabs
-  // ionViewWillEnter() {
-  //   this.tabBarElement.style.display = 'none';
-  // }
-  // ionViewWillLeave() {
-  //   this.tabBarElement.style.display = 'flex';
-  // }
 
-  getProduct(idProducto, idx) {
-    this._providerCarta.getProduct(idProducto).subscribe(product => {
-      this.product = product;
+  getProducto(ClaveInstancia: string, claveProducto: string) {
+    this.cartaApi
+      .GetProducto(ClaveInstancia, claveProducto)
+      .subscribe((producto: any) => {
+        this.product = producto;
+      });
+  }
 
-      this._providerReservacion.getProductos(idx).subscribe(productos => {
-        console.log("Datos Reservación: ", productos);
-        this.productos = productos;
-        this.productos.forEach(data => {
-          console.log("Productos: ", data);
-          if (data.idProducto == idProducto) {
-            console.log("Modificar");
-            this.modificar = true;
-            this.pisto = data.cantidad;
-            this.key = data.$key;
-          }
+  getProductoAdd(claveProducto: string, idReservacion: string) {
+    this._providerReservacion
+      .getProductosAdd(claveProducto, idReservacion)
+      .subscribe((productos) => {
+        productos.map((item) => {
+          this.modificar = true;
+          this.pisto = item.cantidad;
+          this.key = item.$key;
+          console.log("Key -->", this.key);
         });
       });
-      console.log("Detalle producto: ", this.product.titulo);
-    });
   }
 
   increment() {
@@ -142,99 +141,120 @@ export class ProductoDetallePage {
     }
   }
 
-  eliminar(key) {
-    this._providerReservacion.deleteProduct_(key).then((res: any) => {
-      if (res.success == true) {
-        this.navCtrl.push(CartaPage, {
-          idReservacion: this.idReservacion,
-          uid: this.evento,
-          idSucursal: this.idSucursal,
-          area: this.area,
-          zona: this.zona,
-          consumo: this.consumo,
-          hora: this.hora,
-          fecha: this.fecha,
-        });
-      } else {
-      }
-    });
-  }
-
-  agregar(_producto, costo) {
-    console.log("Pisto: ", this.pisto);
-
+  agregar(nombreProducto: string, costo: number) {
     const total = costo * this.pisto;
     const producto = {
-      producto: _producto,
       cantidad: this.pisto,
       costo: costo,
-      total: total,
-      idProducto: this.idProducto,
+      idProducto: this.claveProducto,
       idReservacion: this.idReservacion,
-      img: "NA"
+      img: "NA",
+      producto: nombreProducto,
+      total: total,
     };
     this._providerReservacion
       .addProducto(producto)
       .then((respuesta: any) => {
         if (respuesta.success == true) {
-          this.navCtrl.push(CartaPage, {
-            idReservacion: this.idReservacion,
-            uid: this.evento,
-            idSucursal: this.idSucursal,
-            area: this.area,
-            zona: this.zona,
-            consumo: this.consumo,
-            hora: this.hora,
-            fecha: this.fecha,
-          });
+          this.navCtrl.push(
+            CartaPage,
+            {
+              idReservacion: this.idReservacion,
+              uid: this.evento,
+              idSucursal: this.idSucursal,
+              ClaveInstancia: this.ClaveInstancia,
+              ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+              claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+              area: this.area,
+              zona: this.zona,
+              consumo: this.consumo,
+              hora: this.hora,
+              fecha: this.fecha,
+            },
+            { animate: true, direction: "back" }
+          );
         } else {
         }
       })
       .catch();
   }
 
-  modificar_(_producto, costo, key) {
-    console.log("Pisto: ", this.pisto);
-
+  modificar_(costo: number, key: string) {
     const total = costo * this.pisto;
     const producto = {
-      producto: _producto,
       cantidad: this.pisto,
       costo: costo,
       total: total,
-      idProducto: this.idProducto,
-      idReservacion: this.idReservacion
     };
     this._providerReservacion
       .updateProducto(producto, key)
       .then((respuesta: any) => {
         if (respuesta.success == true) {
-          this.navCtrl.push(CartaPage, {
-            idReservacion: this.idReservacion,
-            uid: this.evento,
-            idSucursal: this.idSucursal,
-            area: this.area,
-            zona: this.zona,
-            consumo: this.consumo,
-            hora: this.hora,
-            fecha: this.fecha,
-          });
+          this.navCtrl.push(
+            CartaPage,
+            {
+              idReservacion: this.idReservacion,
+              uid: this.evento,
+              idSucursal: this.idSucursal,
+              ClaveInstancia: this.ClaveInstancia,
+              ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+              claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+              area: this.area,
+              zona: this.zona,
+              consumo: this.consumo,
+              hora: this.hora,
+              fecha: this.fecha,
+            },
+            { animate: true, direction: "back" }
+          );
         } else {
         }
       })
       .catch();
   }
 
-  goBack() {
-    this.navCtrl.push(CartaPage, {
-      idReservacion: this.idReservacion,
-      uid: this.evento,
-      idSucursal: this.idSucursal,
-      area: this.area,
-      zona: this.zona,
-      consumo: this.consumo,
-      hora: this.hora,
-      fecha: this.fecha,
+  eliminar(key) {
+    this._providerReservacion.deleteProduct_(key).then((res: any) => {
+      if (res.success == true) {
+        this.navCtrl.push(
+          CartaPage,
+          {
+            idReservacion: this.idReservacion,
+            uid: this.evento,
+            idSucursal: this.idSucursal,
+            ClaveInstancia: this.ClaveInstancia,
+            ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+            claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+            area: this.area,
+            zona: this.zona,
+            consumo: this.consumo,
+            hora: this.hora,
+            fecha: this.fecha,
+          },
+          { animate: true, direction: "back" }
+        );
+      } else {
+      }
     });
+  }
+
+  goBack() {
+    this.navCtrl.push(
+      CartaPage,
+      {
+        idReservacion: this.idReservacion,
+        uid: this.evento,
+        idSucursal: this.idSucursal,
+        ClaveInstancia: this.ClaveInstancia,
+        ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+        claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+        area: this.area,
+        zona: this.zona,
+        consumo: this.consumo,
+        hora: this.hora,
+        fecha: this.fecha,
+      },
+      { animate: true, direction: "back" }
+    );
   }
 }

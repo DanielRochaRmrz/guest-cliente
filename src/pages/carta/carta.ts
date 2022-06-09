@@ -12,7 +12,8 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { ProductoDetallePage } from "../producto-detalle/producto-detalle";
 import { ReservacionProvider } from "../../providers/reservacion/reservacion";
 import { ResumenPage } from "../resumen/resumen";
-import { CroquisPage } from "../croquis/croquis";
+import { MenuArbolPage } from '../menu-arbol/menu-arbol';
+import { CartaApiProvider } from "../../providers/carta-api/carta-api";
 
 @IonicPage()
 @Component({
@@ -23,6 +24,9 @@ export class CartaPage {
   cartas: any;
   idReservacion: any;
   idSucursal: any;
+  ClaveInstancia: string = "";
+  ClaveMenuDigitalDetalle: string = "";
+  claveMenuDigitalDetalleArbol: string = "";
   area: any;
   zona: any;
   hora: string = "";
@@ -45,23 +49,28 @@ export class CartaPage {
     public afDB: AngularFireDatabase,
     public afs: AngularFirestore,
     public modalCtrl: ModalController, //private _cap: CargaArchivoCartaProvider
-    public _providerReserva: ReservacionProvider
+    public _providerReserva: ReservacionProvider,
+    private cartaApi: CartaApiProvider
   ) {
     this.area = navParam.get("area");
     this.consumo = navParam.get("consumo");
-    console.log('Consumo -->', this.consumo);
     this.evento = navParam.get("uid");
     this.fecha = navParam.get("fecha");
     this.hora = navParam.get("hora");
     this.idReservacion = navParam.get("idReservacion");
     this.idSucursal = navParam.get("idSucursal");
+    this.ClaveInstancia = navParam.get("ClaveInstancia");
+    console.log(this.ClaveInstancia);
+    this.ClaveMenuDigitalDetalle = navParam.get("ClaveMenuDigitalDetalle");
+    console.log(this.ClaveMenuDigitalDetalle);
+    this.claveMenuDigitalDetalleArbol = navParam.get("claveMenuDigitalDetalleArbol");
+    console.log(this.claveMenuDigitalDetalleArbol);
+
     this.zona = navParam.get("zona");
 
     //para ocultar las tabs en la pantalla de resumen
     this.tabBarElement = document.querySelector(".tabbar.show-tabbar");
     this.uidUserSesion = localStorage.getItem("uid");
-    console.log("id del usuario en eventos", this.uidUserSesion);
-    console.log("evento id", this.evento);
     //obtener informacion de mi user
     this.afs
       .collection("users")
@@ -69,7 +78,6 @@ export class CartaPage {
       .valueChanges()
       .subscribe((dataSu) => {
         this.miUser = dataSu;
-        console.log("Datos de mi usuario", this.miUser);
       });
     //Obtener el nombre del evento
     if (this.evento != null) {
@@ -79,7 +87,6 @@ export class CartaPage {
         .valueChanges()
         .subscribe((dataSu) => {
           this.eventoSel = dataSu;
-          console.log("Datos de mi evento", this.eventoSel);
         });
     }
   }
@@ -87,13 +94,12 @@ export class CartaPage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad CartaPage");
     this.loadSucursal(this.idSucursal);
-    this.loadCartaSucursal(this.idSucursal);
-    this.loadReservacion(this.idReservacion);
+    this.loadCartaSucursal(this.claveMenuDigitalDetalleArbol);
     this.loadProductRes(this.idReservacion);
   }
 
-  loadCartaSucursal(idSucursal: string) {
-    this._providerReserva.getCartaSucursal(idSucursal).subscribe((carta: any) => {
+  loadCartaSucursal(claveMenuDigitalDetalleArbol: string) {
+    this.cartaApi.GetProductosClasificacion(claveMenuDigitalDetalleArbol).subscribe((carta: any) => {
       this.cartas = carta;
     });
   }
@@ -105,18 +111,19 @@ export class CartaPage {
   }
 
   goBack() {
-    this.navCtrl.push(CroquisPage, {
+    this.navCtrl.push(MenuArbolPage, {
         idReservacion: this.idReservacion,
         idSucursal: this.idSucursal,
+        ClaveInstancia: this.ClaveInstancia,
+        ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
         zona: this.zona,
         hora: this.hora,
         fecha: this.fecha,
         consumo: this.consumo,
-    });
+    }, { animate: true, direction: "back" });
   }
 
   goToResumen(consumo: number, total: number) {
-    console.log("Consumo: ", consumo, " ", "Total: ", total);
 
     const formatter = new Intl.NumberFormat("en-MX", {
       style: "currency",
@@ -127,13 +134,16 @@ export class CartaPage {
       this.navCtrl.push(ResumenPage, {
         idReservacion: this.idReservacion,
         idSucursal: this.idSucursal,
+        ClaveInstancia: this.ClaveInstancia,
+        ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+        claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
         uid: this.evento,
         area: this.area,
         zona: this.zona,
         consumo: this.consumo,
         hora: this.hora,
         fecha: this.fecha,
-      });
+      }, { animate: true, direction: "forward" });
     } else {
       let alertMesas = this.alertCtrl.create({
         title: "Consumo",
@@ -147,9 +157,7 @@ export class CartaPage {
         buttons: [
           {
             text: "Aceptar",
-            handler: () => {
-              console.log("Buy clicked");
-            },
+            handler: () => {},
           },
         ],
       });
@@ -157,25 +165,21 @@ export class CartaPage {
     }
   }
 
-  productoDetalle(idProducto) {
+  productoDetalle(claveProducto: string) {
     this.navCtrl.push(ProductoDetallePage, {
-      idProducto: idProducto,
       idReservacion: this.idReservacion,
       uid: this.evento,
       idSucursal: this.idSucursal,
+      ClaveInstancia: this.ClaveInstancia,
+      ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
+      claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+      claveProducto: claveProducto,
       area: this.area,
       zona: this.zona,
       consumo: this.consumo,
       hora: this.hora,
       fecha: this.fecha,
-    });
-  }
-
-  loadReservacion(idx) {
-    this._providerReserva.getReservacion(idx).subscribe((reservacion) => {
-      // console.log("Datos Reservación: ", reservacion);
-      // this._getZona(this.zona);
-    });
+    }, { animate: true, direction: "forward" } );
   }
 
   loadProductRes(idx) {
@@ -186,10 +190,4 @@ export class CartaPage {
       console.log("Resusltado: ", this.total);
     });
   }
-
-  // async _getZona(idx) {
-  //   const zona = await this._providerReserva.getZonaHttp(idx);
-  //   console.log("esta es la sona -->", zona);
-  //   this.consumo = zona[0].consumo;
-  // }
 }

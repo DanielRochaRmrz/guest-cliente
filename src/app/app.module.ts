@@ -41,6 +41,9 @@ import { SliderPage } from '../pages/slider/slider';
 import { LoginTelefonoPage } from '../pages/login-telefono/login-telefono';
 import { PerfilEditarPage } from '../pages/perfil-editar/perfil-editar';
 import { CroquisPage } from '../pages/croquis/croquis';
+import { MenuPage } from '../pages/menu/menu';
+import { MenuArbolPage } from '../pages/menu-arbol/menu-arbol';
+
 
 //administrador
 import { ImagencroquisPage } from '../pages/imagencroquis/imagencroquis';
@@ -74,13 +77,13 @@ import { GestionReservacionesProvider } from '../providers/gestion-reservaciones
 import { CroquisProvider } from '../providers/croquis/croquis';
 import { DeviceProvider } from '../providers/device/device';
 import { AppVersion } from '@ionic-native/app-version';
+import { CartaApiProvider } from '../providers/carta-api/carta-api';
 
 //Plugin
 import { Facebook } from '@ionic-native/facebook';
 import { SMS } from '@ionic-native/sms';
 import { Contacts } from '@ionic-native/contacts';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { OneSignal } from "@ionic-native/onesignal";
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angularx-qrcode';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -95,8 +98,10 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Device } from '@ionic-native/device';
 import { UniqueDeviceID } from '@ionic-native/unique-device-id';
 import { FCM } from '@ionic-native/fcm';
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
+import "firebase/firestore";;
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyBixlCb21nNbPSurY-Pvqu3hZB80Icl9Pk",
@@ -150,7 +155,9 @@ firebase.initializeApp(firebaseConfig);
     LoginTelefonoPage,
     LoginTelDatosPage,
     PerfilEditarPage,
-    CroquisPage
+    CroquisPage,
+    MenuPage,
+    MenuArbolPage
   ],
   imports: [
     BrowserModule,
@@ -213,7 +220,9 @@ firebase.initializeApp(firebaseConfig);
     LoginTelefonoPage,
     LoginTelDatosPage,
     PerfilEditarPage,
-    CroquisPage
+    CroquisPage,
+    MenuPage,
+    MenuArbolPage
   ],
   providers: [
     StatusBar,
@@ -235,7 +244,6 @@ firebase.initializeApp(firebaseConfig);
     CargaCroquisProvider,
     AngularFirestore,
     PushNotiProvider,
-    OneSignal,
     Clipboard,
     ReservacionProvider,
     GestionReservacionesProvider,
@@ -253,7 +261,8 @@ firebase.initializeApp(firebaseConfig);
     AppVersion,
     UniqueDeviceID,
     FCM,
-    PhotoViewer
+    PhotoViewer,
+    CartaApiProvider
   ]
 })
 export class AppModule {}

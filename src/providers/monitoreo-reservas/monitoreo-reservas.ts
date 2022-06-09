@@ -41,15 +41,12 @@ export class MonitoreoReservasProvider {
           querySnapshot.forEach(function(doc) {
             var obj = JSON.parse(JSON.stringify(doc.data()));
             obj.$key = doc.id;
-            console.log(obj);
             arr.push(obj);
           });
 
           if (arr.length > 0) {
-            console.log("Document data:", arr);
             resolve(arr);
           } else {
-            console.log("No such document!");
             resolve(null);
           }
         })
@@ -69,15 +66,12 @@ export class MonitoreoReservasProvider {
           querySnapshot.forEach(function(doc) {
             var obj = JSON.parse(JSON.stringify(doc.data()));
             obj.$key = doc.id;
-            // console.log(obj);
             arr.push(obj);
           });
 
           if (arr.length > 0) {
-            console.log("Document data:", arr);
             resolve(arr);
           } else {
-            console.log("No such document!");
             resolve(null);
           }
         })
@@ -99,15 +93,12 @@ export class MonitoreoReservasProvider {
           querySnapshot.forEach(function(doc) {
             var obj = JSON.parse(JSON.stringify(doc.data()));
             obj.$key = doc.id;
-            console.log(obj);
             arr.push(obj);
           });
 
           if (arr.length > 0) {
-            console.log("Document data:", arr);
             resolve(arr);
           } else {
-            console.log("No such document!");
             resolve(null);
           }
         })
@@ -119,7 +110,6 @@ export class MonitoreoReservasProvider {
 
   //hacer el pago en stripe de una cuenta compartida
   cambiaPagando(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir,folio, displayNames) {
-    console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,idCompartir);
     // Poppup de carga para procesar el metodo
     let loading = this.loadinCtl.create({
     spinner: "bubbles",
@@ -149,7 +139,6 @@ export class MonitoreoReservasProvider {
       folio: folio
     });
     this.http.post(url, data, options).subscribe(res => {
-      console.log('Este es el mensaje', JSON.stringify(res));
       //IF PAGO CON EXITO
       if (res.json().status == "succeeded") {
         
@@ -202,13 +191,11 @@ export class MonitoreoReservasProvider {
   });
    })
    .catch(error => {
-     console.log('error',error);
       const alert = this.alertCtrl.create({
        title: 'Ocurrio un problema con su tarjeta, verifica que sea correcta. Ir al menu Pago',
        buttons: ['OK']
       });
       alert.present();
-     //alert(error);
     } );
     setTimeout(() => {
      loading.dismiss();
@@ -220,23 +207,16 @@ notiReservaCompartida(idReservacion: string, displayNames: string) {
     .getCompartidaPagadaNoti(idReservacion)
     .subscribe((usersCom) => {
       const usersCompartido = usersCom;
-      console.log("Usuarios compartidos: ", usersCompartido);
       usersCompartido.forEach((usersCom) => {
-        console.log("PlayerID:", usersCom.playerId);
         if (usersCom.playerId != undefined) {
-          console.log("notificacion  a", usersCom.playerId);
           if (this.platform.is("cordova")) {
             const data = {
               topic: usersCom.playerId,
               title: "Resumen de pago",
               body: "Personas faltantes de completar su pago: " + displayNames.toString(),
             };
-            this._deviceProvider.sendPushNoti(data).then((resp: any) => {
-              console.log('Respuesta noti fcm', resp);
-            });
-          } else {
-            console.log("Solo funciona en dispositivos");
-          }
+            this._deviceProvider.sendPushNoti(data).then((resp: any) => {});
+          } else { }
         }
       });
     });
@@ -249,17 +229,12 @@ notiReservaPago(displayNames: string) {
       title: "Pago exitoso",
       body: "Personas faltantes de completar su pago: " + displayNames.toString(),
     };
-    this._deviceProvider.sendPushNoti(data).then((resp: any) => {
-      console.log('Respuesta noti fcm', resp);
-    });
-  } else {
-    console.log("Solo funciona en dispositivos");
-  }
+    this._deviceProvider.sendPushNoti(data).then((resp: any) => {});
+  } else {}
 }
 
 //hacer el pago en stripe de una cuenta normal
 cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,folio) {
-  console.log('llegaron a pagar',uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
   // Poppup de carga para procesar el metodo
   let loading = this.loadinCtl.create({
   spinner: "bubbles",
@@ -290,7 +265,6 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
     folio: folio
   });
   this.http.post(url, data, options).subscribe(res => {
-    console.log('Este es el mensaje', JSON.stringify(res));
     //IF PAGO CON EXITO
     if (res.json().status == "succeeded") {
       const alert = this.alertCtrl.create({
@@ -332,9 +306,6 @@ cambiaPagandoNormal(uidRerservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,
 });
  })
  .catch(error => {
-     //alert('error!');
-   //alert(error);
-   console.log('error',error);
    const alert = this.alertCtrl.create({
     title: 'Ocurrio un problema con su tarjeta, verifica que sea correcta. Ir al menu Pago',
     buttons: ['OK']

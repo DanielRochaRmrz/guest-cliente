@@ -44,7 +44,7 @@ export class CroquisProvider {
     this._zonas = this.zonas.valueChanges();
     return (this._zonas = this.zonas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;
@@ -83,7 +83,7 @@ export class CroquisProvider {
     this._zonas = this.zonas.valueChanges();
     return (this._zonas = this.zonas.snapshotChanges().pipe(
       map((changes) => {
-        return changes.map((action) => {
+        return changes.map((action: any) => {
           const data = action.payload.doc.data() as any;
           data.$key = action.payload.doc.id;
           return data;

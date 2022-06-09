@@ -1,0 +1,67 @@
+<ion-header>
+    <ion-navbar class="borde" hideBackButton>
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
+            </ion-col>
+            <ion-col>
+                <div align="end">
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+
+<ion-content no-padding>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12 col-md-12>
+                <div *ngFor="let menu of menus">
+                    <ion-card (click)="(irMenuArbol(menu.claveMenuDigital))">
+                        <img [src]="menu.urlImagenMenu" />
+                        <ion-card-content>
+                            <ion-card-title>
+                                <div text-center>{{menu.nombreMenuDigital}}</div>
+                            </ion-card-title>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<ion-footer no-border>
+    <ion-grid>
+        <ion-row>
+            <ion-col col-12>
+                <div text-center>
+                    <button ion-button round block color="dark" (click)="(irCroquis())">
+                        Atras
+                    </button>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>
