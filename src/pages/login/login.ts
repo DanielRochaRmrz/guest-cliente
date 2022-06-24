@@ -49,7 +49,7 @@ export class LoginPage {
     this.menuCtrl.enable(false);
     this.uidUserSesion = localStorage.getItem("uid");
     console.log("id del usuario en eventos", this.uidUserSesion);
-    this.consultarTelefono();
+    // this.consultarTelefono();
   }
 
   ionViewDidLoad() {
@@ -453,10 +453,10 @@ export class LoginPage {
     this.navCtrl.setRoot(LoginTelDatosPage);
   }
 
-  consultarTelefono(){
-    this.usuarioProv.buscarTelefono().then((data: any) => {
-      console.log('Resultado -->', data.length);
-    });
-  }
+  // consultarTelefono(){
+  //   this.usuarioProv.buscarTelefono().then((data: any) => {
+  //     console.log('Resultado -->', data.length);
+  //   });
+  // }
 
 }

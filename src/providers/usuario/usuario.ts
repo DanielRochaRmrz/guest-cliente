@@ -329,16 +329,16 @@ export class UsuarioProvider {
     });
   }
 
-  buscarTelefono() {
+  buscarTelefono(tel: string) {
     return new Promise((resolve, reject) => {
       this.afs
         .collection("users", (ref) =>
-          ref.where("phoneNumber", "==", "477255056")
+          ref.where("phoneNumber", "==", tel)
         )
         .valueChanges()
         .subscribe((data: any) => {
-          const telefono = data;
-          resolve(data);
+          const usTel = data;
+          resolve(JSON.stringify(usTel));
         });
     });
   }

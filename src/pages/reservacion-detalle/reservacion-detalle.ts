@@ -9,14 +9,13 @@ import { ReservacionProvider } from '../../providers/reservacion/reservacion';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AlertController } from 'ionic-angular';
-import { TarjetasPage } from "../../pages/tarjetas/tarjetas";
 import { ModalController } from 'ionic-angular';
-import { ReservacionesPage } from '../reservaciones/reservaciones';
 import { ModalTarjetasPage } from "../modal-tarjetas/modal-tarjetas";
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
-import { UserProvider } from '../../providers/user/user';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
-//import { Platform } from 'ionic-angular';
+import { UserProvider } from '../../providers/user/user';
+import moment from "moment";
+
 @IonicPage()
 @Component({
   selector: 'page-reservacion-detalle',
@@ -83,47 +82,23 @@ export class ReservacionDetallePage {
     public reservaProvider: ReservacionProvider,
     public afDB: AngularFireDatabase,
     public alertCtrl: AlertController,
-    private modalCtrl: ModalController,
     public afs: AngularFirestore,
     public menu: MenuController,
     public platform: Platform,
     public toastCtrl: ToastController,
     private _providerReserva: ReservacionProvider,
-    private _providerUserio: UsuarioProvider
+    private _providerUserio: UsuarioProvider,
+    private _providerUser: UserProvider
   ) {
     this.soloTotal = '';
-    //this.afs.collection('compartidas', ref => ref.where('idCompartir', '==', 'M4rUKeGx7WPOHXMxOTzy')).valueChanges().subscribe(data2 => {
-    //  this.reservacionLugar2 = data2;
-    //    this.reservacionLugar2.forEach(element2 => {
-    //    const estatus_pago=element2.estatus_pago;
-    //    console.log("esta pago",estatus_pago);
-    //    });
-    //});
     //recibe parametro de la reservacion
     this.idReservacion = this.navParams.get("idReservacion");
     this.modal = this.navParams.get("modal");
     //sacar el id del usuario guardado en el local storage
     this.idUser = localStorage.getItem('uid');
     this.idSucursal = localStorage.getItem('uidSucursal');
-    console.log('Este es el uid', this.idUser);
     
-
-    //consultar tabla users
-    this.afs
-      .collection("users")
-      .valueChanges()
-      .subscribe(data2 => {
-        this.infoUsers = data2;
-      });
-    //consultar tabla compartidas
-    this.afs
-      .collection("compartidas")
-      .valueChanges()
-      .subscribe(data3 => {
-        this.cuentasCompartidas = data3;
-      });
     //consultar tabla cupones
-    //consultar tabla compartidas
     this.afs
       .collection("cupones")
       .valueChanges()
@@ -131,40 +106,20 @@ export class ReservacionDetallePage {
         this.infoCupones = data4;
         console.log("cupones", this.infoCupones);
       });
-    //obtener el nombre del lugar
-    this.afs.collection('reservaciones', ref => ref.where('idReservacion', '==', this.idReservacion)).valueChanges().subscribe(data => {
-      this.reservacionLugar = data;
-      this.reservacionLugar.forEach(element => {
-        console.log('Element -->', element);
-        const idSucursal = element.idSucursal;
-        this.afs.collection('sucursales', ref => ref.where('uid', '==', idSucursal)).valueChanges().subscribe(data2 => {
-          this.reservacionLugar2 = data2;
-          this.reservacionLugar2.forEach(element2 => {
-            this.nombreLugar = element2.displayName;
-            //console.log("esta es la sucursal",this.nombreLugar);
-          });
-        });
-      });
-
-    });
-
-
-    //obtener informacion de mi user
-    this.afs
-      .collection("users").doc(this.idUser)
-      .valueChanges()
-      .subscribe(dataSu => {
-        this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
-      });
 
   }
 
 
 
   ionViewDidLoad() {
+
     this.menu.enable(true);
+    const fecha = moment('2010-10-20').isBefore('2010-10-21'); // true
+    console.log('Fecha --->', fecha);
+    
     //carga funcion cuando abre la pagina
+    this.getInfouser(this.idUser);
+    this.getCompartidas(this.idReservacion);
     this.getDetails();
     this.mostrar = true;
     this.personaAcepta();
@@ -175,12 +130,15 @@ export class ReservacionDetallePage {
     this.getTarjeta(this.idUser);
     this.getCompatidasPagadas(this.idReservacion);
     this.loadUsersCompartidos(this.idReservacion);
-    this.getCompartidaIdReserva(this.idReservacion);
   }
 
-  getCompartidaIdReserva(idReservacion: string) {
-    this._providerReserva.getCompartidaIdReserva(idReservacion).subscribe((resp: any) => {
-      console.log('RespuestaCompartida -->', resp);
+  async getInfouser(uid: string) {
+    this.miUser = await this._providerUser.getUser(uid);
+  }
+
+  getCompartidas(idReservacion: string) {
+    this._providerReserva.getCompartidaIdReserva(idReservacion).subscribe(data => {
+      this.cuentasCompartidas = data;
     });
   }
 
@@ -413,7 +371,7 @@ export class ReservacionDetallePage {
             console.log('Cambia estatus principal');
             //CUNADO TODAS LAS PERSONAS QUE YA ESCANEARON SU QR SE  CAMBIA LA RESERVACION AL ESTATUS FINAL
             this.afs.collection('reservaciones').doc(this.idReservacion).update({
-              estatus: 'Pagando'
+              estatus: 'Finalizado'
             });
           }
         });
@@ -452,7 +410,7 @@ export class ReservacionDetallePage {
             if (this.formatoFecha > fechaReservacion) {
               //SI YA PASO LA FECHA DE LA RESERVACION SE CAMBIA EL ESTATUS PINCIPAL A PAGANDO POR SI ALGUIN NO LLEGO A ESCANEAR QR
               this.afs.collection('reservaciones').doc(this.idReservacion).update({
-                estatus: 'Pagando'
+                estatus: 'Finalizado'
               });
               console.log("se cambio a pagando");
             }

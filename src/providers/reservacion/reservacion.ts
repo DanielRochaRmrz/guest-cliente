@@ -325,7 +325,7 @@ export class ReservacionProvider {
     ));
   }
 
-  //obtener reservacion compartida en la que esta el usuario
+  //obtener reservaciones compartidas por reservación
   public getCompartidaIdReserva(idReservacion: string) {
     this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
       ref
@@ -1036,4 +1036,24 @@ export class ReservacionProvider {
       })
     ));
   }
+
+  cleanReserva(uid: string) {
+    const reservaciones = this.af.collection("reservaciones").ref;
+    reservaciones.where("idUsuario", "==", uid).get().then(data => {
+      data.forEach(reserva => {
+          console.log("Reservas -->", reserva.data());
+          const reservacion = reserva.data();
+          const fecha = new Date();
+          console.log("Fecha -->", fecha);
+          const fechaYMD = moment(fecha).format("YYYY-MM-DD");
+          console.log("fechaYMD -->", fechaYMD);
+          const resIgualDespues = moment(reservacion.fechaR).isSameOrAfter(fechaYMD);
+          console.log("resIgualDespues -->", resIgualDespues);
+          if (resIgualDespues == false) {
+            console.log("Reserva id", reservacion.idReservacion);
+          }
+      });
+    });
+  }
+
 }

@@ -7,6 +7,7 @@ import { PipesFilterCiudad2Pipe } from "./pipes-filter-ciudad2/pipes-filter-ciud
 import { GetSucursalPipe } from './get-sucursal/get-sucursal';
 import { GetZonaPipe } from './get-zona/get-zona';
 import { GetCompartidasPipe } from './get-compartidas/get-compartidas';
+import { GetCompartidaTelUsPipe } from './get-compartida-tel-us/get-compartida-tel-us';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { GetCompartidasPipe } from './get-compartidas/get-compartidas';
     GetSucursalPipe,
     GetZonaPipe,
     GetCompartidasPipe,
+    GetCompartidaTelUsPipe,
   ],
   imports: [],
   exports: [
@@ -29,6 +31,7 @@ import { GetCompartidasPipe } from './get-compartidas/get-compartidas';
     GetSucursalPipe,
     GetZonaPipe,
     GetCompartidasPipe,
+    GetCompartidaTelUsPipe,
   ],
 })
 export class PipesModule {}

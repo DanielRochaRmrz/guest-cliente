@@ -182,83 +182,35 @@
 
         <br />
         <!--Mostrar datos de la cuenta compartida info de las usuarion con quien se compartio -->
-        <div *ngIf="reservaciones.estatus=='Compartida'">
+        <div *ngIf="reservaciones.estatus == 'Compartida' || reservaciones.estatus =='CreadaCompartida' || reservaciones.estatus == 'AceptadoCompartida'">
             <ion-card class="card_atras">
                 <p text-center class="blanco_3">COMPARTIDA ENTRE</p>
                 <div *ngFor="let compartidas of cuentasCompartidas">
-                    <div *ngIf="reservaciones.idReservacion==compartidas.idReservacion">
-                        <div *ngFor="let users of infoUsers">
-                            <div *ngIf="compartidas.telefono==users.phoneNumber">
-                                <ion-item class="card_atras">
-                                    <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
-                                    <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059) | currency}}</ion-badge>
-                                    <ion-badge class="negro" item-end>{{compartidas.estatus}}</ion-badge>
-                                </ion-item>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ion-card>
-        </div>
-        <!--Mostrar datos de la cuenta compartida info de las usuarion con quien se compartio -->
-        <div *ngIf="reservaciones.estatus=='CreadaCompartida'">
-            <ion-card class="card_atras">
-                <p text-center class="blanco_3">COMPARTIDA ENTRE</p>
-                <div *ngFor="let compartidas of cuentasCompartidas">
-                    <div *ngIf="reservaciones.idReservacion==compartidas.idReservacion">
-                        <div *ngFor="let users of infoUsers">
-                            <div *ngIf="compartidas.telefono==users.phoneNumber">
-                                <ion-item class="card_atras">
-                                    <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
-                                    <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059)| currency}}
-                                    </ion-badge>
-                                    <ion-badge class="negro" item-end>{{compartidas.estatus}}</ion-badge>
-                                </ion-item>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ion-card>
-        </div>
-        <!--Mostrar datos de la cuenta compartida info de las usuarion con quien se compartio -->
-        <div *ngIf="reservaciones.estatus=='AceptadoCompartida'">
-            <ion-card class="card_atras">
-                <p text-center class="blanco_3">COMPARTIDA ENTRE</p>
-                <div *ngFor="let compartidas of cuentasCompartidas">
-                    <div *ngIf="reservaciones.idReservacion==compartidas.idReservacion">
-                        <div *ngFor="let users of infoUsers">
-                            <div *ngIf="compartidas.telefono==users.phoneNumber">
-                                <ion-item class="card_atras">
-                                    <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
-                                    <p class="blanco_2">{{users.displayName}}</p>
-                                    <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059) | currency}}</ion-badge>
-                                    <ion-badge class="negro" item-end>{{compartidas.estatus}}<br />{{compartidas.estatus_pago}}</ion-badge>
-                                    <!--<ion-badge class="negro" item-end >{{compartidas.estatus_pago}}</ion-badge>-->
-                                    <div *ngIf="resultadoEspera=='true'">
-                                        <div *ngIf="compartidas.estatus=='Aceptado'">
-                                            <div *ngIf="idUser==users.uid">
-                                                <div *ngIf="compartidas.estatus_pago==undefined">
-                                                    <button *ngIf="this.tarjeta==1" ion-button class="tamanoBoton" (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir,reservaciones.folio, nombreUsuarios)">
-                            Pagar mi parte
-                          </button>
-                                                    <button *ngIf="this.tarjeta==0" ion-button class="tamanoBoton" (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
-                            Pagar mi parte
-                          </button>
-                                                </div>
-                                                <div *ngIf=" countCompartidas == countComPagadas">
-                                                    <button ion-button class="tamanoBoton" (click)="genararQR_Pagado(reservaciones.idReservacion,compartidas.idCompartir)">
-                            QR generado
-                          </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <ion-item class="card_atras">
+                        <img class="icon" src="../assets/imgs/icons/profile.png" item-start />
+                        <p class="blanco_2">{{ (compartidas.telefono | getCompartidaTelUs | async)?.displayName }}</p>
+                        <ion-badge class="negro">{{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059) | currency}}</ion-badge>
+                        <ion-badge class="negro" item-end> {{compartidas.estatus}} <br /> {{compartidas.estatus_pago}} </ion-badge>
+                        <div *ngIf="resultadoEspera=='true'">
+                            <div *ngIf="compartidas.estatus=='Aceptado'">
+                                <div *ngIf="miUser.phoneNumber==compartidas.telefono">
+                                    <div *ngIf="compartidas.estatus_pago==undefined">
+                                        <button *ngIf="this.tarjeta==1" ion-button class="tamanoBoton" (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir,reservaciones.folio, nombreUsuarios)">
+                                            Pagar mi parte
+                                        </button>
+                                        <button *ngIf="this.tarjeta==0" ion-button class="tamanoBoton" (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
+                                            Pagar mi parte
+                                        </button>
                                     </div>
-                                </ion-item>
+                                    <div *ngIf=" countCompartidas == countComPagadas">
+                                        <button ion-button class="tamanoBoton" (click)="genararQR_Pagado(reservaciones.idReservacion,compartidas.idCompartir)">
+                                            QR generado
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </ion-item>
                 </div>
             </ion-card>
         </div>
