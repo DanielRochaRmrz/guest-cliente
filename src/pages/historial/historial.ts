@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
-import { ModalController } from 'ionic-angular';
-import { ReservacionProvider } from "../../providers/reservacion/reservacion";
-import { AngularFireAuth } from 'angularfire2/auth';
-import { HistorialDetallePage } from '../historial-detalle/historial-detalle';
+import { MonitoreoReservasProvider } from '../../providers/monitoreo-reservas/monitoreo-reservas';
+import { ReservacionProvider } from '../../providers/reservacion/reservacion';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { CartaEditarPage } from "../carta-editar/carta-editar";
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
+import { UserProvider } from '../../providers/user/user';
+import { MisReservacionesPage } from '../mis-reservaciones/mis-reservaciones';
+import { HistorialDetallePage } from '../historial-detalle/historial-detalle';
 
 
 @IonicPage()
@@ -15,77 +17,112 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
   templateUrl: 'historial.html',
 })
 export class HistorialPage {
-  eventos = [];
-  uid: any;
-  historial = [];
-  sucursal: any = [];
-  cont: any = 0;
-  suma: any;
-    miUser: any = {};
+  uid: string;
+  misReservaciones: any = [];
+  idSucursal: any;
+  idevento: any;
+  public telUser: string;
+  resCompartidas: any;
+  miUser: any = {};
 
-  constructor(
-    public navCtrl: NavController,
+
+
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    private afAuth: AngularFireAuth,
-    public _providerReserva: ReservacionProvider,
-  public afs: AngularFirestore
-  ) {
-
-    this.uid = localStorage.getItem("uid");
-    console.log("quiero ver este", this.uid);
-    this.getHistorial(this.uid);
-    this.getSucursal();
-    this.contador();
-
-
-
-  }
+    public monRes: MonitoreoReservasProvider,
+    public reservaProvider: ReservacionProvider,
+    public afDB: AngularFireDatabase,
+    public afs: AngularFirestore,
+    public userProvider: UserProvider
+  ) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HistorialPage');
+    //sacar el id del usuario del local storage
+    this.uid = localStorage.getItem('uid');
+    this.getUsuario();
+    this.getAllReservaciones();
+  }
+
+  async getUsuario() {
+    this.miUser = await this.userProvider.getUser(this.uid);
+    this.telUser = this.miUser.phoneNumber;
+    this.getReservacionCompartida(this.telUser);
+  }
+  
+  //obtener todas las reservaciones de un usuario
+  getAllReservaciones() {
+    this.reservaProvider.getReservacionesClienteHistorial(this.uid).subscribe((data) => {
+      this.misReservaciones = data;
+    });
+  }
 
 
-    this.afs
-      .collection("users").doc(this.uid)
-      .valueChanges()
-      .subscribe(dataSu => {
-        this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
+  //obtener el telefono del usuario en sesion
+  getReservacionCompartida(telefono: string) {
+        //obtener reservaciones compartidas en las que esta el usuario
+        this.reservaProvider.getReservacionCompartidaHistorial(telefono, this.uid).subscribe((resCom) => {
+          this.resCompartidas = resCom;
+        });
+  }
+
+  verDetalle(idReservacion) {
+    this.navCtrl.setRoot(HistorialDetallePage, {
+      idReservacion: idReservacion
+    });
+  }
+
+  verCarta(idReservacion, idSucursal, idevento) {
+    this.navCtrl.setRoot(CartaEditarPage, {
+      idReservacion: idReservacion,
+      idSucursal: idSucursal,
+      idevento: idevento
+    });
+  }
+
+  CancelarReservacion(idReservacion) {
+    this.reservaProvider
+      .updateReservacioCancelado(idReservacion)
+      .then((respuesta: any) => {
+        console.log("Respuesta: ", respuesta);
+        if (respuesta.success == true) {
+          console.log("Success: ", respuesta.success);
+        }
       });
-
-
-  }
-
-  presentModal(historia: any) {
-console.log("historiaaaaaaaal", historia);
-    // console.log("parametro enviado a modal", historia);
-    // this.navCtrl.push(HistorialDetallePage, { 'historia': historia });
-const modal =this.modalCtrl.create('HistorialDetallePage',{ 'historia': historia });
-modal.present();
-  }
-
-  getHistorial(idx) {
-    console.log("idUsuarioHistorial: ", idx);
-      this._providerReserva.getHistorial(idx).subscribe(res => {
-      console.log("Este es el resultado del historial: ", res);
-      this.historial = res;
-
+    this.navCtrl.setRoot(MisReservacionesPage, {
+      idReservacion: idReservacion
     });
   }
 
-  getSucursal() {
-    this._providerReserva.getSucursal_().subscribe((data) => {
-      this.sucursal = data;
+  aceptarCompartir(idCompartir, idReservacion) {
+    console.log('llego a a ceptar compartir', idReservacion);
+    //Consulta para mandar el estatus aceptado
+    this.reservaProvider
+      .updateCompartirAceptar(idCompartir)
+      .then((respuesta: any) => {
+        console.log("Respuesta: ", respuesta);
+        if (respuesta.success == true) {
+          console.log("Success: ", respuesta.success);
+        }
+      });
+    this.navCtrl.setRoot(MisReservacionesPage, {
+      idReservacion: idReservacion
     });
   }
 
-  contador() {
-    this.cont = this.cont + 1;
-    console.log("contador", this.cont);
-    this.cont = this.cont;
+  rechazarCompartir(idCompartir, idReservacion) {
+    this.reservaProvider
+      .updateCompartirRechazar(idCompartir)
+      .then((respuesta: any) => {
+        console.log("Respuesta: ", respuesta);
+        if (respuesta.success == true) {
+          console.log("Success: ", respuesta.success);
+        }
+      });
+    this.navCtrl.setRoot(MisReservacionesPage, {
+      idReservacion: idReservacion
+    });
   }
+
 
   goInicio(){
     this.navCtrl.setRoot(TipoLugarPage);

@@ -101,6 +101,7 @@ import { FCM } from '@ionic-native/fcm';
 import firebase from "firebase/app";
 import "firebase/firestore";;
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { HistorialDetallePage } from '../pages/historial-detalle/historial-detalle';
 
 
 var firebaseConfig = {
@@ -128,6 +129,7 @@ firebase.initializeApp(firebaseConfig);
     NosotrosPage,
     CartaPage,
     HistorialPage,
+    HistorialDetallePage,
     ProductoDetallePage,
     ResumenPage,
     EventoDetallePage,
@@ -191,6 +193,7 @@ firebase.initializeApp(firebaseConfig);
     NosotrosPage,
     CartaPage,
     HistorialPage,
+    HistorialDetallePage,
     ProductoDetallePage,
     ResumenPage,
     EventoDetallePage,

@@ -305,6 +305,25 @@ export class ReservacionProvider {
     ));
   }
 
+  public getReservacionesClienteHistorial(idx: string) {
+    this.reservaCliente = this.af.collection<any>("reservaciones", (ref) =>
+      ref
+        .where("idUsuario", "==", idx)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", "in", ["Pagado", "Finalizado"])
+    );
+    this._reservaCliente = this.reservaCliente.valueChanges();
+    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
   //obtener reservacion compartida en la que esta el usuario
   public getReservacionCompartida(telefono: string) {
     this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
@@ -312,6 +331,28 @@ export class ReservacionProvider {
         .where("telefono", "==", telefono)
         .where("estatusFinal", "==", "rsv_copletada")
         .where("estatus", "in", ["Espera", "Aceptado"])
+        .where("estatus_escaneo", "!=", "OK")
+    );
+    this._resCompartida = this.resCompartida.valueChanges();
+    return (this._resCompartida = this.resCompartida.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
+  //obtener reservacion compartida en la que esta el usuario
+  public getReservacionCompartidaHistorial(telefono: string, uid: string) {
+    this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
+      ref
+        .where("telefono", "==", telefono)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus_escaneo", "==", "OK")
+        .where("idUsuario", "!=", uid)
     );
     this._resCompartida = this.resCompartida.valueChanges();
     return (this._resCompartida = this.resCompartida.snapshotChanges().pipe(
