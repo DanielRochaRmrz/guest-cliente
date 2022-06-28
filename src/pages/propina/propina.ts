@@ -88,18 +88,18 @@ export class PropinaPage {
     console.log('propina', this.propina);
     // console.log('codigoRP', this.codigoRp);
 
-    if(this.codigoRp != ""){
+    if (this.codigoRp != "") {
 
-      const codigoRpUser = this.codigoRp; 
+      const codigoRpUser = this.codigoRp;
+
+      var idSucursal = localStorage.getItem("idSucursal");
 
       // VERIFICA SI EL CODIGO INGRESADO POR EL USUARIO EXISTE EN LA BASE DE DATOS
 
-    const consul = this.afs.collection('codigosRp').ref; 
-    consul.where('codigo', '==', codigoRpUser).get().then(data =>{
+      const consul = this.afs.collection('codigosRp').ref;
+      consul.where('codigo', '==', codigoRpUser).where('uidSucursal', '==', idSucursal).get().then(data => {        
 
         this.codigoRpUsers = data;
-
-        console.log("CODIGO RP", this.codigoRpUsers);    
 
         this.codigoRpUsers.forEach(element => {
 
@@ -107,127 +107,81 @@ export class PropinaPage {
 
           const codigoRP = elem.codigo;
           const uidRp = elem.uidRp;
-          
-          if(codigoRP.length != 0){
+
+          if (codigoRP.length != 0) {
 
             // SI EL CODIGO YA FUE USADO POR EL USUARIO 
 
-            console.log("USERSESSION", this.uidUserSesion);
-            console.log("uid", codigoRP);
-            console.log("uidRp", uidRp);   
-            console.log("NOMBRE USUARIO", this.nombreUsuario);
-                     
-            
             const consul2 = this.afs.collection('contCodigosRp').ref;
-            consul2.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion).get().then(data =>{
-
-              
+            consul2.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion).get().then(data => {
 
               this.rowConCode = data.empty;
 
-              console.log("conCodigosRp", this.rowConCode);              
+              if (this.rowConCode == true) {
 
-              // console.log("ROWCONCODE", this.rowConCode);
-              
-              // console.log("lenght rowconcode",this.rowConCode.length);  
-                if(this.rowConCode == true){                  
+                let today = Date.now();
 
-                  // let result = '';
-                  // const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                  // const charactersLength = characters.length;
-                  // for (let i = 40; i < charactersLength; i++) {
-                  //     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                  // }
-        
-                  // this.uid = result;
+                this.afs.collection("contCodigosRp").doc(this.idReservacion).set({
 
-                  let today = Date.now();
+                  estatus: 0,
+                  uid: this.idReservacion,
+                  uidUser: this.uidUserSesion,
+                  nombreUsuario: this.nombreUsuario,
+                  uidRP: uidRp,
+                  fecha: today,
+                  codigoRpUser: codigoRP,
+                  uidReservacion: this.idReservacion
 
-                  this.afs.collection("contCodigosRp").doc(this.idReservacion).set({
+                });
 
-                    estatus: 0,
-                    uid: this.idReservacion,
-                    uidUser: this.uidUserSesion,
-                    nombreUsuario: this.nombreUsuario,
-                    uidRP: uidRp,
-                    fecha: today,
-                    codigoRpUser: codigoRP,
-                    uidReservacion: this.idReservacion
-      
+                // INICIA FLUJO NORMAL DEL PROCESO DE RESERVACION 
+
+                this.afs.collection("reservaciones").doc(this.idReservacion).update({
+                  "propina": this.propina,
+                  "codigoRP": codigoRP,
+                  "estatusFinal": "rsv_copletada",
+                  "playerIDs": localStorage.getItem('playerID'),
+                })
+                  .then(function () {
+                    console.log("se adjunto la propina!");
                   });
+                if (localStorage.getItem('compartida')) {
 
-                  // INICIA FLUJO NORMAL DEL PROCESO DE RESERVACION 
-
-                  this.afs.collection("reservaciones").doc(this.idReservacion).update({
-                    "propina": this.propina,
-                    "codigoRP": codigoRP,
-                    "estatusFinal": "rsv_copletada",
-                    "playerIDs": localStorage.getItem('playerID'),
-                  })
-                    .then(function () {
-                      console.log("se adjunto la propina!");
-                    });
-                    if(localStorage.getItem('compartida')){
-              
-                      this.db.collection("compartidas").where("idReservacion", "==", this.idReservacion)
-                          .get().then((data) => {
-                            data.forEach((doc) => {
-                              console.log(doc.data());
-                              const compartidas = doc.data();
-                              const idCompartidas = compartidas.idCompartir;
-                              if (idCompartidas) {
-                               this.db.collection('compartidas').doc(idCompartidas).update({
-                                "estatusFinal": "rsv_copletada"
-                               }).then(() => console.log('Comaprtidas actulizadas'))
-                              } else {
-                                console.log('No hay');
-                              }
-                            });
-                          });
-                      
-                    }
-                  //SABER SI SE USO UN cupon en la reservacion
-                  this.providerReserva.getInfo(this.idReservacion).subscribe(info => {
-                    this.infoReservaciones = info;
-                    if (info[0].uidCupon == undefined) {
-                      this.validarCupon = 'Noexiste';
-                      // total de general dependiendo los productos que tenga la reservacion
-                      this.providerReserva.getProductos(this.idReservacion).subscribe(productos => {
-                        this.productos = productos;
-                        this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
-                        const propinaCalculo = this.total * this.propina;
-                        this.totalPropina = this.total + propinaCalculo;
-                        //this.navCtrl.setRoot(DetallePropinaPage, {
-                        //  totalPropina: this.totalPropina,
-                        //});
-                        //Manda mensaje de termino de la reservacion
-                        //let alertMesas = this.alertCtrl.create({
-                        //  message:
-                        //    "Total de la reservacion con propina es: $ " + this.totalPropina + " Gracias por reservar en Guest Resy te notificaremos cuando tu reservación haya sido aceptada.",
-                        //  buttons: [
-                        //    {
-                        //      text: "Aceptar",
-                        //      handler: () => {
-                        //        console.log("Buy clicked");
-                        //        this.navCtrl.setRoot(MisReservacionesPage);
-                        //      }
-                        //    }
-                        //  ]
-                        //});
-                        //alertMesas.present();
+                  this.db.collection("compartidas").where("idReservacion", "==", this.idReservacion)
+                    .get().then((data) => {
+                      data.forEach((doc) => {
+                        console.log(doc.data());
+                        const compartidas = doc.data();
+                        const idCompartidas = compartidas.idCompartir;
+                        if (idCompartidas) {
+                          this.db.collection('compartidas').doc(idCompartidas).update({
+                            "estatusFinal": "rsv_copletada"
+                          }).then(() => console.log('Comaprtidas actulizadas'))
+                        } else {
+                          console.log('No hay');
+                        }
                       });
-                    } else {
-                      this.validarCupon = 'Existe';
-                      const totalDescuento = info[0].totalReservacion;
-                      const propinaCalculo2 = totalDescuento * this.propina;
-                      this.totalPropina2 = totalDescuento + propinaCalculo2;
-                    //  this.navCtrl.setRoot(DetallePropinaPage, {
-                      //  totalPropina: this.totalPropina2,
+                    });
+
+                }
+                //SABER SI SE USO UN cupon en la reservacion
+                this.providerReserva.getInfo(this.idReservacion).subscribe(info => {
+                  this.infoReservaciones = info;
+                  if (info[0].uidCupon == undefined) {
+                    this.validarCupon = 'Noexiste';
+                    // total de general dependiendo los productos que tenga la reservacion
+                    this.providerReserva.getProductos(this.idReservacion).subscribe(productos => {
+                      this.productos = productos;
+                      this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
+                      const propinaCalculo = this.total * this.propina;
+                      this.totalPropina = this.total + propinaCalculo;
+                      //this.navCtrl.setRoot(DetallePropinaPage, {
+                      //  totalPropina: this.totalPropina,
                       //});
                       //Manda mensaje de termino de la reservacion
-                      //let alertMesas2 = this.alertCtrl.create({
+                      //let alertMesas = this.alertCtrl.create({
                       //  message:
-                      //    "Total de la reservacion con propina es: $ " + this.totalPropina2 + " Gracias por reservar en Guest Resy te notificaremos cuando tu reservación haya sido aceptada.",
+                      //    "Total de la reservacion con propina es: $ " + this.totalPropina + " Gracias por reservar en Guest Resy te notificaremos cuando tu reservación haya sido aceptada.",
                       //  buttons: [
                       //    {
                       //      text: "Aceptar",
@@ -238,39 +192,63 @@ export class PropinaPage {
                       //    }
                       //  ]
                       //});
-                      //alertMesas2.present();
-                    }
-              
-                  });
-                  this.navCtrl.setRoot(MisReservacionesPage);
-                  this.getUsersPusCancelar();
+                      //alertMesas.present();
+                    });
+                  } else {
+                    this.validarCupon = 'Existe';
+                    const totalDescuento = info[0].totalReservacion;
+                    const propinaCalculo2 = totalDescuento * this.propina;
+                    this.totalPropina2 = totalDescuento + propinaCalculo2;
+                    //  this.navCtrl.setRoot(DetallePropinaPage, {
+                    //  totalPropina: this.totalPropina2,
+                    //});
+                    //Manda mensaje de termino de la reservacion
+                    //let alertMesas2 = this.alertCtrl.create({
+                    //  message:
+                    //    "Total de la reservacion con propina es: $ " + this.totalPropina2 + " Gracias por reservar en Guest Resy te notificaremos cuando tu reservación haya sido aceptada.",
+                    //  buttons: [
+                    //    {
+                    //      text: "Aceptar",
+                    //      handler: () => {
+                    //        console.log("Buy clicked");
+                    //        this.navCtrl.setRoot(MisReservacionesPage);
+                    //      }
+                    //    }
+                    //  ]
+                    //});
+                    //alertMesas2.present();
+                  }
 
-                  // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION 
+                });
+                this.navCtrl.setRoot(MisReservacionesPage);
+                this.getUsersPusCancelar();
 
-                }
+                // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION 
+
+              }
 
             });
 
             // TERMINA SI EL CODIGO YA FUE USADO POR EL USUARIO            
 
           }
-          
-        });
-        if(this.codigoRpUsers.empty == true){
 
-          this.mostrar_toast('EL CÓDIGO QUE INGRESASTE NO COINCIDE CON NUESTROS REGISTROS');  
+        });
+        if (this.codigoRpUsers.empty == true) {
+
+          this.mostrar_toast('EL CÓDIGO QUE INGRESASTE NO COINCIDE CON NUESTROS REGISTROS');
           // console.log("NO HAY COINCIDENCIAS");                   
 
-        }else if(this.codigoRpUsers.empty == false){
+        } else if (this.codigoRpUsers.empty == false) {
 
           this.mostrar_toast('EL CÓDIGO QUE INGRESASTE YA LO HAS UTILIZADO');
 
         }
       });
 
-    // EN CASO DE QUE NO UTILIZEN CODIGO DE RP 
+      // EN CASO DE QUE NO UTILIZEN CODIGO DE RP 
 
-    }else if(this.codigoRp == ""){
+    } else if (this.codigoRp == "") {
 
       this.afs.collection("reservaciones").doc(this.idReservacion).update({
         "propina": this.propina,
@@ -280,25 +258,25 @@ export class PropinaPage {
         .then(function () {
           console.log("se adjunto la propina!");
         });
-        if(localStorage.getItem('compartida')){
-  
-          this.db.collection("compartidas").where("idReservacion", "==", this.idReservacion)
-              .get().then((data) => {
-                data.forEach((doc) => {
-                  console.log(doc.data());
-                  const compartidas = doc.data();
-                  const idCompartidas = compartidas.idCompartir;
-                  if (idCompartidas) {
-                   this.db.collection('compartidas').doc(idCompartidas).update({
-                    "estatusFinal": "rsv_copletada"
-                   }).then(() => console.log('Comaprtidas actulizadas'))
-                  } else {
-                    console.log('No hay');
-                  }
-                });
-              });
-          
-        }
+      if (localStorage.getItem('compartida')) {
+
+        this.db.collection("compartidas").where("idReservacion", "==", this.idReservacion)
+          .get().then((data) => {
+            data.forEach((doc) => {
+              console.log(doc.data());
+              const compartidas = doc.data();
+              const idCompartidas = compartidas.idCompartir;
+              if (idCompartidas) {
+                this.db.collection('compartidas').doc(idCompartidas).update({
+                  "estatusFinal": "rsv_copletada"
+                }).then(() => console.log('Comaprtidas actulizadas'))
+              } else {
+                console.log('No hay');
+              }
+            });
+          });
+
+      }
       //SABER SI SE USO UN cupon en la reservacion
       this.providerReserva.getInfo(this.idReservacion).subscribe(info => {
         this.infoReservaciones = info;
@@ -334,7 +312,7 @@ export class PropinaPage {
           const totalDescuento = info[0].totalReservacion;
           const propinaCalculo2 = totalDescuento * this.propina;
           this.totalPropina2 = totalDescuento + propinaCalculo2;
-        //  this.navCtrl.setRoot(DetallePropinaPage, {
+          //  this.navCtrl.setRoot(DetallePropinaPage, {
           //  totalPropina: this.totalPropina2,
           //});
           //Manda mensaje de termino de la reservacion
@@ -353,13 +331,13 @@ export class PropinaPage {
           //});
           //alertMesas2.present();
         }
-  
+
       });
       this.navCtrl.setRoot(MisReservacionesPage);
       this.getUsersPusCancelar();
 
     }
-    
+
   }
 
 
@@ -395,12 +373,12 @@ export class PropinaPage {
       console.log("Solo funciona en dispositivos");
     }
   }
-  
-  mostrar_toast( mensaje: string  ){
+
+  mostrar_toast(mensaje: string) {
 
     const toast = this.toastCtrl.create({
-       message: mensaje,
-       duration: 3000
-     }).present();
-   }
+      message: mensaje,
+      duration: 3000
+    }).present();
+  }
 }
