@@ -47,11 +47,6 @@ export class MisReservacionesPage {
     this.miUser = await this.userProvider.getUser(this.uid);
     this.telUser = this.miUser.phoneNumber;
     this.getReservacionCompartida(this.telUser);
-    this.clearReservas( this.uid);
-  }
-
-  clearReservas(uid: string) {
-    this.reservaProvider.cleanReserva(uid);
   }
   
   //obtener todas las reservaciones de un usuario
