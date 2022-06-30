@@ -7,8 +7,8 @@ import {
   LoadingController,
 } from "ionic-angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { PhotoViewer } from '@ionic-native/photo-viewer';
-import { MenuPage } from '../menu/menu';
+import { PhotoViewer } from "@ionic-native/photo-viewer";
+import { MenuPage } from "../menu/menu";
 import { ReservacionesPage } from "../reservaciones/reservaciones";
 
 import { CroquisProvider } from "../../providers/croquis/croquis";
@@ -19,7 +19,6 @@ import { CroquisProvider } from "../../providers/croquis/croquis";
   templateUrl: "croquis.html",
 })
 export class CroquisPage {
-
   miUser: any = {};
   params: any = {};
   uid: string;
@@ -29,7 +28,7 @@ export class CroquisPage {
   zonaData: any = {};
   zonaForm: FormGroup;
   consumo: number;
-  CroquisImg: string = '';
+  CroquisImg: string = "";
   imgCroquis: any = {};
   idSucursal: string = "";
   ClaveInstancia: string = "";
@@ -44,7 +43,7 @@ export class CroquisPage {
     public loadingCtrl: LoadingController,
     public croquisService: CroquisProvider,
     public formBuilder: FormBuilder,
-    public photoViewer: PhotoViewer,
+    public photoViewer: PhotoViewer
   ) {
     this.zonaForm = this.formBuilder.group({
       zona: ["", [Validators.required]],
@@ -84,21 +83,27 @@ export class CroquisPage {
     }
   }
 
-  getCroquisImg (idSucursal: string) {
+  getCroquisImg(idSucursal: string) {
     this.croquisService.getCroquisImg(idSucursal).subscribe((dataImg) => {
-      dataImg.forEach(data => {
+      dataImg.forEach((data) => {
         this.CroquisImg = data.imagenes;
         this.showLoading = false;
-      });      
+      });
     });
-
   }
 
-  showImagCroquis (CroquisImg: string) {
-    this.photoViewer.show(CroquisImg, 'Croquis', {share: true});
+  showImagCroquis(CroquisImg: string) {
+    const options = {
+      share: true, // default is false
+      closeButton: true, // default is true
+      copyToReference: true, // default is false
+      headers: "", // If it is not provided, it will trigger an exception
+      piccasoOptions: {}, // If it is not provided, it will trigger an exception
+    };
+    this.photoViewer.show(CroquisImg, "Croquis", options);
   }
 
-alertConsumo(consumo: number) {
+  alertConsumo(consumo: number) {
     // "$1,000.00"
     const formatter = new Intl.NumberFormat("en-MX", {
       style: "currency",
@@ -125,34 +130,44 @@ alertConsumo(consumo: number) {
   }
 
   async updateZona() {
-    const resultado = await this.croquisService.updateZona(this.idReservacion, this.zona);
+    const resultado = await this.croquisService.updateZona(
+      this.idReservacion,
+      this.zona
+    );
     if (resultado == true) {
       this.irMenu();
     }
   }
 
-
   irMenu() {
-    this.navCtrl.push(MenuPage, {
-      consumo: this.consumo,
-      fecha: this.fecha,
-      hora: this.hora,
-      idReservacion: this.idReservacion,
-      idSucursal: this.idSucursal,
-      ClaveInstancia: this.ClaveInstancia,
-      zona: this.zona,
-    }, { animate: true, direction: "forward" });
+    this.navCtrl.push(
+      MenuPage,
+      {
+        consumo: this.consumo,
+        fecha: this.fecha,
+        hora: this.hora,
+        idReservacion: this.idReservacion,
+        idSucursal: this.idSucursal,
+        ClaveInstancia: this.ClaveInstancia,
+        zona: this.zona,
+      },
+      { animate: true, direction: "forward" }
+    );
   }
 
   irReservaciones() {
-    this.navCtrl.push(ReservacionesPage, {
-      fecha: this.fecha,
-      hora: this.hora,
-      idReservacion: this.idReservacion,
-      idSucursal: this.idSucursal,
-      ClaveInstancia: this.ClaveInstancia,
-      zona: this.zona,
-    }, { animate: true, direction: "back" });
+    this.navCtrl.push(
+      ReservacionesPage,
+      {
+        fecha: this.fecha,
+        hora: this.hora,
+        idReservacion: this.idReservacion,
+        idSucursal: this.idSucursal,
+        ClaveInstancia: this.ClaveInstancia,
+        zona: this.zona,
+      },
+      { animate: true, direction: "back" }
+    );
   }
 
   onLoad() {
