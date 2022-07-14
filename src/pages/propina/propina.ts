@@ -9,6 +9,7 @@ import { MisReservacionesPage } from '../mis-reservaciones/mis-reservaciones';
 import { DetallePropinaPage } from '../detalle-propina/detalle-propina';
 import * as firebase from "firebase";
 import { ToastController } from 'ionic-angular';
+import { DeviceProvider } from '../../providers/device/device';
 
 
 @IonicPage()
@@ -52,7 +53,10 @@ export class PropinaPage {
     public alertCtrl: AlertController,
     public platform: Platform,
     public fb: FormBuilder,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController,
+    public _providerReserva: ReservacionProvider,
+    public _deviceProvider: DeviceProvider
+    ) {
     this.idReservacion = navParams.get("idReservacion");
     //validar que los inputs del formulario no esten vacios
     this.myForm = this.fb.group({
@@ -221,8 +225,17 @@ export class PropinaPage {
 
                 });
                 this.navCtrl.setRoot(MisReservacionesPage);
+                const compartida = localStorage.getItem('compartida');
+                if (compartida === 'true') {
+                  this.notiReservaCompartida();
+                }
                 this.getUsersPusCancelar();
-
+                localStorage.removeItem('idSucursal');
+                localStorage.removeItem('zona');
+                localStorage.removeItem('idReservacion');
+                localStorage.removeItem('uidEvento');
+                localStorage.removeItem('compartida');
+                
                 // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION 
 
               }
@@ -334,7 +347,16 @@ export class PropinaPage {
 
       });
       this.navCtrl.setRoot(MisReservacionesPage);
-      this.getUsersPusCancelar();
+                const compartida = localStorage.getItem('compartida');
+                if (compartida === 'true') {
+                  this.notiReservaCompartida();
+                }
+                this.getUsersPusCancelar();
+                localStorage.removeItem('idSucursal');
+                localStorage.removeItem('zona');
+                localStorage.removeItem('idReservacion');
+                localStorage.removeItem('uidEvento');
+                localStorage.removeItem('compartida');
 
     }
 
@@ -381,4 +403,10 @@ export class PropinaPage {
       duration: 3000
     }).present();
   }
+
+  async notiReservaCompartida() {
+    const resp = await  this._providerReserva.getUsersCompartidos(this.idReservacion);
+    console.log('esta es la respuesta -->', resp);
+  }
+
 }

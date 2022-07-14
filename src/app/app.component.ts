@@ -224,6 +224,11 @@ export class MyApp {
               const idReservacion = reservacion.idReservacion;
               if (idReservacion) {
                 this._providerReservacion.deleteReservacion(idReservacion);
+                localStorage.removeItem('idSucursal');
+                localStorage.removeItem('zona');
+                localStorage.removeItem('idReservacion');
+                localStorage.removeItem('uidEvento');
+                localStorage.removeItem('compartida');
               } else {
                 console.log("No hay");
               }

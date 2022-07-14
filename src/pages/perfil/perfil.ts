@@ -36,6 +36,8 @@ export class PerfilPage {
   loading : any;
   loadingC: any;
 
+  public playerID = localStorage.getItem('playerID');
+
 
   constructor(public navCtrl: NavController,
     public usuarioProv: UsuarioProvider,

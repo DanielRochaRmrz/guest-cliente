@@ -196,6 +196,7 @@ export class ReservacionesPage {
         localStorage.removeItem("idSucursal");
         localStorage.removeItem("uidEvento");
         localStorage.removeItem("reservacion");
+        localStorage.removeItem("compartida");
       });
     } else {
       this.navCtrl.popToRoot();
@@ -367,6 +368,16 @@ export class ReservacionesPage {
       showBackdrop: true
     });
     this.loading.present();
+    let alertMesas = this.alertCtrl.create({
+      message: "<div text-center> <b> Al compartir una reservación estarás dividiendo la cuenta total entre los participantes de la reservación y todos deberán aceptar el compartirla para que sea aprobada por el rp/establecimiento. Al ser aceptada todos deberán pagar su parte para poder generar los códigos QR de acceso. </b> </div>",
+      buttons: [
+        {
+          text: "Aceptar",
+          handler: () => {},
+        },
+      ],
+    });
+    alertMesas.present();
     setTimeout(() => {
       this.ports = [];
       this.todosContactos();

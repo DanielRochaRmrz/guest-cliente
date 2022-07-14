@@ -8,6 +8,8 @@ import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import * as moment from "moment";
 import { HttpClient } from "@angular/common/http";
+import { Platform } from "ionic-angular";
+import { DeviceProvider } from "../device/device";
 
 @Injectable()
 export class ReservacionProvider {
@@ -85,7 +87,12 @@ export class ReservacionProvider {
   reservacionesCollection: AngularFirestoreCollection<any>;
   collection: Observable<any>;
 
-  constructor(public af: AngularFirestore, public http: HttpClient) {
+  constructor(
+    public af: AngularFirestore,
+    public http: HttpClient,
+    private platform: Platform,
+    private _deviceProvider: DeviceProvider
+  ) {
     console.log("Hello ReservacionProvider Provider");
   }
 
@@ -521,6 +528,41 @@ export class ReservacionProvider {
         });
       })
     ));
+  }
+
+  //obtener los usuarios que aceptaron compartir la reservacion para mandar la notificacion
+  public getUsersCompartidos(idx) {
+    return new Promise((resolve, reject) => {
+      const userCompartidoRef = this.af.collection("compartidas").ref;
+      userCompartidoRef
+        .where("idReservacion", "==", idx)
+        .where("estatus", "==", "Espera")
+        .get()
+        .then((data) => {
+          data.forEach((userCom) => {
+            const comUser = userCom.data();
+            const usersCompartido = comUser.playerId;
+            console.log("Usuarios compartidos: ", usersCompartido);
+            console.log("PlayerID:", usersCompartido.playerId);
+            if (usersCompartido.playerId != undefined) {
+              console.log("notificacion  a", usersCompartido.playerId);
+              if (this.platform.is("cordova")) {
+                const data = {
+                  topic: usersCompartido.playerId,
+                  title: "Reservación compartida",
+                  body: "Han compartido una reservación contigo",
+                };
+                this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+                  console.log("Respuesta noti fcm", resp);
+                  resolve(resp);
+                });
+              } else {
+                console.log("Solo funciona en dispositivos");
+              }
+            }
+          });
+        });
+    });
   }
 
   public getMesas(idx, area, zona) {
@@ -1077,5 +1119,4 @@ export class ReservacionProvider {
       })
     ));
   }
-
 }
