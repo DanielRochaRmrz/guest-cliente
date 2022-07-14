@@ -10,6 +10,7 @@ import { DetallePropinaPage } from '../detalle-propina/detalle-propina';
 import * as firebase from "firebase";
 import { ToastController } from 'ionic-angular';
 import { DeviceProvider } from '../../providers/device/device';
+import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 
 
 @IonicPage()
@@ -55,7 +56,8 @@ export class PropinaPage {
     public fb: FormBuilder,
     public toastCtrl: ToastController,
     public _providerReserva: ReservacionProvider,
-    public _deviceProvider: DeviceProvider
+    public _deviceProvider: DeviceProvider,
+    public _pushNoti : PushNotiProvider
     ) {
     this.idReservacion = navParams.get("idReservacion");
     //validar que los inputs del formulario no esten vacios
@@ -405,7 +407,7 @@ export class PropinaPage {
   }
 
   async notiReservaCompartida() {
-    const resp = await  this._providerReserva.getUsersCompartidos(this.idReservacion);
+    const resp = await  this._pushNoti.PushNotiCompartidos(this.idReservacion);
     console.log('esta es la respuesta -->', resp);
   }
 

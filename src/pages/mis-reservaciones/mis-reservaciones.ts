@@ -8,6 +8,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { CartaEditarPage } from "../carta-editar/carta-editar";
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { UserProvider } from '../../providers/user/user';
+import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 
 
 
@@ -33,7 +34,8 @@ export class MisReservacionesPage {
     public reservaProvider: ReservacionProvider,
     public afDB: AngularFireDatabase,
     public afs: AngularFirestore,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public _pushNotiProvider : PushNotiProvider
   ) {}
 
   ionViewDidLoad() {
@@ -93,8 +95,7 @@ export class MisReservacionesPage {
     });
   }
 
-  aceptarCompartir(idCompartir, idReservacion) {
-    console.log('llego a a ceptar compartir', idReservacion);
+  aceptarCompartir(idCompartir: string, idReservacion: string) {
     //Consulta para mandar el estatus aceptado
     this.reservaProvider
       .updateCompartirAceptar(idCompartir)
@@ -104,6 +105,7 @@ export class MisReservacionesPage {
           console.log("Success: ", respuesta.success);
         }
       });
+    this._pushNotiProvider.PushNotiAceptaReservacion(idReservacion, this.miUser.displayName);
     this.navCtrl.setRoot(MisReservacionesPage, {
       idReservacion: idReservacion
     });
