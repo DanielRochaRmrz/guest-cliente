@@ -1,0 +1,312 @@
+<ion-header>
+    <ion-navbar class="borde">
+        <ion-row>
+            <ion-col>
+                <button ion-button menuToggle class="botonMod">
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+                </button>
+            </ion-col>
+            <ion-col align="center">
+                <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
+            </ion-col>
+            <ion-col>
+                <div align="end">
+                    <div *ngIf="miUser.provider == 'facebook'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+                        </div>
+                    </div>
+                    <div *ngIf="miUser.provider == 'google'">
+                        <div *ngIf="miUser.status_foto == 0">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width: 85%; border-radius: 50%" />
+                        </div>
+                        <div *ngIf="miUser.status_foto == 1">
+                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+                        </div>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col>
+            <p class="lugar">
+                Reservaciones
+                <br />
+                <img src="./assets/icon/Vector10.png" style="width: 40%" alt="" />
+            </p>
+            <p class="detalle">En curso</p>
+        </ion-col>
+        <ion-col col-1></ion-col>
+    </ion-row>
+
+    <div *ngFor="let reservaciones of misReservaciones">
+        <ion-card class="card_atras">
+            <ion-card-header>
+                <h5 class="blanco_1">
+                    Reservación en {{ (reservaciones.idSucursal | getSucursal | async)?.displayName }}
+                </h5>
+                <div *ngIf="reservaciones.estatus == 'Modificado'; then modificado"></div>
+                <ng-template #modificado>
+                    <div text-center>
+                        <ion-badge class="colornaranja">
+                            Tu reservación ha sido reasignada a <br /> la zona: {{ (reservaciones.idZona | getZona |
+                            async)?.nombre }}
+                            <br /> el consumo sugerido es: {{ (reservaciones.idZona | getZona | async)?.consumo |
+                            currency }}
+                        </ion-badge>
+                    </div>
+                </ng-template>
+            </ion-card-header>
+
+            <ion-item>
+                <img src="../assets/imgs/linea.png" alt="" />
+                <ion-row>
+                    <ion-col col-6>
+                        <p class="blanco_2"><b>Fecha de reservación</b></p>
+                    </ion-col>
+                    <ion-col col-6>
+                        <div text-center>
+                            <i ion-text color="primary">{{reservaciones.fechaR}}</i>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <div *ngIf="reservaciones.estatus == 'Creando' || 'Modificado'; then creando else aceptado "></div>
+            <ng-template #creando>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-6>
+                            <a class="blanco_2"><b>Estatus</b></a>
+                        </ion-col>
+                        <ion-col col-6>
+                            <div text-center>
+                                <i ion-text color="primary">
+                                    {{reservaciones.estatus}}
+                                    <img src="../assets/imgs/amarillo.png" class="imgStatus" />
+                                </i>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+            <ng-template #aceptado>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-6>
+                            <a class="blanco_2"><b>Estatus</b></a>
+                        </ion-col>
+                        <ion-col col-6>
+                            <div text-center>
+                                <i ion-text color="secondary">
+                                    {{reservaciones.estatus}}
+                                    <img src="../assets/imgs/verde.png" class="imgStatus" />
+                                </i>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+            <ion-item>
+                <ion-row>
+                    <ion-col col-6>
+                        <a class="blanco_2"><b>Folio</b></a>
+                    </ion-col>
+                    <ion-col col-6>
+                        <div text-center>
+                            <i ion-text color="primary">{{reservaciones.folio}}</i>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <ion-item>
+                <div text-center>
+                    <a (click)="verDetalle(reservaciones.idReservacion)" class="blanco_2">
+                        <b> Más detalles </b>
+                    </a>
+                    &nbsp;&nbsp;&nbsp;
+                    <ion-icon name="md-arrow-dropdown" style="color: #fd9530"
+                        (click)="verDetalle(reservaciones.idReservacion)"></ion-icon>
+                    <ion-badge item-end></ion-badge>
+                </div>
+                <img src="../assets/imgs/linea.png" alt="" />
+            </ion-item>
+            <div *ngIf="reservaciones.estatus == 'Modificado'; then mod"></div>
+            <ng-template #mod>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-7>
+                            <div text-center>
+                                <button ion-button round color="primary"
+                                    (click)="verCarta(reservaciones.idReservacion, reservaciones.idSucursal, reservaciones.idevento)">
+                                    Aceptar reservación
+                                </button>
+                            </div>
+                        </ion-col>
+                        <ion-col col-5>
+                            <div text-center>
+                                <button ion-button round color="danger"
+                                    (click)="CancelarReservacion(reservaciones.idReservacion )">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+        </ion-card>
+        <hr>
+    </div>
+
+    <!-- Codigo de reservaciones compartidas -->
+    <div *ngFor="let compartidas of resCompartidas">
+        <ion-card class="card_atras">
+            <ion-card-header>
+                <h5 class="blanco_1">
+                    Reservación en {{ (compartidas.idSucursal | getSucursal | async)?.displayName }}
+                </h5>
+                <div
+                    *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado">
+                </div>
+                <ng-template #modificado>
+                    <div text-center>
+                        <ion-badge class="colornaranja">
+                            Tu reservación ha sido reasignada a <br /> la zona: {{ ((compartidas.idReservacion |
+                            getCompartidas | async)?.idZona | getZona | async)?.nombre }}
+                            <br /> el consumo sugerido es: {{ ((compartidas.idReservacion | getCompartidas |
+                            async)?.idZona | getZona | async)?.consumo | currency }}
+                        </ion-badge>
+                    </div>
+                </ng-template>
+            </ion-card-header>
+
+            <ion-item>
+                <img src="../assets/imgs/linea.png" alt="" />
+                <ion-row>
+                    <ion-col col-6>
+                        <p class="blanco_2"><b>Fecha de reservación</b></p>
+                    </ion-col>
+                    <ion-col col-6>
+                        <div text-center>
+                            <i ion-text color="primary">
+                                {{ (compartidas.idReservacion | getCompartidas | async )?.fechaR }}
+                            </i>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <div
+                *ngIf="(compartidas.idReservacion | getCompartidas | async )?.estatus === 'Compartida' || (compartidas.idReservacion | getCompartidas | async )?.estatus === 'CreadaCompartida'; then creando else aceptado ">
+            </div>
+            <ng-template #creando>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-6>
+                            <a class="blanco_2"><b>Estatus</b></a>
+                        </ion-col>
+                        <ion-col col-6>
+                            <div text-center>
+                                <i ion-text color="primary">
+                                    Compartida
+                                    <img src="../assets/imgs/amarillo.png" class="imgStatus" />
+                                </i>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+            <ng-template #aceptado>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-6>
+                            <a class="blanco_2"><b>Estatus</b></a>
+                        </ion-col>
+                        <ion-col col-6>
+                            <div text-center>
+                                <i ion-text color="secondary">
+                                    Aceptada
+                                    <img src="../assets/imgs/verde.png" class="imgStatus" />
+                                </i>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+            <ion-item>
+                <ion-row>
+                    <ion-col col-6>
+                        <a class="blanco_2"><b>Folio</b></a>
+                    </ion-col>
+                    <ion-col col-6>
+                        <div text-center>
+                            <i ion-text color="primary">{{ (compartidas.idReservacion | getCompartidas | async)?.folio
+                                }}</i>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <ion-item>
+                <div text-center>
+                    <a (click)="verDetalle(compartidas.idReservacion)" class="blanco_2">
+                        <b> Más detalles </b>
+                    </a>
+                    &nbsp;&nbsp;&nbsp;
+                    <ion-icon name="md-arrow-dropdown" style="color: #fd9530"
+                        (click)="verDetalle(compartidas.idReservacion)"></ion-icon>
+                    <ion-badge item-end></ion-badge>
+                </div>
+                <img src="../assets/imgs/linea.png" alt="" />
+            </ion-item>
+            <div
+                *ngIf="(compartidas.idReservacion | getCompartidas | async)?.folio.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then mod">
+            </div>
+            <ng-template #mod>
+                <ion-item>
+                    <ion-row>
+                        <ion-col col-7>
+                            <div text-center>
+                                <button ion-button round color="primary"
+                                    (click)="verCarta(compartidas.idReservacion, compartidas.idSucursal, compartidas.idevento)">
+                                    Aceptar reservación
+                                </button>
+                            </div>
+                        </ion-col>
+                        <ion-col col-5>
+                            <div text-center>
+                                <button ion-button round color="danger"
+                                    (click)="CancelarReservacion(compartidas.idReservacion )">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+            </ng-template>
+            <div *ngIf="compartidas.estatus == 'Espera'; then espera"></div>
+            <ng-template #espera>
+                <ion-item class="colornaranja">
+                    <div text-center>
+                        <h5 ion-text color="light">*Invitación para que el total de</h5>
+                        <h5 ion-text color="light">la cuenta se divida contigo.</h5>
+                        <button ion-button round color="secondary"
+                            (click)="aceptarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
+                            Acepto dividir cuenta
+                        </button>
+                        <button ion-button round color="danger"
+                            (click)="rechazarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
+                            No acepto
+                        </button>
+                    </div>
+                </ion-item>
+            </ng-template>
+        </ion-card>
+        <hr>
+    </div>
+</ion-content>
