@@ -146,7 +146,7 @@ export class PropinaPage {
                   "propina": this.propina,
                   "codigoRP": codigoRP,
                   "estatusFinal": "rsv_copletada",
-                  "playerIDs": localStorage.getItem('playerID'),
+                  "playerIDs": this.miUser.playerID,
                 })
                   .then(function () {
                     console.log("se adjunto la propina!");
@@ -268,7 +268,7 @@ export class PropinaPage {
       this.afs.collection("reservaciones").doc(this.idReservacion).update({
         "propina": this.propina,
         "estatusFinal": "rsv_copletada",
-        "playerIDs": localStorage.getItem('playerID'),
+        "playerIDs": this.miUser.playerID,
       })
         .then(function () {
           console.log("se adjunto la propina!");
