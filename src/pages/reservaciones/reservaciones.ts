@@ -266,7 +266,7 @@ export class ReservacionesPage {
           this.usertel = data;
           this.usertel.forEach(element => {
             //insertar en tabla compartidas telefono del usuario en sesion
-            this._providerReserva.saveCompartirPropio(element.phoneNumber, respuesta.idReservacion, this.uid, this.idSucursal).then((respuesta: any) => {});
+            this._providerReserva.saveCompartirPropio(element.phoneNumber, respuesta.idReservacion, this.uid, this.idSucursal, this.miUser.playerID).then((respuesta: any) => {});
           });
         });
 
@@ -285,6 +285,7 @@ export class ReservacionesPage {
               this.resultCompartidas.forEach(element => {
                 this._providerReserva.buscarPlayerid(element.telefono).subscribe(players => {
                   this.players = players[0].playerID;
+                  console.log('players ID -->', this.players);
                   this.afs.collection("compartidas").doc(element.idCompartir).update({
                     "playerId": this.players
                   })

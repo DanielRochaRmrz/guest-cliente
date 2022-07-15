@@ -633,10 +633,9 @@ export class ReservacionProvider {
   }
 
   //insertar el numero del ususrio en sesion en la tabla al compartir una cuenta
-  public saveCompartirPropio(telefono, idReservacion, idUsuario, idSucursal) {
+  public saveCompartirPropio(telefono, idReservacion, idUsuario, idSucursal, playerID) {
     return new Promise((resolve, reject) => {
       localStorage.setItem("compartida", "true");
-      const playerID = localStorage.getItem("playerID");
       this.af
         .collection("compartidas")
         .add({
