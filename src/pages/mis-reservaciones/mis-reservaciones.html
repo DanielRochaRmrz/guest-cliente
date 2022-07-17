@@ -59,7 +59,7 @@
                 <p>Folio: <b>{{reservaciones.folio}}</b></p>
                 <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
 
-                <!-- <div *ngIf="reservaciones.estatus == 'Creando' || 'Modificado'; then creando else accep"></div> -->
+                <div *ngIf="reservaciones.estatus == 'Creando' || reservaciones.estatus == 'Modificado'; then creando else aceptado"></div>
 
                 <ng-template #creando>
 
@@ -67,7 +67,7 @@
 
                 </ng-template>
 
-                <ng-template #accep>
+                <ng-template #aceptado>
 
                     <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
 
@@ -149,8 +149,7 @@
                     <small>
 
                         <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-                        Tu reservación ha sido reasignada a la zona: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.nombre }}
-                        el consumo sugerido es: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.consumo | currency }}
+                        Reservación reasignada a la zona: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.nombre }} el consumo sugerido es: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.consumo | currency }}
 
                     </small>
 

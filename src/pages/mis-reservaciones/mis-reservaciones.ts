@@ -55,6 +55,8 @@ export class MisReservacionesPage {
   getAllReservaciones() {
     this.reservaProvider.getReservacionesCliente(this.uid).subscribe((data) => {
       this.misReservaciones = data;
+      console.log("Mis", this.misReservaciones);
+      
     });
   }
 
