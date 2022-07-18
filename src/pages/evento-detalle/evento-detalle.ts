@@ -22,6 +22,8 @@ export class EventoDetallePage {
   tabBarElement: any = ' ';
   miUser: any = {};
   uidUserSesion: any;
+  ClaveInstancia: string = '';
+  playerIDSuc: string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -32,6 +34,11 @@ export class EventoDetallePage {
   ) {
     this.evento.uid = this.navParams.get("uid");
     this.sucursalID = this.navParams.get("sucursalID");
+    this.ClaveInstancia = this.navParams.get("ClaveInstancia");
+    this.playerIDSuc = this.navParams.get("playerIDSuc");
+    console.log('this.playerIDSuc -->', this.playerIDSuc);
+    
+
     console.log("key", this.evento.uid);
     console.log("SucursalID", this.sucursalID);
     //para ocultar las tabs en la pantalla de resumen
@@ -73,12 +80,16 @@ export class EventoDetallePage {
     });
   }
 
-  Reservar(uid, idSucursal) {
+  Reservar(uid: string, idSucursal: string, fecha: string, hora: string) {
     console.log(idSucursal);
 
     this.navCtrl.push(ReservacionesPage, {
       uid: uid,
-      idSucursal: idSucursal
+      idSucursal: idSucursal,
+      fecha: fecha,
+      hora: hora,
+      ClaveInstancia: this.ClaveInstancia,
+      playerIDSuc: this.playerIDSuc
     });
   }
 

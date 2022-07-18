@@ -128,7 +128,7 @@
         <!--<div *ngIf="sucursal.ciudad==user.ciudad"> -->
 
         <ion-card class="card-image">
-            <img [src]="evento.img" (click)="verDetalle(evento.uid, evento.uidSucursal)" />
+            <img [src]="evento.img" />
             <div class="card-title">
                 <ion-fab class="btnshare" top right edge>
                     <button ion-fab style="background-color: #fff;">
@@ -151,7 +151,7 @@
             <div *ngFor="let sucursal of sucursales">
                 <div *ngIf="evento.uidSucursal==sucursal.uid">
                     <div class="card-subtitle">{{sucursal.direccion}}, {{sucursal.ciudad}}
-                        <div align="right" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+                        <div align="right" (click)="verDetalle(evento.uid, evento.uidSucursal, sucursal.ClaveInstancia, sucursal.playerID)">
                             <!-- <img src="./assets/imgs/select.png" style="width: 30%;margin-top: -5%;" alt="" (click)="verDetalle(evento.uid, evento.uidSucursal)"> -->
                             <br>
                             <ion-row>
@@ -159,7 +159,7 @@
                                     <span>SELECCIONAR</span>
                                 </ion-col>
                                 <ion-col align="center">
-                                    <img src="./assets/imgs/Group.svg" style="width: 35px;margin-left: 2px;" alt="" (click)="reservar(sucursal.uid)">
+                                    <img src="./assets/imgs/Group.svg" style="width: 35px;margin-left: 2px;" alt="" (click)="verDetalle(evento.uid, evento.uidSucursal, sucursal.ClaveInstancia, sucursal.playerID)">
                                 </ion-col>
                             </ion-row>
                         </div>

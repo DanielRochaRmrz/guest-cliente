@@ -142,10 +142,12 @@ export class EventosPage {
       .catch(() => { }); // si sucede un error
   }
 
-  verDetalle(uid, sucursalID) {
+  verDetalle(uid: string, sucursalID: string, ClaveInstancia: string, playerIDSuc: string) {
     this.navCtrl.setRoot(EventoDetallePage, {
       uid: uid,
-      sucursalID: sucursalID
+      sucursalID: sucursalID,
+      ClaveInstancia: ClaveInstancia,
+      playerIDSuc: playerIDSuc
     });
   }
 
