@@ -110,7 +110,7 @@
                         </ion-card>
                     </div>
 
-                    <div *ngIf="invitado==1" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)">
+                    <div *ngIf="invitado==1" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)">
                         <ion-card class="card-image">
                             <img src="{{sucursal.photoURL}}" class="card-image" />
 
@@ -146,7 +146,7 @@
                                             <span>SELECCIONAR</span>
                                         </ion-col>
                                         <ion-col align="center">
-                                            <img src="./assets/imgs/Group.svg" style="width: 35px; margin-left: 2px" alt="" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)" />
+                                            <img src="./assets/imgs/Group.svg" style="width: 35px; margin-left: 2px" alt="" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)" />
                                         </ion-col>
                                     </ion-row>
                                 </div>
@@ -193,9 +193,9 @@
 
         <div *ngFor="let user of usuarios">
             <div *ngIf="uidUserSesion==user.uid">
-                <div *ngFor="let sucursal of sucursales | pipesCategoria:filterPost | pipesFilterCiudad2:filterPostCiudad" class="card_atras" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)">
+                <div *ngFor="let sucursal of sucursales | pipesCategoria:filterPost | pipesFilterCiudad2:filterPostCiudad" class="card_atras" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID, sucursal.playerID)">
                     <ion-card class="card-image">
-                        <img src="{{sucursal.photoURL}}" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)" class="card-image" />
+                        <img src="{{sucursal.photoURL}}" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)" class="card-image" />
                         <div class="card-title">
                             <ion-fab class="btnshare compartir-redes" top right edge>
                                 <button ion-fab style="background-color: #fff">
@@ -218,9 +218,9 @@
                             </ion-fab>
                             <b>{{sucursal.displayName}}</b>
                         </div>
-                        <div class="card-subtitle" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)">
+                        <div class="card-subtitle" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)">
                             {{sucursal.direccion}}, {{sucursal.ciudad}}
-                            <div align="right" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia)">
+                            <div align="right" (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)">
                                 <br />
                                 <ion-row>
                                     <ion-col align="right" class="selCol" col-10>

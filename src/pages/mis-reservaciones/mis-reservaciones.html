@@ -21,8 +21,7 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                                style="width: 85%; border-radius: 50%" />
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
@@ -86,14 +85,14 @@
 
                     </small>
 
-                </ng-template>                
+                </ng-template>
 
                 <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion)">Más Detalles</button>
 
                 <div *ngIf="reservaciones.estatus == 'Modificado'; then mod"></div>
 
                 <ng-template #mod>
-                        <br>
+                    <br>
                     <button ion-button item-end color="primary" (click)="verCarta(reservaciones.idReservacion, reservaciones.idSucursal, reservaciones.idevento)">Aceptar</button>
                     <button ion-button item-end color="danger" (click)="CancelarReservacion(reservaciones.idReservacion )">Cancelar</button>
 
@@ -128,7 +127,7 @@
                 <ng-template #creando>
 
                     <p>Compartida <img src="../assets/imgs/amarillo.png" class="imgStatus" /></p>
-                    
+
                 </ng-template>
 
                 <ng-template #aceptado>
@@ -140,8 +139,7 @@
                 <p><small>UID: {{compartidas.idReservacion}}</small></p>
                 <button ion-button item-end (click)="verDetalle(compartidas.idReservacion)">Más Detalles</button>
 
-                <div
-                    *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado">
+                <div *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado">
                 </div>
 
                 <ng-template #modificado>
@@ -165,28 +163,40 @@
 
                 </ng-template>
 
-
+            </ion-item>
+            <ion-item>
                 <div *ngIf="compartidas.estatus == 'Espera'; then espera"></div>
-                
+
                 <ng-template #espera>
-
-                    <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-
-                    <small>
-                        Invitación para que el total de la cuenta se divida contigo.
-                    </small> 
-                    
-                    <br>
-
-                    <button ion-button item-end color="secondary" (click)="aceptarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
-                        Acepto
-                    </button>
-                    <button ion-button item-end color="danger" (click)="rechazarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
-                        Cancelar
-                    </button>
-
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-12>
+                                <div text-center text-wrap>
+                                    <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
+                                    <small>
+                                        Invitación para que el total de la cuenta se divida contigo.
+                                    </small>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row>
+                            <ion-col col-6>
+                                <div text-center>
+                                    <button ion-button item-end color="secondary" small (click)="aceptarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
+                                        Acepto
+                                    </button>
+                                </div>
+                            </ion-col>
+                            <ion-col col-6>
+                                <div text-center>
+                                    <button ion-button item-end color="danger" small (click)="rechazarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
                 </ng-template>
-
             </ion-item>
 
         </ion-list>

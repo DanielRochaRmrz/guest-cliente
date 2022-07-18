@@ -20,8 +20,7 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                                style="width: 85%; border-radius: 50%" />
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
@@ -33,202 +32,137 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-
     <h2>
         <b>Reservación</b>
         <div class="detalle">Detalle</div>
     </h2>
 
-    <hr>
+    <hr />
 
     <div *ngFor="let reservaciones of infoReservaciones">
         <ion-row>
-
             <ion-col col-2></ion-col>
 
             <ion-col col-8>
-
                 <div align="center">
-
                     <img class="imagen_perfil" src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}" />
-
                 </div>
 
                 <p class="nombre">
-
                     {{ (reservaciones.idSucursal | getSucursal | async)?.displayName }}
 
-                    <img *ngIf="reservaciones.estatus == 'Aceptado'" src="./assets/content/Ellipse55.png"
-                        class="imgElli" alt="">
-                    <img *ngIf="reservaciones.estatus == 'Cancelado'" src="./assets/content/Ellipse43.png"
-                        class="imgElliC" alt="">
-                    <img *ngIf="reservaciones.estatus == 'Creando'" src="./assets/content/Ellipse43.png"
-                        class="imgElliC" alt="">
-
+                    <img *ngIf="reservaciones.estatus == 'Aceptado'" src="./assets/content/Ellipse55.png" class="imgElli" alt="" />
+                    <img *ngIf="reservaciones.estatus == 'Cancelado'" src="./assets/content/Ellipse43.png" class="imgElliC" alt="" />
+                    <img *ngIf="reservaciones.estatus == 'Creando'" src="./assets/content/Ellipse43.png" class="imgElliC" alt="" />
                 </p>
-
             </ion-col>
 
             <ion-col col-2></ion-col>
-
         </ion-row>
 
+        <hr />
 
-        <hr>
-
-        <br>
+        <br />
 
         <div align="center">
-
             <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
             <font size="2" color="#474646"> <b> DETALLES DE LA RESERVACIÓN </b></font>
-
         </div>
 
         <ion-list>
-
             <!-- UID RESERVACION -->
 
             <ion-item>
-
                 <ion-icon ios="ios-key" md="md-key" item-start style="color: #fcc04d"></ion-icon>
 
                 UID reservación
 
-                <ion-note item-end>
-
-                    {{ reservaciones.idReservacion }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.idReservacion }} </ion-note>
             </ion-item>
 
             <!-- FOLIO RESERVACION -->
 
             <ion-item>
-
                 <ion-icon ios="ios-folder-open" md="md-folder-open" item-start style="color: #fcc04d"></ion-icon>
 
                 Folio reservación
 
-                <ion-note item-end>
-
-                    {{ reservaciones.folio }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.folio }} </ion-note>
             </ion-item>
 
             <!-- FECHA RESERVACION -->
 
             <ion-item>
-
                 <ion-icon ios="ios-calendar" md="md-calendar" item-start style="color: #fcc04d"></ion-icon>
 
                 Fecha reservación
 
                 <ion-note item-end>
-
                     {{ reservaciones.fechaR | date : 'dd/MM/yyyy' }}
-
                 </ion-note>
-
             </ion-item>
 
             <!-- HORA RESERVACION -->
 
             <ion-item>
-
                 <ion-icon ios="ios-clock" md="md-clock" item-start style="color: #fcc04d"></ion-icon>
 
                 Hora reservación
 
-                <ion-note item-end>
-
-                    {{ reservaciones.hora }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.hora }} </ion-note>
             </ion-item>
 
             <!-- CODIGO RP -->
 
             <ion-item>
-
                 <ion-icon ios="ios-keypad" md="md-keypad" item-start style="color: #fcc04d"></ion-icon>
 
                 Código RP usado
 
-                <ion-note item-end>
-
-                    {{ reservaciones.codigoRP }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.codigoRP }} </ion-note>
             </ion-item>
 
             <!-- MESA -->
 
             <ion-item>
-
                 <ion-icon ios="ios-grid" md="md-grid" item-start style="color: #fcc04d"></ion-icon>
 
                 Mesa
 
-                <ion-note item-end>
-
-                    {{ reservaciones.numMesa }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.numMesa }} </ion-note>
             </ion-item>
 
             <!-- PERSONAS -->
 
             <ion-item>
-
                 <ion-icon ios="ios-people" md="md-people" item-start style="color: #fcc04d"></ion-icon>
 
                 Número de personas
 
-                <ion-note item-end>
-
-                    {{ reservaciones.numPersonas }}
-
-                </ion-note>
-
+                <ion-note item-end> {{ reservaciones.numPersonas }} </ion-note>
             </ion-item>
 
             <!-- ZONAS -->
 
             <ion-item>
-
                 <ion-icon ios="ios-keypad" md="md-keypad" item-start style="color: #fcc04d"></ion-icon>
 
                 Zona
 
                 <ion-note item-end>
-
                     {{ (reservaciones.idZona | getZona | async)?.nombre }}
-
                 </ion-note>
-
             </ion-item>
-
         </ion-list>
 
-        <hr>
+        <hr />
 
         <div align="center">
-
             <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
             <font size="2" color="#474646"> <b> CUENTA</b></font>
-
         </div>
         <div align="center">
-
             <ion-grid>
-
                 <ion-row class="header-row">
                     <ion-col><b>Producto</b></ion-col>
 
@@ -237,11 +171,9 @@
                     <ion-col><b>Costo</b></ion-col>
 
                     <ion-col><b>Total</b></ion-col>
-
                 </ion-row>
 
                 <ion-row *ngFor="let pro of listaProductos">
-
                     <ion-col>{{ pro.producto }}</ion-col>
 
                     <ion-col>{{ pro.cantidad }} </ion-col>
@@ -249,11 +181,9 @@
                     <ion-col>{{ pro.costo | currency }}</ion-col>
 
                     <ion-col>{{ pro.total | currency }} </ion-col>
-
                 </ion-row>
 
                 <div *ngIf="validarCupon=='Noexiste'">
-
                     <!-- PROPINA -->
                     <ion-row>
                         <ion-col></ion-col>
@@ -295,18 +225,17 @@
                         <ion-col><b></b></ion-col>
                         <ion-col><b>Total</b></ion-col>
                         <ion-col *ngIf="soloTotal ==''">
-                            <b>{{(totalPropina*.059)+(totalPropina*.16)+(totalPropina) | currency}} </b></ion-col>
+                            <b>{{(totalPropina*.059)+(totalPropina*.16)+(totalPropina) |
+                currency}}
+              </b></ion-col>
                         <ion-col *ngIf="soloTotal =='1'"><b> {{(total*.059)+(total*.16)+(total) | currency}} </b>
                         </ion-col>
                     </ion-row>
-
                 </div>
 
                 <!-- CON CUPON -->
                 <div *ngIf="validarCupon=='Existe'">
-
                     <div *ngFor="let cup of infoCupones">
-
                         <!-- CUPON DESCUENTO -->
                         <ion-row>
                             <ion-col><b>Cupon descuento</b></ion-col>
@@ -314,7 +243,6 @@
                             <ion-col></ion-col>
                             <ion-col>-{{ cupon.valorCupon | currency}}</ion-col>
                         </ion-row>
-
 
                         <!-- CUPON DESCUENTO -->
                         <ion-row>
@@ -370,145 +298,145 @@
                             <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
                             <ion-col>
-                                <b>{{(totalPropinaCupon*.059)+(totalPropinaCupon*.16)+(totalPropinaCupon) | currency}}</b>
-                            </ion-col>
-                        </ion-row>
+                                <b>{{(totalPropinaCupon*.059)+(totalPropinaCupon*.16)+(totalPropinaCupon)
+                  | currency}}</b
+                >
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+      </ion-grid>
+    </div>
+
+    <hr />
+    <br />
+
+    <!-- COMPARTIDAS ACEPTAR  -->
+
+    <div
+      *ngIf="reservaciones.estatus == 'Compartida' || reservaciones.estatus =='CreadaCompartida' || reservaciones.estatus == 'AceptadoCompartida'"
+    >
+      <div align="center">
+        <ion-icon
+          ios="ios-list"
+          md="md-list"
+          item-start
+          style="color: #fcc04d"
+        ></ion-icon>
+        <font size="2" color="#474646"> <b> CUENTA COMPARTIDA ENTRE</b></font>
                     </div>
 
-                </div>
+                    <div *ngFor="let compartidas of cuentasCompartidas">
+                        <ion-list>
+                            <!-- USUARIOS -->
 
-            </ion-grid>
+                            <ion-item>
+                                <ion-icon ios="ios-person" md="md-person" item-start style="color: #fcc04d"></ion-icon>
 
-        </div>
+                                {{ (compartidas.telefono | getCompartidaTelUs | async)?.displayName }}
+                                <ion-badge class="negro" item-end>
+                                    {{compartidas.estatus}} <br /> {{compartidas.estatus_pago}}
+                                </ion-badge>
 
-        <hr>
-        <br>
+                                <ion-note item-end>
+                                    {{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059) | currency}}
+                                </ion-note>
+                            </ion-item>
+                        </ion-list>
 
-        <!-- COMPARTIDAS ACEPTAR  -->
-
-        <div *ngIf="reservaciones.estatus == 'Compartida' || reservaciones.estatus =='CreadaCompartida' || reservaciones.estatus == 'AceptadoCompartida'">
-            
-            <div align="center">
-
-                <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
-                <font size="2" color="#474646"> <b> CUENTA COMPARTIDA ENTRE</b></font>
-    
-            </div>
-
-                <div *ngFor="let compartidas of cuentasCompartidas">
-                    <ion-list>
-
-                        <!-- USUARIOS -->
-
-                        <ion-item>
-
-                            <ion-icon ios="ios-person" md="md-person" item-start style="color: #fcc04d"></ion-icon>
-
-                            {{ (compartidas.telefono | getCompartidaTelUs | async)?.displayName }}
-                            <ion-badge class="negro" item-end> {{compartidas.estatus}} <br /> {{compartidas.estatus_pago}} </ion-badge>
-                            
-
-                            <ion-note item-end>
-
-                            {{(compartidas.totalDividido)+(compartidas.totalDividido*.16)+(compartidas.totalDividido*.059) | currency}}
-
-                            </ion-note>
-
-                        </ion-item>
-
-                    </ion-list>
-
-                    <div *ngIf="resultadoEspera == 'true'">
-                        <div *ngIf="compartidas.estatus == 'Aceptado'">
-                            <div *ngIf="miUser.phoneNumber == compartidas.telefono">
-                                <div *ngIf="compartidas.estatus_pago == undefined">
-                                    <button *ngIf="this.tarjeta == 1" ion-button full (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir,reservaciones.folio, nombreUsuarios)">
-                                        Pagar mi parte
-                                    </button>
-                                    <button *ngIf="this.tarjeta == 0" ion-button full (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
-                                        Pagar mi parte
-                                    </button>
-                                </div>
-                                <div *ngIf=" countCompartidas == countComPagadas">
-                                    <button ion-button full color="secondary" (click)="genararQR_Pagado(reservaciones.idReservacion,compartidas.idCompartir)">
-                                        QR generado
-                                    </button>
+                        <div *ngIf="resultadoEspera == 'true'">
+                            <div *ngIf="compartidas.estatus == 'Aceptado'">
+                                <div *ngIf="miUser.phoneNumber == compartidas.telefono">
+                                    <div *ngIf="compartidas.estatus_pago == undefined">
+                                        <button *ngIf="this.tarjeta == 1" ion-button full (click)="genararQR(reservaciones.idReservacion,compartidas.totalDividido,compartidas.idUsuario,compartidas.telefono,compartidas.idCompartir,reservaciones.folio, nombreUsuarios)">
+                  Pagar mi parte
+                </button>
+                                        <button *ngIf="this.tarjeta == 0" ion-button full (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
+                  Pagar mi parte
+                </button>
+                                    </div>
+                                    <div *ngIf=" countCompartidas == countComPagadas">
+                                        <button ion-button full color="secondary" (click)="genararQR_Pagado(reservaciones.idReservacion,compartidas.idCompartir)">
+                  QR generado
+                </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-        </div>
 
-        <hr>
+                <hr />
 
-        <!--Mostrar datos de la cuenta no compartida con el boton para pagar-->
+                <!--Mostrar datos de la cuenta no compartida con el boton para pagar-->
 
-        <div *ngIf="reservaciones.estatus=='Aceptado'">
-            <div *ngIf="reservaciones.estatus_pago==undefined">
-                <div *ngIf="validarCupon=='Existe'">
-                    <div *ngFor="let cupon of infoCupones">
-                        <div *ngIf="reservaciones.uidCupon==cupon.uid">
+                <div *ngIf="reservaciones.estatus=='Aceptado'">
+                    <div *ngIf="reservaciones.estatus_pago==undefined">
+                        <div *ngIf="validarCupon=='Existe'">
+                            <div *ngFor="let cupon of infoCupones">
+                                <div *ngIf="reservaciones.uidCupon==cupon.uid">
+                                    <button ion-button full *ngIf="this.tarjeta==1" (click)="genararQRNormal(reservaciones.idReservacion,totalPropinaCupon,reservaciones.idUsuario,reservaciones.folio)">
+                Pagar cuenta
+              </button>
 
-                            <button ion-button full *ngIf="this.tarjeta==1"
-                                (click)="genararQRNormal(reservaciones.idReservacion,totalPropinaCupon,reservaciones.idUsuario,reservaciones.folio)">Pagar cuenta</button>
+                                    <button ion-button full *ngIf="this.tarjeta==0" (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">
+                Pagar cuenta
+              </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="validarCupon=='Noexiste'">
+                            <button ion-button full *ngIf="this.tarjeta==1" (click)="genararQRNormal(reservaciones.idReservacion,totalPropina,reservaciones.idUsuario,reservaciones.folio)">
+            Pagar cuenta
+          </button>
 
-                            <button ion-button full *ngIf="this.tarjeta==0" (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">Pagar cuenta</button>
-
+                            <button ion-button full *ngIf="this.tarjeta==0" (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">
+            Pagar cuenta
+          </button>
                         </div>
                     </div>
+
+                    <!--Boton del QR generado si la reservacion ya fue pgada -->
+
+                    <div *ngIf="reservaciones.estatus_pago=='Pagado'">
+                        <p text-center>*Cuenta pagada*</p>
+                        <button ion-button color="secondary" full (click)="genararQR_Pagado(reservaciones.idReservacion,reservaciones.compartir)">
+          QR generado
+        </button>
+                    </div>
                 </div>
-                <div *ngIf="validarCupon=='Noexiste'">
 
-                    <button ion-button full *ngIf="this.tarjeta==1" (click)="genararQRNormal(reservaciones.idReservacion,totalPropina,reservaciones.idUsuario,reservaciones.folio)">Pagar cuenta</button>
+                <!-- CANCELAR RESERVACION  -->
 
-                    <button ion-button full *ngIf="this.tarjeta==0" (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">Pagar cuenta</button>
-
+                <div *ngIf="reservaciones.estatus =='Creando' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined && reservaciones.idUsuario == idUser">
+                    <div class="centradoB2">
+                        <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.folio, reservaciones.playerIDSuc)">
+          <p class="pagar">Cancelar la reservación</p>
+        </button>
+                    </div>
                 </div>
-            </div>
-
-            <!--Boton del QR generado si la reservacion ya fue pgada -->
-
-            <div *ngIf="reservaciones.estatus_pago=='Pagado'">
-                <p text-center >*Cuenta pagada*</p>
-                    <button ion-button color="secondary" full (click)="genararQR_Pagado(reservaciones.idReservacion,reservaciones.compartir)">QR generado
-                    </button>
-            </div>
-        </div>
-
-        <!-- CANCELAR RESERVACION  -->
-
-        <div *ngIf="reservaciones.estatus =='Creando' || reservaciones.estatus == 'Aceptado' && reservaciones.estatus_pago == undefined && reservaciones.idUsuario == idUser">
-            <div class="centradoB2">
-                <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
+                <div *ngIf="reservaciones.estatus == 'Compartida' && reservaciones.idUsuario == idUser">
+                    <div class="centradoB2">
+                        <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.folio, reservaciones.playerIDSuc)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
-            </div>
-        </div>
-        <div *ngIf="reservaciones.estatus == 'Compartida' && reservaciones.idUsuario == idUser">
-            <div class="centradoB2">
-                <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
+                    </div>
+                </div>
+                <div *ngIf="reservaciones.estatus=='CreadaCompartida' && reservaciones.idUsuario == idUser">
+                    <div class="centradoB2">
+                        <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.folio, reservaciones.playerIDSuc)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
-            </div>
-        </div>
-        <div *ngIf="reservaciones.estatus=='CreadaCompartida' && reservaciones.idUsuario == idUser">
-            <div class="centradoB2">
-                <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
+                    </div>
+                </div>
+                <div *ngIf="reservaciones.estatus == 'AceptadoCompartida' && countComPagadas == 0 && reservaciones.idUsuario == idUser">
+                    <div class="centradoB2">
+                        <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.folio, reservaciones.playerIDSuc)">
           <p class="pagar">Cancelar la reservación</p>
         </button>
-            </div>
-        </div>
-        <div *ngIf="reservaciones.estatus == 'AceptadoCompartida' && countComPagadas == 0 && reservaciones.idUsuario == idUser">
-            <div class="centradoB2">
-                <button class="" ion-button color="danger" full (click)="eliminarReservacion(reservaciones.idReservacion, reservaciones.playerIDs)">
-          <p class="pagar">Cancelar la reservación</p>
-        </button>
-            </div>
+                    </div>
+                </div>
         </div>
 
-
-    </div>
-
-    <br>
+        <br />
 </ion-content>

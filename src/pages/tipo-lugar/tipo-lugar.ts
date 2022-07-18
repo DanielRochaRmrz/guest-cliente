@@ -38,9 +38,7 @@ export class TipoLugarPage {
     public SMS: SMS,
   ) {
 
-    if (this.platform.is('cordova')) {
-      this._providerDevice.deviceInfo();
-    }
+    
     
     this.menuCtrl.enable(true);
     //sacar el id del usuario del local storage
@@ -83,6 +81,9 @@ export class TipoLugarPage {
 
   async getInfouser(uid: string) {
     this.miUser = await this._providerUser.getUser(uid);
+    if (this.platform.is('cordova')) {
+      this._providerDevice.deviceInfo(this.miUser.uid);
+    }
   }
 
   goToEvento() {

@@ -103,14 +103,8 @@ export class Reservacion_1Page {
     this.loading.present();
   }
 
-  reservar(idSucursal: string, ClaveInstancia: string) {
-    this.afs.collection('users', ref => ref.where('uid', '==', idSucursal)).valueChanges().subscribe(su => {
-      this.usuarioSu = su;
-
-      localStorage.setItem('playerID', this.usuarioSu[0].playerID);
-    });
-    
-    this.navCtrl.push(ReservacionesPage, { 'idSucursal': idSucursal, 'ClaveInstancia': ClaveInstancia });
+  reservar(idSucursal: string, ClaveInstancia: string, playerIDSuc: string) {
+    this.navCtrl.push(ReservacionesPage, { 'idSucursal': idSucursal, 'ClaveInstancia': ClaveInstancia, 'playerIDSuc': playerIDSuc });
   }
 
   compartir(displayName, photoURL) {

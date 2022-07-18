@@ -122,6 +122,7 @@ export class MisReservacionesPage {
           console.log("Success: ", respuesta.success);
         }
       });
+      this._pushNotiProvider.PushNotiRechazaReservacion(idReservacion, this.miUser.displayName);
     this.navCtrl.setRoot(MisReservacionesPage, {
       idReservacion: idReservacion
     });

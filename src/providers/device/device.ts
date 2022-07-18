@@ -4,7 +4,6 @@ import { Injectable } from "@angular/core";
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Device } from "@ionic-native/device";
-import { rejects } from "assert";
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic";
 import { Platform } from 'ionic-angular';
 
@@ -13,7 +12,6 @@ import { Platform } from 'ionic-angular';
 export class DeviceProvider {
   
   apiURL: string = 'https://fcmpush-115c1.web.app';
-  userId: string = localStorage.getItem('uid');
 
   constructor(
     public http: HttpClient,
@@ -23,11 +21,11 @@ export class DeviceProvider {
   ) { }
 
 
-  async deviceInfo()  {
+  async deviceInfo(uidUser: string)  {
     console.log('Device ID', this.device.uuid);
     const playerID = String(this.device.uuid);
     localStorage.setItem("playerID", playerID);
-    this.updatePlayerID(playerID);
+    this.updatePlayerID(playerID, uidUser);
     const authStatus = await FCM.requestPushPermission();
     console.log("authStatus -->", authStatus);
     if (authStatus == true) {
@@ -64,8 +62,8 @@ export class DeviceProvider {
     }
   }
 
-  updatePlayerID(playerID: string) {
-    this.db.collection("users").doc(this.userId).update({
+  updatePlayerID(playerID: string, uidUser: string) {
+    this.db.collection("users").doc(uidUser).update({
       playerID: playerID
     }).then(() => {
       console.log("Se actualizo");

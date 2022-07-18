@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { DeviceProvider } from '../device/device';
-
+import { Injectable } from "@angular/core";
+import { Platform } from "ionic-angular";
+import { AngularFirestore } from "angularfire2/firestore";
+import { DeviceProvider } from "../device/device";
 
 @Injectable()
 export class PushNotiProvider {
-  
   constructor(
     public platform: Platform,
     private _deviceProvider: DeviceProvider,
-    public af: AngularFirestore,
+    public af: AngularFirestore
   ) {
     console.log("Hello PushNotiProvider Provider");
   }
@@ -82,4 +80,87 @@ export class PushNotiProvider {
     });
   }
 
+  public PushNotiRechazaReservacion(reservaId: string, nombre: string) {
+    return new Promise((resolve, reject) => {
+      const reservacion = this.af.collection("reservaciones").ref;
+      reservacion
+        .where("idReservacion", "==", reservaId)
+        .get()
+        .then((data) => {
+          data.forEach((reserva) => {
+            const rsv = reserva.data();
+            const userPayerID = rsv.playerIDs;
+            console.log("Usuarios compartidos: ", userPayerID);
+            console.log("PlayerID:", userPayerID);
+            if (userPayerID != undefined) {
+              console.log("notificacion  a", userPayerID);
+              if (this.platform.is("cordova")) {
+                const data = {
+                  topic: userPayerID,
+                  title: "",
+                  body: `${nombre} ha rechazado compartir la cuenta contigo`,
+                };
+                this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+                  console.log("Respuesta noti fcm", resp);
+                  resolve(resp);
+                });
+              } else {
+                console.log("Solo funciona en dispositivos");
+              }
+            }
+          });
+        });
+    });
+  }
+
+  public PushNotiNuevaReserva(reservaId: string) {
+    return new Promise((resolve, reject) => {
+      const reservacion = this.af.collection("reservaciones").ref;
+      reservacion
+        .where("idReservacion", "==", reservaId)
+        .get()
+        .then((data) => {
+          data.forEach((reserva) => {
+            const rsv = reserva.data();
+            const playerIDSuc = rsv.playerIDSuc;
+            console.log("Usuarios compartidos: ", playerIDSuc);
+            console.log("PlayerID:", playerIDSuc);
+            if (playerIDSuc != undefined) {
+              console.log("notificacion  a", playerIDSuc);
+              if (this.platform.is("cordova")) {
+                const data = {
+                  topic: playerIDSuc,
+                  title: "",
+                  body: `Nueva reservación`,
+                };
+                this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+                  console.log("Respuesta noti fcm", resp);
+                  resolve(resp);
+                });
+              } else {
+                console.log("Solo funciona en dispositivos");
+              }
+            }
+          });
+        });
+    });
+  }
+
+  public PushNotiCancelarReserva(folio: string, playerIDSuc: string) {
+    return new Promise((resolve, reject) => {
+      if (this.platform.is("cordova")) {
+        const data = {
+          topic: playerIDSuc,
+          title: "",
+          body: `Reservación ${folio} ah sido cancelada`,
+        };
+        this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+          console.log("Respuesta noti fcm", resp);
+          resolve(resp);
+        });
+      } else {
+        console.log("Solo funciona en dispositivos");
+      }
+    });
+  }
 }

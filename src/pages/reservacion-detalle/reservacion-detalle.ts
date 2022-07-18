@@ -15,6 +15,7 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { UserProvider } from '../../providers/user/user';
 import moment from "moment";
+import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 
 @IonicPage()
 @Component({
@@ -88,7 +89,8 @@ export class ReservacionDetallePage {
     public toastCtrl: ToastController,
     private _providerReserva: ReservacionProvider,
     private _providerUserio: UsuarioProvider,
-    private _providerUser: UserProvider
+    private _providerUser: UserProvider,
+    private _providerPushNoti: PushNotiProvider
   ) {
     this.soloTotal = '';
     //recibe parametro de la reservacion
@@ -421,7 +423,7 @@ export class ReservacionDetallePage {
   }
 
 
-  eliminarReservacion(idReservacion, playerIDs) {
+  eliminarReservacion(idReservacion: string, folio: string, playerIDSuc: string) {
     this.eliminar_rsvp(idReservacion);
     // this.getUsersPusCancelar(playerIDs);
 
@@ -433,7 +435,7 @@ export class ReservacionDetallePage {
 
     this.afs.collection("reservaciones").doc(idReservacion).delete().then(() => {
       console.log("Document successfully deleted!");
-
+      this._providerPushNoti.PushNotiCancelarReserva(folio, playerIDSuc);
       // this.showAlert();
       
       this.showToast('bottom');
@@ -532,5 +534,7 @@ export class ReservacionDetallePage {
     const r = await this._providerReserva.eliminar_rsvp(idReservacion);
     console.log( 'RSVP -->', r);
   }
+
+
 
 }

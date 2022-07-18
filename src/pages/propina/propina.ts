@@ -231,6 +231,7 @@ export class PropinaPage {
                 if (compartida === 'true') {
                   this.notiReservaCompartida();
                 }
+                this.notiNuevaReserva();
                 this.getUsersPusCancelar();
                 localStorage.removeItem('idSucursal');
                 localStorage.removeItem('zona');
@@ -353,6 +354,7 @@ export class PropinaPage {
                 if (compartida === 'true') {
                   this.notiReservaCompartida();
                 }
+                this.notiNuevaReserva();
                 this.getUsersPusCancelar();
                 localStorage.removeItem('idSucursal');
                 localStorage.removeItem('zona');
@@ -408,6 +410,11 @@ export class PropinaPage {
 
   async notiReservaCompartida() {
     const resp = await  this._pushNoti.PushNotiCompartidos(this.idReservacion);
+    console.log('esta es la respuesta -->', resp);
+  }
+
+  async notiNuevaReserva() {
+    const resp = await  this._pushNoti.PushNotiNuevaReserva(this.idReservacion);
     console.log('esta es la respuesta -->', resp);
   }
 

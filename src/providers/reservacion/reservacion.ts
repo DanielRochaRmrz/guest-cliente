@@ -572,6 +572,7 @@ export class ReservacionProvider {
           idevento: reservacion.idevento,
           idUsuario: idUsuario,
           folio: "R" + folio,
+          playerIDSuc: reservacion.playerIDSuc
         })
         .then((reserva) => {
           this.updateReservaId(reserva.id);

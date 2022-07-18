@@ -85,6 +85,7 @@ export class ReservacionesPage {
   campo_evento: number;
 
   uidSucursal: string = "gbqtsea15rhu1BukxbekFEBohJv2";
+  playerIDSuc: string = '';
   uidReservacion: string = "1IwVw10qn5CqlrSxpTEz";
   ClaveInstancia: string = '';
   personas: number = 3;
@@ -111,6 +112,7 @@ export class ReservacionesPage {
   ) {
     this.idSucursal = this.navParams.get("idSucursal");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
+    this.playerIDSuc = this.navParams.get("playerIDSuc");
     console.log(this.ClaveInstancia);
     this.evento = this.navParams.get("uid");
     this.idReservacion = this.navParams.get("idReservacion");
@@ -129,7 +131,7 @@ export class ReservacionesPage {
       .collection("sucursales")
       .doc(this.idSucursal)
       .valueChanges()
-      .subscribe((data) => {
+      .subscribe((data: any) => {
         this.sucursal = data;
       });
 
@@ -257,6 +259,7 @@ export class ReservacionesPage {
       hora: this.hora,
       fecha: this.fecha,
       idSucursal: this.idSucursal,
+      playerIDSuc: this.playerIDSuc,
       idevento: this.evento,
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
