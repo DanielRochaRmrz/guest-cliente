@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, LoadingController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { LoginPage } from "../login/login";
@@ -41,11 +41,11 @@ export class PerfilPage {
 
   constructor(public navCtrl: NavController,
     public usuarioProv: UsuarioProvider,
-    private afAuth: AngularFireAuth,
     public afDB: AngularFireDatabase,
     private camera: Camera,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public afs: AngularFirestore
     ) {
 
@@ -93,12 +93,42 @@ export class PerfilPage {
     this.getAllTarjetas();
   }
 
-  salir() {
-    localStorage.setItem("isLogin", 'false');
-    this.afAuth.auth.signOut().then(res => {
-      this.usuarioProv.usuario = {};
-      this.navCtrl.setRoot(LoginPage);
+  alertDeleteAccount(uid: string) {
+    const alert = this.alertCtrl.create({
+      title: 'Borrar cuenta',
+      message: '¿ Seguro que quieres borrar tu cuenta ?',
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: () => {
+             this.deleteAccount(uid);       
+          }
+        },
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Agree clicked');
+          }
+        }
+      ]
     });
+    alert.present();
+  }
+
+  async deleteAccount(uid: string) {
+    const loading = this.loadingCtrl.create({
+      spinner: "bubbles"
+    });
+    const resp: any = await this.usuarioProv.deleteAccount(uid);
+    console.log(resp);
+    const msj = resp.menssaje;
+    if ( msj == 'success' ) {
+      this.navCtrl.setRoot(LoginPage);
+      localStorage.clear();
+      loading.dismiss();
+    } else {
+      console.log(resp);
+    }
   }
 
 

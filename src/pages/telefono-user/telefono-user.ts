@@ -45,9 +45,19 @@ export class TelefonoUserPage {
     this.getCiudades();
   }
 
-  addTelefono() {
-    //console.log('El ciudad llego ',this.ciudad);
-    //console.log('El telefono llego ',this.inputText);
+  async addTelefono() {
+    const response = await this.usuarioProv.buscarTelefono(this.telefono);
+    console.log('Respuesta -->', response);
+    if (response == false) {
+      const alert = this.alertCtrl.create({
+        title: 'Teléfono',
+        message: 'Este número ya se encuentra registrado',
+        buttons: ['Aceptar']
+      });
+      alert.present(); 
+      return;
+    }
+
     this.usuarioProv.agregarTelefono(this.idUsuario, this.telefono, this.ciudad).then((respuesta: any) => {
       console.log("Respuesta: ", respuesta);
       if (respuesta.success == true) {
@@ -57,17 +67,6 @@ export class TelefonoUserPage {
     });
     this.alerta();
   }
-
-  // alerta() {
-  //   const alert = this.alertCtrl.create({
-  //     title: 'Términos y Condiciones',
-  //     subTitle: 'Al selecionar "Continuar", aceptas los términos y condiciones de los <a>Términos de uso</a> y la <a>Política de privacidad</a> de Guest Resy',
-  //     buttons: ['OK']
-  //   });
-  //   alert.present();
-
-  //   this.navCtrl.setRoot(TipoLugarPage);
-  // }
 
 
   getCiudades () {
@@ -85,19 +84,10 @@ export class TelefonoUserPage {
       title: 'Términos y Condiciones',
       message: 'Al selecionar "Continuar", aceptas los términos y condiciones de los <a>Términos de uso</a> y la <a>Política de privacidad</a> de Guest Resy',
       buttons: [
-        // {
-        //   text: 'Disagree',
-        //   handler: () => {
-        //     console.log('Disagree clicked');
-        //   }
-        // },
         {
           text: 'Aceptar',
           handler: () => {
             console.log('Agree clicked');
-
-            // this.navCtrl.setRoot(PoliticasPage);
-
             const variable = 'telefono';
             this.navCtrl.setRoot(PoliticasPage, { variable: variable });
           }

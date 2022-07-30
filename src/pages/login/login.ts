@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { IonicPage, MenuController, NavController, NavParams, Platform } from "ionic-angular";
+import { IonicPage, MenuController, NavController, NavParams, Platform, AlertController } from 'ionic-angular';
 import * as firebase  from'firebase/app'
 import 'firebase/auth';
 import { UsuarioProvider } from "../../providers/usuario/usuario";
@@ -42,7 +42,8 @@ export class LoginPage {
     private fb: Facebook,
     public afs: AngularFirestore,
     public navParams: NavParams,
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    public alertCtrl: AlertController
 
   ) {
 
@@ -452,11 +453,5 @@ export class LoginPage {
     console.log('inicio con numero');
     this.navCtrl.setRoot(LoginTelDatosPage);
   }
-
-  // consultarTelefono(){
-  //   this.usuarioProv.buscarTelefono().then((data: any) => {
-  //     console.log('Resultado -->', data.length);
-  //   });
-  // }
 
 }

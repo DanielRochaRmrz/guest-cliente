@@ -8,9 +8,12 @@ import {
   AngularFirestoreCollection,
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs/Observable";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UsuarioProvider {
+  private apiUrl = 'https://us-central1-guestreservation-8b24b.cloudfunctions.net/app';
+
   data: any = {};
 
   usuario: Credenciales = {};
@@ -36,7 +39,8 @@ export class UsuarioProvider {
   constructor(
     public afDB: AngularFireDatabase,
     public afireauth: AngularFireAuth,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    private http: HttpClient
   ) {
     console.log("Hello UsuarioProvider Provider");
   }
@@ -329,17 +333,49 @@ export class UsuarioProvider {
     });
   }
 
+  // buscarTelefono(tel: string) {
+  //   return new Promise((resolve, reject) => {
+  //     this.afs
+  //       .collection("users", (ref) =>
+  //         ref.where("phoneNumber", "==", tel)
+  //       )
+  //       .valueChanges()
+  //       .subscribe(query => {
+  //         query.map(data => {
+  //           console.log('Data -->', data);
+  //           resolve(data);
+  //         });
+  //       });
+  //   });
+  // }
+
   buscarTelefono(tel: string) {
     return new Promise((resolve, reject) => {
-      this.afs
-        .collection("users", (ref) =>
-          ref.where("phoneNumber", "==", tel)
-        )
-        .valueChanges()
-        .subscribe((data: any) => {
-          const usTel = data;
-          resolve(JSON.stringify(usTel));
+      const users = this.afs.collection('users').ref;
+      users.where("phoneNumber", "==", tel).get().then(query => {
+        const basia = query.empty;
+        console.log('basia', basia);
+        resolve(basia);
+      })
+    });
+  }
+    
+  deleteAccount(uid: string){
+    return new Promise((resolve, reject) => {
+        this.afDB.database.ref(`users/${uid}`).ref.remove();
+        const tarjetas = this.afs.collection('tarjetas').ref;
+        tarjetas.where("idUsuario", "==", uid).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          })
         });
+        const body = {
+          uid: uid
+        }
+        this.http.post(`${this.apiUrl}/userDelete`, body).subscribe((resp) =>{
+          resolve(resp);
+        });
+        
     });
   }
 

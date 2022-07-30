@@ -34,6 +34,8 @@ export class LoginCorreoPage {
   uidUserSesion: any;
   nombresUserss: any = {};
 
+  emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+
     constructor(public navCtrl: NavController,
     private afAuth: AngularFireAuth,
     public usuarioProv: UsuarioProvider,
@@ -50,7 +52,7 @@ export class LoginCorreoPage {
     });
 
     this.myForm_lo = this.fbr.group({
-      email_lo: ['', [Validators.required]],
+      email_lo: ['', [Validators.required, Validators.pattern( this.emailPattern )]],
       pass_lo: ['', [Validators.required]]
     });
 
@@ -168,21 +170,55 @@ export class LoginCorreoPage {
   LoginToEmail() {
 
     try {
+
+
+
       const result = this.afAuth.auth.signInWithEmailAndPassword(this.email_lo, this.pass_lo).then((user: any) => {
+        console.log('Result -->', user);
         localStorage.setItem("isLogin", 'true');
         if (result) {
           this.us = result;
           localStorage.setItem("uid", user.user.uid);
           this.navCtrl.setRoot(TipoLugarPage, { 'uid': user.user.uid });
         }
+      }).catch(error => {
+        if (error.code == "auth/invalid-email") {
+          const alert = this.alertCtrl.create({
+            title: 'Correo',
+            message: 'Formato de correo invalido',
+            buttons: ['Aceptar']
+          });
+          alert.present(); 
+        } 
+
+        if (error.code == "auth/wrong-password") {
+          const alert = this.alertCtrl.create({
+            title: 'Contraseña',
+            message: 'Contraseña incorrecta',
+            buttons: ['Aceptar']
+          });
+          alert.present(); 
+        } 
+
+        if (error.code == "auth/user-not-found") {
+          const alert = this.alertCtrl.create({
+            title: 'Usuario',
+            message: 'No existe registro del usuario, por favor registrate para poder acceder',
+            buttons: ['Aceptar']
+          });
+          alert.present(); 
+        } 
+        
       });
     } catch (error) {
-      const alert = this.alertCtrl.create({
-        title: 'Usuario',
-        subTitle: 'Correo o contraseña incorrectos',
-        buttons: ['Aceptar']
-      });
-      alert.present();
+      if (error.code == "auth/argument-error") {
+        const alert = this.alertCtrl.create({
+          title: 'Campos',
+          message: 'Correo y contraseña son campos requeridos',
+          buttons: ['Aceptar']
+        });
+        alert.present();
+      } 
     }
 
   }

@@ -117,14 +117,10 @@ ion-menu {
     border-bottom-color: #FD9530;
 }
 
-.alert-md .alert-head {
+.alert-title {
     color: #FD9530;
     text-align: center !important;
     padding: 24px 24px 20px;
-}
-
-.alert-ios .alert-head {
-    color: #FD9530;
 }
 
 .alert-md .alert-message {
@@ -170,21 +166,17 @@ $loading-md-spinner-ios-color:#FD9530;
 // Material Design only Sass variables can go here
 $select-md-icon-color: #000 !default;
 $select-md-placeholder-color: #000;
-$alert-md-background-color: #000000;
-$alert-md-button-text-color: #7A7979;
-$alert-md-radio-label-text-color: #ffffff;
 $picker-md-background-color: #000000;
 $picker-md-option-selected-color: #FD9530;
 $picker-md-option-text-color: #ffffff;
 $picker-md-button-text-color: #FD9530;
-$alert-md-message-text-color: #ffffff;
-$alert-md-message-text-align: center;
 $card-md-margin-left: 0px;
 $card-md-margin-right: 0px;
-$alert-md-button-text-color: #ffffff;
-$alert-md-input-text-color:#ffffff;
 $loading-md-background: #000000;
 $loading-md-spinner-color: #FD9530;
+$alert-md-background-color: #000000;
+$alert-md-button-text-color: #ffffff;
+$alert-md-message-text-color: #ffffff;
 ion-select {
     .option-content {
         background-color: #000;
