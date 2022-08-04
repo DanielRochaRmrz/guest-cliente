@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { ReservacionDetallePage } from "../../pages/reservacion-detalle/reservacion-detalle";
 import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { MonitoreoReservasProvider } from '../../providers/monitoreo-reservas/monitoreo-reservas';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -11,55 +12,59 @@ import { MonitoreoReservasProvider } from '../../providers/monitoreo-reservas/mo
   templateUrl: 'generarqr-2.html',
 })
 export class Generarqr_2Page {
-    public idReservacion: string = null;
-    public total: string = null;
-    public idUsuario: string = null;
-    public tarjeta: string = null;
-    tarjetaPagar: any;
-    folio: any;
-    //Crear variables para guardar los datos que se reciban de la reservacion
-    private created_code= null;
-    private qr_data = {
-     "idReservacion": "",
-     "mensaje": ""
-    }
+  uid: string;
+  miUser: any = {};
+  public telUser: string;
+  public idReservacion: string = null;
+  public total: string = null;
+  public idUsuario: string = null;
+  public tarjeta: string = null;
+  tarjetaPagar: any;
+  folio: any;
+  //Crear variables para guardar los datos que se reciban de la reservacion
+  private created_code = null;
+  private qr_data = {
+    "idReservacion": "",
+    "mensaje": ""
+  }
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public servMon: MonitoreoReservasProvider,
-              public usuarioProv: UsuarioProvider) {
+    public navParams: NavParams,
+    public servMon: MonitoreoReservasProvider,
+    public usuarioProv: UsuarioProvider,
+    public userProvider: UserProvider) {
     //recibir datos de la reservacion normal
     this.idReservacion = this.navParams.get("idReservacion");
     this.total = this.navParams.get("total");
     this.idUsuario = this.navParams.get("idUsuario");
     this.folio = this.navParams.get("folio");
     //con id del usuario buscar su tarjeta registrada y activa para hacer el pago
-      this.usuarioProv.getTarjetaPagar2(this.idUsuario).subscribe(pago => {
-        this.tarjetaPagar = pago[0].idTarjeta;
-        const numTarjeta = pago[0].numTarjeta;
-        const mesExpiracion = pago[0].mesExpiracion;
-        const anioExpiracion = pago[0].anioExpiracion;
-        const cvc = pago[0].cvc;
-        const montoReservacion= this.total;
-        const folio = this.folio;
-        console.log('tarjeta pagar',numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion);
-        this.servMon.cambiaPagandoNormal(this.idReservacion,numTarjeta,mesExpiracion,anioExpiracion,cvc,montoReservacion,folio);
-        //guardar datos recibidos en el arreglo creado qr_data
-        //this.qr_data.idReservacion = this.idReservacion;
-        //this.qr_data.total = this.total;
-        //this.qr_data.idUsuario = this.idUsuario;
-        //this.qr_data.tarjeta = this.tarjetaPagar;
-        //guardar datos recibidos en el arreglo creado qr_data
-        this.qr_data.idReservacion = this.idReservacion;
-        this.qr_data.mensaje = "Reservacion pagada";
-        this.created_code = JSON.stringify(this.qr_data);
-      });
+    this.usuarioProv.getTarjetaPagar2(this.idUsuario).subscribe(pago => {
+      this.tarjetaPagar = pago[0].idTarjeta;
+      const numTarjeta = pago[0].numTarjeta;
+      const mesExpiracion = pago[0].mesExpiracion;
+      const anioExpiracion = pago[0].anioExpiracion;
+      const cvc = pago[0].cvc;
+      const montoReservacion = this.total;
+      const folio = this.folio;
+      console.log('tarjeta pagar', numTarjeta, mesExpiracion, anioExpiracion, cvc, montoReservacion);
+      this.servMon.cambiaPagandoNormal(this.idReservacion, numTarjeta, mesExpiracion, anioExpiracion, cvc, montoReservacion, folio);
+      //guardar datos recibidos en el arreglo creado qr_data
+      //this.qr_data.idReservacion = this.idReservacion;
+      //this.qr_data.total = this.total;
+      //this.qr_data.idUsuario = this.idUsuario;
+      //this.qr_data.tarjeta = this.tarjetaPagar;
+      //guardar datos recibidos en el arreglo creado qr_data
+      this.qr_data.idReservacion = this.idReservacion;
+      this.qr_data.mensaje = "Reservacion pagada";
+      this.created_code = JSON.stringify(this.qr_data);
+    });
     //obtener los datos del QR y sacarlo de uno por uno en la variable que manda el scanner
-       //const dataCode = JSON.parse(this.created_code);
-       //console.log('dataCode: ', dataCode.idReservacion);
-       //console.log('dataCode: ', dataCode.total);
-       //console.log('dataCode: ', dataCode.idUsuario);
-       //console.log('dataCode: ', dataCode.tarjeta);
+    //const dataCode = JSON.parse(this.created_code);
+    //console.log('dataCode: ', dataCode.idReservacion);
+    //console.log('dataCode: ', dataCode.total);
+    //console.log('dataCode: ', dataCode.idUsuario);
+    //console.log('dataCode: ', dataCode.tarjeta);
   }//termina constructor
 
   ionViewDidLoad() {
@@ -71,6 +76,11 @@ export class Generarqr_2Page {
     this.navCtrl.setRoot(ReservacionDetallePage, {
       idReservacion: this.idReservacion
     });
+  }
+
+  async getUsuario() {
+    this.miUser = await this.userProvider.getUser(this.uid);
+    this.telUser = this.miUser.phoneNumber;
   }
 
 }

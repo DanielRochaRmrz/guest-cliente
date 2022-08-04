@@ -16,7 +16,14 @@
     </ion-navbar>
 </ion-header>
 <ion-content padding>
-<div text-center>
+
+  <div align='center'>
+    <img text-center class='adv2' src='./assets/content/ok.png'/>
+  </div>Tu pago fue exitoso
+  <br> En detalle de la reservacion se encuentra tun código QR para el acceso a la sucursal.
+
+
+<!-- <div text-center>
   <ion-badge style="background-color:#FD9530;">
     <h4>SI TU PAGO FUE EXITOSO EN
     <br>
@@ -24,7 +31,8 @@
     <br>
     VE TU CÓDIGO QR GENERADO</h4>
   </ion-badge>
-</div>
+</div> -->
+
    <!--<ion-card class="card_atras">
      <qrcode [qrdata]="created_code" [size]="256" [level]="'M'"></qrcode>
    </ion-card>-->
@@ -35,4 +43,5 @@
     <!--<button ion-button color="naranja" (click)="modalTarjetas()">
      QR generado
     </button>-->
+    
 </ion-content>
