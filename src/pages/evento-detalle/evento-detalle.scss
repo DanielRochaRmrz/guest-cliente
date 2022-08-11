@@ -62,7 +62,7 @@ page-evento-detalle {
     .btnre {
         background-color: #FD9530;
         height: 35px;
-        width: 40%;
+        width: 90%;
     }
     .texto2 {
         color: #fff;
@@ -89,4 +89,18 @@ page-evento-detalle {
         width: auto !important;
         height: 308px !important;
     }
+    .detalle {
+        color: #cecece;
+        margin-top: -8px;
+        text-transform: uppercase;
+      }
+      .nombre {
+        text-align: center;
+        color: #000;
+        text-transform: uppercase;
+      }
+      .btnSocial{
+        font-size: 4.5rem;
+        background-color: #fff;
+      }
 }

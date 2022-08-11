@@ -11,6 +11,7 @@ export class GetSucursalPipe implements PipeTransform {
   }
 
   async transform(idSucursal: string) {
+    
     const sucursal : any = await this.sucursalProvider.getDataSucursal(idSucursal);
 
     const suc: string = sucursal as string;

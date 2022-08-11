@@ -24,6 +24,7 @@ export class EventoDetallePage {
   uidUserSesion: any;
   ClaveInstancia: string = '';
   playerIDSuc: string = '';
+  eventoUidSucursal:string = '';
 
   constructor(
     public navCtrl: NavController,
@@ -32,6 +33,7 @@ export class EventoDetallePage {
     public afs: AngularFirestore,
     private socialSharing: SocialSharing
   ) {
+
     this.evento.uid = this.navParams.get("uid");
     this.sucursalID = this.navParams.get("sucursalID");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
@@ -40,7 +42,7 @@ export class EventoDetallePage {
     
 
     console.log("key", this.evento.uid);
-    console.log("SucursalID", this.sucursalID);
+    console.log("SucursalID", this.ClaveInstancia);
     //para ocultar las tabs en la pantalla de resumen
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
@@ -56,10 +58,10 @@ export class EventoDetallePage {
         console.log('Datos de mi usuario', this.miUser);
       });
 
+      this.getDetails();
   }
 
   ionViewDidLoad() {
-    this.getDetails();
     console.log("ionViewDidLoad EventoDetallePage");
     this.mostrar = true;
     //this.ionViewWillEnter();
@@ -76,7 +78,8 @@ export class EventoDetallePage {
   getDetails() {
     this._cap.getEvento(this.evento.uid).then(e => {
       this.evento = e;
-      console.log("evento", e);
+      this.eventoUidSucursal = this.evento.uidSucursal;
+      console.log("evento", this.evento.uidSucursal);
     });
   }
 
@@ -124,5 +127,7 @@ export class EventoDetallePage {
   goInicio(){
     this.navCtrl.setRoot(TipoLugarPage);
   }
+
+  
 
 }

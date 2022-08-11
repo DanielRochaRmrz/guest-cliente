@@ -12,6 +12,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { SMS } from '@ionic-native/sms';
 import { Reservacion_1Page } from '../reservacion-1/reservacion-1';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
+import { SucursalAltaProvider } from '../../providers/sucursal-alta/sucursal-alta';
 //import { PushNotiProvider } from '../../providers/push-noti/push-noti';
 
 @IonicPage()
@@ -21,7 +22,7 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 })
 export class EventosPage {
   //hayMas:boolean= true;
-  eventos = [];
+  eventos: any[] = [];
   filterPost: "";
   filterPostCiudad: "";
   uidUserSesion: any;
@@ -34,7 +35,6 @@ export class EventosPage {
   //playerID: any;
   //userID: any;
 
-
   constructor(
     //private _cap: CargaArchivoProvider,
     private socialSharing: SocialSharing,
@@ -43,7 +43,8 @@ export class EventosPage {
     public navParams: NavParams,
     public _cap: UsuarioProvider,
     private sms: SMS,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    public sucursalprovider: SucursalAltaProvider
     //public _providerPushNoti: PushNotiProvider,
     //  public _providerUser: UserProvider
   ) {
@@ -115,7 +116,7 @@ export class EventosPage {
         this.miUser = dataSu;
         console.log('Datos de mi usuario', this.miUser);
       });
-      
+
   }
 
   ionViewDidLoad() {
@@ -127,8 +128,8 @@ export class EventosPage {
 
 
   compartir(evento: any) {
-   const message = String(evento.titulo);
-   const image = evento.img;
+    const message = String(evento.titulo);
+    const image = evento.img;
     this.socialSharing
       .shareViaFacebook('Hola mundo', null, null)
       .then((resp) => console.log('La respuesta -->>', resp)) // se pudo compartir
@@ -142,13 +143,18 @@ export class EventosPage {
       .catch(() => { }); // si sucede un error
   }
 
-  verDetalle(uid: string, sucursalID: string, ClaveInstancia: string, playerIDSuc: string) {
+  async verDetalle(uid: string, uidSucursal: string) {
+
+    const sucursal: any = await this.sucursalprovider.getDataSucursal(uidSucursal);
+    const getSucursal = JSON.parse(sucursal);     
+
     this.navCtrl.setRoot(EventoDetallePage, {
       uid: uid,
-      sucursalID: sucursalID,
-      ClaveInstancia: ClaveInstancia,
-      playerIDSuc: playerIDSuc
+      sucursalID: uidSucursal,
+      ClaveInstancia: getSucursal.ClaveInstancia,
     });
+
+
   }
 
   verEvento() {
@@ -158,10 +164,10 @@ export class EventosPage {
   verReservacion() {
     const estatus = 1;
     const opcionS = '';
-    this.navCtrl.setRoot(Reservacion_1Page, {opcionS: opcionS, estatus: estatus});
+    this.navCtrl.setRoot(Reservacion_1Page, { opcionS: opcionS, estatus: estatus });
   }
 
-  goInicio(){
+  goInicio() {
     this.navCtrl.setRoot(TipoLugarPage);
   }
 }

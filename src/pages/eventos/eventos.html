@@ -3,22 +3,14 @@
         <ion-row>
             <ion-col>
                 <button ion-button menuToggle class="botonMod">
-          <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
-          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
-        </button>
+                    <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+                </button>
             </ion-col>
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%;" alt="">
             </ion-col>
             <ion-col>
-                <!-- <div align='end'>
-          <div *ngIf="miUser.provider == 'facebook'">
-            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:40%;border-radius:50%;">
-          </div>
-          <div *ngIf="miUser.provider == 'google'">
-            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
-          </div>
-        </div> -->
                 <div align='end'>
                     <div *ngIf="miUser.provider == 'facebook'">
                         <div *ngIf="miUser.status_foto == 0">
@@ -30,7 +22,8 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width:85%;border-radius:50%;">
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
@@ -40,141 +33,53 @@
             </ion-col>
         </ion-row>
     </ion-navbar>
-    <!--BUSCAR POR CIUDAD-->
-    <!-- <ion-item text-right class="card_atras">
-        <ion-label>
-            <h3 class="colorIcon">Ciudad</h3>
-        </ion-label>
-        <ion-select [(ngModel)]="filterPostCiudad" interface="popover" >
-           <div *ngFor="let ciudad of ciudades">
-              <ion-option [value]="ciudad.ciudad">{{ciudad.ciudad}}</ion-option>
-           </div>
-        </ion-select>
-    </ion-item> -->
-    <!--TERMINA BUSCAR POR CIUDAD-->
-
-    <!-- <ion-item text-right class="card_atras">
-        <ion-label>
-            <ion-icon ios="ios-list" md="md-list" class="colorIcon"></ion-icon>
-        </ion-label>
-        <ion-select [(ngModel)]="filterPost" interface="popover" >
-            <ion-option value="Deportivo">Deportivo</ion-option>
-            <ion-option value="Cultural">Cultural</ion-option>
-            <ion-option value="Académico">Académico</ion-option>
-            <ion-option value="Recreativo">Recreativo</ion-option>
-            <ion-option value="Social">Social</ion-option>
-            <ion-option value="Festival">Festival</ion-option>
-            <ion-option value="Homenaje">Homenaje</ion-option>
-            <ion-option value="Reconocimiento">Reconocimiento</ion-option>
-            <ion-option value="Feria">Feria</ion-option>
-            <ion-option value="Cumpleaños">Cumpleaños</ion-option>
-            <ion-option value="Familiy">Familiy Day</ion-option>
-            <ion-option value="Simposio">Simposio</ion-option>
-            <ion-option value="Otro">Otro</ion-option>
-            <ion-option value="">Todos</ion-option>
-        </ion-select>
-    </ion-item> -->
 </ion-header>
 <ion-content class="card-background-page">
 
-    <ion-row>
-        <ion-col col-6>
-            <ion-item text-center no-lines>
-                <ion-icon name="md-calendar" class="colorIcon" (click)="verEvento()"></ion-icon>
-                <p style="font-size: 9px;" (click)="verEvento()">EVENTOS</p>
-            </ion-item>
-        </ion-col>
-        <ion-col col-6>
-            <ion-item text-center no-lines>
-                <ion-icon name="md-time" class="colorIcon" (click)="verReservacion()"></ion-icon>
-                <p style="font-size: 9px;" (click)="verReservacion()">RESERVACIONES</p>
-            </ion-item>
-        </ion-col>
-    </ion-row>
-    <ion-row>
-        <ion-col col-2></ion-col>
-        <ion-col col-8>
-            <div class="ciudad">
-                <ion-item text-right no-lines style="width: 88%;background: #E49602;border-radius: 25px;">
+    <div padding>
+
+        <ion-row>
+            <ion-col col-5>
+                <h2>
+                    <b>Sucursales</b>
+                    <div class="detalle">Eventos</div>
+                </h2>
+            </ion-col>
+            <ion-col col-7>
+
+                <ion-item style="background: #E49602;">
                     <ion-label>
-                        <h3 class="colorIcon" style="text-align:initial; margin-left: 0px;color: white;text-transform: uppercase;font-size: 14px;">Ciudad</h3>
+                        <h3 class="colorIcon"
+                            style="text-align:initial; margin-left: 0px;color: white;text-transform: uppercase;font-size: 16px;">
+                            Ciudad:
+                        </h3>
                     </ion-label>
-                    <ion-select [(ngModel)]="filterPostCiudad" interface="popover" class="colorIcon" style="color: #000; text-align: center;">
+                    <ion-select [(ngModel)]="filterPostCiudad" interface="popover" class="colorIcon"
+                        style="color: #fff; text-align: center; font-size: auto;">
                         <div *ngFor="let ciudad of ciudades">
-                            <ion-option [value]="ciudad.ciudad">{{ciudad.ciudad}}</ion-option>
+                            <ion-option [value]="ciudad.ciudad">{{ ciudad.ciudad }}</ion-option>
                         </div>
                     </ion-select>
                 </ion-item>
-            </div>
-        </ion-col>
-        <ion-col col-2></ion-col>
-    </ion-row>
 
+            </ion-col>
 
-    <br>
-
-    <ion-item text-center no-lines>
-        <label class="selecciona"> SELECCIONA EL LUGAR DE TU RESERVACIÓN </label>
-    </ion-item>
-
-
-    <!--VALIDACION PARA QUE MANDE SOLO EVENTOS DE LA CIUDAD DE LA QUE ES EL USUARIO-->
-    <!-- <div *ngFor="let user of usuarios">
-    <div *ngIf="uidUserSesion==user.uid"> -->
-    <div class="card_atras" *ngFor="let evento of eventos | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad">
-
-        <!-- <div *ngFor="let sucursal of sucursales">
-          <div *ngIf="evento.uidSucursal==sucursal.uid"> -->
-        <!--<div *ngIf="sucursal.ciudad==user.ciudad"> -->
-
-        <ion-card class="card-image">
-            <img [src]="evento.img" />
-            <div class="card-title">
-                <ion-fab class="btnshare" top right edge>
-                    <button ion-fab style="background-color: #fff;">
-                        <ion-icon name="md-share" style="color: black;" color=dark></ion-icon>
-                    </button>
-                    <ion-fab-list side="top right edge">
-                        <button class="fabbtn" ion-fab (click)="compartir(evento)">
-              <!-- <img src="../assets/imgs/icons/facebook.png"> -->
-              <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
-            </button>
-                        <button class="fabbtn" ion-fab (click)="compartirInsta(evento)">
-              <!-- <img src="../assets/imgs/icons/facebook.png"> -->
-              <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
-            </button>
-                    </ion-fab-list>
-                </ion-fab>
-                <b>{{ evento.titulo }}</b>
-            </div>
-
-            <div *ngFor="let sucursal of sucursales">
-                <div *ngIf="evento.uidSucursal==sucursal.uid">
-                    <div class="card-subtitle">{{sucursal.direccion}}, {{sucursal.ciudad}}
-                        <div align="right" (click)="verDetalle(evento.uid, evento.uidSucursal, sucursal.ClaveInstancia, sucursal.playerID)">
-                            <!-- <img src="./assets/imgs/select.png" style="width: 30%;margin-top: -5%;" alt="" (click)="verDetalle(evento.uid, evento.uidSucursal)"> -->
-                            <br>
-                            <ion-row>
-                                <ion-col align="right" class="selCol" col-10>
-                                    <span>SELECCIONAR</span>
-                                </ion-col>
-                                <ion-col align="center">
-                                    <img src="./assets/imgs/Group.svg" style="width: 35px;margin-left: 2px;" alt="" (click)="verDetalle(evento.uid, evento.uidSucursal, sucursal.ClaveInstancia, sucursal.playerID)">
-                                </ion-col>
-                            </ion-row>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </ion-card>
-
-        <!-- 
-            </div>-->
-        <!-- </div> 
-        </div> -->
-
+        </ion-row>
     </div>
-    <!-- </div>
-  </div> -->
+
+    <hr>
+
+    <ng-container
+        *ngFor="let evento of eventos | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
+        <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+            <ion-card class="card-image">
+                <img [src]="evento.img" />
+                <div class="card-title">{{ evento.titulo }}</div>
+                <div class="card-subtitle">{{ (evento.uidSucursal | getSucursal | async)?.direccion }},
+                    {{ (evento.uidSucursal | getSucursal | async)?.ciudad }}</div>
+            </ion-card>
+        </button>
+    </ng-container>
+
+
 </ion-content>

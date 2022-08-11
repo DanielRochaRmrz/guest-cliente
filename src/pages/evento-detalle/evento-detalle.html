@@ -11,16 +11,6 @@
                 <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%;" alt="">
             </ion-col>
             <ion-col>
-                <!-- <div align='end'>
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                            style="width:40%;border-radius:50%;">
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                            style="width:85%;border-radius:50%;">
-                    </div>
-                </div> -->
 
                 <div align='end'>
                     <div *ngIf="miUser.provider == 'facebook'">
@@ -33,7 +23,8 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width:85%;border-radius:50%;">
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
@@ -46,77 +37,108 @@
 </ion-header>
 
 
-<ion-content class="card-background-page">
+<ion-content padding>
+    <h2>
+        <b>Evento</b>
+        <div class="detalle">Detalle</div>
+    </h2>
+
+    <hr />
 
     <ion-row>
-        <ion-col col-3>
-            <ion-item text-center no-lines>
-                <ion-icon name="md-calendar" class="colorIcon" (click)="verEvento()"></ion-icon>
-                <p style="font-size: 11px;" (click)="verEvento()">EVENTOS</p>
-            </ion-item>
+        <ion-col col-2></ion-col>
+
+        <ion-col col-8>
+            <div align="center">
+                <img class="imagen_perfil" src="{{ evento.img }}" />
+            </div>
+
+
+
+            <p class="nombre">
+                {{ evento.titulo }}
+            </p>
         </ion-col>
-        <ion-col col-5 style="margin-left: -25px;">
-            <ion-item text-center no-lines>
-                <ion-icon name="md-time" class="colorIcon" (click)="verReservacion()"></ion-icon>
-                <p style="font-size: 11px;" (click)="verReservacion()">RESERVACIONES</p>
-            </ion-item>
-        </ion-col>
-        <ion-col>
-        </ion-col>
+
+        <ion-col col-2></ion-col>
     </ion-row>
+
+    <hr />
 
     <br>
 
-    <ion-item text-center no-lines>
-        <label class="selecciona"> AJUSTA TU RESERVACIÓN </label>
-    </ion-item>
+    <div align="center">
+        <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
+        <font size="2" color="#474646"> <b> DETALLES DEL EVENTO </b></font>
+    </div>
+    <br>
+    <ion-list>
+        <!-- UID RESERVACION -->
 
-    <ion-card class="card-image">
-        <img [src]="evento.img" />
-        <div class="card-title">
+        <ion-item>
+            <ion-icon ios="ios-home" md="md-home" item-start style="color: #fcc04d"></ion-icon>
 
-            <ion-row align="end">
-                <ion-col col-8></ion-col>
-                <ion-col col-2 class="iconStar">
-                    <ion-icon name="star" class="iconoestrella"></ion-icon>
-                </ion-col>
-                <ion-col col-2>
-                    <ion-fab class="btnshare" top right edge>
-                        <button ion-fab color="dark">
-                            <ion-icon name="ios-arrow-dropdown" class="arrow"></ion-icon>
-                        </button>
-                        <ion-fab-list side="top right edge">
-                            <button class="fabbtn" ion-fab (click)="compartir(evento)">
-                                <!-- <img src="../assets/imgs/icons/facebook.png"> -->
-                                <ion-icon name="logo-facebook" style="color:#706F6F;"></ion-icon>
-                            </button>
-                            <button class="fabbtn" ion-fab (click)="compartirInsta(evento)">
-                                <!-- <img src="../assets/imgs/icons/facebook.png"> -->
-                                <ion-icon name="logo-instagram" style="color:#706F6F;"></ion-icon>
-                            </button>
-                        </ion-fab-list>
-                    </ion-fab>
-                </ion-col>
-            </ion-row>
+            Sucursal
 
-            {{ evento.titulo }}
-        </div>
-        <div class="card-subtitle">
+            <ion-note item-end> {{ (sucursalID | getSucursal | async)?.displayName }} </ion-note>
+        </ion-item>
 
-            {{evento.obs}}
+        <ion-item>
+            <ion-icon ios="ios-flag" md="md-flag" item-start style="color: #fcc04d"></ion-icon>
 
-            <br> {{evento.fecha}}, {{ evento.hora }}
+            Lugar
 
-            <br> {{evento.categoria}}
+            <ion-note item-end> {{evento.lugar }} </ion-note>
+        </ion-item>
 
-            <br> {{evento.lugar}}
-        </div>
+        <ion-item>
+            <ion-icon ios="ios-time" md="md-time" item-start style="color: #fcc04d"></ion-icon>
+
+            Fecha y hora
+
+            <ion-note item-end> {{evento.fecha | date:'d-MM-yyyy' }}, {{ evento.hora }} </ion-note>
+        </ion-item>
+
+        <ion-card>
+
+            <ion-card-header>
+                <h4 class="nombre">Detalles</h4>
+            </ion-card-header>
+
+            <ion-card-content text-center>
+                {{ evento.obs }}
+            </ion-card-content>
+
+        </ion-card>
+
+    </ion-list>
+    <ion-card>
+
+        <ion-card-header>
+            <div text-center>
+                <ion-icon ios="ios-share-alt" md="md-share-alt" style="color: #fcc04d"></ion-icon>
+                Compartir
+            </div>
+        </ion-card-header>
+
+        <ion-card-content text-center>
+
+            <button class="btnSocial" (click)="compartir(evento)">
+                <ion-icon name="logo-facebook" style="color:#4267B2;"></ion-icon>
+            </button>
+            <button class="btnSocial" (click)="compartirInsta(evento)">
+                <ion-icon name="logo-instagram" style="color:#C13584;"></ion-icon>
+            </button>
+
+        </ion-card-content>
+
     </ion-card>
+
 
 </ion-content>
 <ion-footer no-border>
     <div align="center">
-        <button ion-button class="btnre" round (click)="Reservar(evento.uid, sucursalID, evento.fecha, evento.hora)">
+        <button ion-button class="btnre" (click)="Reservar(evento.uid, sucursalID, evento.fecha, evento.hora)">
             <p text-color="texto2">RESERVAR</p>
         </button>
     </div>
