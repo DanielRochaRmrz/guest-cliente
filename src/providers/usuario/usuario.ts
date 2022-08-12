@@ -198,6 +198,18 @@ export class UsuarioProvider {
     ));
   }
 
+  public _getTarjetaPagar(idx: string) {
+    return new Promise((resolve, reject) => {
+      const ref = this.afs.collection('tarjetas').ref;
+      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA").get().then( query => {
+        query.forEach(tarjeta => {
+          const t =tarjeta.data();
+          resolve(t);
+        });
+      } );
+    });
+  }
+
   //obtener la tarjeta registrada y activa del id del usuario
   public getTarjetaPagar2(idx) {
     this.tarjetaPagar2 = this.afs.collection<any>("tarjetas", (ref) =>

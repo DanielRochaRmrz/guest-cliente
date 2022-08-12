@@ -371,9 +371,9 @@ export class HistorialDetallePage {
           if (this.escaneo.length == 0) {
             console.log('Cambia estatus principal');
             //CUNADO TODAS LAS PERSONAS QUE YA ESCANEARON SU QR SE  CAMBIA LA RESERVACION AL ESTATUS FINAL
-            this.afs.collection('reservaciones').doc(this.idReservacion).update({
-              estatus: 'Finalizado'
-            });
+            // this.afs.collection('reservaciones').doc(this.idReservacion).update({
+            //   estatus: 'Finalizado'
+            // });
           }
         });
       }
@@ -410,9 +410,9 @@ export class HistorialDetallePage {
             console.log("fecha reservacion", fechaReservacion);
             if (this.formatoFecha > fechaReservacion) {
               //SI YA PASO LA FECHA DE LA RESERVACION SE CAMBIA EL ESTATUS PINCIPAL A PAGANDO POR SI ALGUIN NO LLEGO A ESCANEAR QR
-              this.afs.collection('reservaciones').doc(this.idReservacion).update({
-                estatus: 'Finalizado'
-              });
+              // this.afs.collection('reservaciones').doc(this.idReservacion).update({
+              //   estatus: 'Finalizado'
+              // });
               console.log("se cambio a pagando");
             }
           });
