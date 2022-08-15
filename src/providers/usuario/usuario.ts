@@ -127,7 +127,6 @@ export class UsuarioProvider {
     numTarjeta,
     anioExp,
     mesExp,
-    cvc,
     numTarjeta4dijitos
   ) {
     return new Promise((resolve, reject) => {
@@ -139,7 +138,6 @@ export class UsuarioProvider {
           numTarjeta4dijitos: numTarjeta4dijitos,
           anioExpiracion: anioExp,
           mesExpiracion: mesExp,
-          cvc: cvc,
           estatus: "ACTIVA",
         })
         .then((reserva) => {
