@@ -1,171 +1,186 @@
 <ion-header>
-    <ion-navbar class="borde" hideBackButton>
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle>
+  <ion-navbar class="borde" hideBackButton>
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle>
           <!-- <ion-icon item-start name="menu" class="colorIcon31" style="zoom:1.5;"></ion-icon> -->
-          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
         </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" (click)="goInicios()" style="width: 60%;" alt="">
-            </ion-col>
-            <ion-col>
-                <div align='end'>
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
-                        </div>
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
-                        </div>
-                    </div>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+      </ion-col>
+      <ion-col align="center">
+        <img
+          src="./assets/imgs/Logoblanco.png"
+          (click)="goInicios()"
+          style="width: 60%"
+          alt=""
+        />
+      </ion-col>
+      <ion-col>
+        <div align="end">
+          <div *ngIf="miUser.provider == 'facebook'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 40%; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 43px; height: 46px; border-radius: 50%"
+              />
+            </div>
+          </div>
+          <div *ngIf="miUser.provider == 'google'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                style="width: 85%; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 43px; height: 46px; border-radius: 50%"
+              />
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
-<ion-content padding>
 
-    <br>
-    <br>
-    <label for="" style="margin-left:20px; margin-top:10px;color:#FD9530"> <b> TARJETA REGISTRADA</b></label>
-    <br>
-    <span style="margin-left:20px;position:absolute;margin-top:-10px">________________________________</span>
-    <br>
-    <span style="margin-left:20px;opacity:.3;position:absolute;margin-top:-8px">
-    <font size="1">ESTÁS SE ENCUENTRAN <b style="color:#FD9530"> ACTIVAS</b></font>
+<ion-content padding>
+  <br />
+  <br />
+  <label for="" style="margin-left: 20px; margin-top: 10px; color: #fd9530">
+    <b> TARJETA REGISTRADA</b>
+  </label>
+  <br />
+  <span style="margin-left: 20px; position: absolute; margin-top: -10px">
+    ________________________________
+  </span>
+  <br />
+  <span
+    style="
+      margin-left: 20px;
+      opacity: 0.3;
+      position: absolute;
+      margin-top: -8px;
+    "
+  >
+    <font size="1">
+      ESTÁS SE ENCUENTRAN <b style="color: #fd9530"> ACTIVAS</b>
+    </font>
   </span>
 
-    <br><br>
+  <br /><br />
 
-
-
-    <div class="derechaBoton">
-        <!--<button ion-button color="naranja" (click)="NousarTarjetas()">
-         Desactivar
-    </button>-->
-        <div *ngIf="invitado != 'true'">
-            <button *ngIf="!numTarjetas" (click)="agregarTarjeta()" text-align ion-button clear small class="btnadd" icon-left item-end>
-        <!-- <ion-icon name="add" class="colorIcon" style="zoom:1.1;"></ion-icon> -->
-        <img src="./assets/imgs/icons/mass.png" style="margin-left:-112px;position:absolute;width:20px" alt="">
+  <div class="derechaBoton">
+    <div *ngIf="invitado != 'true'">
+      <button
+        *ngIf="!numTarjetas"
+        (click)="agregarTarjeta()"
+        text-align
+        ion-button
+        clear
+        small
+        class="btnadd"
+        icon-left
+        item-end
+      >
+        <img
+          src="./assets/imgs/icons/mass.png"
+          style="margin-left: -112px; position: absolute; width: 20px"
+          alt=""
+        />
         <b class="agregar">Agregar tarjeta</b>
       </button>
-        </div>
-
     </div>
-    <ion-card class="card_atras" *ngFor="let tarjetas of misTarjetas">
-        <ion-card-content class="card_atras">
-            <ion-card-title>
-                <!-- <h4 class="blanco_1">Tarjeta registrada -->
-                <!--<ion-badge class="negro" item-end><div *ngIf="tarjetas.estatus=='INACTIVA'">{{tarjetas.estatus}}</div></ion-badge>-->
-                <!-- </h4> -->
-            </ion-card-title>
-            <ion-item class="card_atras">
-                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
-                <p class="blanco_21">Estado</p>
-                <ion-badge class="badge2" item-end>
-                    <div *ngIf="tarjetas.estatus=='ACTIVA'">{{tarjetas.estatus}}</div>
-                </ion-badge>
-                <ion-badge class="imgbadge" item-end><img src="../assets/imgs/verde.png" style="width: 20px;" alt="">
-                </ion-badge>
-            </ion-item>
-            <ion-item class="card_atras">
-                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
-                <p class="blanco_23">Número</p>
-                <ion-badge class="negro">**** **** **** {{tarjetas.numTarjeta4dijitos}}</ion-badge>
-                <img src="./assets/icon/Vector19a.png" class="vector" alt="">
-            </ion-item>
-            <ion-item class="card_atras">
-                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
-                <p class="blanco_23">Mes expiración</p>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='1'">Enero</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='2'">Febrero</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='3'">Marzo</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='4'">Abril</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='5'">Mayo</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='6'">Junio</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='7'">Julio</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='8'">Agosto</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='9'">Septiembre</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='10'">Octubre</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='11'">Noviembre</div>
-                </ion-badge>
-                <ion-badge class="negro1" text-wrap>
-                    <div *ngIf="tarjetas.mesExpiracion=='12'">Diciembre</div>
-                </ion-badge>
-                <img src="./assets/icon/Vector19a.png" class="vector" alt="">
-            </ion-item>
-            <ion-item class="card_atras">
-                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
-                <p class="blanco_23">Año expiración</p>
-                <ion-badge class="negro">{{tarjetas.anioExpiracion}}</ion-badge>
-                <img src="./assets/icon/Vector19a.png" class="vector" alt="">
-            </ion-item>
-            <br><br>
-            <ion-item class="card_atras">
-                <!--<div *ngIf="tarjetas.estatus=='INACTIVA'">-->
-                <div class="centradoB">
-                    <button ion-button class="btn" (click)="eliminarTarjeta(tarjetas.idTarjeta)">
+  </div>
+  <ion-card class="card_atras">
+    <ion-card-content class="card_atras">
+      <ion-card-title> </ion-card-title>
+      <ion-item class="card_atras">
+        <p class="blanco_21">Estado</p>
+        <ion-badge class="badge2" item-end>
+          <div>{{miTarjeta.estatus}}</div>
+        </ion-badge>
+        <ion-badge class="imgbadge" item-end
+          ><img src="../assets/imgs/verde.png" style="width: 20px" alt="" />
+        </ion-badge>
+      </ion-item>
+      <ion-item class="card_atras">
+        <p class="blanco_23">Número</p>
+        <ion-badge class="negro"
+          >**** **** **** {{miTarjeta.numTarjeta4dijitos}}</ion-badge
+        >
+        <img src="./assets/icon/Vector19a.png" class="vector" alt="" />
+      </ion-item>
+      <ion-item class="card_atras">
+        <p class="blanco_23">Mes expiración</p>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='1'">Enero</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='2'">Febrero</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='3'">Marzo</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='4'">Abril</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='5'">Mayo</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='6'">Junio</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='7'">Julio</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='8'">Agosto</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='9'">Septiembre</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='10'">Octubre</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='11'">Noviembre</div>
+        </ion-badge>
+        <ion-badge class="negro1" text-wrap>
+          <div *ngIf="mes =='12'">Diciembre</div>
+        </ion-badge>
+        <img src="./assets/icon/Vector19a.png" class="vector" alt="" />
+      </ion-item>
+      <ion-item class="card_atras">
+        <p class="blanco_23">Año expiración</p>
+        <ion-badge class="negro">{{anio}}</ion-badge>
+        <img src="./assets/icon/Vector19a.png" class="vector" alt="" />
+      </ion-item>
+      <br /><br />
+      <ion-item class="card_atras">
+        <div class="centradoB">
+          <button
+            ion-button
+            class="btn"
+            (click)="eliminarTarjeta(miTarjeta.idTarjeta)"
+          >
             Eliminar
           </button>
-                    <!--<button ion-button color="naranja" (click)="usarTarjetaActivar(tarjetas.idTarjeta)">
-                       Activar
-                  </button>-->
-                </div>
-                <!--</div>-->
-            </ion-item>
-            <!--<ion-item class="card_atras">
-               <--<div *ngIf="tarjetas.estatus=='INACTIVA'">-->
-            <!--<div class="centradoB">
-                  <button ion-button color="naranja" (click)="NousarTarjeta(tarjetas.idTarjeta)">
-                       Desactivar
-                  </button>
-                </div>-->
-            <!--</div>-->
-            <!--  </ion-item>-->
-
-        </ion-card-content>
-    </ion-card>
-    <!--<div *ngIf="seccion=='detalle'">
-    <div class="centradoB">
-      <button ion-button color="naranja" (click)="volverDetalle()">
-           Volver
-      </button>
-    </div>
-    </div>-->
-    <div class="_footer">
-        <div class=".centradoB">
-            Sólo puedes tener una tarjeta registrada. Si deseas agregar una nueva elimina la existente.
         </div>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <div class="_footer">
+    <div class=".centradoB">
+      Sólo puedes tener una tarjeta registrada. Si deseas agregar una nueva
+      elimina la existente.
     </div>
+  </div>
 </ion-content>

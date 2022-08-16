@@ -226,9 +226,7 @@ export class UsuarioProvider {
   }
 
   //obtener todas las trajetas registradas del usuario
-  public getTarjetasUser(idx) {
-    //console.log('mi user en provider',idx);
-    // return this.afiredatabase.object("sucursales/" + uid);
+  public getTarjetasUser(idx: string) {
     this.tarjetas = this.afs.collection<any>("tarjetas", (ref) =>
       ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA")
     );
@@ -263,6 +261,15 @@ export class UsuarioProvider {
           });
         })
       ));
+  }
+
+  public getTarjeta(idTarjeta: string) {
+    return new Promise((resolve, reject) => {
+      this.afs.collection('tarjetas').doc(idTarjeta).get().subscribe(tarjeta => {
+        const data = tarjeta.data() as any;
+        resolve(data);
+      });
+    });
   }
 
   //Cambiar estatus de la tarjeta a eliminado

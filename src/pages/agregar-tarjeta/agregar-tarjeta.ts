@@ -62,10 +62,9 @@ export class AgregarTarjetaPage {
 
   //agregar los datos de la tarjeta
   tarjetaAdd() {
-    let numTarjeta = CryptoJS.AES.encrypt(this.numTarjeta, 'secret key 123').toString();
-    let mesExp = CryptoJS.AES.encrypt(this.mesExp, 'secret key 123').toString();
-    let anioExp = CryptoJS.AES.encrypt(this.anioExp, 'secret key 123').toString();
-    
+    let numTarjeta = CryptoJS.AES.encrypt(this.numTarjeta, '#C4rdGu35t').toString();
+    let mesExp = CryptoJS.AES.encrypt(this.mesExp, '#C4rdGu35t').toString();
+    let anioExp = CryptoJS.AES.encrypt(this.anioExp, '#C4rdGu35t').toString();
     this.numTarjeta4dijitos = this.numTarjeta.substr(-4);
 
     this.usuarioProv

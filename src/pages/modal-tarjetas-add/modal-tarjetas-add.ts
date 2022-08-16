@@ -62,7 +62,7 @@ export class ModalTarjetasAddPage {
   console.log('num cvc',this.cvc);
   console.log('id user',this.uid);
   this.numTarjeta4dijitos=this.numTarjeta.substr(-4);
-  this.usuarioProv.agregarTarjeta(this.uid,this.numTarjeta,this.anioExp,this.mesExp,this.cvc,this.numTarjeta4dijitos).then((respuesta: any) => {
+  this.usuarioProv.agregarTarjeta(this.uid,this.numTarjeta,this.anioExp,this.mesExp,this.numTarjeta4dijitos).then((respuesta: any) => {
       console.log("Respuesta: ", respuesta);
       if (respuesta.success == true) {
         console.log("Success: ", respuesta.success);

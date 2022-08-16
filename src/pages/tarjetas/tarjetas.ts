@@ -1,24 +1,25 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { AgregarTarjetaPage } from "../../pages/agregar-tarjeta/agregar-tarjeta";
 import { UsuarioProvider } from "../../providers/usuario/usuario";
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from "@angular/fire/firestore";
 import { ReservacionDetallePage } from "../../pages/reservacion-detalle/reservacion-detalle";
-import { MisReservacionesPage } from '../mis-reservaciones/mis-reservaciones';
-import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
-
+import { MisReservacionesPage } from "../mis-reservaciones/mis-reservaciones";
+import { TipoLugarPage } from "../tipo-lugar/tipo-lugar";
+import * as CryptoJS from "crypto-js";
 @IonicPage()
 @Component({
-  selector: 'page-tarjetas',
-  templateUrl: 'tarjetas.html',
+  selector: "page-tarjetas",
+  templateUrl: "tarjetas.html",
 })
 export class TarjetasPage {
-
-  misTarjetas: any;
+  miTarjeta: any = {};
+  mes: string;
+  anio: string;
   uid: any;
-  misTarjetasRegistradas: any;
-  tarjetas: any;
-  tarjetaActiva: any;
   //tarjetaAnterior: any;
   numTarjetas: any;
   idReservacion: any;
@@ -26,45 +27,55 @@ export class TarjetasPage {
   miUser: any = {};
   invitado: any = "";
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public afs: AngularFirestore,
-    public usuarioProv: UsuarioProvider) {
+    public usuarioProv: UsuarioProvider
+  ) {
     //rescibir parametro de detalle-recervacion para checar tarjetas
     this.idReservacion = this.navParams.get("idReservacion");
     this.seccion = this.navParams.get("seccion");
-    //sacar el id del usuario del local storage
     console.log("Id Reservacion en tarjetas: ", this.idReservacion);
-    this.uid = localStorage.getItem('uid');
-    console.log('id sesion', this.uid);
-    //this.tarjetaAnterior = localStorage.getItem('TarjetaId');
-    //console.log('tarjeta anterior',this.tarjetaAnterior);
+    this.uid = localStorage.getItem("uid");
+    console.log("id sesion", this.uid);
   }
 
   ionViewDidLoad() {
-    this.invitado = localStorage.getItem('invitado');
-    console.log('ionViewDidLoad TarjetasPage');
+    this.invitado = localStorage.getItem("invitado");
+    console.log("ionViewDidLoad TarjetasPage");
     this.getAllTarjetas();
 
     this.afs
-      .collection("users").doc(this.uid)
+      .collection("users")
+      .doc(this.uid)
       .valueChanges()
-      .subscribe(dataSu => {
+      .subscribe((dataSu) => {
         this.miUser = dataSu;
-        console.log('Datos de mi usuario', this.miUser);
+        console.log("Datos de mi usuario", this.miUser);
       });
   }
 
   //obtener todas las tarjetas del usuario
   getAllTarjetas() {
-    //console.log('miuser',this.uid);
-    this.usuarioProv.getTarjetasUser(this.uid).subscribe(tarjeta => {
-      this.misTarjetas = tarjeta;
-      this.numTarjetas = this.misTarjetas.length;
-      console.log('misTarjetas', this.numTarjetas);
-      //this.tarjetaAnterior = localStorage.getItem('TarjetaId');
-      //console.log('misTarjetas',this.misTarjetas);
+    this.usuarioProv.getTarjetasUser(this.uid).subscribe((tarjeta) => {
+      console.log(tarjeta);
+      this.numTarjetas = tarjeta.length;
+      tarjeta.forEach((tarjeta) => {
+        let tarjetaID = tarjeta.idTarjeta;
+        this.getTarjeta(tarjetaID);
+      });
     });
+  }
+
+  async getTarjeta(tarjetaID: string) {
+    this.miTarjeta = await this.usuarioProv.getTarjeta(tarjetaID);
+    console.log('Tarjeta', this.miTarjeta.estatus);
+    
+    let bytesMes = CryptoJS.AES.decrypt(this.miTarjeta.mesExpiracion, "#C4rdGu35t");
+    this.mes = bytesMes.toString(CryptoJS.enc.Utf8);
+    let bytesAnio = CryptoJS.AES.decrypt(this.miTarjeta.anioExpiracion, "#C4rdGu35t");
+    this.anio = bytesAnio.toString(CryptoJS.enc.Utf8);
   }
 
   //ir a la pantalla para registrar una tarjeta nueva
@@ -75,7 +86,7 @@ export class TarjetasPage {
   //cambiar el estatus de la tarjeta a Eliminada
   eliminarTarjeta(idTarjeta) {
     this.usuarioProv.updateTarjetaEliminar(idTarjeta).then((respuesta: any) => {
-      console.log('eliminada');
+      console.log("eliminada");
     });
   }
 
@@ -89,16 +100,13 @@ export class TarjetasPage {
         console.log("Success: ", respuesta.success);
       }
     });
-  };
-
+  }
 
   goBack() {
     this.navCtrl.setRoot(MisReservacionesPage);
   }
 
-    goInicios(){
-      this.navCtrl.setRoot(TipoLugarPage);
-    }
-
-
+  goInicios() {
+    this.navCtrl.setRoot(TipoLugarPage);
   }
+}
