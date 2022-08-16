@@ -87,7 +87,7 @@
 
                 </ng-template>
 
-                <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion)">Más Detalles</button>
+                <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion, reservaciones.idSucursal)">Más Detalles</button>
 
                 <div *ngIf="reservaciones.estatus == 'Modificado'; then mod"></div>
 
@@ -137,7 +137,7 @@
                 </ng-template>
 
                 <p><small>UID: {{compartidas.idReservacion}}</small></p>
-                <button ion-button item-end (click)="verDetalle(compartidas.idReservacion)">Más Detalles</button>
+                <button ion-button item-end (click)="verDetalle(compartidas.idReservacion, compartidas.idSucursal)">Más Detalles</button>
 
                 <div *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado">
                 </div>

@@ -69,9 +69,10 @@ export class MisReservacionesPage {
         });
   }
 
-  verDetalle(idReservacion) {
+  verDetalle(idReservacion, idSucursal) {    
     this.navCtrl.setRoot(ReservacionDetallePage, {
-      idReservacion: idReservacion
+      idReservacion: idReservacion,
+      idSucursal: idSucursal
     });
   }
 

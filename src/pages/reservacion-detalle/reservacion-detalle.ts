@@ -85,6 +85,7 @@ export class ReservacionDetallePage {
   countComPagadas: number = 0;
   nombreUsuarios: any;
   tarjetaPagar: any = {};
+  valorCupon: any;
 
   constructor(
     public navCtrl: NavController,
@@ -107,7 +108,10 @@ export class ReservacionDetallePage {
     this.modal = this.navParams.get("modal");
     //sacar el id del usuario guardado en el local storage
     this.idUser = localStorage.getItem("uid");
-    this.idSucursal = localStorage.getItem("uidSucursal");
+    this.idSucursal = this.navParams.get("idSucursal");
+
+    console.log('SUCURSAL GET ITEM ///', this.idSucursal);
+    
 
     //consultar tabla cupones
     this.afs
@@ -326,10 +330,9 @@ export class ReservacionDetallePage {
                     .valueChanges()
                     .subscribe((dataCu) => {
                       this.cuponesDatos = dataCu;
-                      console.log(
-                        "este es el cupon usado",
-                        this.cuponesDatos[0].valorCupon
-                      );
+                      this.valorCupon = this.cuponesDatos[0].valorCupon;
+                      console.log("este es el cupon usado",
+                        this.cuponesDatos[0].valorCupon);
                       this.total2 = this.productos.reduce(
                         (acc, obj) => acc + obj.total,
                         0

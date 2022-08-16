@@ -77,6 +77,7 @@ export class HistorialDetallePage {
   countCompartidas: number = 0;
   countComPagadas: number = 0;
   nombreUsuarios: any;
+  valorCupon: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -229,6 +230,7 @@ export class HistorialDetallePage {
         this.validarCupon = 'Noexiste';
       } else {
         this.validarCupon = 'Existe';
+         this.valorCupon = this.cuponesDatos[0].valorCupon;
         this.propinaRe2 = info[0].totalReservacion * info[0].propina;;
         const propinaCalculo = info[0].totalReservacion * info[0].propina;
         this.totalPropinaCupon = info[0].totalReservacion + propinaCalculo;

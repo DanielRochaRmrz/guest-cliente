@@ -304,14 +304,12 @@
                 <!-- CON CUPON -->
                 <div *ngIf="validarCupon=='Existe'">
 
-                    <div *ngFor="let cup of infoCupones">
-
                         <!-- CUPON DESCUENTO -->
                         <ion-row>
                             <ion-col><b>Cupon descuento</b></ion-col>
                             <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
-                            <ion-col>-{{ cupon.valorCupon | currency}}</ion-col>
+                            <ion-col>-{{ valorCupon | currency}}</ion-col>
                         </ion-row>
 
 
@@ -325,54 +323,53 @@
 
                         <!-- TOTAL -->
                         <ion-row>
-                            <ion-col><b>Total</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>Total</b></ion-col>
                             <ion-col>{{ totalPropinaCupon | currency }}</ion-col>
                         </ion-row>
 
                         <!-- PROPINA -->
                         <ion-row>
-                            <ion-col><b>Propina</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>Propina</b></ion-col>
                             <ion-col>{{ propinaRe2 | currency }}</ion-col>
                         </ion-row>
 
                         <!-- TOTAL FINAL -->
                         <ion-row>
-                            <ion-col><b>Total final</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>Total final</b></ion-col>
                             <ion-col><b>{{ totalPropinaCupon | currency }}</b></ion-col>
                         </ion-row>
 
                         <!-- IVA  -->
                         <ion-row>
-                            <ion-col><b>IVA</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>IVA</b></ion-col>
                             <ion-col><b>{{ totalPropinaCupon*.16 | currency }}</b></ion-col>
                         </ion-row>
 
                         <!-- Comision 5.9  -->
                         <ion-row>
-                            <ion-col><b>Comision 5.9</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>Comision 5.9</b></ion-col>
                             <ion-col><b>{{ totalPropinaCupon*.059 | currency }}</b></ion-col>
                         </ion-row>
 
                         <!-- Total  -->
                         <ion-row>
-                            <ion-col><b>Total</b></ion-col>
-                            <ion-col><b></b></ion-col>
                             <ion-col></ion-col>
+                            <ion-col><b></b></ion-col>
+                            <ion-col><b>Total</b></ion-col>
                             <ion-col>
                                 <b>{{(totalPropinaCupon*.059)+(totalPropinaCupon*.16)+(totalPropinaCupon) | currency}}</b>
                             </ion-col>
                         </ion-row>
-                    </div>
 
                 </div>
 

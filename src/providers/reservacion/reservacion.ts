@@ -10,6 +10,7 @@ import * as moment from "moment";
 import { HttpClient } from "@angular/common/http";
 import { Platform } from "ionic-angular";
 import { DeviceProvider } from "../device/device";
+import { rejects } from "assert";
 
 @Injectable()
 export class ReservacionProvider {
@@ -1052,6 +1053,17 @@ export class ReservacionProvider {
         });
     });
   }
+
+  getCuponReservacion(uidSucursal: string){
+
+    return new Promise((resolve, rejects) => {
+      this.af.collection("cupones", ref => ref.where("idSucursal", "==", uidSucursal)).valueChanges().subscribe((cupones) => {
+        resolve(cupones);
+      })
+    })
+
+  }
+
 
   getSucursalesTipo(tipo: string) {
     this.sucursal = this.af.collection<any>("sucursales", (ref) =>
