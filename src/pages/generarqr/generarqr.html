@@ -45,11 +45,38 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div align="center">
-    <img text-center class="adv2" src="./assets/content/ok.png" />
+<ion-content>
+  <div class="child">
+    <div *ngIf="payRes == true; then success else error"></div>
+    <ng-template #success>
+      <div align="center">
+        <img text-center class="adv2" src="./assets/content/ok.png" />
+      </div>
+      <div text-center>
+        <h3>
+          Tu pago fue exitoso <br />
+          En detalle de la reservacion se encuentra tu código QR para el acceso
+          a la sucursal.
+        </h3>
+      </div>
+    </ng-template>
+    <ng-template #error>
+      <div align="center">
+        <img
+          text-center
+          class="adv2"
+          src="./assets/content/advertenciaRojo.png"
+        />
+      </div>
+      <div text-center>
+        <h3>
+          {{ msj }}
+          <hr />
+          <button ion-button color="primary" (click)="goPayment()">
+            Ir al menu Pago
+          </button>
+        </h3>
+      </div>
+    </ng-template>
   </div>
-  Tu pago fue exitoso <br />
-  En detalle de la reservacion se encuentra tun código QR para el acceso a la
-  sucursal.
 </ion-content>

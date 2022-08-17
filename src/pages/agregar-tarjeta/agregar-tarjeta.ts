@@ -21,7 +21,6 @@ export class AgregarTarjetaPage {
   numTarjeta4dijitos: any;
   mesExp: any;
   anioExp: any;
-  cvc: any;
   uid: any;
   miUser: any = {};
 
@@ -37,7 +36,6 @@ export class AgregarTarjetaPage {
       numTarjeta: ["", [Validators.required]],
       mesExp: ["", [Validators.required]],
       anioExp: ["", [Validators.required]],
-      cvc: ["", [Validators.required]],
     });
     //sacar el id del usuario del localstorage
     this.uid = localStorage.getItem("uid");

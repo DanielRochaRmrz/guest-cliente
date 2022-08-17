@@ -3,6 +3,14 @@ page-generarqr {
     background-color: transparent;
     background: transparent;
   }
+
+  .child {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 30%;
+  }
+
   //Nuevo
   .toolbar-background {
     background-image: url("../assets/content/head.png") !important;

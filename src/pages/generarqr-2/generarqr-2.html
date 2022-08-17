@@ -1,57 +1,82 @@
-<ion-header class="esquina">
+<ion-header>
   <ion-navbar class="borde">
     <ion-row>
       <ion-col>
-          <button ion-button menuToggle class="botonMod">
-  <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
-</button>
+        <button ion-button class="buttonBack" (click)="goBack()">
+          <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+        </button>
       </ion-col>
       <ion-col align="center">
-          <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
+        <img src="./assets/imgs/Logoblanco.png" style="width: 55%" />
       </ion-col>
       <ion-col>
-          <div align="end">
-              <div *ngIf="miUser.provider == 'facebook'">
-                  <div *ngIf="miUser.status_foto == 0">
-                      <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
-                  </div>
-                  <div *ngIf="miUser.status_foto == 1">
-                      <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
-                  </div>
-              </div>
-              <div *ngIf="miUser.provider == 'google'">
-                  <div *ngIf="miUser.status_foto == 0">
-                      <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
-                  </div>
-                  <div *ngIf="miUser.status_foto == 1">
-                      <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
-                  </div>
-              </div>
+        <div align="end">
+          <div *ngIf="miUser.provider == 'facebook'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                [src]="miUser.photoURL"
+                style="width: 8rem; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                [src]="miUser.photoURL"
+                style="width: 45px; height: 45px; border-radius: 50%"
+              />
+            </div>
           </div>
+          <div *ngIf="miUser.provider == 'google'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 8rem; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 45px; height: 45px; border-radius: 50%"
+              />
+            </div>
+          </div>
+        </div>
       </ion-col>
-  </ion-row>
+    </ion-row>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
-  <div align='center'>
-    <img text-center class='adv2' src='./assets/content/ok.png' />
-    <h3>¡Pago exitoso!</h3>
+<ion-content>
+  <div class="child">
+    <div *ngIf="payRes == true; then success else error"></div>
+    <ng-template #success>
+      <div align="center">
+        <img text-center class="adv2" src="./assets/content/ok.png" />
+      </div>
+      <div text-center>
+        <h3>
+          Tu pago fue exitoso <br />
+          En detalle de la reservacion se encuentra tu código QR para el acceso
+          a la sucursal.
+        </h3>
+      </div>
+    </ng-template>
+    <ng-template #error>
+      <div align="center">
+        <img
+          text-center
+          class="adv2"
+          src="./assets/content/advertenciaRojo.png"
+        />
+      </div>
+      <div text-center>
+        <h3>
+          {{ msj }}
+          <hr />
+          <button ion-button color="primary" (click)="goPayment()">
+            Ir al menu Pago
+          </button>
+        </h3>
+      </div>
+    </ng-template>
   </div>
-  <br>
-  <p>En detalle de la reservacion se encuentra tun código QR para el acceso a la sucursal.</p>
-
-  <!-- <div text-center> -->
-  <!-- <ion-badge style="background-color:#FD9530;">
-      <h4>SI TU PAGO FUE EXITOSO EN
-      <br>
-       DETALLES DE LA RESERVACIÓN
-      <br>
-      VE TU CÓDIGO QR GENERADO</h4>
-    </ion-badge>
-  </div> -->
-  <!--<ion-card class="card_atras">
-     <qrcode [qrdata]="created_code" [size]="256" [level]="'M'"></qrcode>
-   </ion-card>-->
 </ion-content>

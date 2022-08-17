@@ -67,6 +67,7 @@
     "devDependencies": {
         "@capacitor/cli": "3.3.2",
         "@ionic/app-scripts": "3.2.4",
+        "@types/crypto-js": "^4.1.1",
         "@types/node": "10.1.4",
         "com-sarriaroman-photoviewer": "^1.2.5",
         "cordova-android": "^9.1.0",

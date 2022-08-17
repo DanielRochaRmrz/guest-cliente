@@ -3,6 +3,27 @@ page-generarqr-2 {
     background-color: transparent;
     background: transparent;
   }
+
+  .child {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 30%;
+  }
+
+  //Nuevo
+  .toolbar-background {
+    background-image: url("../assets/content/head.png") !important;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  .imgMenu {
+    width: 40px;
+    margin-top: 15px;
+  }
+
 .card_atras{
   background: -moz-linear-gradient(top, rgb(228, 150, 2) 0%, rgba(68,71,75,0.05) 2%, rgba(0,0,0,1) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, rgb(228, 150, 2) 0%,rgba(68,71,75,0.05) 2%,rgba(0,0,0,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -29,22 +50,18 @@ page-generarqr-2 {
   margin-left: 160%;
   margin-top: 55%;
 }
-//Nuevo
-.toolbar-background {
-  background-image: url('../assets/content/head.png')!important;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-//Nuevo
-.imgMenu {
-  width: 40px;
-  margin-top: 15px;
-}
 
 .toast-container {
   background: #eb445a;
   color: #fff;
+}
+
+.buttonBack {
+  border-radius: 24px;
+  height: 2.8em;
+  width: 2.8em;
+  margin: 0rem 0rem;
+  padding: 0 1em;
 }
 
 }

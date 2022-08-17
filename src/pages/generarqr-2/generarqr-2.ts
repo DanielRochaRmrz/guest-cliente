@@ -1,3 +1,4 @@
+import { TarjetasPage } from './../tarjetas/tarjetas';
 import { Component } from "@angular/core";
 import {
   IonicPage,
@@ -9,7 +10,8 @@ import { ReservacionDetallePage } from "../../pages/reservacion-detalle/reservac
 import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { MonitoreoReservasProvider } from "../../providers/monitoreo-reservas/monitoreo-reservas";
 import { UserProvider } from "../../providers/user/user";
-import { ToastController } from 'ionic-angular';
+import { ToastController } from "ionic-angular";
+import CryptoJS from "crypto-js";
 
 @IonicPage()
 @Component({
@@ -26,6 +28,9 @@ export class Generarqr_2Page {
   public tarjeta: string = null;
   tarjetaPagar: any;
   folio: any;
+  cvc: number;
+  payRes: boolean;
+  msj: string;
   //Crear variables para guardar los datos que se reciban de la reservacion
   private created_code = null;
   private qr_data = {
@@ -50,74 +55,74 @@ export class Generarqr_2Page {
     this.total = this.navParams.get("total");
     this.idUsuario = this.navParams.get("idUsuario");
     this.folio = this.navParams.get("folio");
-    //con id del usuario buscar su tarjeta registrada y activa para hacer el pago
-    this.usuarioProv.getTarjetaPagar2(this.idUsuario).subscribe((pago) => {
-      const prompt = this.alertCtrl.create({
-        cssClass: "alert-input ",
-        title: "C V V",
-        message: "Ingresa el C V V de tu tarje credito/debito",
-        inputs: [
-          {
-            name: "cvv",
-            placeholder: "1234",
-            type: "number",
-          },
-        ],
-        buttons: [
-          {
-            text: "Declinar",
-            handler: (data) => {
-              console.log("Cancel clicked");
-              this.goBack();
-            },
-          },
-          {
-            text: "Continuar",
-            handler: (data) => {
-              if( /^[0-9]{4}$/.test(data.cvv) || /^[0-9]{3}$/.test(data.cvv) ){
-                console.log("Saved clicked", data);
+    this.cvc = this.navParams.get("cvc");
+    this.getInfouser(this.idUsuario);
+    this.payment();
+  }
 
-                this.tarjetaPagar = pago[0].idTarjeta;
-                const numTarjeta = pago[0].numTarjeta;
-                const mesExpiracion = pago[0].mesExpiracion;
-                const anioExpiracion = pago[0].anioExpiracion;
-                const cvc = pago[0].cvc;
-                const montoReservacion = this.total;
-                const folio = this.folio;
-                console.log(
-                  "tarjeta pagar",
-                  numTarjeta,
-                  mesExpiracion,
-                  anioExpiracion,
-                  cvc,
-                  montoReservacion
-                );
-                this.servMon.cambiaPagandoNormal(
-                  this.idReservacion,
-                  numTarjeta,
-                  mesExpiracion,
-                  anioExpiracion,
-                  cvc,
-                  montoReservacion,
-                  folio
-                );
-  
-                this.qr_data.idReservacion = this.idReservacion;
-                this.qr_data.mensaje = "Reservacion pagada";
-                this.created_code = JSON.stringify(this.qr_data);
-              } else {
-                this.toastCtrl.create({
-                  message: 'User was added successfully',
-                  duration: 4000,
-                  position: 'top'
-                });
-              }
-            },
-          },
-        ],
-      });
-      prompt.present();
-    });
+  async getInfouser(uid: string) {
+    this.miUser = await this.userProvider.getUser(uid);
+  }
+
+  async payment() {
+    //con id del usuario buscar su tarjeta registrada y activa para hacer el pago
+    this.tarjetaPagar = await this.usuarioProv._getTarjetaPagar(this.idUsuario);
+
+    console.log("Tarjeta -->", this.tarjetaPagar);
+
+    let bytesNum = CryptoJS.AES.decrypt(
+      this.tarjetaPagar.numTarjeta,
+      "#C4rdGu35t"
+    );
+    const numTarjeta = bytesNum.toString(CryptoJS.enc.Utf8);
+    let bytesMes = CryptoJS.AES.decrypt(
+      this.tarjetaPagar.mesExpiracion,
+      "#C4rdGu35t"
+    );
+    const mesExpiracion = bytesMes.toString(CryptoJS.enc.Utf8);
+    let bytesAnio = CryptoJS.AES.decrypt(
+      this.tarjetaPagar.anioExpiracion,
+      "#C4rdGu35t"
+    );
+    const anioExpiracion = bytesAnio.toString(CryptoJS.enc.Utf8);
+
+    const cvc = this.cvc;
+
+    const montoReservacion = this.total;
+    const folio = this.folio;
+    console.log(
+      "tarjeta pagar",
+      numTarjeta,
+      mesExpiracion,
+      anioExpiracion,
+      cvc,
+      montoReservacion
+    );
+    const msj = await this.servMon.cambiaPagandoNormal(
+      this.idReservacion,
+      numTarjeta,
+      mesExpiracion,
+      anioExpiracion,
+      cvc,
+      montoReservacion,
+      folio
+    );
+
+    this.msjAlert(msj);
+
+    this.qr_data.idReservacion = this.idReservacion;
+    this.qr_data.mensaje = "Reservacion pagada";
+    this.created_code = JSON.stringify(this.qr_data);
+  }
+
+  msjAlert(msj: any) {
+    console.log(msj.error);
+    this.payRes = msj.payment;
+    this.msj = msj.msj;
+  }
+
+  goPayment() {
+    this.navCtrl.setRoot(TarjetasPage);
   }
 
   //funcion para regresar a la pagina anterior

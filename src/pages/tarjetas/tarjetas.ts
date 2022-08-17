@@ -2,14 +2,10 @@ import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { AgregarTarjetaPage } from "../../pages/agregar-tarjeta/agregar-tarjeta";
 import { UsuarioProvider } from "../../providers/usuario/usuario";
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from "@angular/fire/firestore";
-import { ReservacionDetallePage } from "../../pages/reservacion-detalle/reservacion-detalle";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { MisReservacionesPage } from "../mis-reservaciones/mis-reservaciones";
 import { TipoLugarPage } from "../tipo-lugar/tipo-lugar";
-import * as CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js";
 @IonicPage()
 @Component({
   selector: "page-tarjetas",

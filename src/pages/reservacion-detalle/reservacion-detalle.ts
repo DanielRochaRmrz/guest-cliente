@@ -110,8 +110,7 @@ export class ReservacionDetallePage {
     this.idUser = localStorage.getItem("uid");
     this.idSucursal = this.navParams.get("idSucursal");
 
-    console.log('SUCURSAL GET ITEM ///', this.idSucursal);
-    
+    console.log("SUCURSAL GET ITEM ///", this.idSucursal);
 
     //consultar tabla cupones
     this.afs
@@ -331,8 +330,10 @@ export class ReservacionDetallePage {
                     .subscribe((dataCu) => {
                       this.cuponesDatos = dataCu;
                       this.valorCupon = this.cuponesDatos[0].valorCupon;
-                      console.log("este es el cupon usado",
-                        this.cuponesDatos[0].valorCupon);
+                      console.log(
+                        "este es el cupon usado",
+                        this.cuponesDatos[0].valorCupon
+                      );
                       this.total2 = this.productos.reduce(
                         (acc, obj) => acc + obj.total,
                         0
@@ -371,7 +372,6 @@ export class ReservacionDetallePage {
     folio,
     displayNames
   ) {
-
     this.tarjetaPagar = await this._providerUserio._getTarjetaPagar(idUsuario);
     console.log("Tatejeta -->", this.tarjetaPagar);
 
@@ -460,24 +460,82 @@ export class ReservacionDetallePage {
   }
 
   //mandar datos a la pagina del QR
-  genararQRNormal(idReservacion, total, idUsuario, folio) {
-    const t = total + total * 0.16 + total * 0.059;
-    const amount = (Number(t) * 100).toFixed(0);
-    this.navCtrl.setRoot(Generarqr_2Page, {
-      idReservacion: idReservacion,
-      total: amount,
-      idUsuario: idUsuario,
-      folio: folio,
+  async genararQRNormal(idReservacion, total, idUsuario, folio) {
+    this.tarjetaPagar = await this._providerUserio._getTarjetaPagar(idUsuario);
+    console.log("Tatejeta -->", this.tarjetaPagar);
+
+    const prompt = this.alertCtrl.create({
+      cssClass: "alert-input",
+      title: "cvc",
+      message: `Ingresa el cvc de tu tarje credito/debito con la terminación <b> **** ${this.tarjetaPagar.numTarjeta4dijitos} </b>`,
+      inputs: [
+        {
+          name: "cvc",
+          placeholder: "1234",
+          type: "number",
+        },
+      ],
+      buttons: [
+        {
+          text: "Declinar",
+          handler: () => {
+            console.log("Cancel clicked");
+          },
+        },
+        {
+          text: "Continuar",
+          handler: (data) => {
+            if (data.cvc == "") {
+              let toastError = this.toastCtrl.create({
+                message: "El cvc es requerido",
+                duration: 5000,
+                position: "top",
+              });
+              toastError.onDidDismiss(() => {
+                console.log("Dismissed toast");
+              });
+
+              toastError.present();
+              return false;
+            }
+            if (/^[0-9]{3,4}$/.test(data.cvc)) {
+              console.log("Saved clicked", data);
+
+              const t = total + total * 0.16 + total * 0.059;
+              const amount = (Number(t) * 100).toFixed(0);
+              this.navCtrl.setRoot(Generarqr_2Page, {
+                idReservacion: idReservacion,
+                total: amount,
+                cvc: data.cvc,
+                idUsuario: idUsuario,
+                folio: folio,
+              });
+            } else {
+              let toastError = this.toastCtrl.create({
+                message:
+                  "Formato de cvc incorrecto, debe contener de 3 a 4 digitos",
+                duration: 5000,
+                position: "top",
+              });
+              toastError.onDidDismiss(() => {
+                console.log("Dismissed toast");
+              });
+
+              toastError.present();
+              return false;
+            }
+          },
+        },
+      ],
     });
+    prompt.present();
   }
+
+
   genararQRNormal_revisarTarjeta(idReservacion) {
     this.navCtrl.setRoot(ModalTarjetasPage, {
       idReservacion: idReservacion,
     });
-    //let modal = this.modalCtrl.create("ModalTarjetasPage", {
-    //  idReservacion: idReservacion,
-    //});
-    //modal.present();
   }
 
   goBack() {
