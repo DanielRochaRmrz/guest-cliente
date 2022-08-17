@@ -242,6 +242,19 @@ export class UsuarioProvider {
     ));
   }
 
+  //obtener todas las trajetas registradas del usuario
+  public getAllTarjetas(idx: string) {
+    return new Promise((resolve, reject) => {
+      const refTarjetas = this.afs.collection('tarjetas').ref;
+      refTarjetas.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA").get().then(tarjetas => {
+        tarjetas.forEach(data => {
+          const tarjeta = data.data() as any;
+          resolve(tarjeta);
+        });
+      })
+    });
+  }
+
   //obtener todas las trajetas registradas del usuario que sean diferentes a eliminadas
   public getTarjetasRegistradas(idx) {
     console.log("mi user en provider", idx);

@@ -11,7 +11,7 @@
         <img
           src="./assets/imgs/Logoblanco.png"
           (click)="goInicios()"
-          style="width: 60%"
+          style="width: 50%"
           alt=""
         />
       </ion-col>
@@ -80,7 +80,7 @@
   <div class="derechaBoton">
     <div *ngIf="invitado != 'true'">
       <button
-        *ngIf="!numTarjetas"
+        *ngIf="tarjetaID == ''"
         (click)="agregarTarjeta()"
         text-align
         ion-button
@@ -99,7 +99,7 @@
       </button>
     </div>
   </div>
-  <ion-card class="card_atras">
+  <ion-card *ngIf="tarjetaID != ''"  class="card_atras">
     <ion-card-content class="card_atras">
       <ion-card-title> </ion-card-title>
       <ion-item class="card_atras">

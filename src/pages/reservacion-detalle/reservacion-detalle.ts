@@ -16,13 +16,12 @@ import { ReservacionProvider } from "../../providers/reservacion/reservacion";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireDatabase } from "@angular/fire/database";
 import { AlertController } from "ionic-angular";
-import { ModalController } from "ionic-angular";
-import { ModalTarjetasPage } from "../modal-tarjetas/modal-tarjetas";
 import { TipoLugarPage } from "../tipo-lugar/tipo-lugar";
 import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { UserProvider } from "../../providers/user/user";
 import moment from "moment";
 import { PushNotiProvider } from "../../providers/push-noti/push-noti";
+import { TarjetasPage } from '../tarjetas/tarjetas';
 
 @IonicPage()
 @Component({
@@ -446,10 +445,28 @@ export class ReservacionDetallePage {
     prompt.present();
   }
 
-  genararQR_revisarTarjeta(idReservacion) {
-    this.navCtrl.setRoot(ModalTarjetasPage, {
-      idReservacion: idReservacion,
+  genararQR_revisarTarjeta() {
+    let alert = this.alertCtrl.create({
+      title: 'Tarjeta debito/credito',
+      message: 'No cuentas con tarjetas registradas para realizar el cobro de tu reservación',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Registrar tarjeta',
+          handler: () => {
+            console.log('Buy clicked');
+            this.navCtrl.setRoot(TarjetasPage);
+          }
+        }
+      ]
     });
+    alert.present();
   }
 
   genararQR_Pagado(idReservacion, idCompartir) {
@@ -533,9 +550,27 @@ export class ReservacionDetallePage {
 
 
   genararQRNormal_revisarTarjeta(idReservacion) {
-    this.navCtrl.setRoot(ModalTarjetasPage, {
-      idReservacion: idReservacion,
+    let alert = this.alertCtrl.create({
+      title: 'Tarjeta debito/credito',
+      message: 'No cuentas con tarjetas registradas para realizar el cobro de tu reservación',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Registrar tarjeta',
+          handler: () => {
+            console.log('Buy clicked');
+            this.navCtrl.setRoot(TarjetasPage);
+          }
+        }
+      ]
     });
+    alert.present();
   }
 
   goBack() {

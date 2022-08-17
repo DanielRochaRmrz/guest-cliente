@@ -348,7 +348,7 @@
                                     Pagar mi parte
                                 </button>
                                 <button *ngIf="this.tarjeta == 0" ion-button full
-                                    (click)="genararQR_revisarTarjeta(reservaciones.idReservacion)">
+                                    (click)="genararQR_revisarTarjeta()">
                                     Pagar mi parte
                                 </button>
                             </div>
@@ -377,7 +377,7 @@
                     </button>
 
                     <button ion-button full *ngIf="this.tarjeta==0"
-                        (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">
+                        (click)="genararQRNormal_revisarTarjeta()">
                         Pagar cuenta
                     </button>
 
@@ -389,7 +389,7 @@
                     </button>
 
                     <button ion-button full *ngIf="this.tarjeta==0"
-                        (click)="genararQRNormal_revisarTarjeta(reservaciones.idReservacion)">
+                        (click)="genararQRNormal_revisarTarjeta()">
                         Pagar cuenta
                     </button>
                 </div>

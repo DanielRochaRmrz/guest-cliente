@@ -6,6 +6,7 @@ import { AngularFirestore } from "@angular/fire/firestore";
 import { MisReservacionesPage } from "../mis-reservaciones/mis-reservaciones";
 import { TipoLugarPage } from "../tipo-lugar/tipo-lugar";
 import CryptoJS from "crypto-js";
+import { UserProvider } from '../../providers/user/user';
 @IonicPage()
 @Component({
   selector: "page-tarjetas",
@@ -13,6 +14,8 @@ import CryptoJS from "crypto-js";
 })
 export class TarjetasPage {
   miTarjeta: any = {};
+  tarjeta: any = {};
+  tarjetaID: string = '';
   mes: string;
   anio: string;
   uid: any;
@@ -23,11 +26,13 @@ export class TarjetasPage {
   miUser: any = {};
   invitado: any = "";
 
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public afs: AngularFirestore,
-    public usuarioProv: UsuarioProvider
+    public usuarioProv: UsuarioProvider,
+    public userProv: UserProvider
   ) {
     //rescibir parametro de detalle-recervacion para checar tarjetas
     this.idReservacion = this.navParams.get("idReservacion");
@@ -41,27 +46,23 @@ export class TarjetasPage {
     this.invitado = localStorage.getItem("invitado");
     console.log("ionViewDidLoad TarjetasPage");
     this.getAllTarjetas();
+    this.getInfouser(this.uid);
+  }
 
-    this.afs
-      .collection("users")
-      .doc(this.uid)
-      .valueChanges()
-      .subscribe((dataSu) => {
-        this.miUser = dataSu;
-        console.log("Datos de mi usuario", this.miUser);
-      });
+  async getInfouser(uid: string) {
+    this.miUser = await this.userProv.getUser(uid);
   }
 
   //obtener todas las tarjetas del usuario
-  getAllTarjetas() {
-    this.usuarioProv.getTarjetasUser(this.uid).subscribe((tarjeta) => {
-      console.log(tarjeta);
-      this.numTarjetas = tarjeta.length;
-      tarjeta.forEach((tarjeta) => {
-        let tarjetaID = tarjeta.idTarjeta;
-        this.getTarjeta(tarjetaID);
-      });
-    });
+  async getAllTarjetas() {
+    this.tarjeta = await this.usuarioProv.getAllTarjetas(this.uid);
+    if (this.tarjeta) {
+      console.log('Tarjetas sin subscribe -->', this.tarjeta);
+      this.tarjetaID = this.tarjeta.idTarjeta;
+      if(this.tarjetaID) {
+        this.getTarjeta(this.tarjetaID);
+      }
+    }
   }
 
   async getTarjeta(tarjetaID: string) {
@@ -83,6 +84,7 @@ export class TarjetasPage {
   eliminarTarjeta(idTarjeta) {
     this.usuarioProv.updateTarjetaEliminar(idTarjeta).then((respuesta: any) => {
       console.log("eliminada");
+      this.tarjetaID = '';
     });
   }
 
