@@ -229,6 +229,7 @@ export class MyApp {
                 localStorage.removeItem('idReservacion');
                 localStorage.removeItem('uidEvento');
                 localStorage.removeItem('compartida');
+                localStorage.removeItem('reservacion');
               } else {
                 console.log("No hay");
               }
