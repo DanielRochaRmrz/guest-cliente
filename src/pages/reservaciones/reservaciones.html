@@ -224,6 +224,9 @@
           <ion-icon name="md-contact" style="color: #FD9530"></ion-icon>
         </ion-label>
         <ionic-selectable
+          searchPlaceholder="Buscar contactos"
+          closeButtonText="Cancelar"
+          confirmButtonText="Listo"
           (click)="presentLoading();"
           item-content
           [(ngModel)]="port"

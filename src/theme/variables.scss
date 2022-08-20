@@ -229,14 +229,18 @@ ion-select {
 }
 
 .toast-container {
-    background-color: #eb445a;
-    color: #fff;
-  }
+  background-color: #eb445a;
+  color: #fff;
+}
 
-  ion-app.ios {
-    background-color: #fff0 !important;
-  }
+ion-app.ios {
+  background-color: #fff0 !important;
+}
 
+.bar-button-default-md {
+  color: #fd9530 !important;
+  background-color: transparent !important;
+}
 
 // App Windows Variables
 // --------------------------------------------------

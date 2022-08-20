@@ -79,7 +79,7 @@ export class ReservacionesPage {
   playerID: any;
 
   ports = [];
-  port: Port;
+  port: Port[];
   contactosSelec: any;
   telSelectMul: any = "";
   campo_evento: number;
@@ -113,7 +113,6 @@ export class ReservacionesPage {
     this.idSucursal = this.navParams.get("idSucursal");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
     this.playerIDSuc = this.navParams.get("playerIDSuc");
-    console.log(this.ClaveInstancia);
     this.evento = this.navParams.get("uid");
     this.idReservacion = this.navParams.get("idReservacion");
     this.zonasnav = this.navParams.get("zona");
@@ -167,6 +166,9 @@ export class ReservacionesPage {
 
   portChange(event: { component: IonicSelectableComponent; value: any }) {
     this.telSelectMul = event.value;
+    // localStorage.setItem('contactosCompartidos', JSON.stringify(this.telSelectMul));
+    console.log('Telefono -->', event);
+    
   }
 
   ionViewDidLoad() {
@@ -197,6 +199,7 @@ export class ReservacionesPage {
         localStorage.removeItem("reservacion");
         localStorage.removeItem("compartida");
         localStorage.removeItem("zona");
+        localStorage.removeItem("contactosCompartidos");
       });
     } else {
       this.navCtrl.popToRoot();
@@ -314,7 +317,6 @@ export class ReservacionesPage {
                       .subscribe((players) => {
                         if (players == undefined) {
                           this.players = players[0].playerID;
-                          console.log("players ID -->", this.players);
                           this.afs
                             .collection("compartidas")
                             .doc(element.idCompartir)
@@ -418,7 +420,6 @@ export class ReservacionesPage {
                     .subscribe((players) => {
                       if (players == undefined) {
                         this.players = players[0].playerID;
-                        console.log("players ID -->", this.players);
                         this.afs
                           .collection("compartidas")
                           .doc(element.idCompartir)
@@ -674,9 +675,7 @@ export class ReservacionesPage {
     }
     const telefono3_ = [];
     //consulta para sacar contactos del telefono
-    this.contactlist.forEach((data) => {
-      console.log("Data -->", data);
-
+    this.contactlist.forEach((data: any) => {
       //estandarizar telefono a 10 digitos
       //validar que si algun telefono es nulo no pase por la comparacion
       if (data.phoneNumbers != null) {
@@ -688,6 +687,12 @@ export class ReservacionesPage {
           tel: this.telefono3,
           name: String(data.displayName),
         });
+        this.ports = [
+          {
+            "tel": "4773244792",
+            "name": "Tania (Nutrióloga)"
+          },
+        ]
         //   }else{
         //     this.ports.push({ tel: this.telefono3, name: String(data.name.formatted) });
         //   }

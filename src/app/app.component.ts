@@ -230,6 +230,7 @@ export class MyApp {
                 localStorage.removeItem('uidEvento');
                 localStorage.removeItem('compartida');
                 localStorage.removeItem('reservacion');
+                localStorage.removeItem("contactosCompartidos");
               } else {
                 console.log("No hay");
               }
