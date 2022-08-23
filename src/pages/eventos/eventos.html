@@ -69,7 +69,26 @@
 
     <hr>
 
-    <ng-container
+    <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="container" *ngFor="let evento of page.data | async | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
+            <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+                <ion-card class="card-image">
+                    <img [src]="evento.img" />
+                    <div class="card-title">{{ evento.titulo }}</div>
+                    <div class="card-subtitle">{{ (evento.uidSucursal | getSucursal | async)?.direccion }},
+                        {{ (evento.uidSucursal | getSucursal | async)?.ciudad }}</div>
+                </ion-card>
+            </button>
+        </div>
+    </div>
+    <p *ngIf="page.done | async"></p>
+
+    <ion-footer>
+        <loading-spinner  *ngIf="page.loading | async"></loading-spinner>
+    </ion-footer>
+
+
+    <!-- <ng-container
         *ngFor="let evento of eventos | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
         <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
             <ion-card class="card-image">
@@ -79,7 +98,7 @@
                     {{ (evento.uidSucursal | getSucursal | async)?.ciudad }}</div>
             </ion-card>
         </button>
-    </ng-container>
+    </ng-container> -->
 
 
 </ion-content>

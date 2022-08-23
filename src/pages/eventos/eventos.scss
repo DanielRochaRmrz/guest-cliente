@@ -169,4 +169,13 @@ page-eventos {
         margin-top: -8px;
         text-transform: uppercase;
     }
+    .content {
+        overflow: scroll;
+        max-height: 100vh;
+        width: 100vw;
+        margin: auto;
+      }
+      .container{
+        height: 310px;
+      }
 }

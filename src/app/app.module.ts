@@ -102,6 +102,9 @@ import firebase from "firebase/app";
 import "firebase/firestore";;
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { HistorialDetallePage } from '../pages/historial-detalle/historial-detalle';
+import { ScrollableDirective } from './scrollable.directive';
+import { PaginationService } from './pagination.service';
+import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner';
 
 
 var firebaseConfig = {
@@ -159,7 +162,9 @@ firebase.initializeApp(firebaseConfig);
     PerfilEditarPage,
     CroquisPage,
     MenuPage,
-    MenuArbolPage
+    MenuArbolPage,
+    ScrollableDirective,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -265,7 +270,8 @@ firebase.initializeApp(firebaseConfig);
     UniqueDeviceID,
     FCM,
     PhotoViewer,
-    CartaApiProvider
+    CartaApiProvider,
+    PaginationService,
   ]
 })
 export class AppModule {}
