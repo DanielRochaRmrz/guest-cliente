@@ -6,8 +6,19 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/take';
 
+interface QueryConfig {
+  path: string, //  path to collection
+  field: string, // field to orderBy
+  limit: number, // limit per query
+  reverse: boolean, // reverse order?
+  prepend: boolean // prepend to source?
+}
+
+
 @Injectable()
 export class PaginationService {
+  
+  formatoFecha: any;
 
   // Source data
   private _done = new BehaviorSubject(false);
@@ -24,9 +35,28 @@ export class PaginationService {
 
   constructor(private afs: AngularFirestore) { }
 
+  get fechaEventos(){
+
+     // eventos de fecha actual y que se quiten de fechas pasadas (año-mes-dia->2019-11-30)
+    var dateObj = new Date()
+    var anio = dateObj.getFullYear().toString();
+    var mes = dateObj.getMonth().toString();
+    var dia = dateObj.getDate();
+    var mesArray = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    if (dia >= 1 && dia <= 9) {
+      var diaCero = '0' + dia;
+      this.formatoFecha = anio + '-' + mesArray[mes] + '-' + diaCero;
+    } else {
+      this.formatoFecha = anio + '-' + mesArray[mes] + '-' + dia;
+    }
+
+    return this.formatoFecha;
+
+  }
+
   // Initial query sets options and defines the Observable
   // passing opts will override the defaults
-  init(path: string, field: string, opts?: any) {
+   init(path: string, field: string, opts?: any) {
     this.query = { 
       path,
       field,
@@ -40,8 +70,11 @@ export class PaginationService {
       return ref
               .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
               .limit(this.query.limit)
+              .where("fecha", ">=", this.fechaEventos)
+              
     })
 
+    
     this.mapAndUpdate(first)
 
     // Create the observable array for consumption in components
@@ -61,6 +94,7 @@ export class PaginationService {
               .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
               .limit(this.query.limit)
               .startAfter(cursor)
+              .where("fecha", ">=", this.fechaEventos)
     })
     this.mapAndUpdate(more)
   }
@@ -110,12 +144,10 @@ export class PaginationService {
 
   }
 
-}
-
-interface QueryConfig {
-    path: string, //  path to collection
-    field: string, // field to orderBy
-    limit: number, // limit per query
-    reverse: boolean, // reverse order?
-    prepend: boolean // prepend to source?
+  // Reset the page
+  reset() {
+    this._data.next([])
+    this._done.next(false)
   }
+
+}

@@ -18,7 +18,7 @@ import { PaginationService } from '../../app/pagination.service';
   selector: "page-eventos",
   templateUrl: "eventos.html"
 })
-export class EventosPage implements OnInit{
+export class EventosPage implements OnInit {
   //hayMas:boolean= true;
   eventos: any[] = [];
   filterPost: "";
@@ -33,6 +33,10 @@ export class EventosPage implements OnInit{
   //playerID: any;
   //userID: any;
 
+  get dataEvento() {
+    return this.page.data;
+  }
+
   constructor(
     private socialSharing: SocialSharing,
     public navCtrl: NavController,
@@ -44,37 +48,10 @@ export class EventosPage implements OnInit{
     public sucursalprovider: SucursalAltaProvider,
     public page: PaginationService
   ) {
+    this.page.reset();
     //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem('uid');
     console.log('id del usuario en eventos', this.uidUserSesion);
-
-    // eventos de fecha actual y que se quiten de fechas pasadas (año-mes-dia->2019-11-30)
-    // var dateObj = new Date()
-    // var anio = dateObj.getFullYear().toString();
-    // var mes = dateObj.getMonth().toString();
-    // var dia = dateObj.getDate();
-    // var mesArray = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-    // if (dia >= 1 && dia <= 9) {
-    //   var diaCero = '0' + dia;
-    //   this.formatoFecha = anio + '-' + mesArray[mes] + '-' + diaCero;
-    // } else {
-    //   this.formatoFecha = anio + '-' + mesArray[mes] + '-' + dia;
-    // }
-    // console.log("fechA ACTUAL", this.formatoFecha);
-    // //console.log("fecha actual");
-    // //console.log(this.formatoFecha);
-    // this.afs.collection('evento', ref => ref.where('fecha', '>=', this.formatoFecha)).valueChanges().subscribe(data => {
-    //   this.eventos = data;
-    //   console.log("eventos fecha", this.eventos);
-    // });
-    //obtener informacion de todas las sucursales
-    this.afs
-      .collection("sucursales")
-      .valueChanges()
-      .subscribe(dataSu => {
-        this.sucursales = dataSu;
-        console.log('sucursales todos', this.sucursales);
-      });
 
     this.afs
       .collection("ciudades")
@@ -83,9 +60,6 @@ export class EventosPage implements OnInit{
         this.ciudades = dataCiudad;
         console.log('cudades', this.ciudades);
       });
-    //  afDB.list('evento').valueChanges().subscribe( e =>  {
-    //    this.eventos = e;
-    //  })
 
     //obtener informacion de mi user
     this.afs
@@ -96,50 +70,25 @@ export class EventosPage implements OnInit{
         console.log('Datos de mi usuario', this.miUser);
       });
 
-      this.page.init('evento', 'key', { reverse: true, prepend: false });
-
   }
 
-  ngOnInit(){
+  ngOnInit() {
 
-   
-
-  }
-
+    this.page.init('evento', 'fecha', { reverse: true, prepend: false });
+    
+  }  
+  
   scrollHandler(e) {
 
-    console.log(e);
-    
     if (e === 'bottom') {
       this.page.more()
     }
-
-    // if (e === 'top') {
-    //   this.page.more()
-    // }
-  }
-
-
-  compartir(evento: any) {
-    const message = String(evento.titulo);
-    const image = evento.img;
-    this.socialSharing
-      .shareViaFacebook('Hola mundo', null, null)
-      .then((resp) => console.log('La respuesta -->>', resp)) // se pudo compartir
-      .catch((err) => console.log('El error -->>', err)); // si sucede un error
-  }
-
-  compartirInsta(evento: any) {
-    this.socialSharing
-      .shareViaInstagram(evento.titulo, evento.img)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
   }
 
   async verDetalle(uid: string, uidSucursal: string) {
 
     const sucursal: any = await this.sucursalprovider.getDataSucursal(uidSucursal);
-    const getSucursal = JSON.parse(sucursal);     
+    const getSucursal = JSON.parse(sucursal);
 
     this.navCtrl.setRoot(EventoDetallePage, {
       uid: uid,
@@ -161,6 +110,7 @@ export class EventosPage implements OnInit{
   }
 
   goInicio() {
+    
     this.navCtrl.setRoot(TipoLugarPage);
   }
 }
