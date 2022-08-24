@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EventoDetallePage } from "../../pages/evento-detalle/evento-detalle";
 //Plugins
-import { SocialSharing } from '@ionic-native/social-sharing';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { SMS } from '@ionic-native/sms';
 import { Reservacion_1Page } from '../reservacion-1/reservacion-1';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { SucursalAltaProvider } from '../../providers/sucursal-alta/sucursal-alta';
@@ -29,24 +27,16 @@ export class EventosPage implements OnInit {
   formatoFecha: any;
   ciudades: any;
   miUser: any = {};
-  //eventosF: any;
-  //playerID: any;
-  //userID: any;
-
-  get dataEvento() {
-    return this.page.data;
-  }
+  loading: any;
 
   constructor(
-    private socialSharing: SocialSharing,
     public navCtrl: NavController,
     public afDB: AngularFireDatabase,
     public navParams: NavParams,
     public _cap: UsuarioProvider,
-    private sms: SMS,
     public afs: AngularFirestore,
     public sucursalprovider: SucursalAltaProvider,
-    public page: PaginationService
+    public page: PaginationService,
   ) {
     this.page.reset();
     //sacar el id del usuario del local storage

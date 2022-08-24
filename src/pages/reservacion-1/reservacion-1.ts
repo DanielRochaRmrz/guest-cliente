@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { ReservacionesPage } from '../reservaciones/reservaciones';
@@ -7,6 +7,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { LoginPage } from '../login/login';
 import { ReservacionProvider } from '../../providers/reservacion/reservacion';
+import { PaginationService } from '../../app/pagination.service';
 
 
 @IonicPage()
@@ -14,7 +15,7 @@ import { ReservacionProvider } from '../../providers/reservacion/reservacion';
   selector: 'page-reservacion-1',
   templateUrl: 'reservacion-1.html',
 })
-export class Reservacion_1Page {
+export class Reservacion_1Page implements OnInit {
   // sucursales: Observable<any[]>;
   sucursales = [];
   uid: string;
@@ -34,6 +35,8 @@ export class Reservacion_1Page {
   usuarioSu: any = {};
   invitado: any;
   loading: any;
+  tipoSucursal: string;
+  hayDatos:any;
 
 
   constructor(public navCtrl: NavController,
@@ -43,8 +46,11 @@ export class Reservacion_1Page {
     private socialSharing: SocialSharing,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-    private _reservacionP: ReservacionProvider
+    private _reservacionP: ReservacionProvider,
+    public page: PaginationService,
   ) {
+
+    this.page.reset();
     this.invitado = 1;
     this.uid = localStorage.getItem('uid');
     if(localStorage.getItem('invitado') != null){
@@ -53,14 +59,9 @@ export class Reservacion_1Page {
     this.uidUserSesion = localStorage.getItem('uid');
 
     //obtener informacion de todas las sucursales
-    this.afs.collection('sucursales').valueChanges().subscribe(s => {
-      this.sucursales = s;
-    });
-
-    //obtener informacion de todos los usuarios
-    this.afs.collection('users').valueChanges().subscribe(user => {
-      this.usuarios = user;
-    });
+    // this.afs.collection('sucursales').valueChanges().subscribe(s => {
+    //   this.sucursales = s;
+    // });
 
     //obtener informacion de mi user
     this.afs
@@ -72,6 +73,20 @@ export class Reservacion_1Page {
 
     this.opcionS = this.navParams.get('opcionS');
 
+    if(this.opcionS == "restaurante"){
+
+      this.tipoSucursal = "Restaurantes";
+
+    }else if(this.opcionS == "bar"){
+
+      this.tipoSucursal = "Bares";
+
+    }else if(this.opcionS == "antro"){
+
+      this.tipoSucursal = "Antros";
+
+    }
+
     this.estatus = this.navParams.get('estatus');
 
   }
@@ -79,46 +94,46 @@ export class Reservacion_1Page {
   ionViewDidLoad() {
     //sacar todas las ciudades
     this.getCiudades();
-    this.getSucursales(this.opcionS);
+    // this.getSucursales(this.opcionS);
+  }
+
+  ngOnInit() {
+
+    this.page.initSucursales('sucursales', 'displayName', { reverse: true, prepend: false }, this.opcionS);
+
+    this.page.data.forEach(element => {
+     this.hayDatos =  element.length;
+    });
+    
+    
+  }  
+
+  scrollHandler(e) {
+
+    console.log(e);   
+
+    if (e === 'bottom') {
+      this.page.moreSucursal(this.opcionS)
+    }
   }
   
   async getCiudades () {
     this.ciudades = await this._reservacionP.getCiudades();
   }
 
-  getSucursales(tipo: string) {
-    this.presentLoadingSucursal();
-    this._reservacionP.getSucursalesTipo(tipo).subscribe((data) => {
-      this.sucursalesS = data;
-      if (this.sucursalesS) {
-        this.loading.dismiss();
-      }
-    });
-  }
-
-  presentLoadingSucursal() {
-    this.loading = this.loadingCtrl.create({
-      showBackdrop: true
-    });
-    this.loading.present();
-  }
 
   reservar(idSucursal: string, ClaveInstancia: string, playerIDSuc: string) {
-    this.navCtrl.push(ReservacionesPage, { 'idSucursal': idSucursal, 'ClaveInstancia': ClaveInstancia, 'playerIDSuc': playerIDSuc });
-  }
 
-  compartir(displayName, photoURL) {
-    this.socialSharing
-      .shareViaFacebook(displayName, null, photoURL)
-      .then((resp) => {}) // se pudo compartir
-      .catch((err) => {}); // si sucede un error
-  }
+    if(this.invitado != true){
 
-  compartirInsta(displayName, photoURL) {
-    this.socialSharing
-      .shareViaFacebook(displayName, null, photoURL)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
+      this.invitadoAlert();
+
+    }else{
+
+      this.navCtrl.push(ReservacionesPage, { 'idSucursal': idSucursal, 'ClaveInstancia': ClaveInstancia, 'playerIDSuc': playerIDSuc });
+
+    }
+
   }
 
   verEvento() {

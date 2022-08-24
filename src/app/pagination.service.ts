@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/take';
+import { LoadingController } from 'ionic-angular';
 
 interface QueryConfig {
   path: string, //  path to collection
@@ -12,19 +13,20 @@ interface QueryConfig {
   limit: number, // limit per query
   reverse: boolean, // reverse order?
   prepend: boolean // prepend to source?
+  donde: string;
 }
 
 
 @Injectable()
 export class PaginationService {
-  
+
   formatoFecha: any;
 
   // Source data
   private _done = new BehaviorSubject(false);
   private _loading = new BehaviorSubject(false);
   private _data = new BehaviorSubject([]);
-
+  private loadingDatos: any;
   private query: QueryConfig;
 
   // Observable data
@@ -33,11 +35,11 @@ export class PaginationService {
   loading: Observable<boolean> = this._loading.asObservable();
 
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore, public loadingCtrl: LoadingController,) { }
 
-  get fechaEventos(){
+  get fechaEventos() {
 
-     // eventos de fecha actual y que se quiten de fechas pasadas (año-mes-dia->2019-11-30)
+    // eventos de fecha actual y que se quiten de fechas pasadas (año-mes-dia->2019-11-30)
     var dateObj = new Date()
     var anio = dateObj.getFullYear().toString();
     var mes = dateObj.getMonth().toString();
@@ -56,8 +58,9 @@ export class PaginationService {
 
   // Initial query sets options and defines the Observable
   // passing opts will override the defaults
-   init(path: string, field: string, opts?: any) {
-    this.query = { 
+  init(path: string, field: string, opts?: any) {
+    this.presentLoading();
+    this.query = {
       path,
       field,
       limit: 2,
@@ -66,35 +69,81 @@ export class PaginationService {
       ...opts
     }
 
-    const first = this.afs.collection(this.query.path, ref => {
+    var first = this.afs.collection(this.query.path, ref => {
       return ref
-              .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
-              .limit(this.query.limit)
-              .where("fecha", ">=", this.fechaEventos)
-              
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .where("fecha", ">=", this.fechaEventos)
+
     })
 
-    
-    this.mapAndUpdate(first)
+    if (first) {
+      this.loadingDatos.dismiss();
+      this.mapAndUpdate(first)
 
-    // Create the observable array for consumption in components
-    this.data = this._data.asObservable()
-        .scan( (acc, val) => { 
+      // Create the observable array for consumption in components
+      this.data = this._data.asObservable()
+        .scan((acc, val) => {
           return this.query.prepend ? val.concat(acc) : acc.concat(val)
         })
+    }
+
   }
 
- 
+  initSucursales(path: string, field: string, opts?: any, tipo?: string) {
+    this.presentLoading();
+    this.query = {
+      path,
+      field,
+      limit: 2,
+      reverse: false,
+      prepend: false,
+      ...opts
+    }
+    var first = this.afs.collection(this.query.path, ref => {
+      return ref
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .where("tipo", "==", tipo)
+
+    })
+    if (first) {
+      this.loadingDatos.dismiss();
+      this.mapAndUpdate(first)
+
+      // Create the observable array for consumption in components
+      this.data = this._data.asObservable()
+        .scan((acc, val) => {
+          return this.query.prepend ? val.concat(acc) : acc.concat(val)
+        })
+    }
+  }
+
+
   // Retrieves additional data from firestore
   more() {
     const cursor = this.getCursor()
 
     const more = this.afs.collection(this.query.path, ref => {
       return ref
-              .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
-              .limit(this.query.limit)
-              .startAfter(cursor)
-              .where("fecha", ">=", this.fechaEventos)
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .startAfter(cursor)
+        .where("fecha", ">=", this.fechaEventos)
+    })
+    this.mapAndUpdate(more)
+  }
+
+  //
+  moreSucursal(tipo) {
+    const cursor = this.getCursor()
+
+    const more = this.afs.collection(this.query.path, ref => {
+      return ref
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .startAfter(cursor)
+        .where("tipo", "==", tipo)
     })
     this.mapAndUpdate(more)
   }
@@ -104,7 +153,7 @@ export class PaginationService {
   private getCursor() {
     const current = this._data.value
     if (current.length) {
-      return this.query.prepend ? current[0].doc : current[current.length - 1].doc 
+      return this.query.prepend ? current[0].doc : current[current.length - 1].doc
     }
     return null
   }
@@ -126,7 +175,7 @@ export class PaginationService {
           const doc = snap.payload.doc
           return { ...data, doc }
         })
-  
+
         // If prepending, reverse the batch order
         values = this.query.prepend ? values.reverse() : values
 
@@ -138,9 +187,9 @@ export class PaginationService {
         if (!values.length) {
           this._done.next(true)
         }
-    })
-    .take(1)
-    .subscribe()
+      })
+      .take(1)
+      .subscribe()
 
   }
 
@@ -148,6 +197,13 @@ export class PaginationService {
   reset() {
     this._data.next([])
     this._done.next(false)
+  }
+
+  presentLoading() {
+    this.loadingDatos = this.loadingCtrl.create({
+      showBackdrop: true
+    });
+    this.loadingDatos.present();
   }
 
 }
