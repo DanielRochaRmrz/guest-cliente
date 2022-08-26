@@ -32,7 +32,8 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width:85%;border-radius:50%;">
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
@@ -46,17 +47,16 @@
 
 <ion-content class="card-background-page" style="border-radius: 0px;">
 
-    <br>
-    <br>
-    <label for="" style="margin-left:20px; margin-top:10px;color:#FD9530">CUPONES DISPONIBLES</label>
-    <br>
-    <span style="margin-left:20px;position:absolute;margin-top:-10px">________________________________</span>
-    <br>
-    <span style="margin-left:20px;opacity:.3;position:absolute;margin-top:-8px">
-        <font size="2">ESTOS CUPONES ESTAN ACTIVOS</font>
-    </span>
+    <ion-row>
+        <ion-col col-5>
+            <h2>
+                <b>CUPONES</b>
+                <div class="detalle">Activos</div>
+            </h2>
+        </ion-col>
+    </ion-row>
 
-    <br> <br>
+    <hr>
 
     <!-- <h2 class="titulos">Cupones disponibles</h2> -->
     <div *ngFor="let sucursal of totalsucursal">
@@ -77,13 +77,15 @@
                                                             {{ cupones.valorCupon | currency}}
                                                         </ion-col>
                                                         <ion-col col-6 class="logoB">
-                                                            <img src="./assets/imgs/Logoblanco.png" style="margin-top:-10px;width:55px; margin-left:40px">
+                                                            <img src="./assets/imgs/Logoblanco.png"
+                                                                style="margin-top:-10px;width:55px; margin-left:40px">
                                                         </ion-col>
                                                     </ion-row>
                                                 </div>
                                             </ion-grid>
 
-                                            <div class="card-subtitle">MXN de descuento &nbsp;&nbsp; Código {{ cupones.codigoCupon }}</div>
+                                            <div class="card-subtitle">MXN de descuento &nbsp;&nbsp; Código {{
+                                                cupones.codigoCupon }}</div>
                                             <div class="card-subtitle1">Sucursal: {{sucursal.displayName}}</div>
                                             <div class="card-subtitle2">Vigencia: {{ cupones.fechaExpiracion }}</div>
                                         </ion-card>

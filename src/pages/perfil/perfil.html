@@ -32,7 +32,8 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width:85%;border-radius:50%;">
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
@@ -46,23 +47,22 @@
 <br>
 <ion-content>
 
-
-
-    <ion-row style="margin-top: 5px;">
-        <ion-col col-9>
-            <label for="" style="margin-left:20px;  margin-top:10px; color:#FD9530"><b>PERFIL</b> </label>
+    <ion-row>
+        <ion-col col-5>
+            <h2>
+                <b>PERFIL</b>
+                <div class="detalle">TUS DATOS</div>
+            </h2>
         </ion-col>
-        <ion-col col-3>
+        <ion-col col-5>
+            
+        </ion-col>
+        <ion-col col-2>
             <button *ngIf="invitado != 'true'" class="btnEditar" (click)="editarPerfil()">Editar</button>
         </ion-col>
     </ion-row>
-    <br>
-    <!-- <span style="margin-left:20px;position:absolute;margin-top:-10px">____________</span> -->
 
-    <span style="margin-left:20px;opacity:.3;position:absolute;margin-top:-8px">
-        <font size="2">TUS DATOS</font>
-    </span>
-
+    <hr>
 
     <div align="center">
         <div *ngIf="nombresUserss.provider == 'facebook'">
@@ -75,7 +75,8 @@
         </div>
         <div *ngIf="nombresUserss.provider == 'google'">
             <div *ngIf="nombresUserss.status_foto == 0">
-                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720" (click)="loadinCamara();">
+                <img class="imgRedondas" src="{{nombresUserss.photoURL}}?type=large&width=720&height=720"
+                    (click)="loadinCamara();">
             </div>
             <div *ngIf="nombresUserss.status_foto == 1">
                 <img class="imgFotoGoogle" src="{{nombresUserss.photoURL}}" (click)="loadinCamara();">
@@ -232,7 +233,9 @@
 
 
         <div align="center">
-            <button style="border-radius:10px;background-color:#eb445a;width:50px;width:130px;height:30px;margin-top:40px" (click)="alertDeleteAccount(user.uid)" block>
+            <button
+                style="border-radius:10px;background-color:#eb445a;width:50px;width:130px;height:30px;margin-top:40px"
+                (click)="alertDeleteAccount(user.uid)" block>
                 <font color="white">Borrar cuenta</font>
             </button>
         </div>

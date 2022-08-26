@@ -8,41 +8,24 @@
         </button>
       </ion-col>
       <ion-col align="center">
-        <img
-          src="./assets/imgs/Logoblanco.png"
-          (click)="goInicios()"
-          style="width: 50%"
-          alt=""
-        />
+        <img src="./assets/imgs/Logoblanco.png" (click)="goInicios()" style="width: 50%" alt="" />
       </ion-col>
       <ion-col>
         <div align="end">
           <div *ngIf="miUser.provider == 'facebook'">
             <div *ngIf="miUser.status_foto == 0">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 40%; border-radius: 50%"
-              />
+              <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
             </div>
             <div *ngIf="miUser.status_foto == 1">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 43px; height: 46px; border-radius: 50%"
-              />
+              <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
             </div>
           </div>
           <div *ngIf="miUser.provider == 'google'">
             <div *ngIf="miUser.status_foto == 0">
-              <img
-                src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                style="width: 85%; border-radius: 50%"
-              />
+              <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
             </div>
             <div *ngIf="miUser.status_foto == 1">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 43px; height: 46px; border-radius: 50%"
-              />
+              <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
             </div>
           </div>
         </div>
@@ -52,54 +35,27 @@
 </ion-header>
 
 <ion-content padding>
-  <br />
-  <br />
-  <label for="" style="margin-left: 20px; margin-top: 10px; color: #fd9530">
-    <b> TARJETA REGISTRADA</b>
-  </label>
-  <br />
-  <span style="margin-left: 20px; position: absolute; margin-top: -10px">
-    ________________________________
-  </span>
-  <br />
-  <span
-    style="
-      margin-left: 20px;
-      opacity: 0.3;
-      position: absolute;
-      margin-top: -8px;
-    "
-  >
-    <font size="1">
-      ESTÁS SE ENCUENTRAN <b style="color: #fd9530"> ACTIVAS</b>
-    </font>
-  </span>
+  <ion-row>
+    <ion-col col-5>
+      <h2>
+        <b>TARJETAS</b>
+        <div class="detalle">activas</div>
+      </h2>
+    </ion-col>
+  </ion-row>
 
-  <br /><br />
+  <hr>
 
   <div class="derechaBoton">
     <div *ngIf="invitado != 'true'">
-      <button
-        *ngIf="tarjetaID == ''"
-        (click)="agregarTarjeta()"
-        text-align
-        ion-button
-        clear
-        small
-        class="btnadd"
-        icon-left
-        item-end
-      >
-        <img
-          src="./assets/imgs/icons/mass.png"
-          style="margin-left: -112px; position: absolute; width: 20px"
-          alt=""
-        />
+      <button *ngIf="tarjetaID == ''" (click)="agregarTarjeta()" text-align ion-button clear small class="btnadd"
+        icon-left item-end>
+        <img src="./assets/imgs/icons/mass.png" style="margin-left: -112px; position: absolute; width: 20px" alt="" />
         <b class="agregar">Agregar tarjeta</b>
       </button>
     </div>
   </div>
-  <ion-card *ngIf="tarjetaID != ''"  class="card_atras">
+  <ion-card *ngIf="tarjetaID != ''" class="card_atras">
     <ion-card-content class="card_atras">
       <ion-card-title> </ion-card-title>
       <ion-item class="card_atras">
@@ -107,15 +63,12 @@
         <ion-badge class="badge2" item-end>
           <div>{{miTarjeta.estatus}}</div>
         </ion-badge>
-        <ion-badge class="imgbadge" item-end
-          ><img src="../assets/imgs/verde.png" style="width: 20px" alt="" />
+        <ion-badge class="imgbadge" item-end><img src="../assets/imgs/verde.png" style="width: 20px" alt="" />
         </ion-badge>
       </ion-item>
       <ion-item class="card_atras">
         <p class="blanco_23">Número</p>
-        <ion-badge class="negro"
-          >**** **** **** {{miTarjeta.numTarjeta4dijitos}}</ion-badge
-        >
+        <ion-badge class="negro">**** **** **** {{miTarjeta.numTarjeta4dijitos}}</ion-badge>
         <img src="./assets/icon/Vector19a.png" class="vector" alt="" />
       </ion-item>
       <ion-item class="card_atras">
@@ -166,21 +119,21 @@
       <br /><br />
       <ion-item class="card_atras">
         <div class="centradoB">
-          <button
-            ion-button
-            class="btn"
-            (click)="eliminarTarjeta(miTarjeta.idTarjeta)"
-          >
+          <button ion-button class="btn" (click)="eliminarTarjeta(miTarjeta.idTarjeta)">
             Eliminar
           </button>
         </div>
       </ion-item>
     </ion-card-content>
   </ion-card>
-  <div class="_footer">
-    <div class=".centradoB">
-      Sólo puedes tener una tarjeta registrada. Si deseas agregar una nueva
-      elimina la existente.
-    </div>
-  </div>
+  <ion-footer>
+    <ion-card>
+      <ion-card-header>
+        <b>Aviso</b>
+      </ion-card-header>
+      <ion-card-content>
+        Sólo puedes tener una tarjeta registrada. Si deseas agregar una nueva elimina la existente.
+      </ion-card-content>
+    </ion-card>
+  </ion-footer>
 </ion-content>
