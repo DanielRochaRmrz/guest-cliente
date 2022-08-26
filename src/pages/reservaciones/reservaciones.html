@@ -1,60 +1,72 @@
 <ion-header>
-    <ion-navbar class="borde" hideBackButton>
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle class="botonMod">
+  <ion-navbar class="borde" hideBackButton>
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
           <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
         </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
-            </ion-col>
-            <ion-col>
-                <div align="end">
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
-                        </div>
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
-                        </div>
-                    </div>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+      </ion-col>
+      <ion-col align="center">
+        <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
+      </ion-col>
+      <ion-col>
+        <div align="end">
+          <div *ngIf="miUser.provider == 'facebook'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 40%; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 43px; height: 46px; border-radius: 50%"
+              />
+            </div>
+          </div>
+          <div *ngIf="miUser.provider == 'google'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img
+                src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                style="width: 85%; border-radius: 50%"
+              />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img
+                src="{{miUser.photoURL}}"
+                style="width: 43px; height: 46px; border-radius: 50%"
+              />
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <div class="fon bar bar-subheader bar-energized"></div>
+  <div class="fon bar bar-subheader bar-energized"></div>
 
-    <!--Inician las pruebas-->
-    <div padding>
-        <ion-segment [(ngModel)]="Sucursal" mode="md">
-            <ion-segment-button value="reservar" aria-pressed="true">
-                Reservar
-            </ion-segment-button>
-            <ion-segment-button value="informacion"> Información </ion-segment-button>
-        </ion-segment>
-    </div>
+  <!--Inician las pruebas-->
+  <div padding>
+    <ion-segment [(ngModel)]="Sucursal" mode="md">
+      <ion-segment-button value="reservar" aria-pressed="true">
+        Reservar
+      </ion-segment-button>
+      <ion-segment-button value="informacion"> Información </ion-segment-button>
+    </ion-segment>
+  </div>
 
-    <div [ngSwitch]="Sucursal">
-        <ion-list *ngSwitchCase="'reservar'">
-            <form [formGroup]="myForm" novalidate>
-                <ion-list>
-                    <div *ngIf="evento != null">
-                        <br />
-                        <br />
-                        <ion-item text-center no-lines>
-                            <label class="selecciona">
+  <div [ngSwitch]="Sucursal">
+    <ion-list *ngSwitchCase="'reservar'">
+      <form [formGroup]="myForm" novalidate>
+        <ion-list>
+          <div *ngIf="evento != null">
+            <br />
+            <br />
+            <ion-item text-center no-lines>
+              <label class="selecciona">
                 RESERVACIÓN PARA: {{data.titulo}}</label
               >
             </ion-item>
@@ -221,21 +233,21 @@
       <ion-item>
         <ion-label style="color: black"
           >compartir rsv y cuenta
-          <ion-icon name="md-contact" style="color: #FD9530"></ion-icon>
+          <ion-icon name="md-contact" style="color: #fd9530"></ion-icon>
         </ion-label>
         <ionic-selectable
+          item-content
+          [(ngModel)]="contactosSelec"
+          itemValueField="tel"
+          itemTextField="name"
+          [items]="contactos"
+          [isMultiple]="true"
+          [canSearch]="true"
           searchPlaceholder="Buscar contactos"
           closeButtonText="Cancelar"
           confirmButtonText="Listo"
           (click)="presentLoading();"
-          item-content
-          [(ngModel)]="port"
-          [isMultiple]="true"
-          [items]="ports"
-          itemValueField="tel"
-          itemTextField="name"
-          [canSearch]="true"
-          (onChange)="portChange($event)"
+          
         >
         </ionic-selectable>
       </ion-item>

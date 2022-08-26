@@ -78,8 +78,9 @@ export class ReservacionesPage {
   miUser: any = {};
   playerID: any;
 
-  ports = [];
+  ports: Port[];
   port: Port[];
+  selectedPorts: Port[];
   contactosSelec: any;
   telSelectMul: any = "";
   campo_evento: number;
@@ -94,6 +95,9 @@ export class ReservacionesPage {
 
   zona_consumo: number;
   loading: any;
+
+  contactos: any[];
+  selectContactos: any[];
 
   constructor(
     public navCtrl: NavController,
@@ -166,9 +170,8 @@ export class ReservacionesPage {
 
   portChange(event: { component: IonicSelectableComponent; value: any }) {
     this.telSelectMul = event.value;
-    // localStorage.setItem('contactosCompartidos', JSON.stringify(this.telSelectMul));
-    console.log('Telefono -->', event);
-    
+    localStorage.setItem('contactsSelected', JSON.stringify(this.telSelectMul));
+    // console.log('Telefono -->', event);
   }
 
   ionViewDidLoad() {
@@ -187,6 +190,7 @@ export class ReservacionesPage {
     this.fechaActual = new Date().toJSON().split("T")[0];
     this.getImagen(this.idSucursal);
     this.goToUser();
+    this.todosContactos2();
   }
 
   goBack(idReservacion) {
@@ -250,9 +254,9 @@ export class ReservacionesPage {
 
   reservacionAdd() {
     let temp = [];
-    this.telSelectMul.forEach((data) => {
-      temp.push(data.tel);
-    });
+    // this.telSelectMul.forEach((data) => {
+    //   temp.push(data.tel);
+    // });
     this.compartir = temp;
 
     const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
@@ -361,9 +365,9 @@ export class ReservacionesPage {
 
   reservacionUpdate(idReservacion) {
     let temp = [];
-    this.telSelectMul.forEach((data) => {
-      temp.push(data.tel);
-    });
+    // this.telSelectMul.forEach((data) => {
+    //   temp.push(data.tel);
+    // });
     this.compartir = temp;
 
     // Si se compartio la cuenta insertar telefonos en tabla compartidas
@@ -683,23 +687,45 @@ export class ReservacionesPage {
         this.telefono2 = this.telefono1.replace(/-/g, "");
         this.telefono3 = this.telefono2.substr(-10);
         // if (this.platform.is('android')) {
-        this.ports.push({
-          tel: this.telefono3,
-          name: String(data.displayName),
-        });
-        this.ports = [
-          {
-            "tel": "4773244792",
-            "name": "Tania (Nutrióloga)"
-          },
-        ]
+          this.ports.push({
+            tel: this.telefono3,
+            name: String(data.displayName),
+          });
+          this.selectedPorts = [this.ports[1], this.ports[3]];
         //   }else{
         //     this.ports.push({ tel: this.telefono3, name: String(data.name.formatted) });
         //   }
       }
     }); //cierra funcion sacar contactos
+    console.log('Telefonos -->', this.ports);
+    console.log('Telefonosport -->', this.selectedPorts);
     this.telefono4 = telefono3_;
     // });
+  }
+
+  async todosContactos2() {
+    const contacts = await this.contacts.find(["displayName", "phoneNumbers"], {multiple: true, desiredFields: ['name','phoneNumbers'] });
+    const contactosArr = []
+    contacts.map((contact, index) => {
+      const phoneContacts = contact.phoneNumbers;
+      if (phoneContacts === null) {
+        return;
+      }
+      const numPhone = String(contact.phoneNumbers[0].value);
+      const telSinCaracteres = numPhone.replace(/[^a-zA-Z0-9]/g, '');
+      const tel = telSinCaracteres.slice(-10);
+      contactosArr.push({
+          tel: tel,
+          name:  String(contact.displayName),
+          index: index
+        });
+    });
+    this.contactos = contactosArr;
+    const selectedContacts = JSON.parse(localStorage.getItem('contactsSelected'));
+    if(selectedContacts) {
+      console.log('selectedContacts -->', selectedContacts);
+      this.contactosSelec = [this.contactos[5], this.contactos[8]];
+    }
   }
 
   getImagen(idx) {
