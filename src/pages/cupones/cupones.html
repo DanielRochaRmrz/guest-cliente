@@ -79,15 +79,17 @@
                                                         <ion-col col-6 class="logoB">
                                                             <img src="./assets/imgs/Logoblanco.png"
                                                                 style="margin-top:-10px;width:55px; margin-left:40px">
+
+                                                            <div>
+                                                                <p class="card-subtitle1">Sucursal: {{sucursal.displayName}}</p>
+                                                                <p class="card-subtitle2">Valido hasta el: {{ cupones.fechaExpiracion | date:'d-MM-yyyy' }}</p>
+                                                            </div>
                                                         </ion-col>
                                                     </ion-row>
                                                 </div>
                                             </ion-grid>
 
-                                            <div class="card-subtitle">MXN de descuento &nbsp;&nbsp; Código {{
-                                                cupones.codigoCupon }}</div>
-                                            <div class="card-subtitle1">Sucursal: {{sucursal.displayName}}</div>
-                                            <div class="card-subtitle2">Vigencia: {{ cupones.fechaExpiracion }}</div>
+                                            <div class="card-subtitle"><b>MXN de descuento</b></div>
                                         </ion-card>
 
                                     </div>

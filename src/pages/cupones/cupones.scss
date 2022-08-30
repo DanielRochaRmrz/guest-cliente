@@ -180,22 +180,12 @@ page-cupones {
             color: #C88F1E;
         }
         .card-subtitle1 {
-            font-size: 1.0em;
-            position: absolute;
-            top: 58%;
-            width: 100%;
-            text-align: justify;
-            padding-left: 12%;
             color: #C88F1E;
+            font-weight: bold;
         }
         .card-subtitle2 {
-            font-size: 1.0em;
-            position: absolute;
-            top: 70%;
-            width: 100%;
-            text-align: justify;
-            padding-left: 12%;
-            color: #C88F1E;
+            color: #bdbdbd;
+            font-size: 10px;
         }
     }
     .card-ios {
@@ -206,7 +196,7 @@ page-cupones {
         box-shadow: 0 0px 0px;
     }
     .logoB {
-        margin-left: -55px;
+        margin-left: 0px;
     }
 
     .detalle {
