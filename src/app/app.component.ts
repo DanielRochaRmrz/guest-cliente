@@ -231,6 +231,7 @@ export class MyApp {
                 localStorage.removeItem('compartida');
                 localStorage.removeItem('reservacion');
                 localStorage.removeItem("contactosCompartidos");
+                localStorage.removeItem("contactsSelected");
               } else {
                 console.log("No hay");
               }

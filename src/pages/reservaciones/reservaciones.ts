@@ -82,7 +82,7 @@ export class ReservacionesPage {
   port: Port[];
   selectedPorts: Port[];
   contactosSelec: any;
-  telSelectMul: any = "";
+  telSelectMul: any = [];
   campo_evento: number;
 
   uidSucursal: string = "gbqtsea15rhu1BukxbekFEBohJv2";
@@ -170,8 +170,7 @@ export class ReservacionesPage {
 
   portChange(event: { component: IonicSelectableComponent; value: any }) {
     this.telSelectMul = event.value;
-    localStorage.setItem('contactsSelected', JSON.stringify(this.telSelectMul));
-    // console.log('Telefono -->', event);
+    localStorage.setItem("contactsSelected", JSON.stringify(this.telSelectMul));
   }
 
   ionViewDidLoad() {
@@ -190,7 +189,9 @@ export class ReservacionesPage {
     this.fechaActual = new Date().toJSON().split("T")[0];
     this.getImagen(this.idSucursal);
     this.goToUser();
-    this.todosContactos2();
+    if (this.platform.is('cordova')) {
+      this.todosContactos();
+    }
   }
 
   goBack(idReservacion) {
@@ -204,9 +205,18 @@ export class ReservacionesPage {
         localStorage.removeItem("compartida");
         localStorage.removeItem("zona");
         localStorage.removeItem("contactosCompartidos");
+        localStorage.removeItem("contactsSelected");
       });
     } else {
       this.navCtrl.popToRoot();
+      localStorage.removeItem("idReservacion");
+        localStorage.removeItem("idSucursal");
+        localStorage.removeItem("uidEvento");
+        localStorage.removeItem("reservacion");
+        localStorage.removeItem("compartida");
+        localStorage.removeItem("zona");
+        localStorage.removeItem("contactosCompartidos");
+        localStorage.removeItem("contactsSelected");
     }
   }
 
@@ -254,10 +264,11 @@ export class ReservacionesPage {
 
   reservacionAdd() {
     let temp = [];
-    // this.telSelectMul.forEach((data) => {
-    //   temp.push(data.tel);
-    // });
+    this.telSelectMul.forEach((data) => {
+      temp.push(data.tel);
+    });
     this.compartir = temp;
+    
 
     const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
     let info = {
@@ -271,7 +282,7 @@ export class ReservacionesPage {
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
       // Si se compartio la cuenta insertar telefonos en tabla compartidas
-      if (this.compartir != undefined) {
+      if (!this.compartir) {
         this.afs
           .collection("users", (ref) => ref.where("uid", "==", this.uid))
           .valueChanges()
@@ -365,14 +376,15 @@ export class ReservacionesPage {
 
   reservacionUpdate(idReservacion) {
     let temp = [];
-    // this.telSelectMul.forEach((data) => {
-    //   temp.push(data.tel);
-    // });
+    this.telSelectMul.forEach((data) => {
+      temp.push(data.tel);
+    });
     this.compartir = temp;
-
+    console.log('Compartir -->', this.compartir);
+    
     // Si se compartio la cuenta insertar telefonos en tabla compartidas
-    if (this.compartir != undefined) {
-      const compartidaStatus = localStorage.getItem('compartida');
+    if (!this.compartir) {
+      const compartidaStatus = localStorage.getItem("compartida");
       if (!compartidaStatus) {
         this.afs
           .collection("users", (ref) => ref.where("uid", "==", this.uid))
@@ -518,10 +530,6 @@ export class ReservacionesPage {
   }
 
   presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      showBackdrop: true,
-    });
-    this.loading.present();
     let alertMesas = this.alertCtrl.create({
       message:
         "<div text-center> <b> Al compartir una reservación estarás dividiendo la cuenta total entre los participantes de la reservación y todos deberán aceptar el compartirla para que sea aprobada por el rp/establecimiento. Al ser aceptada todos deberán pagar su parte para poder generar los códigos QR de acceso. </b> </div>",
@@ -533,198 +541,50 @@ export class ReservacionesPage {
       ],
     });
     alertMesas.present();
-    setTimeout(() => {
-      this.ports = [];
-      this.todosContactos();
-    }, 3000);
-  }
-  //Cargar todos los contactos del telefono
-  todosContactos() {
-    // this.contacts
-    //   .find(["displayName", "phoneNumbers"], { multiple: true })
-    //   .then((contacts) => {
-    this.contactlist = [
-      {
-        id: "10",
-        rawId: "10",
-        displayName: "Tania (Nutrióloga)",
-        name: {
-          familyName: "(Nutrióloga)",
-          givenName: "Tania",
-          formatted: "Tania (Nutrióloga)",
-        },
-        nickname: null,
-        phoneNumbers: [
-          {
-            id: "21",
-            pref: false,
-            value: "+52 1 477 324 4792",
-            type: "Móvil",
-          },
-        ],
-        emails: null,
-        addresses: null,
-        ims: null,
-        organizations: null,
-        birthday: null,
-        note: null,
-        photos: null,
-        categories: null,
-        urls: null,
-      },
-      {
-        id: "13",
-        rawId: "13",
-        displayName: "Juan Pablo.",
-        name: {
-          familyName: "Pablo",
-          givenName: "Juan",
-          formatted: "Juan Pablo",
-        },
-        nickname: null,
-        phoneNumbers: [
-          {
-            id: "46",
-            pref: false,
-            value: "477-577-1458",
-            type: "mobile",
-          },
-        ],
-        emails: null,
-        addresses: null,
-        ims: null,
-        organizations: null,
-        birthday: null,
-        note: null,
-        photos: null,
-        categories: null,
-        urls: null,
-      },
-      {
-        id: "14",
-        rawId: "14",
-        displayName: "Don Memo",
-        name: {
-          familyName: "Memo",
-          givenName: "Don",
-          formatted: "Don Memo",
-        },
-        nickname: null,
-        phoneNumbers: [
-          {
-            id: "51",
-            pref: false,
-            value: "477-113-9555",
-            type: "mobile",
-          },
-          {
-            id: "52",
-            pref: false,
-            value: "477-113-9555",
-            type: "mobile",
-          },
-        ],
-        emails: null,
-        addresses: null,
-        ims: null,
-        organizations: null,
-        birthday: null,
-        note: null,
-        photos: null,
-        categories: null,
-        urls: null,
-      },
-      {
-        id: "457",
-        rawId: "402",
-        displayName: "Poncho",
-        name: {
-          givenName: "Poncho",
-          formatted: "Poncho ",
-        },
-        nickname: null,
-        phoneNumbers: [
-          {
-            id: "2138",
-            pref: false,
-            value: "477 647 7193",
-            type: "mobile",
-          },
-          {
-            id: "2139",
-            pref: false,
-            value: "477 317 2475",
-            type: "mobile",
-          },
-          {
-            id: "2442",
-            pref: false,
-            value: "4773172475",
-            type: "mobile",
-          },
-        ],
-        emails: null,
-        addresses: null,
-        ims: null,
-        organizations: null,
-        birthday: null,
-        note: null,
-        photos: null,
-        categories: null,
-        urls: null,
-      },
-    ];
-    if (this.contactlist) {
-      this.loading.dismiss();
-    }
-    const telefono3_ = [];
-    //consulta para sacar contactos del telefono
-    this.contactlist.forEach((data: any) => {
-      //estandarizar telefono a 10 digitos
-      //validar que si algun telefono es nulo no pase por la comparacion
-      if (data.phoneNumbers != null) {
-        this.telefono1 = data.phoneNumbers[0].value.replace(/ /g, "");
-        this.telefono2 = this.telefono1.replace(/-/g, "");
-        this.telefono3 = this.telefono2.substr(-10);
-        // if (this.platform.is('android')) {
-          this.ports.push({
-            tel: this.telefono3,
-            name: String(data.displayName),
-          });
-          this.selectedPorts = [this.ports[1], this.ports[3]];
-        //   }else{
-        //     this.ports.push({ tel: this.telefono3, name: String(data.name.formatted) });
-        //   }
-      }
-    }); //cierra funcion sacar contactos
-    console.log('Telefonos -->', this.ports);
-    console.log('Telefonosport -->', this.selectedPorts);
-    this.telefono4 = telefono3_;
-    // });
   }
 
-  async todosContactos2() {
-    const contacts = await this.contacts.find(["displayName", "phoneNumbers"], {multiple: true, desiredFields: ['name','phoneNumbers'] });
-    const contactosArr = []
-    contacts.map((contact, index) => {
+  //Cargar todos los contactos del telefono
+  async todosContactos() {
+    const contacts = await this.contacts.find(["displayName", "phoneNumbers"], {
+      multiple: true,
+      desiredFields: ["name", "phoneNumbers"],
+    });
+    const contactosArr = [];
+    var count = 0;
+    contacts.map((contact) => {
       const phoneContacts = contact.phoneNumbers;
-      if (phoneContacts === null) {
-        return;
+      if (phoneContacts !== null) {
+        const i = count++;
+        const numPhone = String(contact.phoneNumbers[0].value);
+        const telSinCaracteres = numPhone.replace(/[^a-zA-Z0-9]/g, "");
+        const tel = telSinCaracteres.slice(-10);
+        if (this.platform.is("android")) {
+          contactosArr.push({
+            tel: tel,
+            name: String(contact.displayName),
+            index: i,
+          });
+        } else {
+          contactosArr.push({
+            tel: tel,
+            name: String(contact.name.formatted),
+            index: i,
+          });
+        }
       }
-      const numPhone = String(contact.phoneNumbers[0].value);
-      const telSinCaracteres = numPhone.replace(/[^a-zA-Z0-9]/g, '');
-      const tel = telSinCaracteres.slice(-10);
-      contactosArr.push({
-          tel: tel,
-          name:  String(contact.displayName),
-          index: index
-        });
     });
     this.contactos = contactosArr;
-    const selectedContacts = JSON.parse(localStorage.getItem('contactsSelected'));
-    if(selectedContacts) {
-      console.log('selectedContacts -->', selectedContacts);
-      this.contactosSelec = [this.contactos[5], this.contactos[8]];
+
+    const selectedContacts = JSON.parse(
+      localStorage.getItem("contactsSelected")
+    );
+    if (selectedContacts) {
+      console.log(selectedContacts);
+      const pos = [];
+      selectedContacts.forEach((c: any) => {
+        pos.push(this.contactos[c.index]);
+      });
+      this.contactosSelec = pos;
     }
   }
 
