@@ -82,7 +82,7 @@ export class EventosPage implements OnInit {
     const getSucursal = JSON.parse(sucursal);
 
     this.navCtrl.setRoot(EventoDetallePage, {
-      uid: uid,
+      uidEvento: uid,
       sucursalID: uidSucursal,
       ClaveInstancia: getSucursal.ClaveInstancia,
       playerIdSuc: getSucursal.playerID

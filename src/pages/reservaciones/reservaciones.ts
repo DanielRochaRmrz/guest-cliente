@@ -117,18 +117,29 @@ export class ReservacionesPage {
     this.idSucursal = this.navParams.get("idSucursal");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
     this.playerIDSuc = this.navParams.get("playerIDSuc");
-    this.evento = this.navParams.get("uid");
     this.idReservacion = this.navParams.get("idReservacion");
     this.zonasnav = this.navParams.get("zona");
 
     this.fecha = this.navParams.get("fecha");
     this.hora = this.navParams.get("hora");
 
-    if (this.evento != null) {
-      this.evento = this.navParams.get("uid");
-    } else {
+    if(this.navParams.get("uidEvento") != null){
+
+      this.evento = this.navParams.get("uidEvento");
+
+      console.log("EVENTO UID", this.evento);      
+
+    }else if(localStorage.getItem("uidEvento")){
+
+      this.evento = localStorage.getItem("uidEvento");
+
+      console.log("EVENTO UID", this.evento);
+    }else{
+
       this.evento = null;
+
     }
+
     this.afs
       .collection("sucursales")
       .doc(this.idSucursal)

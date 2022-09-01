@@ -34,14 +34,14 @@ export class EventoDetallePage {
     private socialSharing: SocialSharing
   ) {
 
-    this.evento.uid = this.navParams.get("uid");
+    this.evento = this.navParams.get("uidEvento");
     this.sucursalID = this.navParams.get("sucursalID");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
     this.playerIDSuc = this.navParams.get("playerIdSuc");
     console.log('this.playerIDSuc -->', this.playerIDSuc);
     
 
-    console.log("key", this.evento.uid);
+    console.log("key", this.evento);
     console.log("SucursalID", this.ClaveInstancia);
     //para ocultar las tabs en la pantalla de resumen
     this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -68,7 +68,7 @@ export class EventoDetallePage {
 
 
   getDetails() {
-    this._cap.getEvento(this.evento.uid).then(e => {
+    this._cap.getEvento(this.evento).then(e => {
       this.evento = e;
       this.eventoUidSucursal = this.evento.uidSucursal;
       console.log("evento", this.evento.uidSucursal);
@@ -79,7 +79,7 @@ export class EventoDetallePage {
     console.log(idSucursal);
 
     this.navCtrl.push(ReservacionesPage, {
-      uid: uid,
+      uidEvento: uid,
       idSucursal: idSucursal,
       fecha: fecha,
       hora: hora,
