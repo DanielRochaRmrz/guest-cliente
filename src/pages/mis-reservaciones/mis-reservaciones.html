@@ -202,4 +202,16 @@
         </ion-list>
 
     </div>
+
+    <div *ngIf="misReservaciones.length == 0" text-center>
+
+        <img src="./assets/content/advertencia.png" alt="">
+
+        <div text-center>
+
+            <h4 style="color: #000;"><b>Aún no hay reservaciones que mostrar.</b></h4>
+
+        </div>
+       
+    </div>
 </ion-content>

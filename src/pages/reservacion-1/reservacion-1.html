@@ -80,7 +80,7 @@
             <h4 style="color: #000;"><b>Aún no hay {{tipoSucursal}} que mostrar.</b></h4>
 
         </div>
-       
+
     </div>
 
     <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
@@ -88,7 +88,7 @@
 
             <ion-card class="card-image"
                 *ngFor="let sucursal of page.data | async | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad">
-                
+
                 <div (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)">
                     <img src="{{sucursal.photoURL}}" class="card-image" />
 
@@ -112,6 +112,12 @@
             </ion-card>
         </div>
     </div>
+
+    <p *ngIf="page.done | async"></p>
+
+    <ion-footer>
+        <loading-spinner *ngIf="page.loading | async"></loading-spinner>
+    </ion-footer>
 
 
 </ion-content>

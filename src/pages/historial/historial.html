@@ -93,44 +93,15 @@
         </ion-list>
 
     </div>
+    <div *ngIf="misReservaciones.length == 0" text-center>
 
-    <hr>
-    <!-- Codigo de reservaciones compartidas -->
-    <div *ngFor="let compartidas of resCompartidas">
+        <img src="./assets/content/advertencia.png" alt="">
 
-        <ion-list>
+        <div text-center>
 
-            <ion-item>
-                <ion-thumbnail item-start>
-                    <img src="{{ (compartidas.idSucursal | getSucursal | async)?.photoURL }}">
-                </ion-thumbnail>
-                <h2>
-                    <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
-                        (compartidas.idSucursal | getSucursal | async)?.displayName }}</b>
-                </h2>
-                <p>Folio: <b> {{ (compartidas.idReservacion | getCompartidas | async)?.folio }}</b></p>
-                <p>Fecha: <b> {{ (compartidas.idReservacion | getCompartidas | async )?.fechaR | date : 'dd/MM/yyyy'}}</b></p>
+            <h4 style="color: #000;"><b>Aún no hay historial que mostrar.</b></h4>
 
-                <div *ngIf="(compartidas.idReservacion | getCompartidas | async )?.estatus === 'Compartida' || (compartidas.idReservacion | getCompartidas | async )?.estatus === 'CreadaCompartida'; then creando else aceptado"></div>
-
-                <ng-template #creando>
-
-                    <p>Compartida <img src="../assets/imgs/amarillo.png" class="imgStatus" /></p>
-                    
-                </ng-template>
-
-                <ng-template #aceptado>
-
-                    <p>Finalizada <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
-
-                </ng-template>
-
-                <p><small>UID: {{compartidas.idReservacion}}</small></p>
-                <button ion-button item-end (click)="verDetalle(compartidas.idReservacion)">Más Detalles</button>
-                
-            </ion-item>
-
-        </ion-list>
-
+        </div>
+       
     </div>
 </ion-content>

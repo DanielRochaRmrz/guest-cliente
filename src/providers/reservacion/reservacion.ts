@@ -318,7 +318,7 @@ export class ReservacionProvider {
       ref
         .where("idUsuario", "==", idx)
         .where("estatusFinal", "==", "rsv_copletada")
-        .where("estatus", "in", ["Pagado", "Finalizado"])
+        .where("estatus", '==', "Finalizado")
     );
     this._reservaCliente = this.reservaCliente.valueChanges();
     return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
