@@ -37,7 +37,7 @@ export class EventoDetallePage {
     this.evento.uid = this.navParams.get("uid");
     this.sucursalID = this.navParams.get("sucursalID");
     this.ClaveInstancia = this.navParams.get("ClaveInstancia");
-    this.playerIDSuc = this.navParams.get("playerIDSuc");
+    this.playerIDSuc = this.navParams.get("playerIdSuc");
     console.log('this.playerIDSuc -->', this.playerIDSuc);
     
 
@@ -64,16 +64,8 @@ export class EventoDetallePage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad EventoDetallePage");
     this.mostrar = true;
-    //this.ionViewWillEnter();
   }
 
-  //funciones para ocultar las tabs
-  ionViewWillEnter() {
-    // this.tabBarElement.style.display = 'none';
-  }
-  ionViewWillLeave() {
-    // this.tabBarElement.style.display = 'flex';
-  }
 
   getDetails() {
     this._cap.getEvento(this.evento.uid).then(e => {

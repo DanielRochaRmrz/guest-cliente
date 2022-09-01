@@ -69,6 +69,17 @@
 
     <hr>
 
+    <div *ngIf="page.data" text-center>
+
+        <img src="./assets/content/advertencia.png" alt="">
+
+        <div text-center>
+
+            <h4 style="color: #000;"><b>Aún no hay eventos que mostrar.</b></h4>
+
+        </div>
+
+    </div>
     <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
         <div class="container" *ngFor="let evento of page.data | async | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
             <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
@@ -86,19 +97,5 @@
     <ion-footer>
         <loading-spinner  *ngIf="page.loading | async"></loading-spinner>
     </ion-footer>
-
-
-    <!-- <ng-container
-        *ngFor="let evento of eventos | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
-        <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
-            <ion-card class="card-image">
-                <img [src]="evento.img" />
-                <div class="card-title">{{ evento.titulo }}</div>
-                <div class="card-subtitle">{{ (evento.uidSucursal | getSucursal | async)?.direccion }},
-                    {{ (evento.uidSucursal | getSucursal | async)?.ciudad }}</div>
-            </ion-card>
-        </button>
-    </ng-container> -->
-
 
 </ion-content>

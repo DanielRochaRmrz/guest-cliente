@@ -28,6 +28,7 @@ export class EventosPage implements OnInit {
   ciudades: any;
   miUser: any = {};
   loading: any;
+  playerId: any;
 
   constructor(
     public navCtrl: NavController,
@@ -39,7 +40,6 @@ export class EventosPage implements OnInit {
     public page: PaginationService,
   ) {
     this.page.reset();
-    //sacar el id del usuario del local storage
     this.uidUserSesion = localStorage.getItem('uid');
     console.log('id del usuario en eventos', this.uidUserSesion);
 
@@ -48,7 +48,7 @@ export class EventosPage implements OnInit {
       .valueChanges()
       .subscribe(dataCiudad => {
         this.ciudades = dataCiudad;
-        console.log('cudades', this.ciudades);
+        console.log('c udades', this.ciudades);
       });
 
     //obtener informacion de mi user
@@ -58,6 +58,7 @@ export class EventosPage implements OnInit {
       .subscribe(dataSu => {
         this.miUser = dataSu;
         console.log('Datos de mi usuario', this.miUser);
+        this.playerId = this.miUser.playerID;        
       });
 
   }
@@ -84,6 +85,7 @@ export class EventosPage implements OnInit {
       uid: uid,
       sucursalID: uidSucursal,
       ClaveInstancia: getSucursal.ClaveInstancia,
+      playerIdSuc: getSucursal.playerID
     });
 
 
