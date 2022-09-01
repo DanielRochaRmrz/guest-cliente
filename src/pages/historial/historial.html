@@ -3,8 +3,8 @@
         <ion-row>
             <ion-col>
                 <button ion-button menuToggle class="botonMod">
-        <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
-      </button>
+                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+                </button>
             </ion-col>
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
@@ -21,7 +21,8 @@
                     </div>
                     <div *ngIf="miUser.provider == 'google'">
                         <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
+                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
+                                style="width: 85%; border-radius: 50%" />
                         </div>
                         <div *ngIf="miUser.status_foto == 1">
                             <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
@@ -38,60 +39,66 @@
         <div class="detalle">Historial</div>
     </h2>
 
-    <hr>  
+    <hr>
+    <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="container" *ngFor="let reservaciones of page.data | async">
 
-    <div *ngFor="let reservaciones of misReservaciones">
+            <ion-list>
 
-        <ion-list>
-
-            <ion-item>
-                <ion-thumbnail item-start>
-                    <img src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}">
-                </ion-thumbnail>
-                <h2>
-                    <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
-                        (reservaciones.idSucursal | getSucursal | async)?.displayName }}</b>
-                </h2>
+                <ion-item>
+                    <ion-thumbnail item-start>
+                        <img src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}">
+                    </ion-thumbnail>
+                    <h2>
+                        <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
+                            (reservaciones.idSucursal | getSucursal | async)?.displayName }}</b>
+                    </h2>
 
 
-                <p>Folio: <b>{{reservaciones.folio}}</b></p>
-                <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
+                    <p>Folio: <b>{{reservaciones.folio}}</b></p>
+                    <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
 
-                <div *ngIf="reservaciones.estatus == 'Creando' || reservaciones.estatus == 'Modificado'; then creando else aceptado"></div>
+                    <div
+                        *ngIf="reservaciones.estatus == 'Creando' || reservaciones.estatus == 'Modificado'; then creando else aceptado">
+                    </div>
 
-                <ng-template #creando>
+                    <ng-template #creando>
 
-                    <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/amarillo.png" class="imgStatus" /></p>
+                        <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/amarillo.png"
+                                class="imgStatus" /></p>
 
-                </ng-template>
+                    </ng-template>
 
-                <ng-template #aceptado>
+                    <ng-template #aceptado>
 
-                    <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
+                        <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/verde.png"
+                                class="imgStatus" /></p>
 
-                </ng-template>
+                    </ng-template>
 
-                <p><small>UID: {{reservaciones.idReservacion}}</small></p>
+                    <p><small>UID: {{reservaciones.idReservacion}}</small></p>
 
-                <div *ngIf="reservaciones.estatus == 'Modificado'; then modificado"></div>
-                <ng-template #modificado>
+                    <div *ngIf="reservaciones.estatus == 'Modificado'; then modificado"></div>
+                    <ng-template #modificado>
 
-                    <small>
+                        <small>
 
-                        <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-                        Reservación reasignada a la zona: <b>{{ (reservaciones.idZona | getZona | async)?.nombre }}</b>
-                        consumo sugerido: <b>{{ (reservaciones.idZona | getZona | async)?.consumo | currency }}</b>
+                            <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
+                            Reservación reasignada a la zona: <b>{{ (reservaciones.idZona | getZona | async)?.nombre
+                                }}</b>
+                            consumo sugerido: <b>{{ (reservaciones.idZona | getZona | async)?.consumo | currency }}</b>
 
-                    </small>
+                        </small>
 
-                </ng-template>                
+                    </ng-template>
 
-                <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion)">Más Detalles</button>
+                    <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion)">Más Detalles</button>
 
-            </ion-item>
+                </ion-item>
 
-        </ion-list>
+            </ion-list>
 
+        </div>
     </div>
     <div *ngIf="misReservaciones.length == 0" text-center>
 
@@ -102,6 +109,13 @@
             <h4 style="color: #000;"><b>Aún no hay historial que mostrar.</b></h4>
 
         </div>
-       
+
     </div>
+
+    <!-- <p *ngIf="page.done | async"></p>
+
+    <ion-footer>
+        <loading-spinner *ngIf="page.loading | async"></loading-spinner>
+    </ion-footer> -->
+
 </ion-content>

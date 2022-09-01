@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MonitoreoReservasProvider } from '../../providers/monitoreo-reservas/monitoreo-reservas';
 import { ReservacionProvider } from '../../providers/reservacion/reservacion';
@@ -9,6 +9,7 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { UserProvider } from '../../providers/user/user';
 import { MisReservacionesPage } from '../mis-reservaciones/mis-reservaciones';
 import { HistorialDetallePage } from '../historial-detalle/historial-detalle';
+import { PaginationService } from '../../app/pagination.service';
 
 
 @IonicPage()
@@ -16,7 +17,7 @@ import { HistorialDetallePage } from '../historial-detalle/historial-detalle';
   selector: 'page-historial',
   templateUrl: 'historial.html',
 })
-export class HistorialPage {
+export class HistorialPage implements OnInit{
   uid: string;
   misReservaciones: any = [];
   idSucursal: any;
@@ -25,16 +26,25 @@ export class HistorialPage {
   resCompartidas: any;
   miUser: any = {};
 
-
-
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public monRes: MonitoreoReservasProvider,
     public reservaProvider: ReservacionProvider,
     public afDB: AngularFireDatabase,
     public afs: AngularFirestore,
-    public userProvider: UserProvider
-  ) {}
+    public userProvider: UserProvider,
+    public page: PaginationService,
+  ) {
+
+    this.page.reset();
+  }
+
+  ngOnInit() {
+    
+    this.page.initHistorial('reservaciones', 'fechaR', { reverse: true, prepend: false }, localStorage.getItem('uid'));
+
+  }
+
 
   ionViewDidLoad() {
     //sacar el id del usuario del local storage
@@ -126,6 +136,16 @@ export class HistorialPage {
 
   goInicio(){
     this.navCtrl.setRoot(TipoLugarPage);
+  }
+
+  scrollHandler(e) {
+
+    if (e === 'bottom') {      
+      
+      console.log(e);
+      
+      this.page.moreHistorial(localStorage.getItem('uid'));
+    }
   }
 
 }

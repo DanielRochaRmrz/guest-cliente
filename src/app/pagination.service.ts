@@ -119,6 +119,36 @@ export class PaginationService {
     }
   }
 
+  initHistorial(path: string, field: string, opts?: any, idx?:string) {
+    this.presentLoading();
+    this.query = {
+      path,
+      field,
+      limit: 5,
+      reverse: false,
+      prepend: false,
+      ...opts
+    }
+    var first = this.afs.collection(this.query.path, ref => {
+      return ref
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .where("idUsuario", "==", idx)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", '==', "Finalizado")
+
+    })
+    if (first) {
+      this.loadingDatos.dismiss();
+      this.mapAndUpdate(first)
+
+      // Create the observable array for consumption in components
+      this.data = this._data.asObservable()
+        .scan((acc, val) => {
+          return this.query.prepend ? val.concat(acc) : acc.concat(val)
+        })
+    }
+  }
 
   // Retrieves additional data from firestore
   more() {
@@ -144,6 +174,21 @@ export class PaginationService {
         .limit(this.query.limit)
         .startAfter(cursor)
         .where("tipo", "==", tipo)
+    })
+    this.mapAndUpdate(more)
+  }
+
+  moreHistorial(idx) {
+    const cursor = this.getCursor()
+
+    const more = this.afs.collection(this.query.path, ref => {
+      return ref
+        .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        .limit(this.query.limit)
+        .startAfter(cursor)
+        .where("idUsuario", "==", idx)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus", '==', "Finalizado")
     })
     this.mapAndUpdate(more)
   }

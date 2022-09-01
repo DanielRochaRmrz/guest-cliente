@@ -130,4 +130,13 @@ page-historial {
         width: 20px;
         margin-inline: auto;
     }
+    .content {
+        overflow: scroll;
+        max-height: 100vh;
+        width: 100vw;
+        margin: auto;
+      }
+      .container{
+        height: 170px;
+      }
 }

@@ -41,7 +41,7 @@ export class EventosPage implements OnInit {
   ) {
     this.page.reset();
     this.uidUserSesion = localStorage.getItem('uid');
-    console.log('id del usuario en eventos', this.uidUserSesion);
+    console.log('id del usuario en eventos', this.uidUserSesion);    
 
     this.afs
       .collection("ciudades")
