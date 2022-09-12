@@ -123,21 +123,12 @@ export class ReservacionesPage {
     this.fecha = this.navParams.get("fecha");
     this.hora = this.navParams.get("hora");
 
-    if(this.navParams.get("uidEvento") != null){
-
+    if (this.navParams.get("uidEvento") != null) {
       this.evento = this.navParams.get("uidEvento");
-
-      console.log("EVENTO UID", this.evento);      
-
-    }else if(localStorage.getItem("uidEvento")){
-
+    } else if (localStorage.getItem("uidEvento")) {
       this.evento = localStorage.getItem("uidEvento");
-
-      console.log("EVENTO UID", this.evento);
-    }else{
-
+    } else {
       this.evento = null;
-
     }
 
     this.afs
@@ -200,7 +191,7 @@ export class ReservacionesPage {
     this.fechaActual = new Date().toJSON().split("T")[0];
     this.getImagen(this.idSucursal);
     this.goToUser();
-    if (this.platform.is('cordova')) {
+    if (this.platform.is("cordova")) {
       this.todosContactos();
     }
   }
@@ -221,13 +212,13 @@ export class ReservacionesPage {
     } else {
       this.navCtrl.popToRoot();
       localStorage.removeItem("idReservacion");
-        localStorage.removeItem("idSucursal");
-        localStorage.removeItem("uidEvento");
-        localStorage.removeItem("reservacion");
-        localStorage.removeItem("compartida");
-        localStorage.removeItem("zona");
-        localStorage.removeItem("contactosCompartidos");
-        localStorage.removeItem("contactsSelected");
+      localStorage.removeItem("idSucursal");
+      localStorage.removeItem("uidEvento");
+      localStorage.removeItem("reservacion");
+      localStorage.removeItem("compartida");
+      localStorage.removeItem("zona");
+      localStorage.removeItem("contactosCompartidos");
+      localStorage.removeItem("contactsSelected");
     }
   }
 
@@ -279,7 +270,6 @@ export class ReservacionesPage {
       temp.push(data.tel);
     });
     this.compartir = temp;
-    
 
     const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
     let info = {
@@ -293,82 +283,15 @@ export class ReservacionesPage {
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
       // Si se compartio la cuenta insertar telefonos en tabla compartidas
-      if (!this.compartir) {
-        this.afs
-          .collection("users", (ref) => ref.where("uid", "==", this.uid))
-          .valueChanges()
-          .subscribe((data) => {
-            this.usertel = data;
-            this.usertel.forEach((element) => {
-              //insertar en tabla compartidas telefono del usuario en sesion
-              this._providerReserva
-                .saveCompartirPropio(
-                  element.phoneNumber,
-                  respuesta.idReservacion,
-                  this.uid,
-                  this.idSucursal,
-                  this.miUser.playerID
-                )
-                .then((respuesta: any) => {});
-            });
-          });
-
-        //sacar numeros que se seleccionan en el formulario compartir cuenta
-        this.compartir.forEach((data) => {
-          //estandarizar telefonos 10 digitos
-
-          this.telefono1 = data.replace(/ /g, "");
-          this.telefono2 = this.telefono1.replace(/-/g, "");
-          this.telefono3 = this.telefono2.substr(-10);
-          //insertar en tabla compartidas los numeros de con quien se esta compartiendo
-          this._providerReserva
-            .saveCompartirTodos(
-              this.telefono3,
-              respuesta.idReservacion,
-              this.uid,
-              this.idSucursal
-            )
-            .then((respuesta2: any) => {
-              this.afs
-                .collection("compartidas", (ref) =>
-                  ref.where("idCompartir", "==", respuesta2.idCompartir)
-                )
-                .valueChanges()
-                .subscribe((data) => {
-                  this.resultCompartidas = data;
-                  //insertar el player id de cada telefono insertado
-                  this.resultCompartidas.forEach((element) => {
-                    this._providerReserva
-                      .buscarPlayerid(element.telefono)
-                      .subscribe((players) => {
-                        if (players == undefined) {
-                          this.players = players[0].playerID;
-                          this.afs
-                            .collection("compartidas")
-                            .doc(element.idCompartir)
-                            .update({
-                              playerId: this.players,
-                            })
-                            .then(function () {});
-                        }
-                      });
-                  });
-                });
-            });
-          //consulta para buscar el player id del ususario seleccionado y su tel
-        }); //termina foreach compartir
-        //cambiar reservacion a estatus compartido
-        this._providerReserva
-          .updateReservacionCompartida(respuesta.idReservacion)
-          .then((respuesta: any) => {
-            if (respuesta.success == true) {
-            }
-          });
+      if (this.compartir != "") {
+        this.addUserShare(respuesta.idReservacion);
       } //termina funcion compartir cuenta insercion en tabla compartidas
       if (respuesta.success == true) {
         localStorage.setItem("idReservacion", respuesta.idReservacion);
         localStorage.setItem("idSucursal", this.idSucursal);
-        localStorage.setItem("uidEvento", this.evento);
+        if (this.navParams.get("uidEvento")) {
+          localStorage.setItem("uidEvento", this.evento);
+        }
         localStorage.setItem("reservacion", "true");
         localStorage.setItem("zona", this.data.zona);
 
@@ -385,117 +308,81 @@ export class ReservacionesPage {
     });
   }
 
+  addUserShare(idReservacion: string) {
+    this.afs
+      .collection("users", (ref) => ref.where("uid", "==", this.uid))
+      .valueChanges()
+      .subscribe((data) => {
+        this.usertel = data;
+        this.usertel.forEach((element) => {
+          //insertar en tabla compartidas telefono del usuario en sesion
+          this._providerReserva
+            .saveCompartirPropio(
+              element.phoneNumber,
+              idReservacion,
+              this.uid,
+              this.idSucursal,
+              this.miUser.playerID
+            )
+            .then((respuesta: any) => {});
+        });
+      });
+
+    //sacar numeros que se seleccionan en el formulario compartir cuenta
+    this.compartir.forEach((tel: any) => {
+      //insertar en tabla compartidas los numeros de con quien se esta compartiendo
+      this._providerReserva
+        .saveCompartirTodos(tel, idReservacion, this.uid, this.idSucursal)
+        .then((respuesta2: any) => {
+          this.afs
+            .collection("compartidas", (ref) =>
+              ref.where("idCompartir", "==", respuesta2.idCompartir)
+            )
+            .valueChanges()
+            .subscribe((data) => {
+              this.resultCompartidas = data;
+              //insertar el player id de cada telefono insertado
+              this.resultCompartidas.forEach((element) => {
+                this._providerReserva
+                  .buscarPlayerid(element.telefono)
+                  .subscribe((players) => {
+                    if (players !== undefined) {
+                      this.players = players[0].playerID;
+                      this.afs
+                        .collection("compartidas")
+                        .doc(element.idCompartir)
+                        .update({
+                          playerId: this.players,
+                        })
+                        .then(function () {});
+                    }
+                  });
+              });
+            });
+        });
+      //consulta para buscar el player id del ususario seleccionado y su tel
+    }); //termina foreach compartir
+    //cambiar reservacion a estatus compartido
+    this._providerReserva
+      .updateReservacionCompartida(idReservacion)
+      .then((respuesta: any) => {
+        if (respuesta.success == true) {
+        }
+      });
+  }
+
   reservacionUpdate(idReservacion) {
     let temp = [];
     this.telSelectMul.forEach((data) => {
       temp.push(data.tel);
     });
     this.compartir = temp;
-    console.log('Compartir -->', this.compartir);
-    
+
+    console.log("COMPARTIR -->", this.compartir);
+
     // Si se compartio la cuenta insertar telefonos en tabla compartidas
-    if (!this.compartir) {
-      const compartidaStatus = localStorage.getItem("compartida");
-      if (!compartidaStatus) {
-        this.afs
-          .collection("users", (ref) => ref.where("uid", "==", this.uid))
-          .valueChanges()
-          .subscribe((data) => {
-            this.usertel = data;
-            this.usertel.forEach((element) => {
-              //insertar en tabla compartidas telefono del usuario en sesion
-              this._providerReserva
-                .saveCompartirPropio(
-                  element.phoneNumber,
-                  idReservacion,
-                  this.uid,
-                  this.idSucursal,
-                  this.miUser.playerID
-                )
-                .then((respuesta: any) => {});
-            });
-          });
-      }
-
-      //sacar numeros que se seleccionan en el formulario compartir cuenta
-      this.compartir.forEach((data) => {
-        //estandarizar telefonos 10 digitos
-
-        this.telefono1 = data.replace(/ /g, "");
-        this.telefono2 = this.telefono1.replace(/-/g, "");
-        this.telefono3 = this.telefono2.substr(-10);
-        //insertar en tabla compartidas los numeros de con quien se esta compartiendo
-        this._providerReserva
-          .saveCompartirTodos(
-            this.telefono3,
-            idReservacion,
-            this.uid,
-            this.idSucursal
-          )
-          .then((respuesta2: any) => {
-            this.afs
-              .collection("compartidas", (ref) =>
-                ref.where("idCompartir", "==", respuesta2.idCompartir)
-              )
-              .valueChanges()
-              .subscribe((data) => {
-                this.resultCompartidas = data;
-                //insertar el player id de cada telefono insertado
-                this.resultCompartidas.forEach((element) => {
-                  this._providerReserva
-                    .buscarPlayerid(element.telefono)
-                    .subscribe((players) => {
-                      if (players == undefined) {
-                        this.players = players[0].playerID;
-                        this.afs
-                          .collection("compartidas")
-                          .doc(element.idCompartir)
-                          .update({
-                            playerId: this.players,
-                          })
-                          .then(function () {});
-                      }
-                    });
-                });
-              });
-          });
-        //consulta para buscar el player id del ususario seleccionado y su tel
-      }); //termina foreach compartir
-      //cambiar reservacion a estatus compartido
-      this._providerReserva
-        .updateReservacionCompartida(idReservacion)
-        .then((respuesta: any) => {
-          if (respuesta.success == true) {
-          }
-        });
-
-      const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
-      let info = {
-        numPersonas: this.people,
-        hora: this.hora,
-        fecha: this.fecha,
-        estatus: "Compartida",
-        idSucursal: this.idSucursal,
-        idevento: this.evento,
-      };
-
-      this._providerReserva
-        .updateReservacion(idReservacion, info)
-        .then((respuesta: any) => {
-          if (respuesta.success == true) {
-            localStorage.setItem("idReservacion", idReservacion);
-            this.navCtrl.push(CroquisPage, {
-              idReservacion: idReservacion,
-              idSucursal: this.idSucursal,
-              ClaveInstancia: this.ClaveInstancia,
-              zona: this.zonasnav,
-              hora: hora,
-              fecha: this.fecha,
-              zona_consumo: this.zona_consumo,
-            });
-          }
-        });
-
+    if (this.compartir !== "") {
+      this.updateUserShare(idReservacion);
       //termina funcion compartir cuenta insercion en tabla compartidas
     } else {
       const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
@@ -524,6 +411,110 @@ export class ReservacionesPage {
             });
           }
         });
+    }
+  }
+
+  async updateUserShare(idReservacion: string) {
+    const compartidaStatus = localStorage.getItem("compartida");
+    if (!compartidaStatus) {
+      this.afs
+        .collection("users", (ref) => ref.where("uid", "==", this.uid))
+        .valueChanges()
+        .subscribe((data) => {
+          this.usertel = data;
+          this.usertel.forEach((element) => {
+            //insertar en tabla compartidas telefono del usuario en sesion
+            this._providerReserva
+              .saveCompartirPropio(
+                element.phoneNumber,
+                idReservacion,
+                this.uid,
+                this.idSucursal,
+                this.miUser.playerID
+              )
+              .then((respuesta: any) => {});
+          });
+        });
+    }
+
+    this.phoneSearch(idReservacion);
+
+    this._providerReserva
+      .updateReservacionCompartida(idReservacion)
+      .then((respuesta: any) => {
+        if (respuesta.success == true) {
+        }
+      });
+
+    const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
+    let info = {
+      numPersonas: this.people,
+      hora: this.hora,
+      fecha: this.fecha,
+      estatus: "Compartida",
+      idSucursal: this.idSucursal,
+      idevento: this.evento,
+    };
+
+    this._providerReserva
+      .updateReservacion(idReservacion, info)
+      .then((respuesta: any) => {
+        if (respuesta.success == true) {
+          localStorage.setItem("idReservacion", idReservacion);
+          this.navCtrl.push(CroquisPage, {
+            idReservacion: idReservacion,
+            idSucursal: this.idSucursal,
+            ClaveInstancia: this.ClaveInstancia,
+            zona: this.zonasnav,
+            hora: hora,
+            fecha: this.fecha,
+            zona_consumo: this.zona_consumo,
+          });
+        }
+      });
+  }
+
+  async phoneSearch(idReservacion: string) {
+    const telefonos: any =
+      await this._providerReserva.getReservacionCompartidaUserTel(
+        idReservacion
+      );
+
+    const selectedContacts = JSON.parse(
+      localStorage.getItem("contactsSelected")
+    );
+
+    if (!selectedContacts.length) {
+      this._providerReserva.updateReservacionNormal(idReservacion);
+    }
+    
+
+    const telArr = [];
+    telefonos.forEach((tlf) => {
+      telArr.push(tlf.telefono);
+    });
+
+    const selectContArr = []
+    selectedContacts.forEach(SelectTel => {
+      selectContArr.push(SelectTel.tel);
+    });
+
+    const resDelete = telArr.filter(tel => selectContArr.indexOf(tel) === -1);
+
+    const resAdd = selectContArr.filter(tel => telArr.indexOf(tel) === -1);
+
+    const res = resDelete.concat(resAdd);
+    if (!res.length) {
+      console.log("El array está vacío!");
+    } else {
+      res.forEach(contacts => {
+        this._providerReserva.deleteUserSharedReserv(
+          idReservacion,
+          contacts,
+          this.uid,
+          this.idSucursal
+        );
+      })
     }
   }
 
@@ -572,13 +563,13 @@ export class ReservacionesPage {
         if (this.platform.is("android")) {
           contactosArr.push({
             tel: tel,
-            name: String(contact.displayName),
+            name: String(contact.displayName + " - " + tel),
             index: i,
           });
         } else {
           contactosArr.push({
             tel: tel,
-            name: String(contact.name.formatted),
+            name: String(contact.name.formatted + " - " + tel),
             index: i,
           });
         }
@@ -615,12 +606,6 @@ export class ReservacionesPage {
           en: " Reservación compartida ",
         },
       };
-
-      // window["plugins"].OneSignal.postNotification(
-      //   noti,
-      //   function (successResponse) {},
-      //   function (failedResponse: any) {}
-      // );
     } else {
     }
   }

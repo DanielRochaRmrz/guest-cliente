@@ -11,6 +11,7 @@ import { HttpClient } from "@angular/common/http";
 import { Platform } from "ionic-angular";
 import { DeviceProvider } from "../device/device";
 import { rejects } from "assert";
+import * as firebase from 'firebase';
 
 @Injectable()
 export class ReservacionProvider {
@@ -318,7 +319,7 @@ export class ReservacionProvider {
       ref
         .where("idUsuario", "==", idx)
         .where("estatusFinal", "==", "rsv_copletada")
-        .where("estatus", '==', "Finalizado")
+        .where("estatus", "==", "Finalizado")
     );
     this._reservaCliente = this.reservaCliente.valueChanges();
     return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
@@ -351,6 +352,109 @@ export class ReservacionProvider {
         });
       })
     ));
+  }
+
+  //obtener reservacion compartida en la que esta el usuario por id Reservacion
+  public getReservacionCompartidaUserTel(idReservacion: string) {
+    return new Promise((resolve, reject) => {
+      const refCompartidas = this.af.collection("compartidas", (ref) =>
+        ref
+          .where("idReservacion", "==", idReservacion)
+          .where("estatus", "==", "Espera")
+      );
+      refCompartidas.valueChanges().subscribe((query) => {
+        resolve(query);
+      });
+    });
+  }
+
+  //Eliminar usurio de la reservacion compartida
+  public deleteUserSharedReserv(
+    idReservacion: string,
+    telefono: string,
+    idUsuario: string,
+    idSucursal: string
+  ) {
+    return new Promise((resolve, reject) => {
+      const refCompartidas = this.af.collection("compartidas", (ref) =>
+        ref
+          .where("idReservacion", "==", idReservacion)
+          .where("telefono", "==", telefono)
+          .where("estatus", "==", "Espera")
+      );
+      refCompartidas.get().subscribe((query) => {
+        console.log("Res -->", query.empty);
+        if (query.empty === true) {
+          console.log("No esta en DB -->", telefono);
+          this.saveCompartirTodosUpdate(
+            idReservacion,
+            telefono,
+            idUsuario,
+            idSucursal
+          );
+        } else {
+          console.log("Si esta en DB -->", telefono);
+          query.forEach((doc) => {
+            doc.ref
+              .delete()
+              .then(() => console.log("Borrado"))
+              .catch((err) => console.log(JSON.stringify(err)));
+          });
+        }
+      });
+    });
+  }
+
+  public saveCompartirTodosUpdate(
+    idReservacion: string,
+    telefono: string,
+    idUsuario: string,
+    idSucursal: string
+  ) {
+    this.af
+      .collection("compartidas")
+      .add({
+        telefono: telefono,
+        idReservacion: idReservacion,
+        idUsuario: idUsuario,
+        estatus: "Espera",
+        totalDividido: 0,
+        estatus_escaneo: "NO",
+        estatusFinal: "rsv_incompleta",
+        pagoEstatus: false,
+        idSucursal: idSucursal,
+      })
+      .then((reserva) => {
+        this.updateCompartirId(reserva.id);
+        this.af
+          .collection("compartidas", (ref) =>
+            ref.where("idCompartir", "==", reserva.id)
+          )
+          .valueChanges()
+          .subscribe((data) => {
+            const resultCompartidas = data;
+            console.log("resultCompartidas -->", resultCompartidas);
+            
+            //insertar el player id de cada telefono insertado
+            resultCompartidas.forEach((element: any) => {
+              this.buscarPlayerid(element.telefono).subscribe((players) => {
+                console.log("players -->", players);
+                
+                if (players !== undefined) {
+                  const player = players[0].playerID;
+                  this.af
+                    .collection("compartidas")
+                    .doc(element.idCompartir)
+                    .update({
+                      playerId: player,
+                    })
+                    .then(function () {});
+                }
+              });
+            });
+          });
+      })
+      .catch((err) => console.log("saveCompartirTodosUpdate -->", err));
   }
 
   //obtener reservacion compartida en la que esta el usuario
@@ -573,7 +677,7 @@ export class ReservacionProvider {
           idevento: reservacion.idevento,
           idUsuario: idUsuario,
           folio: "R" + folio,
-          playerIDSuc: reservacion.playerIDSuc
+          playerIDSuc: reservacion.playerIDSuc,
         })
         .then((reserva) => {
           this.updateReservaId(reserva.id);
@@ -635,7 +739,13 @@ export class ReservacionProvider {
   }
 
   //insertar el numero del ususrio en sesion en la tabla al compartir una cuenta
-  public saveCompartirPropio(telefono, idReservacion, idUsuario, idSucursal, playerID) {
+  public saveCompartirPropio(
+    telefono,
+    idReservacion,
+    idUsuario,
+    idSucursal,
+    playerID
+  ) {
     return new Promise((resolve, reject) => {
       localStorage.setItem("compartida", "true");
       this.af
@@ -815,6 +925,25 @@ export class ReservacionProvider {
     });
   }
 
+  //Cambiar estatus de la reservacion a Normal
+  public updateReservacionNormal(idReservacion: string) {
+    return new Promise((resolve, reject) => {
+      this.af
+        .collection("reservaciones")
+        .doc(idReservacion)
+        .update({
+          estatus: "Creando",
+        })
+        .then((reserva) => {
+          resolve({ success: true });
+          this.deleteUserAceptado(idReservacion);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
   public addProducto(producto) {
     return new Promise((resolve, reject) => {
       this.af
@@ -916,6 +1045,33 @@ export class ReservacionProvider {
       this.http.get(url).subscribe((resp: any) => {
         const data = resp.consulta;
         resolve(data);
+      });
+    });
+  }
+
+  //Eliminar usurio Aceptado de la reservacion compartida
+  public deleteUserAceptado(
+    idReservacion: string,
+  ) {
+    return new Promise((resolve, reject) => {
+      const refCompartidas = this.af.collection("compartidas", (ref) =>
+        ref
+          .where("idReservacion", "==", idReservacion)
+          .where("estatus", "==", "Aceptado")
+      );
+      refCompartidas.get().subscribe((query) => {
+        console.log("Res -->", query.empty);
+        if (query.empty === true) {
+          console.log("No esta en DB");
+        } else {
+          console.log("Si esta en DB");
+          query.forEach((doc) => {
+            doc.ref
+              .delete()
+              .then(() => console.log("Borrado"))
+              .catch((err) => console.log(JSON.stringify(err)));
+          });
+        }
       });
     });
   }
@@ -1054,16 +1210,18 @@ export class ReservacionProvider {
     });
   }
 
-  getCuponReservacion(uidSucursal: string){
-
+  getCuponReservacion(uidSucursal: string) {
     return new Promise((resolve, rejects) => {
-      this.af.collection("cupones", ref => ref.where("idSucursal", "==", uidSucursal)).valueChanges().subscribe((cupones) => {
-        resolve(cupones);
-      })
-    })
-
+      this.af
+        .collection("cupones", (ref) =>
+          ref.where("idSucursal", "==", uidSucursal)
+        )
+        .valueChanges()
+        .subscribe((cupones) => {
+          resolve(cupones);
+        });
+    });
   }
-
 
   getSucursalesTipo(tipo: string) {
     this.sucursal = this.af.collection<any>("sucursales", (ref) =>
