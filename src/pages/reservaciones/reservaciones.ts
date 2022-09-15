@@ -346,7 +346,7 @@ export class ReservacionesPage {
                 this._providerReserva
                   .buscarPlayerid(element.telefono)
                   .subscribe((players) => {
-                    if (players !== undefined) {
+                    if (players == undefined) {
                       this.players = players[0].playerID;
                       this.afs
                         .collection("compartidas")
@@ -381,7 +381,7 @@ export class ReservacionesPage {
     console.log("COMPARTIR -->", this.compartir);
 
     // Si se compartio la cuenta insertar telefonos en tabla compartidas
-    if (this.compartir !== "") {
+    if (this.compartir.length) {
       this.updateUserShare(idReservacion);
       //termina funcion compartir cuenta insercion en tabla compartidas
     } else {
@@ -485,6 +485,9 @@ export class ReservacionesPage {
     );
 
     if (!selectedContacts.length) {
+      localStorage.removeItem("compartida");
+      localStorage.removeItem("contactosCompartidos");
+      localStorage.removeItem("contactsSelected");
       this._providerReserva.updateReservacionNormal(idReservacion);
     }
     

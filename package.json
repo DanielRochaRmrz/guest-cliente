@@ -135,8 +135,8 @@
             "com-sarriaroman-photoviewer": {}
         },
         "platforms": [
-            "ios",
-            "android"
+            "android",
+            "ios"
         ]
     }
 }

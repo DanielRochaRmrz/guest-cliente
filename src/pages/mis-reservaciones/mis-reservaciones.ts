@@ -23,7 +23,7 @@ export class MisReservacionesPage {
   idSucursal: any;
   idevento: any;
   public telUser: string;
-  resCompartidas: any;
+  resCompartidas: any = [];
   miUser: any = {};
 
 
@@ -66,6 +66,8 @@ export class MisReservacionesPage {
         //obtener reservaciones compartidas en las que esta el usuario
         this.reservaProvider.getReservacionCompartida(telefono).subscribe((resCom) => {
           this.resCompartidas = resCom;
+          console.log('resCompartidas -->', this.resCompartidas);
+          
         });
   }
 

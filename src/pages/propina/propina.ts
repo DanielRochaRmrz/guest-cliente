@@ -238,6 +238,9 @@ export class PropinaPage {
                 localStorage.removeItem('idReservacion');
                 localStorage.removeItem('uidEvento');
                 localStorage.removeItem('compartida');
+                localStorage.removeItem('contactsSelected');
+
+
                 
                 // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION 
 

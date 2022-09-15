@@ -103,8 +103,11 @@ export class EventoDetallePage {
   }
 
   compartir(evento: any) {
+      const message = 'Optional message, may be ignored by Facebook app';
+      const image = 'https://www.google.nl/images/srpr/logo4w.png'; 
+      const url = ''
     this.socialSharing
-      .shareViaFacebook(evento.titulo, null, evento.img)
+      .share(String(message), String(message), String(image), url)
       .then(() => { }) // se pudo compartir
       .catch(() => { }); // si sucede un error
   }

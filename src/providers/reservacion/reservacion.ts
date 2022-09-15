@@ -1076,6 +1076,31 @@ export class ReservacionProvider {
     });
   }
 
+  //Eliminar  reservacion compartida
+  public deleteCompartida(
+    idReservacion: string,
+  ) {
+    return new Promise((resolve, reject) => {
+      const refCompartidas = this.af.collection("compartidas", (ref) =>
+        ref
+          .where("idReservacion", "==", idReservacion)
+      );
+      refCompartidas.get().subscribe((query) => {
+        if (query.empty === true) {
+          console.log("No esta en DB");
+        } else {
+          console.log("Si esta en DB");
+          query.forEach((doc) => {
+            doc.ref
+              .delete()
+              .then(() => console.log("Borrado"))
+              .catch((err) => console.log(JSON.stringify(err)));
+          });
+        }
+      });
+    });
+  }
+
   deleteReservacion(idReservacion) {
     this.af
       .collection("reservaciones")

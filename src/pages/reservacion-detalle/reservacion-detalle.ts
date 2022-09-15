@@ -675,7 +675,6 @@ export class ReservacionDetallePage {
     folio: string,
     playerIDSuc: string
   ) {
-    this.eliminar_rsvp(idReservacion);
     // this.getUsersPusCancelar(playerIDs);
 
     // SE ELIMINA EL CODIGO DE RP USADO POR EL USUARIO
@@ -690,6 +689,7 @@ export class ReservacionDetallePage {
       .delete()
       .then(() => {
         console.log("Document successfully deleted!");
+        this.reservaProvider.deleteCompartida(idReservacion);
         this._providerPushNoti.PushNotiCancelarReserva(folio, playerIDSuc);
         // this.showAlert();
 
@@ -774,10 +774,5 @@ export class ReservacionDetallePage {
   async obtenerMesas() {
     this.mesas = await this._providerReserva.obtenerMesas(this.idReservacion);
     console.log("Mesas -->", this.mesas);
-  }
-
-  async eliminar_rsvp(idReservacion) {
-    const r = await this._providerReserva.eliminar_rsvp(idReservacion);
-    console.log("RSVP -->", r);
   }
 }
