@@ -72,12 +72,16 @@ export class HistorialDetallePage {
   miUser: any = {};
   idSucursal: any;
   mesas: any;
-  soloTotal:any;
+  soloTotal: any;
   tarjeta: any = [];
   countCompartidas: number = 0;
   countComPagadas: number = 0;
   nombreUsuarios: any;
   valorCupon: any;
+  iva: number;
+  comision: number;
+  totalConPropina: any;
+  totalNeto: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -99,7 +103,7 @@ export class HistorialDetallePage {
     //sacar el id del usuario guardado en el local storage
     this.idUser = localStorage.getItem('uid');
     this.idSucursal = localStorage.getItem('uidSucursal');
-    
+
     //consultar tabla cupones
     this.afs
       .collection("cupones")
@@ -118,7 +122,7 @@ export class HistorialDetallePage {
     this.menu.enable(true);
     const fecha = moment('2010-10-20').isBefore('2010-10-21'); // true
     console.log('Fecha --->', fecha);
-    
+
     //carga funcion cuando abre la pagina
     this.getInfouser(this.idUser);
     this.getCompartidas(this.idReservacion);
@@ -154,8 +158,8 @@ export class HistorialDetallePage {
     this.reservaProvider.getCompartidaPagada(rsv).subscribe((data) => {
       this.countComPagadas = data.length;
       console.log('Pagadas -->', this.countComPagadas);
-    });    
-  } 
+    });
+  }
 
   loadUsersCompartidos(idReservacion: string) {
     this._providerReserva.getCompartidaAceptada(idReservacion).subscribe((dataCompartidas) => {
@@ -201,44 +205,53 @@ export class HistorialDetallePage {
   }
 
   getDetails() {
-    // funcion para sacar lista de productos de una reservacion
-    this.reservaProvider.getReservacionesProducto(this.idReservacion).subscribe(r => {
-      this.listaProductos = r;
-    });
     // total de general dependiendo los productos que tenga la reservacion
-    this.reservaProvider.getProductos(this.idReservacion).subscribe(productos => {
-      this.productos = productos;
-      this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
-      //const calculoPropina2 = this.productos.reduce((acc, obj) => acc + obj.total, 0);
-      this.reservaProvider.getInfo(this.idReservacion).subscribe(info => {
-        this.infoReservaciones = info;
-        if (info[0].propina != undefined) {
-          this.propinaRe = this.total * info[0].propina;
-          this.totalPropina = this.total + this.propinaRe;
-          console.log('Totsl propina -->', this.totalPropina);
-          this.validarPropina = 'Existe';
-        } else {
-          this.soloTotal = 1;
-        }
+    this.reservaProvider
+      .getProductos(this.idReservacion)
+      .subscribe((productos) => {
+
+        this.productos = productos;
+
+        this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
+
+        this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+
+          this.infoReservaciones = info;
+
+          if (info[0].uidCupon == undefined) {
+
+            this.validarCupon = "Noexiste";
+
+            this.propinaRe = this.total * info[0].propina;
+            this.iva = this.total * .16;
+
+            console.log("this.iva", this.iva);
+            this.comision = this.total * .059;
+            this.totalConPropina = this.total + this.propinaRe;
+            this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
+          } else {
+
+            //informacion de la reservacion seleccionada
+            this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+
+              this.infoReservaciones = info;
+              this.idUser = localStorage.getItem("uid");
+
+              this.validarCupon = "Existe";
+              this.propinaRe2 = info[0].totalReservacion * info[0].propina;
+              this.iva = info[0].totalReservacion * .16;
+              console.log("this.iva", this.iva);
+
+              this.comision = info[0].totalReservacion * .059;
+              this.totalConPropina = info[0].totalReservacion + this.propinaRe2;
+              this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
+            });
+          }
+        });
+
       });
-    });
-    //informacion de la reservacion seleccionada
-    this.reservaProvider.getInfo(this.idReservacion).subscribe(info => {
-      this.infoReservaciones = info;
-      this.idUser = localStorage.getItem('uid');
-      if (info[0].uidCupon == undefined) {
-        this.validarCupon = 'Noexiste';
-      } else {
-        this.validarCupon = 'Existe';
-         this.valorCupon = this.cuponesDatos[0].valorCupon;
-        this.propinaRe2 = info[0].totalReservacion * info[0].propina;;
-        const propinaCalculo = info[0].totalReservacion * info[0].propina;
-        this.totalPropinaCupon = info[0].totalReservacion + propinaCalculo;
-        console.log('descuenton', info[0].totalReservacion);
-        console.log('propina', info[0].propina);
-        console.log('propina y cupon', this.totalPropinaCupon);
-      }
-    });
     //consultar si exiente usuarios es espera de aceptar compartir la reservacion
     this.reservaProvider.consultarEspera(this.idReservacion).subscribe(infoE => {
       this.infoEspera = infoE;
@@ -284,6 +297,7 @@ export class HistorialDetallePage {
             //obtener el valor del cupon de acuerdo al uid
             this.afs.collection('cupones', ref => ref.where('uid', '==', this.cuponExiste)).valueChanges().subscribe(dataCu => {
               this.cuponesDatos = dataCu;
+              this.valorCupon = this.cuponesDatos[0].valorCupon;
               console.log("este es el cupon usado", this.cuponesDatos[0].valorCupon);
               this.total2 = this.productos.reduce((acc, obj) => acc + obj.total, 0);
               this.total3 = this.total2 - this.cuponesDatos[0].valorCupon;
@@ -438,7 +452,7 @@ export class HistorialDetallePage {
       console.log("Document successfully deleted!");
 
       // this.showAlert();
-      
+
       this.showToast('bottom');
       this.goBack();
     }).catch((error) => {
@@ -447,17 +461,17 @@ export class HistorialDetallePage {
 
   }
 
-  eliminarCodigoRP(idReservacion){
+  eliminarCodigoRP(idReservacion) {
 
     this.afs.collection("contCodigosRp").doc(idReservacion).delete().then(() => {
 
       console.log("Se borro regsitro en contCodigosRp");
-      
 
-    }).catch(function(error) {
+
+    }).catch(function (error) {
 
       console.log("No se pudo en contCodigosRp");
-      
+
 
     });
 
@@ -465,15 +479,15 @@ export class HistorialDetallePage {
 
 
   showAlert() {
-  
+
     const alert = this.alertCtrl.create({
       title: 'Cancelado',
       subTitle: 'Se ha cancelado la reservación',
       buttons: ['OK']
     });
-  
+
     alert.present();
- 
+
   }
 
   showToast(position: string) {
@@ -522,18 +536,18 @@ export class HistorialDetallePage {
   }
 
 
-  behind(){
+  behind() {
     this.navCtrl.setRoot(HistorialPage);
   }
 
-  async obtenerMesas(){
+  async obtenerMesas() {
     this.mesas = await this._providerReserva.obtenerMesas(this.idReservacion);
-    console.log( 'Mesas -->', this.mesas);
+    console.log('Mesas -->', this.mesas);
   }
 
-  async eliminar_rsvp(idReservacion){
+  async eliminar_rsvp(idReservacion) {
     const r = await this._providerReserva.eliminar_rsvp(idReservacion);
-    console.log( 'RSVP -->', r);
+    console.log('RSVP -->', r);
   }
 
 }
