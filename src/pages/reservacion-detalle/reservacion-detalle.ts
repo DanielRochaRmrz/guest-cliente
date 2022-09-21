@@ -85,6 +85,10 @@ export class ReservacionDetallePage {
   nombreUsuarios: any;
   tarjetaPagar: any = {};
   valorCupon: any;
+  iva: any;
+  comision: number;
+  totalNeto: any;
+  totalConPropina: any;
 
   constructor(
     public navCtrl: NavController,
@@ -223,47 +227,56 @@ export class ReservacionDetallePage {
   }
 
   getDetails() {
-    // funcion para sacar lista de productos de una reservacion
-    this.reservaProvider
-      .getReservacionesProducto(this.idReservacion)
-      .subscribe((r) => {
-        this.listaProductos = r;
-      });
+
+
     // total de general dependiendo los productos que tenga la reservacion
     this.reservaProvider
       .getProductos(this.idReservacion)
       .subscribe((productos) => {
+
         this.productos = productos;
+
         this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
-        //const calculoPropina2 = this.productos.reduce((acc, obj) => acc + obj.total, 0);
+
         this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+
           this.infoReservaciones = info;
-          if (info[0].propina != undefined) {
+
+          if (info[0].uidCupon == undefined) {
+
+            this.validarCupon = "Noexiste";
+
             this.propinaRe = this.total * info[0].propina;
-            this.totalPropina = this.total + this.propinaRe;
-            console.log("Totsl propina -->", this.totalPropina);
-            this.validarPropina = "Existe";
+            this.iva = this.total * .16;
+
+            console.log("this.iva", this.iva);
+            this.comision = this.total * .059;
+            this.totalConPropina = this.total + this.propinaRe;
+            this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
           } else {
-            this.soloTotal = 1;
+
+            //informacion de la reservacion seleccionada
+            this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+
+              this.infoReservaciones = info;
+              this.idUser = localStorage.getItem("uid");
+
+              this.validarCupon = "Existe";
+              this.propinaRe2 = info[0].totalReservacion * info[0].propina;
+              this.iva = info[0].totalReservacion * .16;
+              console.log("this.iva", this.iva);
+
+              this.comision = info[0].totalReservacion * .059;
+              this.totalConPropina = info[0].totalReservacion + this.propinaRe2;
+              this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
+            });
           }
         });
+
       });
-    //informacion de la reservacion seleccionada
-    this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
-      this.infoReservaciones = info;
-      this.idUser = localStorage.getItem("uid");
-      if (info[0].uidCupon == undefined) {
-        this.validarCupon = "Noexiste";
-      } else {
-        this.validarCupon = "Existe";
-        this.propinaRe2 = info[0].totalReservacion * info[0].propina;
-        const propinaCalculo = info[0].totalReservacion * info[0].propina;
-        this.totalPropinaCupon = info[0].totalReservacion + propinaCalculo;
-        console.log("descuenton", info[0].totalReservacion);
-        console.log("propina", info[0].propina);
-        console.log("propina y cupon", this.totalPropinaCupon);
-      }
-    });
+
     //consultar si exiente usuarios es espera de aceptar compartir la reservacion
     this.reservaProvider
       .consultarEspera(this.idReservacion)
