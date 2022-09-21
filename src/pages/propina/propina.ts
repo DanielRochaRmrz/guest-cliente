@@ -118,12 +118,12 @@ export class PropinaPage {
 
             // SI EL CODIGO YA FUE USADO POR EL USUARIO 
 
-            const consul2 = this.afs.collection('contCodigosRp').ref;
-            consul2.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion).get().then(data => {
+            // const consul2 = this.afs.collection('contCodigosRp').ref;
+            // consul2.where('codigoRpUser', '==', codigoRP).where('uidRP', '==', uidRp).where('uidUser', '==', this.uidUserSesion).get().then(data => {
 
-              this.rowConCode = data.empty;
+            //   this.rowConCode = data.empty;
 
-              if (this.rowConCode == true) {
+            //   if (this.rowConCode == true) {
 
                 let today = Date.now();
 
@@ -244,9 +244,9 @@ export class PropinaPage {
                 
                 // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION 
 
-              }
+              // }
 
-            });
+            // });
 
             // TERMINA SI EL CODIGO YA FUE USADO POR EL USUARIO            
 
@@ -260,7 +260,7 @@ export class PropinaPage {
 
         } else if (this.codigoRpUsers.empty == false) {
 
-          this.mostrar_toast('EL CÓDIGO QUE INGRESASTE YA LO HAS UTILIZADO');
+          this.mostrar_toast('CÓDIGO CANJEADO CORRECTAMENTE');
 
         }
       });
