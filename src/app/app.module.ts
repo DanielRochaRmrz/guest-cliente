@@ -44,7 +44,6 @@ import { CroquisPage } from '../pages/croquis/croquis';
 import { MenuPage } from '../pages/menu/menu';
 import { MenuArbolPage } from '../pages/menu-arbol/menu-arbol';
 
-
 //administrador
 import { ImagencroquisPage } from '../pages/imagencroquis/imagencroquis';
 
@@ -105,6 +104,7 @@ import { HistorialDetallePage } from '../pages/historial-detalle/historial-detal
 import { ScrollableDirective } from './scrollable.directive';
 import { PaginationService } from './pagination.service';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner';
+import { HistorialCompartidasPage } from '../pages/historial-compartidas/historial-compartidas';
 
 
 var firebaseConfig = {
@@ -164,7 +164,8 @@ firebase.initializeApp(firebaseConfig);
     MenuPage,
     MenuArbolPage,
     ScrollableDirective,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    HistorialCompartidasPage
   ],
   imports: [
     BrowserModule,
@@ -230,7 +231,8 @@ firebase.initializeApp(firebaseConfig);
     PerfilEditarPage,
     CroquisPage,
     MenuPage,
-    MenuArbolPage
+    MenuArbolPage,
+    HistorialCompartidasPage
   ],
   providers: [
     StatusBar,

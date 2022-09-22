@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-navbar class="borde">
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
+      </ion-col>
+      <ion-col align="center">
+        <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
+      </ion-col>
+      <ion-col>
+        <div align="end">
+          <div *ngIf="miUser.provider == 'facebook'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img src="{{miUser.photoURL}}" style="width: 40%; border-radius: 50%" />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+            </div>
+          </div>
+          <div *ngIf="miUser.provider == 'google'">
+            <div *ngIf="miUser.status_foto == 0">
+              <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width: 85%; border-radius: 50%" />
+            </div>
+            <div *ngIf="miUser.status_foto == 1">
+              <img src="{{miUser.photoURL}}" style="width: 43px; height: 46px; border-radius: 50%" />
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <h2>
+    <b>Tus reservaciones</b>
+    <div class="detalle">Historial</div>
+  </h2>
+
+  <hr>
+
+  <ion-segment>
+    <ion-segment-button (click)="goHistorialNormales()">
+      Hechas por mi
+    </ion-segment-button>
+    <ion-segment-button>
+      Que me han compartido
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="misReservaciones.length == 0" text-center>
+
+    <img src="./assets/content/advertencia.png" alt="">
+
+    <div text-center>
+
+      <h4 style="color: #000;"><b>Aún no hay historial que mostrar.</b></h4>
+
+    </div>
+
+  </div>
+
+  <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
+    <div class="container">
+
+      <ion-list *ngFor="let reservaciones of page.data | async">
+
+        <ion-item>
+          <ion-thumbnail item-start>
+            <img src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}">
+          </ion-thumbnail>
+
+          <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
+            (reservaciones.idSucursal | getSucursal | async)?.displayName }}</b>
+
+          <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
+
+          <p>Estado: <b>Finalizado</b> <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
+
+          <p><small>UID: {{reservaciones.idReservacion}}</small></p>
+
+          <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion)">Más Detalles</button>
+
+        </ion-item>
+
+      </ion-list>
+
+    </div>
+  </div>
+
+  <p *ngIf="page.done | async"></p>
+
+  <ion-footer>
+    <loading-spinner *ngIf="page.loading | async"></loading-spinner>
+  </ion-footer>
+
+</ion-content>

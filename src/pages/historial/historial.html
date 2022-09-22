@@ -40,10 +40,32 @@
     </h2>
 
     <hr>
-    <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
-        <div class="container" *ngFor="let reservaciones of page.data | async">
 
-            <ion-list>
+    <ion-segment>
+        <ion-segment-button>
+            Hechas por mi
+        </ion-segment-button>
+        <ion-segment-button (click)="goHistorialCompartidas()">
+            Que me han compartido
+        </ion-segment-button>
+    </ion-segment>
+
+    <div *ngIf="misReservaciones.length == 0" text-center>
+
+        <img src="./assets/content/advertencia.png" alt="">
+
+        <div text-center>
+
+            <h4 style="color: #000;"><b>Aún no hay historial que mostrar.</b></h4>
+
+        </div>
+
+    </div>
+
+    <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
+        <div class="container">
+
+            <ion-list *ngFor="let reservaciones of page.data | async">
 
                 <ion-item>
                     <ion-thumbnail item-start>
@@ -100,22 +122,12 @@
 
         </div>
     </div>
-    <div *ngIf="misReservaciones.length == 0" text-center>
 
-        <img src="./assets/content/advertencia.png" alt="">
 
-        <div text-center>
-
-            <h4 style="color: #000;"><b>Aún no hay historial que mostrar.</b></h4>
-
-        </div>
-
-    </div>
-
-    <!-- <p *ngIf="page.done | async"></p>
+    <p *ngIf="page.done | async"></p>
 
     <ion-footer>
         <loading-spinner *ngIf="page.loading | async"></loading-spinner>
-    </ion-footer> -->
+    </ion-footer>
 
 </ion-content>
