@@ -168,7 +168,6 @@ export class PaginationService {
         .where("estatusFinal", "==", "rsv_copletada")
         .where("estatus_pago", "==", "Pagado")
         .where("estatus_escaneo", "==", "OK")
-        .where("idUsuario", "in", ["SqI5cu5RgJd3vh9Qi2Lp1PAwgB62"])
 
     })
     if (first) {
@@ -238,7 +237,6 @@ export class PaginationService {
         .where("estatusFinal", "==", "rsv_copletada")
         .where("estatus_pago", "==", "Pagado")
         .where("estatus_escaneo", "==", "OK")
-        .where("idUsuario", "in", ["SqI5cu5RgJd3vh9Qi2Lp1PAwgB62"])
     })
     this.mapAndUpdate(more)
   }

@@ -22,6 +22,7 @@ export class HistorialCompartidasPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public page: PaginationService, public reservaProvider: ReservacionProvider,public userProvider: UserProvider,) {
 
     this.page.reset();
+    this.uid = localStorage.getItem('uid');
 
   }
 
