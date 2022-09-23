@@ -89,6 +89,7 @@ export class ReservacionDetallePage {
   comision: number;
   totalNeto: any;
   totalConPropina: any;
+  subTotal: number;
 
   constructor(
     public navCtrl: NavController,
@@ -246,13 +247,17 @@ export class ReservacionDetallePage {
 
             this.validarCupon = "Noexiste";
 
-            this.propinaRe = this.total * info[0].propina;
-            this.iva = this.total * .16;
-
-            console.log("this.iva", this.iva);
             this.comision = this.total * .059;
-            this.totalConPropina = this.total + this.propinaRe;
-            this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+            
+            this.subTotal = this.comision + this.total;
+            
+            this.iva = this.subTotal * .16;
+
+            this.propinaRe = this.total * info[0].propina;
+
+            this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+
+            
 
           } else {
 
@@ -263,13 +268,16 @@ export class ReservacionDetallePage {
               this.idUser = localStorage.getItem("uid");
 
               this.validarCupon = "Existe";
-              this.propinaRe2 = info[0].totalReservacion * info[0].propina;
-              this.iva = info[0].totalReservacion * .16;
-              console.log("this.iva", this.iva);
 
               this.comision = info[0].totalReservacion * .059;
-              this.totalConPropina = info[0].totalReservacion + this.propinaRe2;
-              this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
+              this.subTotal = this.comision + info[0].totalReservacion;
+
+              this.iva = this.subTotal * .16;
+
+              this.propinaRe = info[0].totalReservacion * info[0].propina;
+              
+              this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
             });
           }
@@ -311,14 +319,8 @@ export class ReservacionDetallePage {
                 this.infoReservaciones2 = info2;
                 //si el cupon no existe en la reservacion se hace la division normal
                 if (info2[0].uidCupon == undefined) {
-                  this.total2 = this.productos.reduce(
-                    (acc, obj) => acc + obj.total,
-                    0
-                  );
-                  const propiCal = this.total2 * info2[0].propina;
-                  const totalPropin = this.total2 + propiCal;
-                  this.resultadoCompartir = totalPropin / this.tamano;
-                  totalDividido.push(this.resultadoCompartir);
+                  this.resultadoCompartir = this.totalNeto / this.tamano;
+                  
                   //asignar a cada persona que acepto compartir lo que le toca de la cuenta
                   this.compartidasAceptadas.forEach((datacom) => {
                     this.reservaProvider
@@ -342,20 +344,20 @@ export class ReservacionDetallePage {
                     .subscribe((dataCu) => {
                       this.cuponesDatos = dataCu;
                       this.valorCupon = this.cuponesDatos[0].valorCupon;
-                      console.log(
-                        "este es el cupon usado",
-                        this.cuponesDatos[0].valorCupon
-                      );
-                      this.total2 = this.productos.reduce(
-                        (acc, obj) => acc + obj.total,
-                        0
-                      );
-                      this.total3 =
-                        this.total2 - this.cuponesDatos[0].valorCupon;
-                      const propiCal2 = this.total3 * info2[0].propina;
-                      const totalPropin2 = this.total3 + propiCal2;
-                      this.resultadoCompartir = totalPropin2 / this.tamano;
-                      totalDividido.push(this.resultadoCompartir);
+                      // console.log(
+                      //   "este es el cupon usado",
+                      //   this.cuponesDatos[0].valorCupon
+                      // );
+                      // this.total2 = this.productos.reduce(
+                      //   (acc, obj) => acc + obj.total,
+                      //   0
+                      // );
+                      // this.total3 =
+                      //   this.total2 - this.cuponesDatos[0].valorCupon;
+                      // const propiCal2 = this.total3 * info2[0].propina;
+                      // const totalPropin2 = this.total3 + propiCal2;
+                      this.resultadoCompartir = this.totalNeto / this.tamano;
+                      // totalDividido.push(this.resultadoCompartir);
                       //asignar a cada persona que acepto compartir lo que le toca de la cuenta
                       this.compartidasAceptadas.forEach((datacom) => {
                         this.reservaProvider
