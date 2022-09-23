@@ -193,6 +193,25 @@ export class UserProvider {
       })
     ));
   }
+
+  getUserData(uid: string) {
+    this.users = this.afs.collection<any>("users", (ref) =>
+      ref.where("uid", "==", uid)
+    );
+
+    this._users = this.users.valueChanges();
+
+    return (this._users = this.users.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
   mostrar_toast(mensaje: string) {
     const toast = this.toastCtrl
       .create({
@@ -205,12 +224,13 @@ export class UserProvider {
   getUser(uid: string) {
     return new Promise((resolve, reject) => {
       this.afs
-      .collection("users")
-      .doc(uid).get().subscribe((dataSu) => {
-        const data = dataSu.data() as any;
-        resolve(data);
-      });
+        .collection("users")
+        .doc(uid)
+        .get()
+        .subscribe((dataSu) => {
+          const data = dataSu.data() as any;
+          resolve(data);
+        });
     });
   }
-
 }

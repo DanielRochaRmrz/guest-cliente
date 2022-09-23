@@ -8,11 +8,12 @@ import {
   AngularFirestoreCollection,
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs/Observable";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class UsuarioProvider {
-  private apiUrl = 'https://us-central1-guestreservation-8b24b.cloudfunctions.net/app';
+  private apiUrl =
+    "https://us-central1-guestreservation-8b24b.cloudfunctions.net/app";
 
   data: any = {};
 
@@ -198,13 +199,17 @@ export class UsuarioProvider {
 
   public _getTarjetaPagar(idx: string) {
     return new Promise((resolve, reject) => {
-      const ref = this.afs.collection('tarjetas').ref;
-      ref.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA").get().then( query => {
-        query.forEach(tarjeta => {
-          const t =tarjeta.data();
-          resolve(t);
+      const ref = this.afs.collection("tarjetas").ref;
+      ref
+        .where("idUsuario", "==", idx)
+        .where("estatus", "==", "ACTIVA")
+        .get()
+        .then((query) => {
+          query.forEach((tarjeta) => {
+            const t = tarjeta.data();
+            resolve(t);
+          });
         });
-      } );
     });
   }
 
@@ -245,13 +250,17 @@ export class UsuarioProvider {
   //obtener todas las trajetas registradas del usuario
   public getAllTarjetas(idx: string) {
     return new Promise((resolve, reject) => {
-      const refTarjetas = this.afs.collection('tarjetas').ref;
-      refTarjetas.where("idUsuario", "==", idx).where("estatus", "==", "ACTIVA").get().then(tarjetas => {
-        tarjetas.forEach(data => {
-          const tarjeta = data.data() as any;
-          resolve(tarjeta);
+      const refTarjetas = this.afs.collection("tarjetas").ref;
+      refTarjetas
+        .where("idUsuario", "==", idx)
+        .where("estatus", "==", "ACTIVA")
+        .get()
+        .then((tarjetas) => {
+          tarjetas.forEach((data) => {
+            const tarjeta = data.data() as any;
+            resolve(tarjeta);
+          });
         });
-      })
     });
   }
 
@@ -278,10 +287,14 @@ export class UsuarioProvider {
 
   public getTarjeta(idTarjeta: string) {
     return new Promise((resolve, reject) => {
-      this.afs.collection('tarjetas').doc(idTarjeta).get().subscribe(tarjeta => {
-        const data = tarjeta.data() as any;
-        resolve(data);
-      });
+      this.afs
+        .collection("tarjetas")
+        .doc(idTarjeta)
+        .get()
+        .subscribe((tarjeta) => {
+          const data = tarjeta.data() as any;
+          resolve(data);
+        });
     });
   }
 
@@ -381,34 +394,50 @@ export class UsuarioProvider {
 
   buscarTelefono(tel: string) {
     return new Promise((resolve, reject) => {
-      const users = this.afs.collection('users').ref;
-      users.where("phoneNumber", "==", tel).get().then(query => {
-        const basia = query.empty;
-        console.log('basia', basia);
-        resolve(basia);
-      })
-    });
-  }
-    
-  deleteAccount(uid: string){
-    return new Promise((resolve, reject) => {
-        this.afDB.database.ref(`users/${uid}`).ref.remove();
-        const tarjetas = this.afs.collection('tarjetas').ref;
-        tarjetas.where("idUsuario", "==", uid).get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            doc.ref.delete();
-          })
+      const users = this.afs.collection("users").ref;
+      users
+        .where("phoneNumber", "==", tel)
+        .get()
+        .then((query) => {
+          const basia = query.empty;
+          console.log("basia", basia);
+          resolve(basia);
         });
-        const body = {
-          uid: uid
-        }
-        this.http.post(`${this.apiUrl}/userDelete`, body).subscribe((resp) =>{
-          resolve(resp);
-        });
-        
     });
   }
 
+  buscarUserTelefono(tel: string) {
+    return new Promise((resolve, reject) => {
+      this.afs
+        .collection("users", (ref) => ref.where("phoneNumber", "==", tel))
+        .valueChanges()
+        .subscribe((data: any) => {
+          const usTel = data;
+          resolve(JSON.stringify(usTel));
+        });
+    });
+  }
+
+  deleteAccount(uid: string) {
+    return new Promise((resolve, reject) => {
+      this.afDB.database.ref(`users/${uid}`).ref.remove();
+      const tarjetas = this.afs.collection("tarjetas").ref;
+      tarjetas
+        .where("idUsuario", "==", uid)
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+      const body = {
+        uid: uid,
+      };
+      this.http.post(`${this.apiUrl}/userDelete`, body).subscribe((resp) => {
+        resolve(resp);
+      });
+    });
+  }
 }
 
 export interface Credenciales {

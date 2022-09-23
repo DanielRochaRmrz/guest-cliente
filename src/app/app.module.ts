@@ -105,6 +105,7 @@ import { ScrollableDirective } from './scrollable.directive';
 import { PaginationService } from './pagination.service';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner';
 import { HistorialCompartidasPage } from '../pages/historial-compartidas/historial-compartidas';
+import { ImagenPerfilComponent } from '../components/imagen-perfil/imagen-perfil';
 
 
 var firebaseConfig = {
@@ -165,7 +166,8 @@ firebase.initializeApp(firebaseConfig);
     MenuArbolPage,
     ScrollableDirective,
     LoadingSpinnerComponent,
-    HistorialCompartidasPage
+    HistorialCompartidasPage,
+    ImagenPerfilComponent
   ],
   imports: [
     BrowserModule,

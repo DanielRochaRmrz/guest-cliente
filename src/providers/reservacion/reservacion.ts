@@ -373,7 +373,8 @@ export class ReservacionProvider {
     idReservacion: string,
     telefono: string,
     idUsuario: string,
-    idSucursal: string
+    idSucursal: string,
+    fechaR: string
   ) {
     return new Promise((resolve, reject) => {
       const refCompartidas = this.af.collection("compartidas", (ref) =>
@@ -390,7 +391,8 @@ export class ReservacionProvider {
             idReservacion,
             telefono,
             idUsuario,
-            idSucursal
+            idSucursal,
+            fechaR
           );
         } else {
           console.log("Si esta en DB -->", telefono);
@@ -409,7 +411,8 @@ export class ReservacionProvider {
     idReservacion: string,
     telefono: string,
     idUsuario: string,
-    idSucursal: string
+    idSucursal: string,
+    fechaR: string
   ) {
     this.af
       .collection("compartidas")
@@ -423,6 +426,7 @@ export class ReservacionProvider {
         estatusFinal: "rsv_incompleta",
         pagoEstatus: false,
         idSucursal: idSucursal,
+        fechaR: fechaR
       })
       .then((reserva) => {
         this.updateCompartirId(reserva.id);
@@ -713,7 +717,7 @@ export class ReservacionProvider {
     });
   }
 
-  public saveCompartirTodos(telefono, idReservacion, idUsuario, idSucursal) {
+  public saveCompartirTodos(telefono, idReservacion, idUsuario, idSucursal, fechaR) {
     return new Promise((resolve, reject) => {
       this.af
         .collection("compartidas")
@@ -727,6 +731,7 @@ export class ReservacionProvider {
           estatusFinal: "rsv_incompleta",
           pagoEstatus: false,
           idSucursal: idSucursal,
+          fechaR: fechaR
         })
         .then((reserva) => {
           this.updateCompartirId(reserva.id);
@@ -744,7 +749,8 @@ export class ReservacionProvider {
     idReservacion,
     idUsuario,
     idSucursal,
-    playerID
+    playerID,
+    fechaR: string
   ) {
     return new Promise((resolve, reject) => {
       localStorage.setItem("compartida", "true");
@@ -761,6 +767,7 @@ export class ReservacionProvider {
           estatusFinal: "rsv_incompleta",
           pagoEstatus: false,
           idSucursal: idSucursal,
+          fechaR: fechaR
         })
         .then((reserva) => {
           this.updateCompartirId(reserva.id);
@@ -1119,7 +1126,17 @@ export class ReservacionProvider {
       });
     });
 
-    this.eliminar_rsvp(idReservacion);
+    const compartidas = this.af.collection<any>("compartidas", (ref) =>
+      ref.where("idReservacion", "==", idReservacion)
+    );
+
+    compartidas.get().subscribe(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        doc.ref.delete();
+      });
+    });
+
+    
   }
 
   deleteProduct(idReservacion) {

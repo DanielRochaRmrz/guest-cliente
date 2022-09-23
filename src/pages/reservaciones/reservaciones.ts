@@ -322,7 +322,8 @@ export class ReservacionesPage {
               idReservacion,
               this.uid,
               this.idSucursal,
-              this.miUser.playerID
+              this.miUser.playerID,
+              this.fecha
             )
             .then((respuesta: any) => {});
         });
@@ -332,7 +333,7 @@ export class ReservacionesPage {
     this.compartir.forEach((tel: any) => {
       //insertar en tabla compartidas los numeros de con quien se esta compartiendo
       this._providerReserva
-        .saveCompartirTodos(tel, idReservacion, this.uid, this.idSucursal)
+        .saveCompartirTodos(tel, idReservacion, this.uid, this.idSucursal, this.fecha)
         .then((respuesta2: any) => {
           this.afs
             .collection("compartidas", (ref) =>
@@ -346,7 +347,11 @@ export class ReservacionesPage {
                 this._providerReserva
                   .buscarPlayerid(element.telefono)
                   .subscribe((players) => {
-                    if (players == undefined) {
+                    console.log(players.length);
+                    
+                    if (!players.length) {
+                      console.log("El array está vacío!");
+                    } else {
                       this.players = players[0].playerID;
                       this.afs
                         .collection("compartidas")
@@ -430,7 +435,8 @@ export class ReservacionesPage {
                 idReservacion,
                 this.uid,
                 this.idSucursal,
-                this.miUser.playerID
+                this.miUser.playerID,
+                this.fecha
               )
               .then((respuesta: any) => {});
           });
@@ -511,11 +517,14 @@ export class ReservacionesPage {
       console.log("El array está vacío!");
     } else {
       res.forEach(contacts => {
+        console.log('Contactos delete -->', contacts);
+        
         this._providerReserva.deleteUserSharedReserv(
           idReservacion,
           contacts,
           this.uid,
-          this.idSucursal
+          this.idSucursal,
+          this.fecha
         );
       })
     }

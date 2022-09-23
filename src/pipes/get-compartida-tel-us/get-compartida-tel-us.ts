@@ -12,11 +12,12 @@ export class GetCompartidaTelUsPipe implements PipeTransform {
   
   async transform(telefono: string) {
 
-    const usuario : any = await this.usuarioProvider.buscarTelefono(telefono);
+    const usuario : any = await this.usuarioProvider.buscarUserTelefono(telefono);
 
     const us: string = usuario as string;
 
     const data = JSON.parse(us);
+    console.log('Usuarios COM -->', data);
     
     return data[0];
   }

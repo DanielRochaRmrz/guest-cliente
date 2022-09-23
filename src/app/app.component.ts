@@ -30,6 +30,7 @@ import * as firebase from "firebase";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  
   db = firebase.firestore();
   user: Credenciales = {};
   rootPage: any;

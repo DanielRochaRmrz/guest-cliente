@@ -15,6 +15,8 @@ export class PushNotiProvider {
 
   public PushNotiCompartidos(reservaId: string) {
     return new Promise((resolve, reject) => {
+      console.log("Id Reservación Compartida -->", reservaId);
+      
       const userCompartidoRef = this.af.collection("compartidas").ref;
       userCompartidoRef
         .where("idReservacion", "==", reservaId)
@@ -22,6 +24,8 @@ export class PushNotiProvider {
         .get()
         .then((data) => {
           data.forEach((userCom) => {
+            console.log('Data compartidas -->', userCom.data());
+            
             const comUsers = userCom.data();
             const usersCompartidoPayerID = comUsers.playerId;
             console.log("Usuarios compartidos: ", usersCompartidoPayerID);
