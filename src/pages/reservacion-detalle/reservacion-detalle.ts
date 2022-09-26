@@ -357,6 +357,10 @@ export class ReservacionDetallePage {
                       // const propiCal2 = this.total3 * info2[0].propina;
                       // const totalPropin2 = this.total3 + propiCal2;
                       this.resultadoCompartir = this.totalNeto / this.tamano;
+                      console.log('resultadoCompartir', this.resultadoCompartir);
+                      console.log('tamano', this.tamano);
+
+                      
                       // totalDividido.push(this.resultadoCompartir);
                       //asignar a cada persona que acepto compartir lo que le toca de la cuenta
                       this.compartidasAceptadas.forEach((datacom) => {
@@ -426,9 +430,7 @@ export class ReservacionDetallePage {
             if (/^[0-9]{3,4}$/.test(data.cvc)) {
               console.log("Saved clicked", data);
 
-              const t =
-                totalDividido + totalDividido * 0.16 + totalDividido * 0.059;
-              const amount = (Number(t) * 100).toFixed(0);
+              const amount = (Number(totalDividido) * 100).toFixed(0);
               this.navCtrl.setRoot(GenerarqrPage, {
                 idReservacion: idReservacion,
                 totalDividido: amount,
@@ -533,8 +535,7 @@ export class ReservacionDetallePage {
             if (/^[0-9]{3,4}$/.test(data.cvc)) {
               console.log("Saved clicked", data);
 
-              const t = total + total * 0.16 + total * 0.059;
-              const amount = (Number(t) * 100).toFixed(0);
+              const amount = (Number(total) * 100).toFixed(0);
               this.navCtrl.setRoot(Generarqr_2Page, {
                 idReservacion: idReservacion,
                 total: amount,

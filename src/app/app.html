@@ -1,62 +1,85 @@
 <ion-menu [content]="content">
-    <ion-content class="menu-content" mode="md">
-
-        <imagen-perfil></imagen-perfil>
-        <!-- <div align="center">
-            <div *ngIf="uidUserSesion != undefined">
-                <div *ngIf="nombresUserss.provider == 'facebook'">
-                    <div *ngIf="nombresUserss.status_foto == 0">
-                        <img [src]="userImage" class="imgRedonda">
-                        <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-                    </div>
-                    <div *ngIf="nombresUserss.status_foto == 1">
-                        <img class="imgRedonda" src="{{userImage}}">
-                        <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-                    </div>
-                </div>
-                <div *ngIf="nombresUserss.provider == 'google'">
-                    <div *ngIf="nombresUserss.status_foto == 0">
-                        <img class="imgRedondas" src="{{userImage}}?type=large&width=720&height=720">
-                        <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-                    </div>
-                    <div *ngIf="nombresUserss.status_foto == 1">
-                        <img class="imgFotogoogle" src="{{userImage}}">
-                        <p style="color: white;font-size: large;">{{nombresUserss.displayName}}</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-
-        <div class="margen4_app">
-            <ion-list class="menu-list">
-                <button ion-item (click)="iraHome()">
-                    <img class="home" src="../assets/imgs/icons/iconos-07.png"> Home
-                </button>
-                <button ion-item (click)="iraMisreservaciones()">
-                    <img class="home" src="../assets/imgs/guest04.png"> Mis Reservaciones
-                </button>
-                <button ion-item style="background:#FD9530" (click)="iraPerfil()">
-                    <img class="home" src="../assets/imgs/icons/iconos-02.png"> Perfil
-                </button>
-                <button ion-item style="background:#FD9530" (click)="iraHistorial()">
-                    <img class="home" src="../assets/imgs/icons/iconos-03.png"> Historial
-                </button>
-                <button ion-item style="background:#FD9530" (click)="iraPago()">
-                    <img class="home" src="../assets/imgs/icons/medidas.png"> Pago
-                </button>
-                <button ion-item style="background:#FD9530" (click)="iraCupones()">
-                    <img class="home" src="../assets/imgs/icons/medidas-09.png"> &nbsp; Cupones
-                </button>
-                <button style="border-radius: 10px;color:#ffff;width:50px;width:130px;height:30px;margin-left:50px;margin-top:60px" block (click)="irsalir()">
-                    <img src="../assets/imgs/icons/icono negro-03.png" style="width:20px" alt="">
-                    <font color="black"> Salir </font>
-                </button>
-            </ion-list>
+  <ion-content class="menu-content" mode="md">
+    <div align="center">
+      <div *ngIf="nombresUserss.provider == 'facebook'">
+        <div *ngIf="nombresUserss.status_foto == 0">
+          <img [src]="nombresUserss.photoURL" class="imgRedonda" />
+          <p style="color: white; font-size: large">
+            {{nombresUserss.displayName}}
+          </p>
         </div>
-    </ion-content>
+        <div *ngIf="nombresUserss.status_foto == 1">
+          <img class="imgRedonda" src="{{nombresUserss.photoURL}}" />
+          <p style="color: white; font-size: large">
+            {{nombresUserss.displayName}}
+          </p>
+        </div>
+      </div>
+      <div *ngIf="nombresUserss.provider == 'google'">
+        <div *ngIf="nombresUserss.status_foto == 0">
+          <img
+            class="imgRedondas"
+            src="{{nombresUserss.photoURL}}?type=large&width=720&height=720"
+          />
+          <p style="color: white; font-size: large">
+            {{nombresUserss.displayName}}
+          </p>
+        </div>
+        <div *ngIf="nombresUserss.status_foto == 1">
+          <img class="imgFotogoogle" src="{{nombresUserss.photoURL}}" />
+          <p style="color: white; font-size: large">
+            {{nombresUserss.displayName}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="margen4_app">
+      <ion-list class="menu-list">
+        <button ion-item (click)="iraHome()">
+          <img class="home" src="../assets/imgs/icons/iconos-07.png" /> Home
+        </button>
+        <button ion-item (click)="iraMisreservaciones()">
+          <img class="home" src="../assets/imgs/guest04.png" /> Mis
+          Reservaciones
+        </button>
+        <button ion-item style="background: #fd9530" (click)="iraPerfil()">
+          <img class="home" src="../assets/imgs/icons/iconos-02.png" /> Perfil
+        </button>
+        <button ion-item style="background: #fd9530" (click)="iraHistorial()">
+          <img class="home" src="../assets/imgs/icons/iconos-03.png" />
+          Historial
+        </button>
+        <button ion-item style="background: #fd9530" (click)="iraPago()">
+          <img class="home" src="../assets/imgs/icons/medidas.png" /> Pago
+        </button>
+        <button ion-item style="background: #fd9530" (click)="iraCupones()">
+          <img class="home" src="../assets/imgs/icons/medidas-09.png" /> &nbsp;
+          Cupones
+        </button>
+        <button
+          style="
+            border-radius: 10px;
+            color: #ffff;
+            width: 50px;
+            width: 130px;
+            height: 30px;
+            margin-left: 50px;
+            margin-top: 60px;
+          "
+          block
+          (click)="irsalir()"
+        >
+          <img
+            src="../assets/imgs/icons/icono negro-03.png"
+            style="width: 20px"
+            alt=""
+          />
+          <font color="black"> Salir </font>
+        </button>
+      </ion-list>
+    </div>
+  </ion-content>
 </ion-menu>
 
-
-
-<ion-nav [root]="rootPage" #content></ion-nav>
+<ion-nav #content [root]="rootPage"></ion-nav>

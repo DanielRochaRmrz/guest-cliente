@@ -161,11 +161,9 @@ export class MyApp {
             ) {
               if (this.nombresUserss.type == "u") {
                 if (localStorage.getItem("isLogin") == "true") {
-                  this.nav.setRoot(TipoLugarPage, {
-                    uid: this.nombresUserss.uid,
-                  });
+                  this.rootPage = TipoLugarPage;
                 } else if (localStorage.getItem("isLogin") == "false") {
-                  this.nav.setRoot(SliderPage);
+                  this.rootPage = SliderPage;
                 } else if (localStorage.getItem("reservacion") == "true") {
                   this.nav.setRoot(ResumenPage, {
                     idReservacion: localStorage.getItem("idReservacion"),
