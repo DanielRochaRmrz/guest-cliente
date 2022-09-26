@@ -35,17 +35,15 @@ export class HistorialCompartidasPage {
     
     this.page.initHistorialCompartidas('compartidas', 'fechaR', { reverse: true, prepend: false }, this.telUser);
 
+    this.getAllReservaciones(this.telUser, this.uid);
   }
 
   ionViewDidLoad() {
 
-    this.uid = localStorage.getItem('uid');
-    this.getAllReservaciones();
-
   }
 
-  getAllReservaciones() {
-    this.reservaProvider.getReservacionesClienteHistorial(this.uid).subscribe((data) => {
+  getAllReservaciones(tel, uid) {
+    this.reservaProvider.getReservacionesClienteHistorialCompartidas(tel, uid).subscribe((data) => {
       this.misReservaciones = data;
     });
   }

@@ -82,6 +82,7 @@ export class HistorialDetallePage {
   comision: number;
   totalConPropina: any;
   totalNeto: any;
+  subTotal: number;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -222,13 +223,15 @@ export class HistorialDetallePage {
 
             this.validarCupon = "Noexiste";
 
-            this.propinaRe = this.total * info[0].propina;
-            this.iva = this.total * .16;
-
-            console.log("this.iva", this.iva);
             this.comision = this.total * .059;
-            this.totalConPropina = this.total + this.propinaRe;
-            this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+            
+            this.subTotal = this.comision + this.total;
+            
+            this.iva = this.subTotal * .16;
+
+            this.propinaRe = this.total * info[0].propina;
+
+            this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
           } else {
 
@@ -239,13 +242,16 @@ export class HistorialDetallePage {
               this.idUser = localStorage.getItem("uid");
 
               this.validarCupon = "Existe";
-              this.propinaRe2 = info[0].totalReservacion * info[0].propina;
-              this.iva = info[0].totalReservacion * .16;
-              console.log("this.iva", this.iva);
 
               this.comision = info[0].totalReservacion * .059;
-              this.totalConPropina = info[0].totalReservacion + this.propinaRe2;
-              this.totalNeto = (this.comision + this.iva) + this.totalConPropina;
+
+              this.subTotal = this.comision + info[0].totalReservacion;
+
+              this.iva = this.subTotal * .16;
+
+              this.propinaRe = info[0].totalReservacion * info[0].propina;
+              
+              this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
             });
           }

@@ -333,6 +333,26 @@ export class ReservacionProvider {
     ));
   }
 
+  public getReservacionesClienteHistorialCompartidas(uid: string, telefono: string) {
+    this.reservaCliente = this.af.collection<any>("compartidas", (ref) =>
+      ref
+        .where("telefono", "==", telefono)
+        .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus_escaneo", "==", "OK")
+        .where("idUsuario", "!=", uid)
+    );
+    this._reservaCliente = this.reservaCliente.valueChanges();
+    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
+      map((changes) => {
+        return changes.map((action: any) => {
+          const data = action.payload.doc.data() as any;
+          data.$key = action.payload.doc.id;
+          return data;
+        });
+      })
+    ));
+  }
+
   //obtener reservacion compartida en la que esta el usuario
   public getReservacionCompartida(telefono: string) {
     this.resCompartida = this.af.collection<any>("compartidas", (ref) =>
@@ -438,12 +458,12 @@ export class ReservacionProvider {
           .subscribe((data) => {
             const resultCompartidas = data;
             console.log("resultCompartidas -->", resultCompartidas);
-            
+
             //insertar el player id de cada telefono insertado
             resultCompartidas.forEach((element: any) => {
               this.buscarPlayerid(element.telefono).subscribe((players) => {
                 console.log("players -->", players);
-                
+
                 if (players !== undefined) {
                   const player = players[0].playerID;
                   this.af
@@ -452,7 +472,7 @@ export class ReservacionProvider {
                     .update({
                       playerId: player,
                     })
-                    .then(function () {});
+                    .then(function () { });
                 }
               });
             });
@@ -1000,8 +1020,8 @@ export class ReservacionProvider {
       .update({
         idReservacion: ID,
       })
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
   }
 
   public updateCompartirId(ID) {
@@ -1011,8 +1031,8 @@ export class ReservacionProvider {
       .update({
         idCompartir: ID,
       })
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
   }
 
   public getReservacion(idx) {
@@ -1113,8 +1133,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {})
-      .catch(function (error) {});
+      .then(function () { })
+      .catch(function (error) { });
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1136,7 +1156,7 @@ export class ReservacionProvider {
       });
     });
 
-    
+
   }
 
   deleteProduct(idReservacion) {
@@ -1144,8 +1164,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {})
-      .catch(function (error) {});
+      .then(function () { })
+      .catch(function (error) { });
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
