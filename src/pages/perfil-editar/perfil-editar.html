@@ -27,9 +27,16 @@
 
 <ion-content padding>
 
+    <h2>
+        <b>PERFIL</b>
+        <div class="detalle">Editar</div>
+    </h2>
+
+    <hr>
+
     <div>
         <ion-grid>
-            <ion-row style="margin-top:80px">
+            <ion-row style="margin-top:10px">
 
                 <ion-col>
                     <form [formGroup]="myForm" novalidate>
@@ -39,6 +46,15 @@
                                     <ion-item class="_input">
                                         <ion-label floating>Nombre</ion-label>
                                         <ion-input type="text" name="nombre" formControlName="nombre" [(ngModel)]="nombre"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col col-12>
+                                    <ion-item class="_input">
+                                        <ion-label floating>Instagram</ion-label>
+                                        <ion-input type="text" name="instagram" formControlName="instagram" [(ngModel)]="instagram"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -61,16 +77,6 @@
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
-
-                            <ion-row>
-                                <ion-col col-12>
-                                    <ion-item class="_input">
-                                        <ion-label floating>Tarjeta</ion-label>
-                                        <ion-input type="text" name="tarjeta" formControlName="tarjeta" [(ngModel)]="tarjeta"></ion-input>
-                                    </ion-item>
-                                </ion-col>
-                            </ion-row>
-
 
                         </ion-grid>
                         <br>

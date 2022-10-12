@@ -15,6 +15,7 @@ export class PerfilEditarPage {
   myForm: FormGroup;
   numero: any='';
   nombre: any='';
+  instagram: any = '';
   correo: any='';
   telefono: any='';
   tarjeta: any='';
@@ -30,6 +31,7 @@ export class PerfilEditarPage {
     this.getUser(this.uid);
     this.myForm = this.fbr.group({
       nombre: ['', [Validators.required]],
+      instagram: ['', [Validators.required]],
       correo: ['', [Validators.required]],
       telefono: ['', [Validators.required]],
       tarjeta: ['', [Validators.required]]
@@ -49,6 +51,7 @@ export class PerfilEditarPage {
     console.log('editar datos', id);
     let info = {
       nombre: this.nombre,
+      instagram: this.instagram,
       correo: this.correo,
       telefono: this.telefono,
       tarjeta: this.tarjeta
@@ -81,8 +84,8 @@ export class PerfilEditarPage {
         console.log('Datos de mi usuario', this.miUser.phoneNumber);
         this.telefono=this.miUser.phoneNumber;
         this.nombre =this.miUser.displayName;
+        this.instagram =this.miUser.instagram;
         this.correo = this.miUser.email;
-        this.tarjeta = this.miUser.tarjeta;
         this.id = this.miUser.uid;
       });
 

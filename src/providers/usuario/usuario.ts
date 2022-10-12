@@ -362,6 +362,7 @@ export class UsuarioProvider {
         .doc(idx)
         .update({
           displayName: infoPerfil.nombre,
+          instagram: infoPerfil.instagram,
           email: infoPerfil.correo,
           phoneNumber: infoPerfil.telefono,
           tarjeta: infoPerfil.tarjeta,
