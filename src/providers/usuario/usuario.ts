@@ -62,7 +62,7 @@ export class UsuarioProvider {
 
   public getCodigo(idx) {
     // return this.afiredatabase.object("sucursales/" + uid);
-    this.codigo = this.afs.collection<any>("usuarios", (ref) =>
+    this.codigo = this.afs.collection<any>("users", (ref) =>
       ref.where("uid", "==", idx)
     );
     this._codigo = this.codigo.valueChanges();
@@ -100,10 +100,9 @@ export class UsuarioProvider {
   }
 
   //Agregar el  telfono del usuario
-  public agregarTelefono(idx, telefono, ciudad) {
-    console.log("El user llego al provider", idx);
-    console.log("El telfono llego al provider", telefono);
-    console.log("La ciudad llego al provider", ciudad);
+  public agregarTelefono(idx, telefono, ciudad, insta) {
+    console.log("insta", insta);
+    
     return new Promise((resolve, reject) => {
       this.afs
         .collection("users")
@@ -111,6 +110,7 @@ export class UsuarioProvider {
         .update({
           phoneNumber: telefono,
           ciudad: ciudad,
+          instagram: insta
         })
         .then((reserva) => {
           console.log("Reservación actualizada: ", JSON.stringify(reserva));

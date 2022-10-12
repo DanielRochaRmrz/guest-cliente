@@ -20,6 +20,7 @@ export class TelefonoUserPage {
   idUsuario: any;
   telefono: any;
   ciudad: any;
+  instagram: any;
   myForm: FormGroup;
   ciudades: any;
 
@@ -36,7 +37,8 @@ export class TelefonoUserPage {
     //validas que los inputs del formulario no esten vacios
     this.myForm = this.fb.group({
       telefono: ["", [Validators.required]],
-      ciudad: ["", [Validators.required]]
+      ciudad: ["", [Validators.required]],
+      instagram: ["", [Validators.required]]
     });
   }
 
@@ -54,11 +56,11 @@ export class TelefonoUserPage {
         message: 'Este número ya se encuentra registrado',
         buttons: ['Aceptar']
       });
-      alert.present(); 
+      alert.present();
       return;
     }
 
-    this.usuarioProv.agregarTelefono(this.idUsuario, this.telefono, this.ciudad).then((respuesta: any) => {
+    this.usuarioProv.agregarTelefono(this.idUsuario, this.telefono, this.ciudad, this.instagram).then((respuesta: any) => {
       console.log("Respuesta: ", respuesta);
       if (respuesta.success == true) {
         localStorage.setItem('telefono', this.telefono);
@@ -69,7 +71,7 @@ export class TelefonoUserPage {
   }
 
 
-  getCiudades () {
+  getCiudades() {
     this.afs
       .collection("ciudades")
       .valueChanges()

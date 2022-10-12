@@ -33,10 +33,12 @@ export class LoginCorreoPage {
   afs = firebase.firestore();
   uidUserSesion: any;
   nombresUserss: any = {};
+  respuestaestadoEmailVerificado: any;
+  usuarioLog: any;
 
   emailPattern: string = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
-    constructor(public navCtrl: NavController,
+  constructor(public navCtrl: NavController,
     private afAuth: AngularFireAuth,
     public usuarioProv: UsuarioProvider,
     public fbr: FormBuilder,
@@ -52,7 +54,7 @@ export class LoginCorreoPage {
     });
 
     this.myForm_lo = this.fbr.group({
-      email_lo: ['', [Validators.required, Validators.pattern( this.emailPattern )]],
+      email_lo: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
       pass_lo: ['', [Validators.required]]
     });
 
@@ -63,18 +65,8 @@ export class LoginCorreoPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginCorreoPage');
-  
+
     this.palabra = this.navParams.get('palabra');
-    console.log("Dato", this.palabra);
-
-    this.uidUserSesion = localStorage.getItem('uid');
-    console.log('id del usuario en localStorage', this.uidUserSesion);
-
-    if(this.palabra == 'inicio_sesion'){
-      if (this.uidUserSesion != null || this.uidUserSesion != undefined) {
-        this.goToUserExist();
-      }
-    }
 
   }
 
@@ -84,86 +76,60 @@ export class LoginCorreoPage {
 
   RegisterToEmail() {
 
-    console.log("nombre", this.name, "correo", this.email, "password", this.pass);
-
     const email = this.email.trim();
-    console.log('Email con espacio', this.email);
-    console.log('Email sin espacio', email);
-    
-    const result = this.afAuth.auth.createUserWithEmailAndPassword(email, this.pass).then((user: any) => {
-      console.log('usuario', user);
 
-      localStorage.setItem("isLogin", 'true');
+    // CREANDO PERFIL EN FIREBASE
+
+    this.afAuth.auth.createUserWithEmailAndPassword(email, this.pass).then((user: any) => {
+
       this.us = user.user;
-      console.log('Usuario: ', JSON.stringify(this.us));
-      console.log("contraseña", this.us.pass);
-      localStorage.setItem("uid", this.us.uid);
 
-      this.usuarioProv.getCodigo(this.us.uid).subscribe(co => {
-        this.codigos = co;
-        console.log('datos tabla user', this.codigos.length);
-        if (this.codigos.length == 0) {
-          console.log('agregar tel');
+      // AGREGANDO REGISTRO EN BD
 
-          this.db.collection("users").doc(this.us.uid).set({
-            uid: this.us.uid,
-            displayName: this.name,
-            email: this.us.email,
-            photoURL: 'https://firebasestorage.googleapis.com/v0/b/guestreservation-8b24b.appspot.com/o/users.png?alt=media&token=42d160e1-4f6e-4d65-84d6-ef4ed3a8c057',
-            playerID: localStorage.getItem('playerID'),
-            phoneNumber: 'null',
-            status_foto: 0,
-            provider: 'google',
-            type: 'u',
-            ciudad: 'null',
-            tarjeta: ''
+      this.db.collection('users').doc(this.us.uid).set({
+        uid: this.us.uid,
+        displayName: this.name,
+        email: this.us.email,
+        photoURL: 'https://firebasestorage.googleapis.com/v0/b/guestreservation-8b24b.appspot.com/o/users.png?alt=media&token=42d160e1-4f6e-4d65-84d6-ef4ed3a8c057',
+        playerID: localStorage.getItem('playerID'),
+        phoneNumber: 'null',
+        instagram: 'null',
+        status_foto: 0,
+        provider: 'google',
+        type: 'u',
+        ciudad: 'null'
+      }).then(() => {
+
+        // ENVIO DE CORREO DE VERFICACION
+
+        var userEmail = firebase.auth().currentUser;
+
+        userEmail.sendEmailVerification().then(() => {
+          const alert = this.alertCtrl.create({
+            title: 'Verifica tu correo',
+            message: 'Se ha enviado un mensaje a tu correo electrónico para verificar tu cuenta, por favor checa tu email, sino esta en tu bandeja de entrada dirigete al SPAM.',
+            buttons: ['Aceptar']
           });
-          this.navCtrl.setRoot(TelefonoUserPage, {
-            idUsuario: this.us.uid
-          });
+          alert.present();
 
-        }
-        this.codigos.forEach(data => {
-          console.log('telefonoforeach', data.phoneNumber);
-          this.telefono = data.phoneNumber;
-          //console.log('telefono',data.phoneNumber);
-          if (data.phoneNumber == 'null' || data.phoneNumber == undefined || data.phoneNumber == null) {
-            console.log('No existe telefono manda a telefono');
-            console.log('telefonoif', data.phoneNumber);
-            this.db.collection('users').doc(this.usuarioProv.usuario.uid).set({
-              uid: this.usuarioProv.usuario.uid,
-              displayName: this.us.displayName,
-              email: this.us.email,
-              photoURL: 'https://firebasestorage.googleapis.com/v0/b/guestreservation-8b24b.appspot.com/o/users.png?alt=media&token=42d160e1-4f6e-4d65-84d6-ef4ed3a8c057',
-              playerID: localStorage.getItem('playerID'),
-              phoneNumber: 'null',
-              status_foto: 0,
-              provider: 'google',
-              type: 'u',
-              ciudad: 'null'
-            });
-            this.navCtrl.setRoot(TelefonoUserPage, {
-              idUsuario: this.us.uid
-            });
-          } else {
-            console.log('Ya existe telefono manda a tabs');
-            console.log('telefonoelse', data.phoneNumber);
-            localStorage.setItem('telefono', data.phoneNumber);
-            this.db.collection('users').doc(this.usuarioProv.usuario.uid).set({
-              uid: this.usuarioProv.usuario.uid,
-              displayName: this.us.displayName,
-              email: this.us.email,
-              photoURL: 'https://firebasestorage.googleapis.com/v0/b/guestreservation-8b24b.appspot.com/o/users.png?alt=media&token=42d160e1-4f6e-4d65-84d6-ef4ed3a8c057',
-              playerID: localStorage.getItem('playerID'),
-              phoneNumber: data.phoneNumber,
-              status_foto: 0,
-              provider: 'google',
-              type: 'u',
-              ciudad: data.ciudad
-            });
-          }
+          this.afAuth.auth.signOut();
+
+          this.navCtrl.setRoot(LoginPage);
+
+
+        }).catch(function (error) {
+
+          console.log(error);
+
         });
-      });
+      })
+
+      // CONTROL DE ERROR DE CORREO REPETIDO
+
+    }).catch(function (error) {
+
+      alert(error);
+
     });
   }
 
@@ -171,15 +137,70 @@ export class LoginCorreoPage {
 
     try {
 
-
-
       const result = this.afAuth.auth.signInWithEmailAndPassword(this.email_lo, this.pass_lo).then((user: any) => {
-        console.log('Result -->', user);
-        localStorage.setItem("isLogin", 'true');
+
+        this.respuestaestadoEmailVerificado = user.user.emailVerified;
+
         if (result) {
-          this.us = result;
-          localStorage.setItem("uid", user.user.uid);
-          this.navCtrl.setRoot(TipoLugarPage, { 'uid': user.user.uid });
+
+          if (this.respuestaestadoEmailVerificado == true) {
+
+            var uid = user.user.uid;
+
+            this.usuarioProv.getCodigo(uid).subscribe(userLog => {
+
+              this.usuarioLog = userLog;
+
+              console.log("usuario log", this.usuarioLog);
+
+              this.usuarioLog.forEach(data => {
+
+                var phoneNumber = data.phoneNumber;
+
+                if (phoneNumber == "null") {
+
+                  const alert = this.alertCtrl.create({
+                    title: '¡Captura de datos!',
+                    message: 'Aún nos falta conocerta más, por favor llena el siguiente formulario.',
+                    buttons: ['Aceptar']
+                  });
+
+                  alert.present();
+
+                  this.navCtrl.setRoot(TelefonoUserPage, {
+
+                    idUsuario: data.uid
+
+                  });
+
+                } else {
+
+                  this.us = result;
+
+                  localStorage.setItem("isLogin", 'true');
+
+                  localStorage.setItem("uid", user.user.uid);
+
+                  this.navCtrl.setRoot(TipoLugarPage, { 'uid': user.user.uid });
+
+                }
+
+              });
+            });
+
+
+          } else {
+
+            const alert = this.alertCtrl.create({
+              title: 'Email no verificado',
+              message: 'Revisa la bandeja de entrada o el spam de tu correo electrónico para verificar tu email y poder acceder.',
+              buttons: ['Aceptar']
+            });
+
+            alert.present();
+
+          }
+
         }
       }).catch(error => {
         if (error.code == "auth/invalid-email") {
@@ -188,8 +209,8 @@ export class LoginCorreoPage {
             message: 'Formato de correo invalido',
             buttons: ['Aceptar']
           });
-          alert.present(); 
-        } 
+          alert.present();
+        }
 
         if (error.code == "auth/wrong-password") {
           const alert = this.alertCtrl.create({
@@ -197,8 +218,8 @@ export class LoginCorreoPage {
             message: 'Contraseña incorrecta',
             buttons: ['Aceptar']
           });
-          alert.present(); 
-        } 
+          alert.present();
+        }
 
         if (error.code == "auth/user-not-found") {
           const alert = this.alertCtrl.create({
@@ -206,9 +227,9 @@ export class LoginCorreoPage {
             message: 'No existe registro del usuario, por favor registrate para poder acceder',
             buttons: ['Aceptar']
           });
-          alert.present(); 
-        } 
-        
+          alert.present();
+        }
+
       });
     } catch (error) {
       if (error.code == "auth/argument-error") {
@@ -218,7 +239,7 @@ export class LoginCorreoPage {
           buttons: ['Aceptar']
         });
         alert.present();
-      } 
+      }
     }
 
   }
@@ -249,16 +270,16 @@ export class LoginCorreoPage {
     this.navCtrl.setRoot(LoginCorreoPage);
   }
 
-  goToUserExist(){
+  goToUserExist() {
     this.db.collection("users").doc(this.uidUserSesion).valueChanges().subscribe(data => {
-        this.nombresUserss = data;
-        console.log("dato usuario existente", this.nombresUserss);
-        
-        if(this.nombresUserss.uid != null || this.nombresUserss.uid == undefined){
-          if(this.nombresUserss.type == 'u'){
-            this.navCtrl.setRoot(TipoLugarPage, { 'uid': this.nombresUserss.uid });
-          }
+      this.nombresUserss = data;
+      console.log("dato usuario existente", this.nombresUserss);
+
+      if (this.nombresUserss.uid != null || this.nombresUserss.uid == undefined) {
+        if (this.nombresUserss.type == 'u') {
+          this.navCtrl.setRoot(TipoLugarPage, { 'uid': this.nombresUserss.uid });
         }
+      }
     });
   }
 
