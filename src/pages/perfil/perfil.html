@@ -55,7 +55,7 @@
             </h2>
         </ion-col>
         <ion-col col-5>
-            
+
         </ion-col>
         <ion-col col-2>
             <button *ngIf="invitado != 'true'" class="btnEditar" (click)="editarPerfil()">Editar</button>
@@ -87,12 +87,10 @@
     <br>
     <ion-list no-lines class="margen_2" style="padding: 20px;">
 
-
-        <!-- <ion-card style="width:330px;margin-left:20px"> -->
         <ion-card>
             <ion-row>
                 <ion-col col-2>
-                    <img class="icon" src="../assets/imgs/icons/Group101.png" style="width:40px;height:40px" item-start>
+                    <img class="icon" src="../assets/imgs/icons/Group24.png" style="width:40px;height:40px" item-start>
 
                 </ion-col>
                 <ion-col col-6>
@@ -101,16 +99,31 @@
 
                     <div class="usuarioN">{{user.displayName}}</div>
                 </ion-col>
-                <!-- <img class="icon" src="../assets/imgs/icons/Group 24.png" style="width:60px;height:60px" item-start> -->
 
             </ion-row>
         </ion-card>
 
-        <!-- <ion-card style="width:330px;margin-left:20px"> -->
         <ion-card>
             <ion-row>
                 <ion-col col-2>
-                    <img class="icon" src="../assets/imgs/icons/Group24.png" style="width:40px;height:40px" item-start>
+                    <ion-icon class="ins" style="color: #fcc04d" ios="logo-instagram" md="logo-instagram"></ion-icon>
+                </ion-col>
+                <ion-col col-6>
+
+                    <h4 class="letras"> Instagram:</h4>
+
+                    <div class="usuarioN">
+                        
+                        <a [href]="user.instagram"> {{ user.instagram }}</a></div>
+                </ion-col>
+
+            </ion-row>
+        </ion-card>
+
+        <ion-card>
+            <ion-row>
+                <ion-col col-2>
+                    <img class="icon" src="../assets/imgs/icons/Group101.png" style="width:40px;height:40px" item-start>
                 </ion-col>
                 <ion-col col-10>
 
@@ -123,7 +136,6 @@
 
         </ion-card>
 
-        <!-- <ion-card style="width:330px;margin-left:20px"> -->
         <ion-card>
             <ion-row>
                 <ion-col col-2>
@@ -142,21 +154,11 @@
                 </ion-col>
             </ion-row>
 
-            <!-- <img class="icon" src="../assets/imgs/icons/telefono.png" item-start> -->
-            <!-- <div class="margen4"> -->
-            <!-- <h4>Teléfono:</h4> -->
-
-            <!-- </div> -->
         </ion-card>
 
-        <!-- <ion-card style="width:330px;margin-left:20px"> -->
         <ion-card>
             <ion-row>
                 <ion-col col-2>
-                    <!-- <img class="icon" src="../assets/imgs/icons/Ellipse 6.png" style="width:50px;height:50px"
-                        item-start>
-                    <img class="icon" src="../assets/imgs/Trajeta-pago-01.png"
-                        style="margin-top:-45px;margin-left:10px;position:absolute" item-start> -->
                     <img class="icon" src="../assets/imgs/tarjeta_New.png" style="width:40px;height:40px" item-start>
                 </ion-col>
 
@@ -173,64 +175,9 @@
                         </div>
                     </div>
                 </ion-col>
-                <!-- <img class="icon" src="../assets/imgs/icons/tarjeta.png" item-start> -->
             </ion-row>
 
         </ion-card>
-
-
-        <!-- <ion-card>
-            <ion-row>
-                <ion-col col-2>
-                    <img class="icon" src="../assets/imgs/icons/Group24.png" style="width:40px;height:40px" item-start>
-                </ion-col>
-                <ion-col col-6>
-
-                    <h4 class="letras"> playerID:</h4>
-
-                    <div class="usuarioN">{{ playerID }}</div>
-                </ion-col>
-            </ion-row>
-        </ion-card> -->
-
-        <!-- <ion-card style="width:330px;margin-left:20px"> -->
-        <ion-card>
-            <div *ngIf="user.provider == 'facebook'">
-
-                <ion-row>
-                    <ion-col col-2 align="center">
-                        <!-- <ion-icon name="logo-facebook" item-start class="iconoFG"></ion-icon> -->
-                        <img src="./assets/imgs/facebook.png" class="imgFGN" alt="">
-                    </ion-col>
-
-                    <ion-col col-10>
-                        <div class="margen3">
-                            <h4>Sesión:</h4>
-                            <div class="faceD">Facebook</div>
-                        </div>
-                    </ion-col>
-                </ion-row>
-
-            </div>
-            <div *ngIf="user.provider == 'google'">
-
-                <ion-row>
-                    <ion-col col-2 align="center">
-                        <!-- <ion-icon name="logo-google" item-start class="iconoFG"></ion-icon> -->
-                        <img src="./assets/imgs/g.png" class="imgFGN" alt="">
-                    </ion-col>
-
-                    <ion-col col-10>
-                        <div class="margen3">
-                            <h4>Sesión:</h4>
-                            <div class="googleD">Google</div>
-                        </div>
-                    </ion-col>
-                </ion-row>
-
-            </div>
-        </ion-card>
-
 
         <div align="center">
             <button

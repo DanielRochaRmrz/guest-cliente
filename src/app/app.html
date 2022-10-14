@@ -1,38 +1,13 @@
 <ion-menu [content]="content">
   <ion-content class="menu-content" mode="md">
+
     <div align="center">
-      <div *ngIf="nombresUserss.provider == 'facebook'">
-        <div *ngIf="nombresUserss.status_foto == 0">
-          <img [src]="nombresUserss.photoURL" class="imgRedonda" />
-          <p style="color: white; font-size: large">
-            {{nombresUserss.displayName}}
-          </p>
-        </div>
-        <div *ngIf="nombresUserss.status_foto == 1">
-          <img class="imgRedonda" src="{{nombresUserss.photoURL}}" />
-          <p style="color: white; font-size: large">
-            {{nombresUserss.displayName}}
-          </p>
-        </div>
-      </div>
-      <div *ngIf="nombresUserss.provider == 'google'">
-        <div *ngIf="nombresUserss.status_foto == 0">
-          <img
-            class="imgRedondas"
-            src="{{nombresUserss.photoURL}}?type=large&width=720&height=720"
-          />
-          <p style="color: white; font-size: large">
-            {{nombresUserss.displayName}}
-          </p>
-        </div>
-        <div *ngIf="nombresUserss.status_foto == 1">
-          <img class="imgFotogoogle" src="{{nombresUserss.photoURL}}" />
-          <p style="color: white; font-size: large">
-            {{nombresUserss.displayName}}
-          </p>
-        </div>
-      </div>
+
+      <img class="imgLogoMenu" src="../assets/imgs/Logoblanco.png" />
+
     </div>
+     
+    <hr>
 
     <div class="margen4_app">
       <ion-list class="menu-list">
@@ -57,8 +32,7 @@
           <img class="home" src="../assets/imgs/icons/medidas-09.png" /> &nbsp;
           Cupones
         </button>
-        <button
-          style="
+        <button style="
             border-radius: 10px;
             color: #ffff;
             width: 50px;
@@ -66,15 +40,8 @@
             height: 30px;
             margin-left: 50px;
             margin-top: 60px;
-          "
-          block
-          (click)="irsalir()"
-        >
-          <img
-            src="../assets/imgs/icons/icono negro-03.png"
-            style="width: 20px"
-            alt=""
-          />
+          " block (click)="irsalir()">
+          <img src="../assets/imgs/icons/icono negro-03.png" style="width: 20px" alt="" />
           <font color="black"> Salir </font>
         </button>
       </ion-list>
