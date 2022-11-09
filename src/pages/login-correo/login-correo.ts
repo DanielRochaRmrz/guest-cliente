@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -45,7 +45,9 @@ export class LoginCorreoPage {
     public db: AngularFirestore,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public loadCtrl: LoadingController
+  ) {
 
     this.myForm = this.fbr.group({
       email: ['', [Validators.required]],
@@ -75,6 +77,13 @@ export class LoginCorreoPage {
   }
 
   RegisterToEmail() {
+
+    const laoding = this.loadCtrl.create({
+      content: "Espera un momento...",
+      spinner: "bubbles"
+    });
+
+    laoding.present();
 
     const email = this.email.trim();
 
@@ -116,6 +125,9 @@ export class LoginCorreoPage {
 
           this.navCtrl.setRoot(LoginPage);
 
+          // setTimeout(() => {
+            laoding.dismiss();
+          // }, 3000 );
 
         }).catch(function (error) {
 
