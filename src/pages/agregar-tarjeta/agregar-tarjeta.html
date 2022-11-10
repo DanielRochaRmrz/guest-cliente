@@ -1,119 +1,49 @@
 <ion-header>
   <ion-navbar class="borde">
     <ion-row>
-      <ion-col col-1>
-        <ion-icon
-          name="ios-arrow-back-outline"
-          (click)="behind()"
-          style="color: white"
-        ></ion-icon>
-      </ion-col>
       <ion-col>
-        <img
-          src="./assets/icon/atras.png"
-          (click)="goBack()"
-          class="imgBack"
-          alt=""
-        />
+        <ion-icon name="ios-arrow-back-outline" (click)="behind()" style="color: white; font-size: 4.2em">
+        </ion-icon>
       </ion-col>
       <ion-col align="center">
-        <img
-          src="./assets/imgs/Logoblanco.png"
-          (click)="goInicio()"
-          style="width: 60%"
-          alt=""
-        />
+        <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
       </ion-col>
       <ion-col>
-        <div align="end">
-          <div *ngIf="miUser.provider == 'facebook'">
-            <div *ngIf="miUser.status_foto == 0">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 40%; border-radius: 50%"
-              />
-            </div>
-            <div *ngIf="miUser.status_foto == 1">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 43px; height: 46px; border-radius: 50%"
-              />
-            </div>
-          </div>
-          <div *ngIf="miUser.provider == 'google'">
-            <div *ngIf="miUser.status_foto == 0">
-              <img
-                src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                style="width: 85%; border-radius: 50%"
-              />
-            </div>
-            <div *ngIf="miUser.status_foto == 1">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 43px; height: 46px; border-radius: 50%"
-              />
-            </div>
-          </div>
-        </div>
+        &nbsp;
       </ion-col>
     </ion-row>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <br />
-  <br />
-  <label for="" style="margin-left: 20px; margin-top: 10px; color: #fd9530">
-    <b> REGISTRAR TARJETA</b></label
-  >
-  <br />
-  <span style="margin-left: 20px; position: absolute; margin-top: -10px"
-    >________________________________</span
-  >
-  <br />
 
-  <br />
-  <br />
+  <ion-row>
+    <ion-col col-5>
+      <h2>
+        <b>REGISTRAR</b>
+        <div class="detalle">TARJETA</div>
+      </h2>
+    </ion-col>
+  </ion-row>
 
-  <label for="" style="margin-left: 20px; margin-top: 10px; color: #fd9530">
-    <b> STATUS: ACTIVA</b> <img src="./assets/imgs/icons/Ellipse 47.png" alt=""
-  /></label>
-  <br />
-  <br />
+  <hr>
 
   <form [formGroup]="myForm" novalidate class="">
     <ion-list>
       <br />
       <br />
       <ion-item>
-        <ion-label class="" style="color: #706f6f"
-          >Número
+        <ion-label class="" style="color: #706f6f">Número
           <p class="blanco_2">*16 dígitos</p>
         </ion-label>
-        <ion-input
-          type="tel"
-          style="opacity: 0.7; color: black"
-          [(ngModel)]="numTarjeta"
-          name="numTarjeta"
-          formControlName="numTarjeta"
-          minlength="16"
-          maxlength="16"
-        ></ion-input>
-        <b style="margin-top: -20px; position: absolute"
-          >_____________________________________________</b
-        >
+        <ion-input type="tel" style="opacity: 0.7; color: black" [(ngModel)]="numTarjeta" name="numTarjeta"
+          formControlName="numTarjeta" minlength="16" maxlength="16"></ion-input>
+        <b style="margin-top: -20px; position: absolute">_____________________________________________</b>
       </ion-item>
       <br />
       <ion-item style="">
         <ion-label class="" style="color: #706f6f">Mes expiración</ion-label>
-        <ion-select
-          style="color: black"
-          [(ngModel)]="mesExp"
-          multiple="false"
-          cancelText="Cancelar"
-          okText="Aceptar"
-          name="mesExp"
-          formControlName="mesExp"
-        >
+        <ion-select style="color: black" [(ngModel)]="mesExp" multiple="false" cancelText="Cancelar" okText="Aceptar"
+          name="mesExp" formControlName="mesExp">
           <div>
             <ion-option value="1">Enero</ion-option>
             <ion-option value="2">Febrero</ion-option>
@@ -133,29 +63,15 @@
       <br />
       <ion-item>
         <ion-label class="" style="color: #706f6f">Año expiración</ion-label>
-        <ion-datetime
-          style="color: black"
-          displayFormat="YYYY"
-          min="{{ fechaActualanio }}"
-          max="2080"
-          doneText="Aceptar"
-          cancelText="Cancelar"
-          [(ngModel)]="anioExp"
-          name="anioExp"
-          formControlName="anioExp"
-        ></ion-datetime>
+        <ion-datetime style="color: black" displayFormat="YYYY" min="{{ fechaActualanio }}" max="2080"
+          doneText="Aceptar" cancelText="Cancelar" [(ngModel)]="anioExp" name="anioExp" formControlName="anioExp">
+        </ion-datetime>
       </ion-item>
     </ion-list>
   </form>
 
   <div text-center>
-    <button
-      ion-button
-      round
-      style="background-color: #fd9530"
-      (click)="tarjetaAdd()"
-      [disabled]="!myForm.valid"
-    >
+    <button ion-button round style="background-color: #fd9530" (click)="tarjetaAdd()" [disabled]="!myForm.valid">
       Registrar
     </button>
   </div>
