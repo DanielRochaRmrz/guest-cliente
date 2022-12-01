@@ -10,53 +10,24 @@
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" style="width: 60%;" alt="">
             </ion-col>
-            <ion-col>
-                <!-- <div align='end'>
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                            style="width:40%;border-radius:50%;">
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <img src="{{miUser.photoURL}}?type=large&width=720&height=720"
-                            style="width:85%;border-radius:50%;">
-                    </div>
-                </div> -->
-                <div align='end'>
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
-                        </div>
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
-                        </div>
-                    </div>
-                </div>
-            </ion-col>
         </ion-row>
     </ion-navbar>
 </ion-header>
 <ion-content>
-  <div text-center>
-    <ion-badge style="background-color:#FD9530;">
-      <h5>Total de la reservacion con propina
-      <br>
-      es: $ {{totalPropina}}
-      <br>
-       Gracias por reservar en Guest Resy
-      <br>
-      te notificaremos cuando tu
-      <br>
-      reservación haya sido aceptada.</h5>
-    </ion-badge>
-  </div>
+    <div text-center>
+        <ion-badge style="background-color:#FD9530;">
+            <h5>Total de la reservacion con propina
+                <br>
+                es: $ {{totalPropina}}
+                <br>
+                Gracias por reservar en Guest Resy
+                <br>
+                te notificaremos cuando tu
+                <br>
+                reservación haya sido aceptada.
+            </h5>
+        </ion-badge>
+    </div>
     <!--<ion-row>
         <ion-col col-1></ion-col>
         <ion-col>
@@ -64,7 +35,7 @@
                 Propina
                 <br>
                 <!-- <span style="position:absolute;margin-top:-10px">________________</span> -->
-                <!--<img src="./assets/icon/Vector10.png" style="width: 40%;" alt="">
+    <!--<img src="./assets/icon/Vector10.png" style="width: 40%;" alt="">
             </p>
             <p class="detalle">Detalle propina</p>
 
@@ -90,7 +61,7 @@
                                 name="propina" formControlName="propina">
                                 <div>
                                     <!-- <ion-option value="0.05">5%</ion-option> -->
-                                    <!--<ion-option value="0.10">10%</ion-option>
+    <!--<ion-option value="0.10">10%</ion-option>
                                     <ion-option value="0.15">15%</ion-option>
                                     <ion-option value="0.20">20%</ion-option>
                                 </div>
@@ -121,7 +92,8 @@
                 </ion-col>
                 <ion-col col-6>
                     <div text-center>
-                        <button ion-button block round style="background-color: #FD9530;height: 35px;" (click)="reservarFinal()">Reservar</button>
+                        <button ion-button block round style="background-color: #FD9530;height: 35px;"
+                            (click)="reservarFinal()">Reservar</button>
                     </div>
                 </ion-col>
                 <ion-col col-3>

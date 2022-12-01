@@ -2,30 +2,11 @@
     <ion-navbar class="borde">
         <ion-row>
             <ion-col>
-                <ion-icon name="ios-arrow-back-outline" (click)="goBack()" style="color: white; font-size: 4.2em"></ion-icon>
+                <ion-icon name="ios-arrow-back-outline" (click)="goBack()" style="color: white; font-size: 4.2em">
+                </ion-icon>
             </ion-col>
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" (click)="(home())" style="width: 60%;" alt="">
-            </ion-col>
-            <ion-col>
-                <div align='end'>
-                    <div *ngIf="miUser.provider == 'facebook'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}" style="width:40%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius:50%;">
-                        </div>
-                    </div>
-                    <div *ngIf="miUser.provider == 'google'">
-                        <div *ngIf="miUser.status_foto == 0">
-                            <img src="{{miUser.photoURL}}?type=large&width=720&height=720" style="width:85%;border-radius:50%;">
-                        </div>
-                        <div *ngIf="miUser.status_foto == 1">
-                            <img src="{{miUser.photoURL}}" style="width: 43px;height: 46px;border-radius: 50%;">
-                        </div>
-                    </div>
-                </div>
             </ion-col>
         </ion-row>
     </ion-navbar>
