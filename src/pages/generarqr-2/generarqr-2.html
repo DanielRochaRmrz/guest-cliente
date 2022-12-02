@@ -9,38 +9,6 @@
       <ion-col align="center">
         <img src="./assets/imgs/Logoblanco.png" style="width: 55%" />
       </ion-col>
-      <ion-col>
-        <div align="end">
-          <div *ngIf="miUser.provider == 'facebook'">
-            <div *ngIf="miUser.status_foto == 0">
-              <img
-                [src]="miUser.photoURL"
-                style="width: 8rem; border-radius: 50%"
-              />
-            </div>
-            <div *ngIf="miUser.status_foto == 1">
-              <img
-                [src]="miUser.photoURL"
-                style="width: 45px; height: 45px; border-radius: 50%"
-              />
-            </div>
-          </div>
-          <div *ngIf="miUser.provider == 'google'">
-            <div *ngIf="miUser.status_foto == 0">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 8rem; border-radius: 50%"
-              />
-            </div>
-            <div *ngIf="miUser.status_foto == 1">
-              <img
-                src="{{miUser.photoURL}}"
-                style="width: 45px; height: 45px; border-radius: 50%"
-              />
-            </div>
-          </div>
-        </div>
-      </ion-col>
     </ion-row>
   </ion-navbar>
 </ion-header>
