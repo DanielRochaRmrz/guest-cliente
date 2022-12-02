@@ -21,7 +21,7 @@ import { UsuarioProvider } from "../../providers/usuario/usuario";
 import { UserProvider } from "../../providers/user/user";
 import moment from "moment";
 import { PushNotiProvider } from "../../providers/push-noti/push-noti";
-import { TarjetasPage } from '../tarjetas/tarjetas';
+import { TarjetasPage } from "../tarjetas/tarjetas";
 
 @IonicPage()
 @Component({
@@ -29,67 +29,68 @@ import { TarjetasPage } from '../tarjetas/tarjetas';
   templateUrl: "reservacion-detalle.html",
 })
 export class ReservacionDetallePage {
-  listaProductos: any;
-  idReservacion: any;
-  mostrar: any;
-  total: any;
-  total2: any;
-  total3: any;
-  productos: any;
-  infoReservaciones: any;
-  infoReservaciones2: any;
-  infoReservaciones3: any;
-  nombresAreas: any;
-  nombresZonas: any;
-  listado: any;
-  aleatorio: any;
-  seleccion: any;
-  idResrvacion: any;
-  idUsuario: any;
-  cuentasCompartidas: any;
-  infoUsers: any;
-  allContacts: any;
-  compartidasAceptadas: any;
-  tamano: any;
-  resultadoCompartir: any;
-  idUser: any;
-  infoEspera: any;
-  resultadoEspera: any;
-  infoEsperaEstatus: any;
-  resultadoEsperaEstatus: any;
-  infoResEstatus: any;
-  infoCupones: any;
-  validarCupon: any;
-  validarPropina: any;
-  cuponExiste: any;
-  cuponesDatos: any;
-  propinaRe: any;
-  propinaRe2: any;
-  totalPropinaCupon: any;
-  totalPropina: any;
-  reservacionLugar: any;
-  reservacionLugar2: any;
-  nombreLugar: any;
-  escaneo: any;
-  modal: any;
-  reservacionC: any;
-  formatoFecha: any;
-  reservacionFecha: any;
-  miUser: any = {};
-  idSucursal: any;
-  mesas: any;
-  soloTotal: any;
-  tarjeta: any = [];
-  countCompartidas: number = 0;
-  countComPagadas: number = 0;
-  nombreUsuarios: any;
-  tarjetaPagar: any = {};
-  valorCupon: any;
-  iva: any;
-  comision: number;
-  totalNeto: any;
-  totalConPropina: any;
-  subTotal: number;
+  public listaProductos: any;
+  public idReservacion: any;
+  public mostrar: any;
+  public total: any;
+  public total2: any;
+  public total3: any;
+  public productos: any;
+  public infoReservaciones: any;
+  public infoR: any = {};
+  public infoReservaciones2: any;
+  public infoReservaciones3: any;
+  public nombresAreas: any;
+  public nombresZonas: any;
+  public listado: any;
+  public aleatorio: any;
+  public seleccion: any;
+  public idResrvacion: any;
+  public idUsuario: any;
+  public cuentasCompartidas: any;
+  public infoUsers: any;
+  public allContacts: any;
+  public compartidasAceptadas: any;
+  public tamano: any;
+  public resultadoCompartir: any;
+  public idUser: any;
+  public infoEspera: any;
+  public resultadoEspera: any;
+  public infoEsperaEstatus: any;
+  public resultadoEsperaEstatus: any;
+  public infoResEstatus: any;
+  public infoCupones: any;
+  public validarCupon: any;
+  public validarPropina: any;
+  public cuponExiste: any;
+  public cuponesDatos: any;
+  public propinaRe: any;
+  public propinaRe2: any;
+  public totalPropinaCupon: any;
+  public totalPropina: any;
+  public reservacionLugar: any;
+  public reservacionLugar2: any;
+  public nombreLugar: any;
+  public escaneo: any;
+  public modal: any;
+  public reservacionC: any;
+  public formatoFecha: any;
+  public reservacionFecha: any;
+  public miUser: any = {};
+  public idSucursal: any;
+  public mesas: any;
+  public soloTotal: any;
+  public tarjeta: any = [];
+  public countCompartidas: number = 0;
+  public countComPagadas: number = 0;
+  public nombreUsuarios: any;
+  public tarjetaPagar: any = {};
+  public valorCupon: any;
+  public iva: any;
+  public comision: number;
+  public totalNeto: any;
+  public totalConPropina: any;
+  public subTotal: number;
 
   constructor(
     public navCtrl: NavController,
@@ -132,9 +133,9 @@ export class ReservacionDetallePage {
     console.log("Fecha --->", fecha);
 
     //carga funcion cuando abre la pagina
+    this.getDetails();
     this.getInfouser(this.idUser);
     this.getCompartidas(this.idReservacion);
-    this.getDetails();
     this.mostrar = true;
     this.personaAcepta();
     this.compartidaEstatusFinal();
@@ -228,61 +229,87 @@ export class ReservacionDetallePage {
   }
 
   getDetails() {
-
-
     // total de general dependiendo los productos que tenga la reservacion
     this.reservaProvider
       .getProductos(this.idReservacion)
-      .subscribe((productos) => {
-
+      .subscribe(async (productos) => {
         this.productos = productos;
 
         this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
 
-        this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+        this.infoReservaciones = await this.reservaProvider._getInfo(
+          this.idReservacion
+        );
 
-          this.infoReservaciones = info;
+        console.log("infoReservaciones", this.infoReservaciones);
 
-          if (info[0].uidCupon == undefined) {
+        // this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+        //   this.infoReservaciones = info;
 
-            this.validarCupon = "Noexiste";
+        if (this.infoReservaciones[0].uidCupon == undefined) {
+          this.validarCupon = "Noexiste";
 
-            this.comision = this.total * .059;
-            
-            this.subTotal = this.comision + this.total;
-            
-            this.iva = this.subTotal * .16;
+          this.comision = this.total * 0.059;
 
-            this.propinaRe = this.total * info[0].propina;
+          this.subTotal = this.comision + this.total;
 
-            this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+          this.iva = this.subTotal * 0.16;
 
-            
+          this.propinaRe = this.total * this.infoReservaciones[0].propina;
 
-          } else {
+          this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
-            //informacion de la reservacion seleccionada
-            this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
+          const totales = {
+            idReservacion: this.idReservacion,
+            fechaR: this.infoReservaciones[0].fechaR,
+            fechaR_: this.infoReservaciones[0].fechaR_,
+            subTotal: this.total,
+            comision: this.comision,
+            iva: this.iva,
+            propina: this.propinaRe,
+            totalNeto: this.totalNeto,
+          };
 
-              this.infoReservaciones = info;
-              this.idUser = localStorage.getItem("uid");
+          this.TotalesInsert(totales);
+        } else {
+          //informacion de la reservacion seleccionada
+          // this.reservaProvider
+          //   .getInfo(this.idReservacion)
+          //   .subscribe((info: any) => {
+          // this.infoReservaciones = info;
+          this.idUser = localStorage.getItem("uid");
 
-              this.validarCupon = "Existe";
+          this.validarCupon = "Existe";
 
-              this.comision = info[0].totalReservacion * .059;
+          this.comision = this.infoReservaciones[0].totalReservacion * 0.059;
 
-              this.subTotal = this.comision + info[0].totalReservacion;
+          this.subTotal =
+            this.comision + this.infoReservaciones[0].totalReservacion;
 
-              this.iva = this.subTotal * .16;
+          this.iva = this.subTotal * 0.16;
 
-              this.propinaRe = info[0].totalReservacion * info[0].propina;
-              
-              this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+          this.propinaRe =
+            this.infoReservaciones[0].totalReservacion *
+            this.infoReservaciones[0].propina;
 
-            });
-          }
-        });
+          this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
+          const totales = {
+            idReservacion: this.idReservacion,
+            fechaR: this.infoReservaciones[0].fechaR,
+            fechaR_: this.infoReservaciones[0].fechaR_,
+            subTotal: this.total,
+            comision: this.comision,
+            iva: this.iva,
+            propina: this.propinaRe,
+            totalNeto: this.totalNeto,
+          };
+
+          this.TotalesInsert(totales);
+
+          // });
+        }
+        // });
       });
 
     //consultar si exiente usuarios es espera de aceptar compartir la reservacion
@@ -297,6 +324,21 @@ export class ReservacionDetallePage {
           this.resultadoEspera = "false";
         }
       });
+  }
+
+  async TotalesInsert(totales: any) {
+    const resp: any = await this.reservaProvider._getTotles(this.idReservacion);
+
+    console.log("Respuesta totales ->", resp.length);
+
+    if (resp.length == 0) {
+      console.log("No hay totales");
+      this.reservaProvider
+        .saveTotales(totales)
+        .then((resp: any) => console.log("respId -->", resp));
+    } else {
+      console.log("Ya hay totales");
+    }
   }
 
   personaAcepta() {
@@ -320,7 +362,7 @@ export class ReservacionDetallePage {
                 //si el cupon no existe en la reservacion se hace la division normal
                 if (info2[0].uidCupon == undefined) {
                   this.resultadoCompartir = this.totalNeto / this.tamano;
-                  
+
                   //asignar a cada persona que acepto compartir lo que le toca de la cuenta
                   this.compartidasAceptadas.forEach((datacom) => {
                     this.reservaProvider
@@ -357,10 +399,12 @@ export class ReservacionDetallePage {
                       // const propiCal2 = this.total3 * info2[0].propina;
                       // const totalPropin2 = this.total3 + propiCal2;
                       this.resultadoCompartir = this.totalNeto / this.tamano;
-                      console.log('resultadoCompartir', this.resultadoCompartir);
-                      console.log('tamano', this.tamano);
+                      console.log(
+                        "resultadoCompartir",
+                        this.resultadoCompartir
+                      );
+                      console.log("tamano", this.tamano);
 
-                      
                       // totalDividido.push(this.resultadoCompartir);
                       //asignar a cada persona que acepto compartir lo que le toca de la cuenta
                       this.compartidasAceptadas.forEach((datacom) => {
@@ -464,24 +508,25 @@ export class ReservacionDetallePage {
 
   genararQR_revisarTarjeta() {
     let alert = this.alertCtrl.create({
-      title: 'Tarjeta debito/credito',
-      message: 'No cuentas con tarjetas registradas para realizar el cobro de tu reservación',
+      title: "Tarjeta debito/credito",
+      message:
+        "No cuentas con tarjetas registradas para realizar el cobro de tu reservación",
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
+          text: "Cancelar",
+          role: "cancel",
           handler: () => {
-            console.log('Cancel clicked');
-          }
+            console.log("Cancel clicked");
+          },
         },
         {
-          text: 'Registrar tarjeta',
+          text: "Registrar tarjeta",
           handler: () => {
-            console.log('Buy clicked');
+            console.log("Buy clicked");
             this.navCtrl.setRoot(TarjetasPage);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     alert.present();
   }
@@ -564,27 +609,27 @@ export class ReservacionDetallePage {
     prompt.present();
   }
 
-
   genararQRNormal_revisarTarjeta(idReservacion) {
     let alert = this.alertCtrl.create({
-      title: 'Tarjeta debito/credito',
-      message: 'No cuentas con tarjetas registradas para realizar el cobro de tu reservación',
+      title: "Tarjeta debito/credito",
+      message:
+        "No cuentas con tarjetas registradas para realizar el cobro de tu reservación",
       buttons: [
         {
-          text: 'Cancelar',
-          role: 'cancel',
+          text: "Cancelar",
+          role: "cancel",
           handler: () => {
-            console.log('Cancel clicked');
-          }
+            console.log("Cancel clicked");
+          },
         },
         {
-          text: 'Registrar tarjeta',
+          text: "Registrar tarjeta",
           handler: () => {
-            console.log('Buy clicked');
+            console.log("Buy clicked");
             this.navCtrl.setRoot(TarjetasPage);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     alert.present();
   }
@@ -765,19 +810,6 @@ export class ReservacionDetallePage {
           en: " Reservación cancelada ",
         },
       };
-
-      // window["plugins"].OneSignal.postNotification(
-      //   noti,
-      //   function (successResponse) {
-      //     console.log(
-      //       "Notification Post Success:",
-      //       successResponse
-      //     );
-      //   },
-      //   function (failedResponse: any) {
-      //     console.log("Notification Post Failed: ", failedResponse);
-      //   }
-      // );
     } else {
       console.log("Solo funciona en dispositivos");
     }

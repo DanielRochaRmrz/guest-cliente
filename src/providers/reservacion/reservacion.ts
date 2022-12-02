@@ -5,13 +5,15 @@ import {
   AngularFirestoreDocument,
 } from "@angular/fire/firestore";
 import { Observable } from "rxjs/Observable";
-import { map } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 import * as moment from "moment";
 import { HttpClient } from "@angular/common/http";
 import { Platform } from "ionic-angular";
 import { DeviceProvider } from "../device/device";
 import { rejects } from "assert";
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
+import { of } from "rxjs";
+import { query } from "@angular/core/src/render3/instructions";
 
 @Injectable()
 export class ReservacionProvider {
@@ -211,6 +213,23 @@ export class ReservacionProvider {
       })
     ));
   }
+  
+  public _getInfo(idx: string) {
+    return new Promise((resolve, reject) => {
+      const refReserva = this.af.collection("reservaciones").ref;
+      refReserva.where("idReservacion", "==", idx).get().then((quereySnap) => {
+        const infoReserva = []
+        quereySnap.forEach(reservaInfo => {
+            const data = reservaInfo.data();
+            data.$key = reservaInfo.id;
+            infoReserva.push(data);
+        });
+        resolve(infoReserva);
+      })
+    })
+  }
+
+
   public getReserCom(idx) {
     this.reservaInfo2 = this.af.collection<any>("compartidas", (ref) =>
       ref.where("idReservacion", "==", idx)
@@ -333,7 +352,10 @@ export class ReservacionProvider {
     ));
   }
 
-  public getReservacionesClienteHistorialCompartidas(uid: string, telefono: string) {
+  public getReservacionesClienteHistorialCompartidas(
+    uid: string,
+    telefono: string
+  ) {
     this.reservaCliente = this.af.collection<any>("compartidas", (ref) =>
       ref
         .where("telefono", "==", telefono)
@@ -446,7 +468,7 @@ export class ReservacionProvider {
         estatusFinal: "rsv_incompleta",
         pagoEstatus: false,
         idSucursal: idSucursal,
-        fechaR: fechaR
+        fechaR: fechaR,
       })
       .then((reserva) => {
         this.updateCompartirId(reserva.id);
@@ -472,7 +494,7 @@ export class ReservacionProvider {
                     .update({
                       playerId: player,
                     })
-                    .then(function () { });
+                    .then(function () {});
                 }
               });
             });
@@ -737,7 +759,13 @@ export class ReservacionProvider {
     });
   }
 
-  public saveCompartirTodos(telefono, idReservacion, idUsuario, idSucursal, fechaR) {
+  public saveCompartirTodos(
+    telefono,
+    idReservacion,
+    idUsuario,
+    idSucursal,
+    fechaR
+  ) {
     return new Promise((resolve, reject) => {
       this.af
         .collection("compartidas")
@@ -751,7 +779,7 @@ export class ReservacionProvider {
           estatusFinal: "rsv_incompleta",
           pagoEstatus: false,
           idSucursal: idSucursal,
-          fechaR: fechaR
+          fechaR: fechaR,
         })
         .then((reserva) => {
           this.updateCompartirId(reserva.id);
@@ -787,7 +815,7 @@ export class ReservacionProvider {
           estatusFinal: "rsv_incompleta",
           pagoEstatus: false,
           idSucursal: idSucursal,
-          fechaR: fechaR
+          fechaR: fechaR,
         })
         .then((reserva) => {
           this.updateCompartirId(reserva.id);
@@ -1020,8 +1048,8 @@ export class ReservacionProvider {
       .update({
         idReservacion: ID,
       })
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch(() => {});
   }
 
   public updateCompartirId(ID) {
@@ -1031,8 +1059,8 @@ export class ReservacionProvider {
       .update({
         idCompartir: ID,
       })
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch(() => {});
   }
 
   public getReservacion(idx) {
@@ -1077,9 +1105,7 @@ export class ReservacionProvider {
   }
 
   //Eliminar usurio Aceptado de la reservacion compartida
-  public deleteUserAceptado(
-    idReservacion: string,
-  ) {
+  public deleteUserAceptado(idReservacion: string) {
     return new Promise((resolve, reject) => {
       const refCompartidas = this.af.collection("compartidas", (ref) =>
         ref
@@ -1104,13 +1130,10 @@ export class ReservacionProvider {
   }
 
   //Eliminar  reservacion compartida
-  public deleteCompartida(
-    idReservacion: string,
-  ) {
+  public deleteCompartida(idReservacion: string) {
     return new Promise((resolve, reject) => {
       const refCompartidas = this.af.collection("compartidas", (ref) =>
-        ref
-          .where("idReservacion", "==", idReservacion)
+        ref.where("idReservacion", "==", idReservacion)
       );
       refCompartidas.get().subscribe((query) => {
         if (query.empty === true) {
@@ -1133,8 +1156,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () { })
-      .catch(function (error) { });
+      .then(function () {})
+      .catch(function (error) {});
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1155,8 +1178,6 @@ export class ReservacionProvider {
         doc.ref.delete();
       });
     });
-
-
   }
 
   deleteProduct(idReservacion) {
@@ -1164,8 +1185,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () { })
-      .catch(function (error) { });
+      .then(function () {})
+      .catch(function (error) {});
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1316,4 +1337,28 @@ export class ReservacionProvider {
       })
     ));
   }
+
+  saveTotales(totales: any) {
+    return new Promise((resolve, reject) => {
+      this.af.collection("totalesReserva").add(totales).then(resp => {
+        resolve(resp.id);
+      }).catch(err => { reject(err) });
+    });
+  }
+
+  public _getTotles(idReserva: string) {
+    return new Promise((resolve, reject) => {
+      const refReserva = this.af.collection("totalesReserva").ref;
+      refReserva.where("idReservacion", "==", idReserva).get().then((quereySnap) => {
+        const totalesReserva = []
+        quereySnap.forEach(totalesInfo => {
+            const data = totalesInfo.data();
+            data.$key = totalesInfo.id;
+            totalesReserva.push(data);
+        });
+        resolve(totalesReserva);
+      })
+    })
+  }
+
 }
