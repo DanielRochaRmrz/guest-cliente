@@ -8,6 +8,9 @@
             <ion-col align="center">
                 <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
             </ion-col>
+            <ion-col>
+                &nbsp;
+            </ion-col>
         </ion-row>
     </ion-navbar>
 </ion-header>
@@ -32,9 +35,9 @@
 
                 </div>
 
-                <p class="nombre">
+                <div class="nombre">
 
-                    {{ (reservaciones.idSucursal | getSucursal | async)?.displayName }}
+                    <h4>{{ (reservaciones.idSucursal | getSucursal | async)?.displayName }}</h4>
 
                     <img *ngIf="reservaciones.estatus == 'Aceptado'" src="./assets/content/Ellipse55.png"
                         class="imgElli" alt="">
@@ -43,7 +46,7 @@
                     <img *ngIf="reservaciones.estatus == 'Creando'" src="./assets/content/Ellipse43.png"
                         class="imgElliC" alt="">
 
-                </p>
+                </div>
 
             </ion-col>
 
