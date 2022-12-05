@@ -18,6 +18,7 @@ export class HistorialCompartidasPage {
   misReservaciones: any = [];
   public telUser: string;
   miUser: any = {};
+  getReserCom: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public page: PaginationService, public reservaProvider: ReservacionProvider,public userProvider: UserProvider,) {
 
@@ -42,10 +43,9 @@ export class HistorialCompartidasPage {
 
   }
 
-  getAllReservaciones(tel, uid) {
-    this.reservaProvider.getReservacionesClienteHistorialCompartidas(tel, uid).subscribe((data) => {
-      this.misReservaciones = data;
-    });
+ async getAllReservaciones(tel, uid) {
+
+    this.getReserCom = await this.reservaProvider.getReservacionesClienteHistorialCompartidas(uid, tel);
   }
 
   verDetalle(idReservacion) {

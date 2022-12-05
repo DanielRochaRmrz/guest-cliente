@@ -213,7 +213,7 @@ export class ReservacionProvider {
       })
     ));
   }
-  
+
   public _getInfo(idx: string) {
     return new Promise((resolve, reject) => {
       const refReserva = this.af.collection("reservaciones").ref;
@@ -221,9 +221,8 @@ export class ReservacionProvider {
         const infoReserva = []
         quereySnap.forEach(reservaInfo => {
           const data = reservaInfo.data();
-          data.totalesR = reservaInfo.get('totales');
           data.$key = reservaInfo.id;
-            infoReserva.push(data);
+          infoReserva.push(data);
         });
         resolve(infoReserva);
       })
@@ -353,27 +352,51 @@ export class ReservacionProvider {
     ));
   }
 
-  public getReservacionesClienteHistorialCompartidas(
-    uid: string,
-    telefono: string
-  ) {
-    this.reservaCliente = this.af.collection<any>("compartidas", (ref) =>
-      ref
+  public getReservacionesClienteHistorialCompartidas(uid: string, telefono: string) {
+
+    return new Promise((resolve, reject) => {
+
+      let compartidasRecibidas = this.af.collection('compartidas').ref;
+
+      compartidasRecibidas
         .where("telefono", "==", telefono)
         .where("estatusFinal", "==", "rsv_copletada")
+        .where("estatus_pago", "==", "Pagado")
         .where("estatus_escaneo", "==", "OK")
         .where("idUsuario", "!=", uid)
-    );
-    this._reservaCliente = this.reservaCliente.valueChanges();
-    return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
-      map((changes) => {
-        return changes.map((action: any) => {
-          const data = action.payload.doc.data() as any;
-          data.$key = action.payload.doc.id;
-          return data;
-        });
-      })
-    ));
+        .get()
+        .then((data) => {
+
+          data.forEach((element:any) => {            
+
+            resolve(element.data());
+
+          });
+        }).catch((error) => {
+
+          console.log(error);
+
+        })
+
+    })
+
+    // this.reservaCliente = this.af.collection<any>("compartidas", (ref) =>
+    //   ref
+    //     .where("telefono", "==", telefono)
+    //     .where("estatusFinal", "==", "rsv_copletada")
+    //     .where("estatus_pago", "==", "Pagado")
+    //     .where("estatus_escaneo", "==", "OK")
+    // );
+    // this._reservaCliente = this.reservaCliente.valueChanges();
+    // return (this._reservaCliente = this.reservaCliente.snapshotChanges().pipe(
+    //   map((changes) => {
+    //     return changes.map((action: any) => {
+    //       const data = action.payload.doc.data() as any;
+    //       data.$key = action.payload.doc.id;
+    //       return data;
+    //     });
+    //   })
+    // ));
   }
 
   //obtener reservacion compartida en la que esta el usuario
@@ -495,7 +518,7 @@ export class ReservacionProvider {
                     .update({
                       playerId: player,
                     })
-                    .then(function () {});
+                    .then(function () { });
                 }
               });
             });
@@ -1049,8 +1072,8 @@ export class ReservacionProvider {
       .update({
         idReservacion: ID,
       })
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
   }
 
   public updateCompartirId(ID) {
@@ -1060,8 +1083,8 @@ export class ReservacionProvider {
       .update({
         idCompartir: ID,
       })
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
   }
 
   public getReservacion(idx) {
@@ -1157,8 +1180,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {})
-      .catch(function (error) {});
+      .then(function () { })
+      .catch(function (error) { });
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1186,8 +1209,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () {})
-      .catch(function (error) {});
+      .then(function () { })
+      .catch(function (error) { });
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1353,9 +1376,9 @@ export class ReservacionProvider {
       refReserva.where("idReservacion", "==", idReserva).get().then((quereySnap) => {
         const totalesReserva = []
         quereySnap.forEach(totalesInfo => {
-            const data = totalesInfo.data();
-            data.$key = totalesInfo.id;
-            totalesReserva.push(data);
+          const data = totalesInfo.data();
+          data.$key = totalesInfo.id;
+          totalesReserva.push(data);
         });
         resolve(totalesReserva);
       })
