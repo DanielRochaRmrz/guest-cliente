@@ -51,6 +51,17 @@ export class PropinaPage {
 
   rowConCode: any;
 
+  totalReserva: any;
+
+  public iva: any;
+  public comision: number;
+  public totalNeto: any;
+  public totalConPropina: any;
+  public subTotal: number;
+  public propinaRe: any;
+
+  public totales: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -65,6 +76,7 @@ export class PropinaPage {
     public _pushNoti: PushNotiProvider
   ) {
     this.idReservacion = navParams.get("idReservacion");
+    this.totalReserva = navParams.get("total");
     //validar que los inputs del formulario no esten vacios
     this.myForm = this.fb.group({
       propina: ["", [Validators.required]],
@@ -151,7 +163,7 @@ export class PropinaPage {
                   propina: this.propina,
                   codigoRP: codigoRP,
                   estatusFinal: "rsv_copletada",
-                  playerIDs: this.miUser.playerID,
+                  playerIDs: this.miUser.playerID
                 })
                 .then(function () {
                   console.log("se adjunto la propina!");
@@ -196,8 +208,34 @@ export class PropinaPage {
                           (acc, obj) => acc + obj.total,
                           0
                         );
-                        const propinaCalculo = this.total * this.propina;
-                        this.totalPropina = this.total + propinaCalculo;
+
+                        //////////////////////////////////////////////////////////////////////
+                        this.comision = this.total * 0.059;
+
+                        this.subTotal = this.comision + this.total;
+
+                        this.iva = this.subTotal * 0.16;
+
+                        this.propinaRe =
+                          this.total * this.infoReservaciones[0].propina;
+
+                        this.totalNeto =
+                          this.subTotal + this.iva + this.propinaRe;
+
+                        this.totales = {
+                          subTotal: this.total,
+                          comision: this.comision,
+                          iva: this.iva,
+                          propinaRe: this.propinaRe,
+                          totalNeto: this.totalNeto,
+                        };
+
+                        this.afs
+                          .collection("reservaciones")
+                          .doc(this.idReservacion)
+                          .update({
+                            totales: this.totales,
+                          });
                         //this.navCtrl.setRoot(DetallePropinaPage, {
                         //  totalPropina: this.totalPropina,
                         //});
@@ -222,6 +260,37 @@ export class PropinaPage {
                     const totalDescuento = info[0].totalReservacion;
                     const propinaCalculo2 = totalDescuento * this.propina;
                     this.totalPropina2 = totalDescuento + propinaCalculo2;
+
+                    //////////////////////////////////////////
+                    this.comision =
+                      this.infoReservaciones[0].totalReservacion * 0.059;
+
+                    this.subTotal =
+                      this.comision +
+                      this.infoReservaciones[0].totalReservacion;
+
+                    this.iva = this.subTotal * 0.16;
+
+                    this.propinaRe =
+                      this.infoReservaciones[0].totalReservacion *
+                      this.infoReservaciones[0].propina;
+
+                    this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+
+                    this.totales = {
+                      subTotal: totalDescuento,
+                      comision: this.comision,
+                      iva: this.iva,
+                      propinaRe: this.propinaRe,
+                      totalNeto: this.totalNeto,
+                    };
+
+                    this.afs
+                          .collection("reservaciones")
+                          .doc(this.idReservacion)
+                          .update({
+                            totales: this.totales,
+                          });
                     //  this.navCtrl.setRoot(DetallePropinaPage, {
                     //  totalPropina: this.totalPropina2,
                     //});
@@ -242,19 +311,19 @@ export class PropinaPage {
                     //alertMesas2.present();
                   }
                 });
-                const compartida = localStorage.getItem("compartida");
-                if (compartida === "true") {
-                  this.notiReservaCompartida();
-                }
-                this.notiNuevaReserva();
-                this.getUsersPusCancelar();
-                localStorage.removeItem("idSucursal");
-                localStorage.removeItem("zona");
-                localStorage.removeItem("idReservacion");
-                localStorage.removeItem("uidEvento");
-                localStorage.removeItem("compartida");
-                localStorage.removeItem("contactsSelected");
-                this.navCtrl.setRoot(MisReservacionesPage);
+              const compartida = localStorage.getItem("compartida");
+              if (compartida === "true") {
+                this.notiReservaCompartida();
+              }
+              this.notiNuevaReserva();
+              this.getUsersPusCancelar();
+              localStorage.removeItem("idSucursal");
+              localStorage.removeItem("zona");
+              localStorage.removeItem("idReservacion");
+              localStorage.removeItem("uidEvento");
+              localStorage.removeItem("compartida");
+              localStorage.removeItem("contactsSelected");
+              this.navCtrl.setRoot(MisReservacionesPage);
 
               // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION
 

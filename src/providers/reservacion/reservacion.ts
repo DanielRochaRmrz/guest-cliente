@@ -220,8 +220,9 @@ export class ReservacionProvider {
       refReserva.where("idReservacion", "==", idx).get().then((quereySnap) => {
         const infoReserva = []
         quereySnap.forEach(reservaInfo => {
-            const data = reservaInfo.data();
-            data.$key = reservaInfo.id;
+          const data = reservaInfo.data();
+          data.totalesR = reservaInfo.get('totales');
+          data.$key = reservaInfo.id;
             infoReserva.push(data);
         });
         resolve(infoReserva);

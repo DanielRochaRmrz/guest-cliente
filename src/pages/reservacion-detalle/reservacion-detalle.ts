@@ -241,7 +241,7 @@ export class ReservacionDetallePage {
           this.idReservacion
         );
 
-        console.log("infoReservaciones", this.infoReservaciones);
+        console.log("infoReservaciones", this.infoReservaciones.totalesR);
 
         // this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
         //   this.infoReservaciones = info;
@@ -268,9 +268,11 @@ export class ReservacionDetallePage {
             iva: this.iva,
             propina: this.propinaRe,
             totalNeto: this.totalNeto,
+            estatus: '',
+
           };
 
-          this.TotalesInsert(totales);
+          // this.TotalesInsert(totales);
         } else {
           //informacion de la reservacion seleccionada
           // this.reservaProvider
@@ -305,7 +307,7 @@ export class ReservacionDetallePage {
             totalNeto: this.totalNeto,
           };
 
-          this.TotalesInsert(totales);
+          // this.TotalesInsert(totales);
 
           // });
         }

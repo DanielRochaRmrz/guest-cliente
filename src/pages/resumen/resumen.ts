@@ -211,6 +211,7 @@ export class ResumenPage {
     // despues del resumen va alas propinas
     this.navCtrl.setRoot(PropinaPage, {
       idReservacion: this.idReservacion,
+      total: this.total
     });
   }
 
@@ -275,14 +276,14 @@ export class ResumenPage {
       });
   }
 
-  verificarcodigo(uidsucursal, total) {
+  verificarcodigo(uidsucursal: string, total: any, dato: any) {
     const cvc = parseInt(localStorage.getItem("cupon"));
     console.log("este es el codigo", cvc);
     console.log("Uid de la sucursal", uidsucursal);
     console.log("este es el total", total);
 
     this.afs
-      .collection("cupones", (ref) => ref.where("codigoCupon", "==", cvc))
+      .collection("cupones", (ref) => ref.where("codigoCupon", "==", dato))
       .valueChanges()
       .subscribe((data) => {
         this.cupones = data;
@@ -398,6 +399,8 @@ export class ResumenPage {
     const numcupon = localStorage.getItem("numcupon");
 
     const rest = total - parseInt(cuponn);
+    this.total = total - parseInt(cuponn);
+
     const cvc = parseInt(localStorage.getItem("cupon"));
     const restacupones = parseInt(numcupon) - 1;
 
@@ -435,6 +438,7 @@ export class ResumenPage {
     const numcupon = localStorage.getItem("numcupon");
 
     const rest = total - parseInt(cuponn);
+    this.total = total - parseInt(cuponn);
     const cvc = parseInt(localStorage.getItem("cupon"));
     const restacupones = parseInt(numcupon) - 1;
 
@@ -565,6 +569,8 @@ export class ResumenPage {
     this.codigoSel = dato;
     console.log("este es el valor de la variable global", this.codigoSel);
     localStorage.setItem("cupon", this.codigoSel);
+
+    this.verificarcodigo(this.idSucursal, this.total, dato);
   }
 
   addPoliticas() {
