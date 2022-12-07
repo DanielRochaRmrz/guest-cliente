@@ -223,11 +223,11 @@ export class PropinaPage {
                           this.subTotal + this.iva + this.propinaRe;
 
                         this.totales = {
-                          subTotal: this.total,
-                          comision: this.comision,
-                          iva: this.iva,
-                          propinaRe: this.propinaRe,
-                          totalNeto: this.totalNeto,
+                          subTotal: parseFloat(this.total.toFixed(2)),
+                          comision: parseFloat(this.comision.toFixed(2)),
+                          iva: parseFloat(this.iva.toFixed(2)),
+                          propinaRe: parseFloat(this.propinaRe.toFixed(2)),
+                          totalNeto: parseFloat(this.totalNeto.toFixed(2)),
                         };
 
                         this.afs
@@ -278,11 +278,11 @@ export class PropinaPage {
                     this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
                     this.totales = {
-                      subTotal: totalDescuento,
-                      comision: this.comision,
-                      iva: this.iva,
-                      propinaRe: this.propinaRe,
-                      totalNeto: this.totalNeto,
+                      subTotal: parseFloat(totalDescuento.toFixed(2)),
+                      comision: parseFloat(this.comision.toFixed(2)),
+                      iva: parseFloat(this.iva.toFixed(2)),
+                      propinaRe: parseFloat(this.propinaRe.toFixed(2)),
+                      totalNeto: parseFloat(this.totalNeto.toFixed(2)),
                     };
 
                     this.afs
