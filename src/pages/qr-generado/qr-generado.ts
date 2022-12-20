@@ -20,6 +20,7 @@ export class QrGeneradoPage {
   idCompartir: any;
   miUser: any = {};
   uidUserSesion: any;
+  idSucursal: string;
   //Crear variables para guardar los datos que se reciban de la reservacion
   private created_code = null;
   private qr_data = {
@@ -34,6 +35,7 @@ export class QrGeneradoPage {
     //recibir datos de la reservacion compartida
     this.idReservacion = this.navParams.get("idReservacion");
     this.idCompartir = this.navParams.get("idCompartir");
+    this.idSucursal = this.navParams.get('idSucursal');
     //guardar datos recibidos en el arreglo creado qr_data
     this.qr_data.idReservacion = this.idReservacion;
     this.qr_data.mensaje = "Reservacion pagada";
@@ -60,7 +62,8 @@ export class QrGeneradoPage {
   }
   goBack() {
     this.navCtrl.setRoot(ReservacionDetallePage, {
-      idReservacion: this.idReservacion
+      idReservacion: this.idReservacion,
+      idSucursal: this.idSucursal
     });
   }
 

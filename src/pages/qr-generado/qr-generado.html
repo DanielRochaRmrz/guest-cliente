@@ -1,16 +1,27 @@
 <ion-header>
-    <ion-navbar class="borde">
-        <ion-row>
-            <ion-col>
-                <ion-icon name="ios-arrow-back-outline" (click)="goBack()" style="color: white; font-size: 4.2em">
-                </ion-icon>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" (click)="(home())" style="width: 60%;" alt="">
-            </ion-col>
-        </ion-row>
+    <ion-navbar class="borde" hideBackButton>
+      <ion-row>
+        <ion-col>
+          <button ion-button  class="buttonBack" (click)="goBack()">
+            <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col align="center">
+          <img
+            src="./assets/imgs/Logoblanco.png"
+            (click)="goInicio()"
+            style="width: 60%"
+            alt=""
+          />
+        </ion-col>
+        <ion-col>
+          &nbsp;
+        </ion-col>
+      </ion-row>
     </ion-navbar>
-</ion-header>
+  </ion-header>
+
+  
 <ion-content padding>
 
     <br><br><br><br><br>

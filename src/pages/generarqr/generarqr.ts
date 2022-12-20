@@ -19,6 +19,7 @@ export class GenerarqrPage {
   public idUsuario: string = null;
   public telefono: string = null;
   public tarjeta: string = null;
+  public idSucursal: string;
   tarjetaPagar: any = {};
   usuarioID: any;
   idCompartir: any;
@@ -59,6 +60,7 @@ export class GenerarqrPage {
     this.folio = this.navParams.get("folio");
     this.displayNames = this.navParams.get("displayNames");
     this.cvc = this.navParams.get("cvc");
+    this.idSucursal = this.navParams.get("idSucursal");
     this.getInfouser(this.idUsuario);
     this.payment();
   }
@@ -129,6 +131,7 @@ export class GenerarqrPage {
   goBack() {
     this.navCtrl.setRoot(ReservacionDetallePage, {
       idReservacion: this.idReservacion,
+      idSucursal: this.idSucursal
     });
   }
 

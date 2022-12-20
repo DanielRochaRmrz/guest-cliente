@@ -486,6 +486,7 @@ export class ReservacionDetallePage {
                 idCompartir: idCompartir,
                 folio: folio,
                 displayNames: displayNames,
+                idSucursal: this.idSucursal
               });
             } else {
               let toastError = this.toastCtrl.create({
@@ -537,6 +538,7 @@ export class ReservacionDetallePage {
     this.navCtrl.setRoot(QrGeneradoPage, {
       idReservacion: idReservacion,
       idCompartir: idCompartir,
+      idSucursal: this.idSucursal
     });
   }
 
@@ -589,6 +591,7 @@ export class ReservacionDetallePage {
                 cvc: data.cvc,
                 idUsuario: idUsuario,
                 folio: folio,
+                idSucursal: this.idSucursal
               });
             } else {
               let toastError = this.toastCtrl.create({

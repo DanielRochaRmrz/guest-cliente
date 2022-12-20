@@ -31,6 +31,7 @@ export class Generarqr_2Page {
   cvc: number;
   payRes: boolean;
   msj: string;
+  idSucursal: string;
   //Crear variables para guardar los datos que se reciban de la reservacion
   private created_code = null;
   private qr_data = {
@@ -56,6 +57,7 @@ export class Generarqr_2Page {
     this.idUsuario = this.navParams.get("idUsuario");
     this.folio = this.navParams.get("folio");
     this.cvc = this.navParams.get("cvc");
+    this.idSucursal = this.navParams.get("idSucursal");
     this.getInfouser(this.idUsuario);
     this.payment();
   }
@@ -129,6 +131,7 @@ export class Generarqr_2Page {
   goBack() {
     this.navCtrl.setRoot(ReservacionDetallePage, {
       idReservacion: this.idReservacion,
+      idSucursal: this.idSucursal
     });
   }
 
