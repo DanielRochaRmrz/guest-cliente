@@ -8,6 +8,8 @@ import { GetSucursalPipe } from './get-sucursal/get-sucursal';
 import { GetZonaPipe } from './get-zona/get-zona';
 import { GetCompartidasPipe } from './get-compartidas/get-compartidas';
 import { GetCompartidaTelUsPipe } from './get-compartida-tel-us/get-compartida-tel-us';
+import { GetTimePipe } from './get-time/get-time';
+import { GetCompartidasUserPipe } from './get-compartidas-user/get-compartidas-user';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { GetCompartidaTelUsPipe } from './get-compartida-tel-us/get-compartida-t
     GetZonaPipe,
     GetCompartidasPipe,
     GetCompartidaTelUsPipe,
+    GetTimePipe,
+    GetCompartidasUserPipe,
   ],
   imports: [],
   exports: [
@@ -32,6 +36,8 @@ import { GetCompartidaTelUsPipe } from './get-compartida-tel-us/get-compartida-t
     GetZonaPipe,
     GetCompartidasPipe,
     GetCompartidaTelUsPipe,
+    GetTimePipe,
+    GetCompartidasUserPipe,
   ],
 })
 export class PipesModule {}

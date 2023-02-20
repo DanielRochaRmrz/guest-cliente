@@ -105,6 +105,8 @@ export class ProductoDetallePage {
       .GetProducto(ClaveInstancia, claveProducto)
       .subscribe((producto: any) => {
         this.product = producto;
+        console.log(this.product);
+        
       });
   }
 

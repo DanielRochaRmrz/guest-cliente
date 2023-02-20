@@ -56,13 +56,11 @@
               >
             </ion-item>
 
-            <br /><br />
+            <br />
             <ion-grid>
-              <ion-row>
-                <ion-col col-3></ion-col>
-                <ion-col col-3></ion-col>
-                <ion-col col-6>
-                  <div align="center">
+              <ion-row> 
+                <ion-col col-12>
+                  <div text-center>
                     <p class="senala2">SEÑALA LA CANTIDAD DE PERSONAS</p>
                   </div>
                 </ion-col>
@@ -72,12 +70,7 @@
           <ion-item no-lines>
             <ion-grid>
               <ion-row>
-                <ion-col col-6>
-                  <div text-center>
-                    <img [src]="sucursal.photoURL" id="people" />
-                  </div>
-                </ion-col>
-                <ion-col col-2>
+                <ion-col col-4>
                   <br /><br />
                   <div text-right>
                     <img
@@ -88,7 +81,7 @@
                     />
                   </div>
                 </ion-col>
-                <ion-col col-2 id="caja">
+                <ion-col col-4 id="caja">
                   <ion-grid class="margen">
                     <ion-row>
                       <ion-col col-1></ion-col>
@@ -108,7 +101,7 @@
                     <span>{{people}}</span>
                   </div>
                 </ion-col>
-                <ion-col col-2>
+                <ion-col col-4>
                   <br /><br />
                   <div text-rigth>
                     <img
@@ -122,17 +115,15 @@
               </ion-row>
             </ion-grid>
             <ion-grid>
-              <ion-row class="ajustar">
-                <ion-col col-6> </ion-col>
-                <ion-col col-2>
+              <ion-row>
+                <ion-col col-12>
                   <br />
-                  <div align="right">
-                    <p align="right" class="senala">
+                  <div text-center>
+                    <p class="senala">
                       AJUSTA TU HORA DE RESERVACIÓN
                     </p>
                   </div>
                 </ion-col>
-                <ion-col col-4> </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>
@@ -140,9 +131,9 @@
           <br />
 
           <ion-grid>
-            <ion-row class="reloj">
-              <ion-col col-6> </ion-col>
-              <ion-col col-6>
+            <ion-row>
+              <ion-col col-2></ion-col>
+              <ion-col col-8>
                 <ion-item no-lines>
                   <ion-label>
                     <div>
@@ -165,13 +156,14 @@
                   </ion-datetime>
                 </ion-item>
               </ion-col>
+              <ion-col col-2></ion-col>
             </ion-row>
           </ion-grid>
           <br />
           <ion-grid>
-            <ion-row class="calendar">
-              <ion-col col-6> </ion-col>
-              <ion-col col-6>
+            <ion-row>
+              <ion-col col-2></ion-col>
+              <ion-col col-8>
                 <ion-item no-lines>
                   <ion-label>
                     <div>
@@ -197,6 +189,7 @@
                   </ion-datetime>
                 </ion-item>
               </ion-col>
+              <ion-col col-2></ion-col>
             </ion-row>
           </ion-grid>
         </ion-list>

@@ -8,11 +8,11 @@ import {
 } from "ionic-angular";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { TabsPage } from "../tabs/tabs";
+// import { TabsPage } from "../tabs/tabs";
 import { ReservacionProvider } from "../../providers/reservacion/reservacion";
-import { EventosPage } from "../eventos/eventos";
+// import { EventosPage } from "../eventos/eventos";
 import { MisReservacionesPage } from "../mis-reservaciones/mis-reservaciones";
-import { DetallePropinaPage } from "../detalle-propina/detalle-propina";
+// import { DetallePropinaPage } from "../detalle-propina/detalle-propina";
 import * as firebase from "firebase";
 import { ToastController } from "ionic-angular";
 import { DeviceProvider } from "../../providers/device/device";
@@ -104,7 +104,7 @@ export class PropinaPage {
     console.log("ionViewDidLoad PropinaPage");
   }
 
-  propinaAdd() {
+  propinaAdd() {    
     //Guarda la propina en la reservacion indicada
     console.log("reservacion propina", this.idReservacion);
     console.log("propina", this.propina);
@@ -125,7 +125,7 @@ export class PropinaPage {
         .then((data) => {
           this.codigoRpUsers = data;
 
-          this.codigoRpUsers.forEach((element) => {
+          this.codigoRpUsers.forEach(async (element) => {
             const elem = element.data();
 
             const codigoRP = elem.codigo;
@@ -155,7 +155,7 @@ export class PropinaPage {
               });
 
               // INICIA FLUJO NORMAL DEL PROCESO DE RESERVACION
-
+              const date_create = firebase.firestore.FieldValue.serverTimestamp();
               this.afs
                 .collection("reservaciones")
                 .doc(this.idReservacion)
@@ -163,10 +163,14 @@ export class PropinaPage {
                   propina: this.propina,
                   codigoRP: codigoRP,
                   estatusFinal: "rsv_copletada",
-                  playerIDs: this.miUser.playerID
+                  playerIDs: this.miUser.playerID,
+                  date_create: date_create
                 })
                 .then(function () {
                   console.log("se adjunto la propina!");
+                }).catch((err) => {
+                  // The document probably doesn't exist.
+                  console.error("Error updating document: ", err);
                 });
               if (localStorage.getItem("compartida")) {
                 this.db
@@ -179,13 +183,18 @@ export class PropinaPage {
                       const compartidas = doc.data();
                       const idCompartidas = compartidas.idCompartir;
                       if (idCompartidas) {
+                        const date_create = firebase.firestore.FieldValue.serverTimestamp();
                         this.db
                           .collection("compartidas")
                           .doc(idCompartidas)
                           .update({
                             estatusFinal: "rsv_copletada",
+                            date_create: date_create
                           })
-                          .then(() => console.log("Comaprtidas actulizadas"));
+                          .then(() => console.log("Comaprtidas actulizadas")).catch((err) => {
+                            // The document probably doesn't exist.
+                            console.error("Error updating document: ", err);
+                          });
                       } else {
                         console.log("No hay");
                       }
@@ -193,17 +202,28 @@ export class PropinaPage {
                   });
               }
               //SABER SI SE USO UN cupon en la reservacion
-              this.providerReserva
-                .getInfo(this.idReservacion)
-                .subscribe((info) => {
-                  this.infoReservaciones = info;
-                  if (info[0].uidCupon == undefined) {
+              this.infoReservaciones = await this.providerReserva._getInfo(
+                this.idReservacion
+              );
+             
+                  
+                  
+                  
+                  if (this.infoReservaciones.length === 0) {
+                    console.log('Se elimino');
+                    return;
+                  }
+                  console.log('info -->', this.infoReservaciones);
+                  if (this.infoReservaciones[0].uidCupon == undefined) {
                     this.validarCupon = "Noexiste";
                     // total de general dependiendo los productos que tenga la reservacion
-                    this.providerReserva
-                      .getProductos(this.idReservacion)
-                      .subscribe((productos) => {
-                        this.productos = productos;
+                    // this.providerReserva
+                    //   .getProductos(this.idReservacion)
+                    //   .subscribe((productos) => {
+                        
+                        this.productos = await this.providerReserva._getProductos(
+                          this.idReservacion
+                        );;
                         this.total = this.productos.reduce(
                           (acc, obj) => acc + obj.total,
                           0
@@ -230,11 +250,18 @@ export class PropinaPage {
                           totalNeto: parseFloat(this.totalNeto.toFixed(2)),
                         };
 
+                        
+                        console.log('Esta basio update -->', this.idReservacion);
+                        console.log('Esta basio update -->', this.infoReservaciones);
+
                         this.afs
                           .collection("reservaciones")
                           .doc(this.idReservacion)
                           .update({
                             totales: this.totales,
+                          }).catch((err) => {
+                            // The document probably doesn't exist.
+                            console.error("Error updating document: ", err);
                           });
                         //this.navCtrl.setRoot(DetallePropinaPage, {
                         //  totalPropina: this.totalPropina,
@@ -254,10 +281,10 @@ export class PropinaPage {
                         //  ]
                         //});
                         //alertMesas.present();
-                      });
+                      // });
                   } else {
                     this.validarCupon = "Existe";
-                    const totalDescuento = info[0].totalReservacion;
+                    const totalDescuento = this.infoReservaciones[0].totalReservacion;
                     const propinaCalculo2 = totalDescuento * this.propina;
                     this.totalPropina2 = totalDescuento + propinaCalculo2;
 
@@ -290,6 +317,9 @@ export class PropinaPage {
                           .doc(this.idReservacion)
                           .update({
                             totales: this.totales,
+                          }).catch((err) => {
+                            // The document probably doesn't exist.
+                            console.error("Error updating document: ", err);
                           });
                     //  this.navCtrl.setRoot(DetallePropinaPage, {
                     //  totalPropina: this.totalPropina2,
@@ -310,7 +340,6 @@ export class PropinaPage {
                     //});
                     //alertMesas2.present();
                   }
-                });
               const compartida = localStorage.getItem("compartida");
               if (compartida === "true") {
                 this.notiReservaCompartida();
@@ -323,6 +352,12 @@ export class PropinaPage {
               localStorage.removeItem("uidEvento");
               localStorage.removeItem("compartida");
               localStorage.removeItem("contactsSelected");
+
+              localStorage.removeItem("id_cupon");
+              localStorage.removeItem("numcupon");
+              localStorage.removeItem("cuponn");
+              localStorage.removeItem("cupon");
+
               this.navCtrl.setRoot(MisReservacionesPage);
 
               // TERMINA FLUJO NORMAL DEL PROCESO DE RESERVACION
@@ -346,6 +381,7 @@ export class PropinaPage {
 
       // EN CASO DE QUE NO UTILIZEN CODIGO DE RP
     } else if (this.codigoRp == "") {
+      const date_create = firebase.firestore.FieldValue.serverTimestamp();
       this.afs
         .collection("reservaciones")
         .doc(this.idReservacion)
@@ -353,9 +389,13 @@ export class PropinaPage {
           propina: this.propina,
           estatusFinal: "rsv_copletada",
           playerIDs: this.miUser.playerID,
+          date_create: date_create
         })
         .then(function () {
           console.log("se adjunto la propina!");
+        }).catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
         });
       if (localStorage.getItem("compartida")) {
         this.db
@@ -368,13 +408,18 @@ export class PropinaPage {
               const compartidas = doc.data();
               const idCompartidas = compartidas.idCompartir;
               if (idCompartidas) {
+                const date_create = firebase.firestore.FieldValue.serverTimestamp();
                 this.db
                   .collection("compartidas")
                   .doc(idCompartidas)
                   .update({
                     estatusFinal: "rsv_copletada",
+                    date_create: date_create
                   })
-                  .then(() => console.log("Comaprtidas actulizadas"));
+                  .then(() => console.log("Comaprtidas actulizadas")).catch((err) => {
+                    // The document probably doesn't exist.
+                    console.error("Error updating document: ", err);
+                  });
               } else {
                 console.log("No hay");
               }
@@ -383,6 +428,11 @@ export class PropinaPage {
       }
       //SABER SI SE USO UN cupon en la reservacion
       this.providerReserva.getInfo(this.idReservacion).subscribe((info) => {
+        if (info.length === 0) {
+          console.log('Se elimino');
+          return;
+        }
+        console.log('info -->', info);
         this.infoReservaciones = info;
         if (info[0].uidCupon == undefined) {
           this.validarCupon = "Noexiste";
@@ -452,6 +502,11 @@ export class PropinaPage {
       localStorage.removeItem("idReservacion");
       localStorage.removeItem("uidEvento");
       localStorage.removeItem("compartida");
+
+      localStorage.removeItem("id_cupon");
+      localStorage.removeItem("numcupon");
+      localStorage.removeItem("cuponn");
+      localStorage.removeItem("cupon");
       this.navCtrl.setRoot(MisReservacionesPage);
     }
   }

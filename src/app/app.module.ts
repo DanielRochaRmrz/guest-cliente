@@ -1,10 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicSelectableModule } from 'ionic-selectable';
-
 //Paginas
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -106,6 +105,9 @@ import { PaginationService } from './pagination.service';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner';
 import { HistorialCompartidasPage } from '../pages/historial-compartidas/historial-compartidas';
 
+import localeEsMX from "@angular/common/locales/es-MX";
+import { registerLocaleData } from "@angular/common";
+registerLocaleData(localeEsMX, 'es-MX');
 
 var firebaseConfig = {
   apiKey: "AIzaSyBixlCb21nNbPSurY-Pvqu3hZB80Icl9Pk",
@@ -240,6 +242,7 @@ firebase.initializeApp(firebaseConfig);
     AngularFireDatabase,
     ZoomAreaModule,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: LOCALE_ID, useValue: 'es-MX' },
     UsuarioProvider,
     Facebook,
     AuthProvider,

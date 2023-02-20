@@ -1,200 +1,305 @@
 <ion-header>
-    <ion-navbar class="borde">
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle class="botonMod">
-                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
-                </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" (click)="goInicio()" style="width: 60%" alt="" />
-            </ion-col>
-            <ion-col>
-                &nbsp;
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+  <ion-navbar class="borde">
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
+      </ion-col>
+      <ion-col align="center">
+        <img
+          src="./assets/imgs/Logoblanco.png"
+          (click)="goInicio()"
+          style="width: 60%"
+          alt=""
+        />
+      </ion-col>
+      <ion-col> &nbsp; </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
 <ion-content padding>
+  <h2>
+    <b>Tus reservaciones</b>
+    <div class="detalle">Próximas</div>
+  </h2>
 
-    <h2>
-        <b>Tus reservaciones</b>
-        <div class="detalle">Próximas</div>
-    </h2>
+  <hr />
 
-    <hr>
+  <div *ngFor="let reservaciones of misReservaciones">
+    <ion-list>
+        <ng-container *ngIf="reservaciones?.estatus_pago === '' && reservaciones?.estatus === 'Aceptado'" >
+          <div text-center class="divTimer">
+            <sup ion-text color="danger" style="font-size: 100%;">
+              <ion-icon color="danger" ios="ios-alarm" md="md-alarm"></ion-icon>
+              Evita perder tu reservación, tienes {{ ( reservaciones.idReservacion | getTime | async ) }} hora(s) para pagar.
+            </sup>
+          </div>
+        </ng-container>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img
+            src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}"
+          />
+        </ion-thumbnail>
+        <h2>
+          <ion-icon
+            ios="ios-home"
+            md="md-home"
+            style="color: #fcc04d"
+          ></ion-icon
+          ><b
+            >{{ (reservaciones.idSucursal | getSucursal | async)?.displayName
+            }}</b
+          >
+        </h2>
 
-    <div *ngFor="let reservaciones of misReservaciones">
+        <p>Folio: <b>{{reservaciones.folio}}</b></p>
+        <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
 
-        <ion-list>
+        <div
+          *ngIf="reservaciones.estatus == 'Creando' || reservaciones.estatus == 'Modificado'; then creando else aceptado"
+        ></div>
 
-            <ion-item>
-                <ion-thumbnail item-start>
-                    <img src="{{ (reservaciones.idSucursal | getSucursal | async)?.photoURL }}">
-                </ion-thumbnail>
-                <h2>
-                    <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
-                        (reservaciones.idSucursal | getSucursal | async)?.displayName }}</b>
-                </h2>
+        <ng-template #creando>
+          <p>
+            Estado: <b>{{reservaciones.estatus}}</b>
+            <img src="../assets/imgs/amarillo.png" class="imgStatus" />
+          </p>
+        </ng-template>
 
+        <ng-template #aceptado>
+          <p>
+            Estado: <b>{{reservaciones.estatus}}</b>
+            <img src="../assets/imgs/verde.png" class="imgStatus" />
+          </p>
+        </ng-template>
 
-                <p>Folio: <b>{{reservaciones.folio}}</b></p>
-                <p>Fecha: <b>{{reservaciones.fechaR | date : 'dd/MM/yyyy' }}</b></p>
+        <div
+          *ngIf="reservaciones.estatus == 'Modificado'; then modificado"
+        ></div>
+        <ng-template #modificado>
+          <small>
+            <ion-icon
+              ios="ios-warning"
+              md="md-warning"
+              style="color: #ff5252"
+            ></ion-icon>
+            Reservación reasignada a la zona:
+            <b>{{ (reservaciones.idZona | getZona | async)?.nombre }}</b>
+            consumo sugerido:
+            <b
+              >{{ (reservaciones.idZona | getZona | async)?.consumo | currency
+              }}</b
+            >
+          </small>
+        </ng-template>
+        <button
+          ion-button
+          item-end
+          (click)="verDetalle(reservaciones.idReservacion, reservaciones.idSucursal)"
+        >
+          Más Detalles
+        </button>
 
-                <div *ngIf="reservaciones.estatus == 'Creando' || reservaciones.estatus == 'Modificado'; then creando else aceptado"></div>
+        <div *ngIf="reservaciones.estatus == 'Modificado'; then mod"></div>
 
-                <ng-template #creando>
+        <ng-template #mod>
+          <br />
+          <button
+            ion-button
+            item-end
+            color="primary"
+            (click)="verCarta(reservaciones.idReservacion, reservaciones.idSucursal, reservaciones.idevento)"
+          >
+            Aceptar
+          </button>
+          <button
+            ion-button
+            item-end
+            color="danger"
+            (click)="CancelarReservacion(reservaciones.idReservacion )"
+          >
+            Cancelar
+          </button>
+        </ng-template>
+      </ion-item>
+    </ion-list>
+  </div>
 
-                    <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/amarillo.png" class="imgStatus" /></p>
-
-                </ng-template>
-
-                <ng-template #aceptado>
-
-                    <p>Estado: <b>{{reservaciones.estatus}}</b> <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
-
-                </ng-template>
-
-                <p><small>UID: {{reservaciones.idReservacion}}</small></p>
-
-                <div *ngIf="reservaciones.estatus == 'Modificado'; then modificado"></div>
-                <ng-template #modificado>
-
-                    <small>
-
-                        <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-                        Reservación reasignada a la zona: <b>{{ (reservaciones.idZona | getZona | async)?.nombre }}</b>
-                        consumo sugerido: <b>{{ (reservaciones.idZona | getZona | async)?.consumo | currency }}</b>
-
-                    </small>
-
-                </ng-template>
-
-                <button ion-button item-end (click)="verDetalle(reservaciones.idReservacion, reservaciones.idSucursal)">Más Detalles</button>
-
-                <div *ngIf="reservaciones.estatus == 'Modificado'; then mod"></div>
-
-                <ng-template #mod>
-                    <br>
-                    <button ion-button item-end color="primary" (click)="verCarta(reservaciones.idReservacion, reservaciones.idSucursal, reservaciones.idevento)">Aceptar</button>
-                    <button ion-button item-end color="danger" (click)="CancelarReservacion(reservaciones.idReservacion )">Cancelar</button>
-
-                </ng-template>
-
-
-
-            </ion-item>
-
-        </ion-list>
-
-    </div>
-
-    <!-- Codigo de reservaciones compartidas -->
-    <div *ngFor="let compartidas of resCompartidas">
-
-        <ion-list>
-
-            <ion-item>
-                <ion-thumbnail item-start>
-                    <img src="{{ (compartidas.idSucursal | getSucursal | async)?.photoURL }}">
-                </ion-thumbnail>
-                <h2>
-                    <ion-icon ios="ios-home" md="md-home" style="color: #fcc04d"></ion-icon><b>{{
-                        (compartidas.idSucursal | getSucursal | async)?.displayName }}</b>
-                </h2>
-                <p>Folio: <b> {{ (compartidas.idReservacion | getCompartidas | async)?.folio }}</b></p>
-                <p>Fecha: <b> {{ (compartidas.idReservacion | getCompartidas | async )?.fechaR | date : 'dd/MM/yyyy'}}</b></p>
-
-                <div *ngIf="(compartidas.idReservacion | getCompartidas | async )?.estatus === 'Compartida' || (compartidas.idReservacion | getCompartidas | async )?.estatus === 'CreadaCompartida'; then creando else aceptado"></div>
-
-                <ng-template #creando>
-
-                    <p>Compartida <img src="../assets/imgs/amarillo.png" class="imgStatus" /></p>
-
-                </ng-template>
-
-                <ng-template #aceptado>
-
-                    <p>Aceptada <img src="../assets/imgs/verde.png" class="imgStatus" /></p>
-
-                </ng-template>
-
-                <p><small>UID: {{compartidas.idReservacion}}</small></p>
-                <button ion-button item-end (click)="verDetalle(compartidas.idReservacion, compartidas.idSucursal)">Más Detalles</button>
-
-                <div *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado">
-                </div>
-
-                <ng-template #modificado>
-
-                    <small>
-
-                        <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-                        Reservación reasignada a la zona: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.nombre }} el consumo sugerido es: {{ ((compartidas.idReservacion | getCompartidas | async)?.idZona | getZona | async)?.consumo | currency }}
-
-                    </small>
-
-                </ng-template>
-
-                <div *ngIf="(compartidas.idReservacion | getCompartidas | async)?.folio.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then mod"></div>
-
-                <ng-template #mod>
-
-                    <br>
-                    <button ion-button item-end color="primary" (click)="verCarta(compartidas.idReservacion, compartidas.idSucursal, compartidas.idevento)">Aceptar</button>
-                    <button ion-button item-end color="danger" (click)="CancelarReservacion(compartidas.idReservacion )">Cancelar</button>
-
-                </ng-template>
-
-            </ion-item>
-            <ion-item>
-                <div *ngIf="compartidas.estatus == 'Espera'; then espera"></div>
-
-                <ng-template #espera>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col col-12>
-                                <div text-center text-wrap>
-                                    <ion-icon ios="ios-warning" md="md-warning" style="color: #FF5252"></ion-icon>
-                                    <small>
-                                        Invitación para que el total de la cuenta se divida contigo.
-                                    </small>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col col-6>
-                                <div text-center>
-                                    <button ion-button item-end color="secondary" small (click)="aceptarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
-                                        Acepto
-                                    </button>
-                                </div>
-                            </ion-col>
-                            <ion-col col-6>
-                                <div text-center>
-                                    <button ion-button item-end color="danger" small (click)="rechazarCompartir(compartidas.idCompartir, compartidas.idReservacion)">
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ng-template>
-            </ion-item>
-
-        </ion-list>
-
-    </div>
-
-    <div *ngIf="misReservaciones.length === 0 && resCompartidas.length === 0" text-center>
-
-        <img src="./assets/content/advertencia.png" alt="">
-
-        <div text-center>
-
-            <h4 style="color: #000;"><b>Aún no hay reservaciones que mostrar.</b></h4>
-
+  <!-- Codigo de reservaciones compartidas -->
+  <div *ngFor="let compartidas of resCompartidas">
+    <ion-list>
+      <ng-container *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus_pago === '' && (compartidas.idReservacion | getCompartidas | async)?.estatus === 'AceptadoCompartida'">
+        <div text-center class="divTimer">
+          <sup ion-text color="danger" style="font-size: 100%;">
+            <ion-icon color="danger" ios="ios-alarm" md="md-alarm"></ion-icon>
+            Evita perder tu reservación, tienes {{ ( compartidas.idReservacion | getTime | async ) }} hora(s) para pagar.
+          </sup>
+          <br>
+          <sup ion-text color="danger">
+            (Faltan participantes por pagar)
+          </sup>
         </div>
-       
+      </ng-container>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img
+            src="{{ (compartidas.idSucursal | getSucursal | async)?.photoURL }}"
+          />
+        </ion-thumbnail>
+        <h2>
+          <ion-icon
+            ios="ios-home"
+            md="md-home"
+            style="color: #fcc04d"
+          ></ion-icon
+          ><b
+            >{{ (compartidas.idSucursal | getSucursal | async)?.displayName
+            }}</b
+          >
+        </h2>
+        <p>
+          Folio:
+          <b>
+            {{ (compartidas.idReservacion | getCompartidas | async)?.folio }}</b
+          >
+        </p>
+        <p>
+          Fecha:
+          <b>
+            {{ (compartidas.idReservacion | getCompartidas | async )?.fechaR |
+            date : 'dd/MM/yyyy'}}</b
+          >
+        </p>
+
+        <div
+          *ngIf="(compartidas.idReservacion | getCompartidas | async )?.estatus === 'Compartida' || (compartidas.idReservacion | getCompartidas | async )?.estatus === 'CreadaCompartida'; then creando else aceptado"
+        ></div>
+
+        <ng-template #creando>
+          <p>
+            Compartida
+            <img src="../assets/imgs/amarillo.png" class="imgStatus" />
+          </p>
+        </ng-template>
+
+        <ng-template #aceptado>
+          <p>
+            Aceptada <img src="../assets/imgs/verde.png" class="imgStatus" />
+          </p>
+        </ng-template>
+        <button
+          ion-button
+          item-end
+          (click)="verDetalle(compartidas.idReservacion, compartidas.idSucursal)"
+        >
+          Más Detalles
+        </button>
+
+        <div
+          *ngIf="(compartidas.idReservacion | getCompartidas | async)?.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then modificado"
+        ></div>
+
+        <ng-template #modificado>
+          <small>
+            <ion-icon
+              ios="ios-warning"
+              md="md-warning"
+              style="color: #ff5252"
+            ></ion-icon>
+            Reservación reasignada a la zona: {{ ((compartidas.idReservacion |
+            getCompartidas | async)?.idZona | getZona | async)?.nombre }} el
+            consumo sugerido es: {{ ((compartidas.idReservacion | getCompartidas
+            | async)?.idZona | getZona | async)?.consumo | currency }}
+          </small>
+        </ng-template>
+
+        <div
+          *ngIf="(compartidas.idReservacion | getCompartidas | async)?.folio.estatus == 'Modificado' && (compartidas.idReservacion | getCompartidas | async)?.idUsuario == compartidas.idUsuario; then mod"
+        ></div>
+
+        <ng-template #mod>
+          <br />
+          <button
+            ion-button
+            item-end
+            color="primary"
+            (click)="verCarta(compartidas.idReservacion, compartidas.idSucursal, compartidas.idevento)"
+          >
+            Aceptar
+          </button>
+          <button
+            ion-button
+            item-end
+            color="danger"
+            (click)="CancelarReservacion(compartidas.idReservacion )"
+          >
+            Cancelar
+          </button>
+        </ng-template>
+      </ion-item>
+      <ion-item>
+        <div *ngIf="compartidas.estatus == 'Espera'; then espera"></div>
+
+        <ng-template #espera>
+          <ion-grid>
+            <ion-row>
+              <ion-col col-12>
+                <div text-center text-wrap>
+                  <ion-icon
+                    ios="ios-warning"
+                    md="md-warning"
+                    style="color: #ff5252"
+                  ></ion-icon>
+                  <small>
+                    Invitación para que el total de la cuenta se divida contigo.
+                  </small>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col col-6>
+                <div text-center>
+                  <button
+                    ion-button
+                    item-end
+                    color="secondary"
+                    small
+                    (click)="aceptarCompartir(compartidas.idCompartir, compartidas.idReservacion)"
+                  >
+                    Acepto
+                  </button>
+                </div>
+              </ion-col>
+              <ion-col col-6>
+                <div text-center>
+                  <button
+                    ion-button
+                    item-end
+                    color="danger"
+                    small
+                    (click)="rechazarCompartir(compartidas.idCompartir, compartidas.idReservacion)"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ng-template>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div
+    *ngIf="misReservaciones.length === 0 && resCompartidas.length === 0"
+    text-center
+  >
+    <img src="./assets/content/advertencia.png" alt="" />
+
+    <div text-center>
+      <h4 style="color: #000"><b>Aún no hay reservaciones que mostrar.</b></h4>
     </div>
+  </div>
 </ion-content>

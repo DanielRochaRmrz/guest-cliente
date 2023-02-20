@@ -180,6 +180,24 @@ export class ReservacionProvider {
     ));
   }
 
+  public _getProductos(idx: string) {
+    return new Promise((resolve, reject) => {
+      const refReserva = this.af.collection("productos").ref;
+      refReserva
+        .where("idReservacion", "==", idx)
+        .get()
+        .then((quereySnap) => {
+          const infoReserva = [];
+          quereySnap.forEach((productosInfo) => {
+            const data = productosInfo.data();
+            data.$key = productosInfo.id;
+            infoReserva.push(data);
+          });
+          resolve(infoReserva);
+        });
+    });
+  }
+
   public getProductosAdd(claveProducto: string, idReservacion: string) {
     this.productos = this.af.collection<any>("productos", (ref) =>
       ref
@@ -217,17 +235,21 @@ export class ReservacionProvider {
   public _getInfo(idx: string) {
     return new Promise((resolve, reject) => {
       const refReserva = this.af.collection("reservaciones").ref;
-      refReserva.where("idReservacion", "==", idx).get().then((quereySnap) => {
-        const infoReserva = []
-        quereySnap.forEach(reservaInfo => {
-          const data = reservaInfo.data();
-          data.$key = reservaInfo.id;
-          infoReserva.push(data);
+      refReserva
+        .where("idReservacion", "==", idx)
+        .get()
+        .then((quereySnap) => {
+          const infoReserva = [];
+          quereySnap.forEach((reservaInfo) => {
+            const data = reservaInfo.data();
+            data.$key = reservaInfo.id;
+            infoReserva.push(data);
+          });
+          resolve(infoReserva);
         });
-        resolve(infoReserva);
-      })
-    })
+    });
   }
+
 
 
   public getReserCom(idx) {
@@ -352,11 +374,12 @@ export class ReservacionProvider {
     ));
   }
 
-  public getReservacionesClienteHistorialCompartidas(uid: string, telefono: string) {
-
+  public getReservacionesClienteHistorialCompartidas(
+    uid: string,
+    telefono: string
+  ) {
     return new Promise((resolve, reject) => {
-
-      let compartidasRecibidas = this.af.collection('compartidas').ref;
+      let compartidasRecibidas = this.af.collection("compartidas").ref;
 
       compartidasRecibidas
         .where("telefono", "==", telefono)
@@ -366,19 +389,14 @@ export class ReservacionProvider {
         .where("idUsuario", "!=", uid)
         .get()
         .then((data) => {
-
-          data.forEach((element:any) => {            
-
+          data.forEach((element: any) => {
             resolve(element.data());
-
           });
-        }).catch((error) => {
-
-          console.log(error);
-
         })
-
-    })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
 
     // this.reservaCliente = this.af.collection<any>("compartidas", (ref) =>
     //   ref
@@ -518,7 +536,11 @@ export class ReservacionProvider {
                     .update({
                       playerId: player,
                     })
-                    .then(function () { });
+                    .then(function () {})
+                    .catch((err) => {
+                      // The document probably doesn't exist.
+                      console.error("Error updating document: ", err);
+                    });
                 }
               });
             });
@@ -734,6 +756,7 @@ export class ReservacionProvider {
       const fecha = moment(reservacion.fecha).format("x");
       const hora = moment(reservacion.hora, "HH:mm").format("hh:mm a");
       const idUsuario = localStorage.getItem("uid");
+
       this.af
         .collection("reservaciones")
         .add({
@@ -748,6 +771,7 @@ export class ReservacionProvider {
           idUsuario: idUsuario,
           folio: "R" + folio,
           playerIDSuc: reservacion.playerIDSuc,
+          estatus_pago: "",
         })
         .then((reserva) => {
           this.updateReservaId(reserva.id);
@@ -875,6 +899,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -893,6 +919,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -910,6 +938,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -928,6 +958,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -946,6 +978,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -963,6 +997,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -981,6 +1017,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -999,6 +1037,8 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -1018,6 +1058,29 @@ export class ReservacionProvider {
           this.deleteUserAceptado(idReservacion);
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
+          reject(err);
+        });
+    });
+  }
+  
+  //Cambiar estatus de la reservación a Reembolsar
+  public updateReservacionEstatusReembolsar(idx) {
+    return new Promise((resolve, reject) => {
+      this.af
+        .collection("reservaciones")
+        .doc(idx)
+        .update({
+          estatus: "Reembolsar",
+          cancelado_por: 'Usuario'
+        })
+        .then((reserva) => {
+          resolve({ success: true });
+        })
+        .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
@@ -1036,9 +1099,9 @@ export class ReservacionProvider {
           idReservacion: producto.idReservacion,
           img: producto.img,
         })
-        .then((reserva) => {
-          this.updateReservaId(reserva.id);
-          resolve({ success: true, idReservacion: reserva.id });
+        .then((producto) => {
+          // this.updateReservaId(reserva.id);
+          resolve({ success: true, idProducto: producto.id });
         })
         .catch((err) => {
           reject(err);
@@ -1060,20 +1123,27 @@ export class ReservacionProvider {
           resolve({ success: true });
         })
         .catch((err) => {
+          // The document probably doesn't exist.
+          console.error("Error updating document: ", err);
           reject(err);
         });
     });
   }
 
   public updateReservaId(ID) {
+    console.log('updateReservaId -->', ID);
+    
     this.af
       .collection("reservaciones")
       .doc(ID)
       .update({
         idReservacion: ID,
       })
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch((err) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", err);
+      });
   }
 
   public updateCompartirId(ID) {
@@ -1083,8 +1153,11 @@ export class ReservacionProvider {
       .update({
         idCompartir: ID,
       })
-      .then(() => { })
-      .catch(() => { });
+      .then(() => {})
+      .catch((err) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", err);
+      });
   }
 
   public getReservacion(idx) {
@@ -1175,32 +1248,61 @@ export class ReservacionProvider {
     });
   }
 
-  deleteReservacion(idReservacion) {
+  deleteReservacion(idReservacion: string) {
+    // Borrar reservacion
     this.af
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () { })
-      .catch(function (error) { });
+      .then(() => {
+        console.log("Se borro regsitro en Reservaciones");
+      })
+      .catch((error) => {
+        console.log("No se pudo en Reservaciones");
+      });
 
+    // Borrar codigo rp
+    this.af
+      .collection("contCodigosRp")
+      .doc(idReservacion)
+      .delete()
+      .then(() => {
+        console.log("Se borro regsitro en contCodigosRp");
+      })
+      .catch(function (error) {
+        console.log("No se pudo en contCodigosRp");
+      });
+
+    // Borrar productos
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
     );
 
     pedidosProductServ.get().subscribe(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
+      if (querySnapshot.empty === true) {
+        console.log("No esta en DB");
+      } else {
+        console.log("Si esta en DB");
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+        });
+      }
     });
 
+    // Borrar compartidas
     const compartidas = this.af.collection<any>("compartidas", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
     );
 
     compartidas.get().subscribe(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        doc.ref.delete();
-      });
+      if (querySnapshot.empty === true) {
+        console.log("No esta en DB");
+      } else {
+        console.log("Si esta en DB");
+        querySnapshot.forEach(function (doc) {
+          doc.ref.delete();
+        });
+      }
     });
   }
 
@@ -1209,8 +1311,8 @@ export class ReservacionProvider {
       .collection("reservaciones")
       .doc(idReservacion)
       .delete()
-      .then(function () { })
-      .catch(function (error) { });
+      .then(function () {})
+      .catch(function (error) {});
 
     const pedidosProductServ = this.af.collection<any>("productos", (ref) =>
       ref.where("idReservacion", "==", idReservacion)
@@ -1364,25 +1466,33 @@ export class ReservacionProvider {
 
   saveTotales(totales: any) {
     return new Promise((resolve, reject) => {
-      this.af.collection("totalesReserva").add(totales).then(resp => {
-        resolve(resp.id);
-      }).catch(err => { reject(err) });
+      this.af
+        .collection("totalesReserva")
+        .add(totales)
+        .then((resp) => {
+          resolve(resp.id);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
   public _getTotles(idReserva: string) {
     return new Promise((resolve, reject) => {
       const refReserva = this.af.collection("totalesReserva").ref;
-      refReserva.where("idReservacion", "==", idReserva).get().then((quereySnap) => {
-        const totalesReserva = []
-        quereySnap.forEach(totalesInfo => {
-          const data = totalesInfo.data();
-          data.$key = totalesInfo.id;
-          totalesReserva.push(data);
+      refReserva
+        .where("idReservacion", "==", idReserva)
+        .get()
+        .then((quereySnap) => {
+          const totalesReserva = [];
+          quereySnap.forEach((totalesInfo) => {
+            const data = totalesInfo.data();
+            data.$key = totalesInfo.id;
+            totalesReserva.push(data);
+          });
+          resolve(totalesReserva);
         });
-        resolve(totalesReserva);
-      })
-    })
+    });
   }
-
 }

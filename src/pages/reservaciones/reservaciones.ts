@@ -359,7 +359,10 @@ export class ReservacionesPage {
                         .update({
                           playerId: this.players,
                         })
-                        .then(function () {});
+                        .then(function () {}).catch((err) => {
+                          // The document probably doesn't exist.
+                          console.error("Error updating document: ", err);
+                        });
                     }
                   });
               });

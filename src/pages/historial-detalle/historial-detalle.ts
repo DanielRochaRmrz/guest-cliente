@@ -83,6 +83,7 @@ export class HistorialDetallePage {
   totalConPropina: any;
   totalNeto: any;
   subTotal: number;
+  public ComisionMasIva: number;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -224,10 +225,13 @@ export class HistorialDetallePage {
             this.validarCupon = "Noexiste";
 
             this.comision = this.total * .059;
+
+            this.iva = this.comision * .16;
+
+            this.ComisionMasIva = this.comision + this.iva;
             
             this.subTotal = this.comision + this.total;
             
-            this.iva = this.subTotal * .16;
 
             this.propinaRe = this.total * info[0].propina;
 
@@ -245,12 +249,16 @@ export class HistorialDetallePage {
 
               this.comision = info[0].totalReservacion * .059;
 
+              this.iva = this.comision * .16;
+
+              this.ComisionMasIva = this.comision + this.iva;
+
               this.subTotal = this.comision + info[0].totalReservacion;
 
-              this.iva = this.subTotal * .16;
 
               this.propinaRe = info[0].totalReservacion * info[0].propina;
               
+              // this.totalNeto = this.subTotal + this.propinaRe;
               this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
             });

@@ -1,50 +1,68 @@
 <ion-header>
-    <ion-navbar class="borde" hideBackButton>
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle class="botonMod">
-                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
-                </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
-            </ion-col>
-            <ion-col>
-                &nbsp;
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+  <ion-navbar class="borde" hideBackButton>
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
+      </ion-col>
+      <ion-col align="center">
+        <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
+      </ion-col>
+      <ion-col> &nbsp; </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
 
 <ion-content no-padding>
+  <div *ngIf="menus; then menu else spiner"></div>
+  <ng-template #menu>
     <ion-grid>
-        <ion-row>
-            <ion-col col-12 col-md-12>
-                <div *ngFor="let menu of menus">
-                    <ion-card (click)="(irMenuArbol(menu.claveMenuDigital))">
-                        <img [src]="menu.urlImagenMenu" />
-                        <ion-card-content>
-                            <ion-card-title>
-                                <div text-center>{{menu.nombreMenuDigital}}</div>
-                            </ion-card-title>
-                        </ion-card-content>
-                    </ion-card>
-                </div>
-            </ion-col>
-        </ion-row>
+      <ion-row>
+        <ion-col col-12 col-md-12>
+          <div *ngFor="let menu of menus">
+            <ion-card (click)="(irMenuArbol(menu.claveMenuDigital))">
+              <img [src]="menu.urlImagenMenu" />
+              <ion-card-content>
+                <ion-card-title>
+                  <div text-center>{{menu.nombreMenuDigital}}</div>
+                </ion-card-title>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-grid>
+  </ng-template>
+
+  <ng-template #spiner>
+    <div class="sk-fading-circle">
+      <div class="sk-circle1 sk-circle"></div>
+      <div class="sk-circle2 sk-circle"></div>
+      <div class="sk-circle3 sk-circle"></div>
+      <div class="sk-circle4 sk-circle"></div>
+      <div class="sk-circle5 sk-circle"></div>
+      <div class="sk-circle6 sk-circle"></div>
+      <div class="sk-circle7 sk-circle"></div>
+      <div class="sk-circle8 sk-circle"></div>
+      <div class="sk-circle9 sk-circle"></div>
+      <div class="sk-circle10 sk-circle"></div>
+      <div class="sk-circle11 sk-circle"></div>
+      <div class="sk-circle12 sk-circle"></div>
+    </div>
+  </ng-template>
 </ion-content>
 
 <ion-footer no-border>
-    <ion-grid>
-        <ion-row>
-            <ion-col col-12>
-                <div text-center>
-                    <button ion-button round block color="dark" (click)="(irCroquis())">
-                        Atras
-                    </button>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <div text-center>
+          <button ion-button round block color="dark" (click)="(irCroquis())">
+            Atras
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>

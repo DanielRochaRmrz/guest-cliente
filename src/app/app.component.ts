@@ -231,6 +231,11 @@ export class MyApp {
                 localStorage.removeItem('reservacion');
                 localStorage.removeItem("contactosCompartidos");
                 localStorage.removeItem("contactsSelected");
+
+                localStorage.removeItem("id_cupon");
+                localStorage.removeItem("numcupon");
+                localStorage.removeItem("cuponn");
+                localStorage.removeItem("cupon");
               } else {
                 console.log("No hay");
               }

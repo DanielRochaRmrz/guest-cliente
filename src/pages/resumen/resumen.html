@@ -142,7 +142,7 @@
                               >
                                 <div *ngFor="let cupon of cupones_visibles">
                                   <div *ngIf="cupones.uid == cupon">
-                                    <ion-option [value]="cupones.codigoCupon">
+                                    <ion-option [value]="cupones">
                                       Código: {{cupones.codigoCupon}} - Valor
                                       ${{cupones.valorCupon}}
                                     </ion-option>

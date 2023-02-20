@@ -101,6 +101,7 @@ export class CartaPage {
   loadCartaSucursal(claveMenuDigitalDetalleArbol: string) {
     this.cartaApi.GetProductosClasificacion(claveMenuDigitalDetalleArbol).subscribe((carta: any) => {
       this.cartas = carta;
+      console.log(this.cartas);
     });
   }
 

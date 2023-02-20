@@ -91,6 +91,8 @@ export class ReservacionDetallePage {
   public totalNeto: any;
   public totalConPropina: any;
   public subTotal: number;
+  public timer: number;
+  public ComisionMasIva: number;
 
   constructor(
     public navCtrl: NavController,
@@ -200,6 +202,10 @@ export class ReservacionDetallePage {
     this.reservaProvider
       .consultarEstatusRe(this.idReservacion)
       .subscribe((resEs) => {
+        if (resEs.length === 0) {
+          console.log('Se elimino');
+          return;
+        }
         this.infoResEstatus = resEs;
         console.log(
           "Info espera resultado estatus",
@@ -229,6 +235,8 @@ export class ReservacionDetallePage {
   }
 
   getDetails() {
+    console.log('Entra de nuevo');
+    
     // total de general dependiendo los productos que tenga la reservacion
     this.reservaProvider
       .getProductos(this.idReservacion)
@@ -241,7 +249,30 @@ export class ReservacionDetallePage {
           this.idReservacion
         );
 
-        console.log("infoReservaciones", this.infoReservaciones.totalesR);
+        if (this.infoReservaciones.length === 0) {
+          console.log('Se elimino');
+          return;
+        }
+        
+        const fecha = this.infoReservaciones[0].fechaR;
+        const hora = this.infoReservaciones[0].hora;
+        const fechar_ = moment(`${fecha} ${hora}`, "DD MM YYYY hh:mm");
+        const date_current = moment(new Date());
+        const mili = moment.unix(this.infoReservaciones[0].fechaR_);
+        const diff_hours = date_current.diff(fechar_, "hours");
+        console.log('fechar_', mili);
+        
+
+        // create the timestamp here. I use the end of the day here as an example
+        // const end = moment(date_create).endOf('day');
+        // console.log('finaliza -->', end);
+
+        // setInterval(function() {
+        //     const timeLeft = moment(end.diff(moment())); // get difference between now and timestamp
+        //     const formatted = timeLeft.format('HH:mm:ss'); // make pretty
+
+        //     console.log(formatted); // or do your jQuery stuff here
+        // }, 1000);
 
         // this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
         //   this.infoReservaciones = info;
@@ -251,13 +282,18 @@ export class ReservacionDetallePage {
 
           this.comision = this.total * 0.059;
 
+          this.iva = this.comision * 0.16;
+
+          this.ComisionMasIva = this.comision + this.iva;
+
           this.subTotal = this.comision + this.total;
 
-          this.iva = this.subTotal * 0.16;
 
           this.propinaRe = this.total * this.infoReservaciones[0].propina;
 
           this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+          // this.totalNeto = this.subTotal + this.propinaRe;
+
 
           const totales = {
             idReservacion: this.idReservacion,
@@ -268,8 +304,7 @@ export class ReservacionDetallePage {
             iva: this.iva,
             propina: this.propinaRe,
             totalNeto: this.totalNeto,
-            estatus: '',
-
+            estatus: "",
           };
 
           // this.TotalesInsert(totales);
@@ -285,15 +320,19 @@ export class ReservacionDetallePage {
 
           this.comision = this.infoReservaciones[0].totalReservacion * 0.059;
 
+          this.iva = this.comision * 0.16;
+
+          this.ComisionMasIva = this.comision + this.iva;
+
           this.subTotal =
             this.comision + this.infoReservaciones[0].totalReservacion;
 
-          this.iva = this.subTotal * 0.16;
 
           this.propinaRe =
             this.infoReservaciones[0].totalReservacion *
             this.infoReservaciones[0].propina;
 
+          // this.totalNeto = this.subTotal + this.propinaRe;
           this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
           const totales = {
@@ -360,6 +399,10 @@ export class ReservacionDetallePage {
             this.reservaProvider
               .getInfo(this.idReservacion)
               .subscribe((info2) => {
+                if (info2.length === 0) {
+                  console.log('Se elimino');
+                  return;
+                }
                 this.infoReservaciones2 = info2;
                 //si el cupon no existe en la reservacion se hace la division normal
                 if (info2[0].uidCupon == undefined) {
@@ -486,7 +529,7 @@ export class ReservacionDetallePage {
                 idCompartir: idCompartir,
                 folio: folio,
                 displayNames: displayNames,
-                idSucursal: this.idSucursal
+                idSucursal: this.idSucursal,
               });
             } else {
               let toastError = this.toastCtrl.create({
@@ -538,7 +581,7 @@ export class ReservacionDetallePage {
     this.navCtrl.setRoot(QrGeneradoPage, {
       idReservacion: idReservacion,
       idCompartir: idCompartir,
-      idSucursal: this.idSucursal
+      idSucursal: this.idSucursal,
     });
   }
 
@@ -591,7 +634,7 @@ export class ReservacionDetallePage {
                 cvc: data.cvc,
                 idUsuario: idUsuario,
                 folio: folio,
-                idSucursal: this.idSucursal
+                idSucursal: this.idSucursal,
               });
             } else {
               let toastError = this.toastCtrl.create({
@@ -744,11 +787,8 @@ export class ReservacionDetallePage {
     // this.getUsersPusCancelar(playerIDs);
 
     // SE ELIMINA EL CODIGO DE RP USADO POR EL USUARIO
-
     this.eliminarCodigoRP(idReservacion);
-
     // SE ELIMINA RESERVACION
-
     this.afs
       .collection("reservaciones")
       .doc(idReservacion)
@@ -757,8 +797,6 @@ export class ReservacionDetallePage {
         console.log("Document successfully deleted!");
         this.reservaProvider.deleteCompartida(idReservacion);
         this._providerPushNoti.PushNotiCancelarReserva(folio, playerIDSuc);
-        // this.showAlert();
-
         this.showToast("bottom");
         this.goBack();
       })
@@ -827,5 +865,62 @@ export class ReservacionDetallePage {
   async obtenerMesas() {
     this.mesas = await this._providerReserva.obtenerMesas(this.idReservacion);
     console.log("Mesas -->", this.mesas);
+  }
+
+  cancelarReservacion( idReserva: string, playerIdSuc: string, folio: string, pagadoC: string ) {
+
+    const aceptado = this.infoReservaciones[0].estatus;
+    const pagado = this.infoReservaciones[0].estatus_pago;
+    
+    if (aceptado === 'Aceptado' && pagado === 'Pagado') {
+      const msj = '¿Estas seguro de cancelar la reservación? &nbsp <b> Se devolvera el 90% del total que pagaste por la reservación</b>';
+      this.alterReserva(msj, idReserva, playerIdSuc, folio, 'PagadoN');
+      return;  
+    }
+
+    if (aceptado === 'AceptadoCompartida' && pagadoC === 'Pagado' ) {
+      const msj = '¿Estas seguro de cancelar la reservación? &nbsp <b> Se devolvera el 90% del total que pagaste por la reservación</b>';
+      this.alterReserva(msj, idReserva, playerIdSuc, folio, 'pagadoC');
+      return;
+    }
+    
+    const msj = '¿Estas seguro de cancelar la reservación?';
+    this.alterReserva(msj, idReserva, playerIdSuc, folio, '');
+
+  }
+
+  alterReserva(msj: string, idReserva: string, payerIdSuc: string, folio: string, pagado: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Cacelar reservación',
+      message: msj,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Si',
+          handler: () => {
+            
+            if (pagado === 'PagadoN' || pagado === 'pagadoC') {
+              this._providerReserva.updateReservacionEstatusReembolsar(idReserva);
+              this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
+              this.showToast("bottom");
+              this.navCtrl.setRoot(MisReservacionesPage);
+              return;
+            }
+
+            this._providerReserva.deleteReservacion(idReserva);
+            this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
+            this.showToast("bottom");
+            this.navCtrl.setRoot(MisReservacionesPage);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

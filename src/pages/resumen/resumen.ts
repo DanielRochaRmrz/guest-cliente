@@ -160,6 +160,10 @@ export class ResumenPage {
     this._resumenProvider
       .gerReservacion(this.idReservacion)
       .subscribe((reservacion) => {
+        if (!reservacion) {
+          console.log('Se elimino');
+          return;
+        }
         this.r = reservacion;
         console.log("Reserva: ", reservacion);
         const month = moment(Number(reservacion.fechaR_));
@@ -278,20 +282,16 @@ export class ResumenPage {
 
   verificarcodigo(uidsucursal: string, total: any, dato: any) {
     const cvc = parseInt(localStorage.getItem("cupon"));
-    console.log("este es el codigo", cvc);
-    console.log("Uid de la sucursal", uidsucursal);
-    console.log("este es el total", total);
 
-    this.afs
-      .collection("cupones", (ref) => ref.where("codigoCupon", "==", dato))
-      .valueChanges()
-      .subscribe((data) => {
-        this.cupones = data;
+    console.log('Dato -->', dato);
 
-        this.cupones.forEach((element) => {
-          const cupon = element.valorCupon;
-          const uidcupon = element.uid;
-          const numcupon = element.numCupones;
+    this.afs.collection('cupones').doc(dato).get().subscribe(data => {
+          const c = data.data()
+          const cupon = c.valorCupon;
+          const uidcupon = c.uid;
+          const numcupon = c.numCupones;
+          console.log('c -->', c.valorCupon);
+          
           console.log(
             "Datos del cupon",
             total,
@@ -299,7 +299,7 @@ export class ResumenPage {
             uidcupon,
             numcupon,
             "Cantidad",
-            this.cupones.length
+            c.length
           );
 
           const rest = total - cupon;
@@ -323,11 +323,6 @@ export class ResumenPage {
           this.cuponn = cupon;
           this.uidcupon = uidcupon;
           this.numcupon = numcupon;
-
-          localStorage.setItem("id_cupon", uidcupon);
-          localStorage.setItem("cuponn", cupon);
-          localStorage.setItem("numcupon", numcupon);
-        });
       });
 
     this.doToCupon(total);
@@ -335,37 +330,18 @@ export class ResumenPage {
     this.doToCanjeo(total);
   }
 
-  prueba(total, cupon, uidcupon, numcupon) {
-    this.ocultar1 = !this.ocultar1;
-
-    console.log(
-      "Datos del cupon en la funcion de prueba",
-      total,
-      cupon,
-      uidcupon,
-      numcupon
-    );
-
-    const rest = total - cupon;
-    const cvc = parseInt(this.cvc);
-    const restacupones = numcupon - 1;
-
-    this.resta = rest;
-
-    // this.doToReservacion(total, cupon, uidcupon, numcupon);
-    // this.doToCupon(total, cupon, uidcupon, numcupon);
-    // this.doToCanjeo(total, cupon, uidcupon, numcupon);
-  }
-
   doToReservacion(total) {
     //new
     const id_cupon = localStorage.getItem("id_cupon");
     const cuponn = localStorage.getItem("cuponn");
-    const numcupon = localStorage.getItem("numcupon");
+    const numcupon =localStorage.getItem("numcupon");
     //New
     const rest = total - parseInt(cuponn);
     const cvc = parseInt(localStorage.getItem("cupon"));
     const restacupones = parseInt(numcupon) - 1;
+
+    console.log('cvc -->', cvc);
+    
 
     console.log("esta es la resta del cupon:", rest);
     console.log(
@@ -390,20 +366,25 @@ export class ResumenPage {
       })
       .then(function () {
         console.log("Document successfully updated!");
+      }).then(function () {}).catch((err) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", err);
       });
   }
 
   doToCupon(total) {
     const id_cupon = localStorage.getItem("id_cupon");
     const cuponn = localStorage.getItem("cuponn");
-    const numcupon = localStorage.getItem("numcupon");
+    const numcupon =localStorage.getItem("numcupon");
 
     const rest = total - parseInt(cuponn);
     this.total = total - parseInt(cuponn);
 
     const cvc = parseInt(localStorage.getItem("cupon"));
     const restacupones = parseInt(numcupon) - 1;
-
+    
+    console.log('id_cupon -->', id_cupon);
+    
     console.log("esta es la resta del cupon:", rest);
     console.log(
       "este son los datos del cupon. Codigo",
@@ -426,6 +407,9 @@ export class ResumenPage {
       })
       .then(function () {
         console.log("Document successfully updated!");
+      }).then(function () {}).catch((err) => {
+        // The document probably doesn't exist.
+        console.error("Error updating document: ", err);
       });
   }
 
@@ -435,7 +419,7 @@ export class ResumenPage {
 
     const id_cupon = localStorage.getItem("id_cupon");
     const cuponn = localStorage.getItem("cuponn");
-    const numcupon = localStorage.getItem("numcupon");
+    const numcupon =localStorage.getItem("numcupon");
 
     const rest = total - parseInt(cuponn);
     this.total = total - parseInt(cuponn);
@@ -564,13 +548,18 @@ export class ResumenPage {
       });
   }
 
-  onChange(dato) {
+  onChange(dato: any) {
     console.log("Dato:", dato);
-    this.codigoSel = dato;
+    this.codigoSel = dato.codigoCupon;
+    const uidCupon = dato.uid;
     console.log("este es el valor de la variable global", this.codigoSel);
     localStorage.setItem("cupon", this.codigoSel);
 
-    this.verificarcodigo(this.idSucursal, this.total, dato);
+    localStorage.setItem("id_cupon", dato.uid);
+    localStorage.setItem("cuponn", dato.valorCupon);
+    localStorage.setItem("numcupon", dato.numCupones);
+
+    this.verificarcodigo(this.idSucursal, this.total, uidCupon);
   }
 
   addPoliticas() {
