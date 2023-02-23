@@ -37,6 +37,7 @@ export class Reservacion_1Page implements OnInit {
   loading: any;
   tipoSucursal: string;
   hayDatos:any;
+  suc: any = []
 
 
   constructor(public navCtrl: NavController,
@@ -95,6 +96,7 @@ export class Reservacion_1Page implements OnInit {
     //sacar todas las ciudades
     this.getCiudades();
     // this.getSucursales(this.opcionS);
+    this.getAllSucursales();
   }
 
   ngOnInit() {
@@ -104,9 +106,16 @@ export class Reservacion_1Page implements OnInit {
     this.page.data.forEach(element => {
      this.hayDatos =  element.length;
     });
+
     
     
   }  
+
+  async getAllSucursales() {
+    console.log('hola');
+    this.suc = await this._reservacionP.getSucursalesTipo2(this.opcionS);
+    console.log('Sucursale', this.suc );
+  }
 
   scrollHandler(e) {
 

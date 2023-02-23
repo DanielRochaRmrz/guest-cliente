@@ -1,105 +1,119 @@
 <ion-header>
-    <ion-navbar class="borde" hideBackButton>
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle class="botonMod">
-                    <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
-                </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" (click)="verEvento()" style="width: 60%" alt="" />
-            </ion-col>
-            <ion-col>
-               &nbsp;
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+  <ion-navbar class="borde" hideBackButton>
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
+          <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
+        </button>
+      </ion-col>
+      <ion-col align="center">
+        <img
+          src="./assets/imgs/Logoblanco.png"
+          (click)="verEvento()"
+          style="width: 60%"
+          alt=""
+        />
+      </ion-col>
+      <ion-col> &nbsp; </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
 <br />
 <ion-content class="card-background-page">
-    <div *ngIf="estatus == 0">
-        <div padding>
+  <div *ngIf="estatus == 0">
+    <div padding>
+      <ion-row>
+        <ion-col col-5>
+          <h2>
+            <b>Sucursales</b>
+            <div class="detalle">{{ tipoSucursal }}</div>
+          </h2>
+        </ion-col>
+        <ion-col col-7>
+          <ion-item style="background: #e49602">
+            <ion-label>
+              <h3
+                class="colorIcon"
+                style="
+                  text-align: initial;
+                  margin-left: 0px;
+                  color: white;
+                  text-transform: uppercase;
+                  font-size: 16px;
+                "
+              >
+                Ciudad:
+              </h3>
+            </ion-label>
+            <ion-select
+              [(ngModel)]="filterPostCiudad"
+              interface="popover"
+              class="colorIcon"
+              style="color: #fff; text-align: center; font-size: auto"
+            >
+              <div *ngFor="let ciudad of ciudades">
+                <ion-option [value]="ciudad.ciudad"
+                  >{{ ciudad.ciudad }}</ion-option
+                >
+              </div>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 
-            <ion-row>
-                <ion-col col-5>
-                    <h2>
-                        <b>Sucursales</b>
-                        <div class="detalle">{{ tipoSucursal }} </div>
-                    </h2>
+  <hr />
+
+  <div *ngIf="hayDatos == 0" text-center>
+    <img src="./assets/content/advertencia.png" alt="" />
+
+    <div text-center>
+      <h4 style="color: #000">
+        <b>Aún no hay {{tipoSucursal}} que mostrar.</b>
+      </h4>
+    </div>
+  </div>
+
+  <!-- <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
+    <div class="container"> -->
+      <ion-card
+        class="card-image"
+        *ngFor="let sucursal of suc  | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad"
+      >
+        <div
+          (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)"
+        >
+          <img src="{{sucursal.photoURL}}" class="card-image" />
+
+          <!-- <div class="card-title">{{sucursal.displayName}} </div> -->
+
+          <div class="card-subtitle">
+            {{sucursal.direccion}}, {{sucursal.ciudad}}
+            <div align="right">
+              <br />
+              <ion-row>
+                <ion-col align="right" class="selCol" col-10>
+                  <span>SELECCIONAR</span>
                 </ion-col>
-                <ion-col col-7>
-
-                    <ion-item style="background: #E49602;">
-                        <ion-label>
-                            <h3 class="colorIcon"
-                                style="text-align:initial; margin-left: 0px;color: white;text-transform: uppercase;font-size: 16px;">
-                                Ciudad:
-                            </h3>
-                        </ion-label>
-                        <ion-select [(ngModel)]="filterPostCiudad" interface="popover" class="colorIcon"
-                            style="color: #fff; text-align: center; font-size: auto;">
-                            <div *ngFor="let ciudad of ciudades">
-                                <ion-option [value]="ciudad.ciudad">{{ ciudad.ciudad }}</ion-option>
-                            </div>
-                        </ion-select>
-                    </ion-item>
-
+                <ion-col align="center">
+                  <img
+                    src="./assets/imgs/Group.svg"
+                    style="width: 35px; margin-left: 2px"
+                    alt=""
+                  />
                 </ion-col>
-
-            </ion-row>
+              </ion-row>
+            </div>
+          </div>
         </div>
-
-    </div>
-
-    <hr>
-
-    <div *ngIf="hayDatos == 0" text-center>
-
-        <img src="./assets/content/advertencia.png" alt="">
-
-        <div text-center>
-
-            <h4 style="color: #000;"><b>Aún no hay {{tipoSucursal}} que mostrar.</b></h4>
-
-        </div>
-
-    </div>
-
-    <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
-        <div class="container">
-
-            <ion-card class="card-image"
-                *ngFor="let sucursal of page.data | async | pipesCategoria:filterPost | pipesFilterCiudad2: filterPostCiudad">
-
-                <div (click)="reservar(sucursal.uid, sucursal.ClaveInstancia, sucursal.playerID)">
-                    <img src="{{sucursal.photoURL}}" class="card-image" />
-
-                    <div class="card-title">{{sucursal.displayName}} </div>
-
-                    <div class="card-subtitle">
-                        {{sucursal.direccion}}, {{sucursal.ciudad}}
-                        <div align="right">
-                            <br />
-                            <ion-row>
-                                <ion-col align="right" class="selCol" col-10>
-                                    <span>SELECCIONAR</span>
-                                </ion-col>
-                                <ion-col align="center">
-                                    <img src="./assets/imgs/Group.svg" style="width: 35px; margin-left: 2px" alt="" />
-                                </ion-col>
-                            </ion-row>
-                        </div>
-                    </div>
-                </div>
-            </ion-card>
-        </div>
-    </div>
-
-    <p *ngIf="page.done | async"></p>
-
-    <ion-footer>
-        <loading-spinner *ngIf="page.loading | async"></loading-spinner>
-    </ion-footer>
-
-
+      </ion-card>
+    <!-- </div>
+  </div> -->
 </ion-content>
+
+<!-- <p *ngIf="page.done | async"></p>
+
+<ion-footer>
+  <loading-spinner *ngIf="page.loading | async"></loading-spinner>
+</ion-footer> -->

@@ -250,8 +250,6 @@ export class ReservacionProvider {
     });
   }
 
-
-
   public getReserCom(idx) {
     this.reservaInfo2 = this.af.collection<any>("compartidas", (ref) =>
       ref.where("idReservacion", "==", idx)
@@ -1064,7 +1062,7 @@ export class ReservacionProvider {
         });
     });
   }
-  
+
   //Cambiar estatus de la reservación a Reembolsar
   public updateReservacionEstatusReembolsar(idx) {
     return new Promise((resolve, reject) => {
@@ -1073,7 +1071,7 @@ export class ReservacionProvider {
         .doc(idx)
         .update({
           estatus: "Reembolsar",
-          cancelado_por: 'Usuario'
+          cancelado_por: "Usuario",
         })
         .then((reserva) => {
           resolve({ success: true });
@@ -1131,8 +1129,8 @@ export class ReservacionProvider {
   }
 
   public updateReservaId(ID) {
-    console.log('updateReservaId -->', ID);
-    
+    console.log("updateReservaId -->", ID);
+
     this.af
       .collection("reservaciones")
       .doc(ID)
@@ -1446,6 +1444,17 @@ export class ReservacionProvider {
         });
       })
     ));
+  }
+
+  getSucursalesTipo2(tipo: string) {
+    return new Promise((resolve, reject) => {
+      const sucrsalesRef = this.af
+        .collection("sucursales", (ref) => ref.where("tipo", "==", tipo))
+        .valueChanges();
+      sucrsalesRef.forEach((resp) => {
+        resolve(resp);
+      });
+    }).catch((err) => console.log("error", err));
   }
 
   getSucursal(uidSucursal: string) {

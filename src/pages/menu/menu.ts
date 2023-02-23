@@ -56,7 +56,7 @@ export class MenuPage {
   getMenu(ClaveInstancia: string) {
     this.cartaApi.getMenu(ClaveInstancia).subscribe((menus) => {
       this.menus = menus;
-      console.log(this.menus.length);
+      console.log(this.menus);
       
     });
   }

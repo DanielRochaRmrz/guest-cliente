@@ -1,183 +1,186 @@
 page-reservacion-1 {
-    //Nuevo
-    .toolbar-background {
-        background-image: url('../assets/content/head.png')!important;
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
+  //Nuevo
+  .toolbar-background {
+    background-image: url("../assets/content/head.png") !important;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+  //Nuevo
+  .botonMod {
+    // background: white;
+    // height: 38px;
+    // border-radius: 60%;
+    // margin-top: 5px;
+    // width: 26px;
+  }
+  .imgMenu {
+    width: 40px;
+    margin-top: 15px;
+  }
+  //Nuevo
+  .colorIcon3 {
+    zoom: 1;
+    color: #000;
+    font-size: inherit;
+  }
+  .borde {
+    margin-top: 0em;
+  }
+  .colorIcon {
+    color: #000;
+  }
+  .selecciona {
+    font-size: 14px;
+  }
+  .btnshare {
+    zoom: 90%;
+    margin-top: -18%;
+  }
+  .colorIcon2 {
+    color: #f9f6f6;
+  }
+  .imagen_fondo {
+    width: 100%;
+    height: 250px;
+  }
+  .titulo {
+    position: fixed;
+    margin-top: -35%;
+    color: white;
+  }
+  .titulos {
+    color: #fff;
+    font-style: normal;
+    font-size: x-large;
+  }
+  .card-background-page {
+    ion-card {
+      position: relative;
+      text-align: center;
     }
-    //Nuevo
-    .botonMod {
-        // background: white;
-        // height: 38px;
-        // border-radius: 60%;
-        // margin-top: 5px;
-        // width: 26px;
+    .card-title {
+      // font-family: 'Open Sans', sans-serif;
+      position: absolute;
+      top: 36%;
+      font-size: 2.3em;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+      // font-family: url('./assets/fonts/Staatliches-Regular.ttf');
+      // @font-face {
+      //     font-family: 'Staatliches';
+      //     font-weight: 400;
+      //     src: url('./assets/fonts/Staatliches-Regular.ttf');
+      // }
     }
-    .imgMenu {
-        width: 40px;
-        margin-top: 15px;
+    .card-subtitle {
+      background-color: #00000075;
+      font-size: 1em;
+      position: absolute;
+      top: 22rem;
+      width: 100%;
+      color: #fff;
     }
-    //Nuevo
-    .colorIcon3 {
-        zoom: 1;
-        color: #000;
-        font-size: inherit;
+  }
+  .arrow {
+    color: #fff;
+  }
+  .ion-option {
+    background: #000;
+  }
+  ion-select {
+    // background-color: #000;
+    .select-icon {
+      .select-icon-inner {
+        color: #000 !important;
+      }
     }
-    .borde {
-        margin-top: 0em;
+    .select-ion-option {
+      background: #000;
     }
-    .colorIcon {
-        color: #000;
+  }
+  ion-option {
+    background-color: #000;
+    color: #fff;
+  }
+  //NUEVOS
+  ion-select {
+    .select-icon {
+      .select-icon-inner {
+        color: #000 !important;
+      }
     }
-    .selecciona {
-        font-size: 14px
+  }
+  ion-alert:not(.select-alert) {
+    --background: black !important;
+    --color: white !important;
+    button {
+      color: white !important;
+      font-size: 20px !important;
     }
-    .btnshare {
-        zoom: 90%;
-        margin-top: -18%;
+  }
+  ion-select {
+    .option-content {
+      background-color: #000;
     }
-    .colorIcon2 {
-        color: #F9F6F6;
-    }
-    .imagen_fondo {
-        width: 100%;
-        height: 250px;
-    }
-    .titulo {
-        position: fixed;
-        margin-top: -35%;
-        color: white;
-    }
-    .titulos {
-        color: #fff;
-        font-style: normal;
-        font-size: x-large;
-    }
-    .card-background-page {
-        ion-card {
-            position: relative;
-            text-align: center;
-        }
-        .card-title {
-            // font-family: 'Open Sans', sans-serif;
-            position: absolute;
-            top: 36%;
-            font-size: 2.3em;
-            width: 100%;
-            font-weight: bold;
-            color: #fff;
-            // font-family: url('./assets/fonts/Staatliches-Regular.ttf');
-            // @font-face {
-            //     font-family: 'Staatliches';
-            //     font-weight: 400;
-            //     src: url('./assets/fonts/Staatliches-Regular.ttf');    
-            // }
-        }
-        .card-subtitle {
-            font-size: 1.0em;
-            position: absolute;
-            top: 56%;
-            width: 100%;
-            color: #fff;
-        }
-    }
-    .arrow {
-        color: #fff;
-    }
-    .ion-option {
-        background: #000;
-    }
-    ion-select {
-        // background-color: #000;
-        .select-icon {
-            .select-icon-inner {
-                color: #000 !important;
-            }
-        }
-        .select-ion-option {
-            background: #000;
-        }
-    }
-    ion-option {
-        background-color: #000;
-        color: #fff;
-    }
-    //NUEVOS
-    ion-select {
-        .select-icon {
-            .select-icon-inner {
-                color: #000 !important;
-            }
-        }
-    }
-    ion-alert:not(.select-alert) {
-        --background: black !important;
-        --color: white !important;
-        button {
-            color: white !important;
-            font-size: 20px !important;
-        }
-    }
-    ion-select {
-        .option-content {
-            background-color: #000;
-        }
-    }
-    .radio-md .radio-checked,
-    .radio-md-primary .radio-checked {
-        border-color: #fff;
-    }
-    .radio-md .radio-inner,
-    .radio-md-primary .radio-inner {
-        background-color: #fff;
-    }
-    .item-md .radio-md {
-        background-color: transparent;
-    }
-    .select-text {
-        overflow: hidden;
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        min-width: 85px;
-        font-size: inherit;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 14px;
-        margin-left: -85px;
-        position: absolute;
-    }
-    .ciudad {
-        display: flex;
-        justify-content: center;
-    }
-    .selCol {
-        margin-top: 4px;
-        font-size: large;
-    }
-    .card-image {
-        width: auto !important;
-        height: 308px !important;
-    }
-    .compartir-redes {
-        z-index: 2;
-    }
-    .detalle {
-        color: #cecece;
-        margin-top: -8px;
-        text-transform: uppercase;
-        font-size: 19px;
-    }
+  }
+  .radio-md .radio-checked,
+  .radio-md-primary .radio-checked {
+    border-color: #fff;
+  }
+  .radio-md .radio-inner,
+  .radio-md-primary .radio-inner {
+    background-color: #fff;
+  }
+  .item-md .radio-md {
+    background-color: transparent;
+  }
+  .select-text {
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    min-width: 85px;
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    margin-left: -85px;
+    position: absolute;
+  }
+  .ciudad {
+    display: flex;
+    justify-content: center;
+  }
+  .selCol {
+    margin-top: 4px;
+    font-size: large;
+  }
 
-    .content {
-        overflow: scroll;
-        max-height: 120vh;
-        width: 100vw;
-        margin: auto;
-      }
-    .container{
-        height: 650px;
-      }
+  .card-image {
+    width: 100% !important;
+    height: 308px !important;
+  }
+
+  .compartir-redes {
+    z-index: 2;
+  }
+  .detalle {
+    color: #cecece;
+    margin-top: -8px;
+    text-transform: uppercase;
+    font-size: 19px;
+  }
+
+  .content {
+    overflow: scroll;
+    max-height: 120vh;
+    width: 100vw;
+    margin: auto;
+  }
+  .container {
+    height: 500px;
+  }
 }
