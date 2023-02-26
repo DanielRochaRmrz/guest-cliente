@@ -10,6 +10,7 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { SucursalAltaProvider } from '../../providers/sucursal-alta/sucursal-alta';
 import { PaginationService } from '../../app/pagination.service';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 @IonicPage()
@@ -39,7 +40,8 @@ export class EventosPage implements OnInit {
     public afs: AngularFirestore,
     public sucursalprovider: SucursalAltaProvider,
     public page: PaginationService,
-    public photoViewer: PhotoViewer
+    public photoViewer: PhotoViewer,
+    private iab: InAppBrowser
   ) {
     this.page.reset();
     this.uidUserSesion = localStorage.getItem('uid');
@@ -117,5 +119,10 @@ export class EventosPage implements OnInit {
       piccasoOptions: {}, // If it is not provided, it will trigger an exception
     };
     this.photoViewer.show(flyerImg, "Flyer", options);
+  }
+
+  browser() {
+
+    const browser = this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317');
   }
 }
