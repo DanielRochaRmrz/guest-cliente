@@ -45,14 +45,28 @@
         <ion-col>
             <ion-card class="descripcion">
                 <br />
-                <ion-row *ngFor="let cartaItem of cartas">
-                    <ion-col col-2><img src="./assets/icon/Group 49.png" style="margin-top: 10%" alt="" /></ion-col>
-                    <ion-col col-4 class="letra">{{cartaItem.nombreProducto}}</ion-col>
-                    <ion-col col-4 class="precio">{{cartaItem.precioLista | currency}}</ion-col>
-                    <ion-col col-2>
-                        <ion-icon name="ios-checkbox-outline" style="color: black" (click)="productoDetalle(cartaItem.claveProducto)"></ion-icon>
-                    </ion-col>
-                </ion-row>
+                <div *ngIf="claveMenuDigitalDetalleArbol; then menuMaesto else menuGuest"></div>
+                <ng-template #menuMaesto>
+                    <ion-row *ngFor="let cartaItem of cartas">
+                        <ion-col col-2><img src="./assets/icon/Group 49.png" style="margin-top: 10%" alt="" /></ion-col>
+                        <ion-col col-4 class="letra">{{cartaItem.nombreProducto}}</ion-col>
+                        <ion-col col-4 class="precio">{{cartaItem.precioLista | currency}}</ion-col>
+                        <ion-col col-2>
+                            <ion-icon name="ios-checkbox-outline" style="color: black" (click)="productoDetalle(cartaItem.claveProducto)"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ng-template>
+                <ng-template #menuGuest>
+                    <ion-row *ngFor="let cartaItem of cartas">
+                        <ion-col col-2><img src="./assets/icon/Group 49.png" style="margin-top: 10%" alt="" /></ion-col>
+                        <ion-col col-4 class="letra">{{cartaItem.nombre_producto}}</ion-col>
+                        <ion-col col-4 class="precio">{{cartaItem.precio_lista | currency}}</ion-col>
+                        <ion-col col-2>
+                            <ion-icon name="ios-checkbox-outline" style="color: black" (click)="productoDetalle(cartaItem.id)"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ng-template>
+                
             </ion-card>
         </ion-col>
         <ion-col col-1></ion-col>
@@ -65,9 +79,19 @@
         <ion-row>
             <ion-col col-6>
                 <div text-center>
-                    <button ion-button round block color="dark" (click)="(goBack())">
-            Atras
-          </button>
+                    <div *ngIf="claveMenuDigitalDetalleArbol; then botonMaesto else botonGuest"></div>
+                    <ng-template #botonMaesto>
+                        <button ion-button round block color="dark" (click)="(goBack())">
+                            Atras
+                        </button>
+                    </ng-template>
+
+                    <ng-template #botonGuest>
+                        <button ion-button round block color="dark" (click)="(irMenu())">
+                            Atras
+                        </button>
+                    </ng-template>
+                    
                 </div>
             </ion-col>
             <ion-col col-6>

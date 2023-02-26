@@ -21,14 +21,28 @@
       <ion-row>
         <ion-col col-12 col-md-12>
           <div *ngFor="let menu of menus">
-            <ion-card (click)="(irMenuArbol(menu.claveMenuDigital))">
-              <img [src]="menu.urlImagenMenu" />
-              <ion-card-content>
-                <ion-card-title>
-                  <div text-center>{{menu.nombreMenuDigital}}</div>
-                </ion-card-title>
-              </ion-card-content>
-            </ion-card>
+            <div *ngIf="ClaveInstancia; then menuMaesto else menuGuest"></div>
+            <ng-template #menuMaesto>
+              <ion-card (click)="(irMenuArbol(menu.claveMenuDigital))">
+                <img [src]="menu.urlImagenMenu" />
+                <ion-card-content>
+                  <ion-card-title>
+                    <div text-center>{{menu.nombreMenuDigital}}</div>
+                  </ion-card-title>
+                </ion-card-content>
+              </ion-card>
+            </ng-template>
+            <ng-template #menuGuest>
+              <ion-card (click)="(irCata(menu.submenu_id))">
+                <img [src]="menu.imagen" />
+                <!-- <ion-card-content>
+                  <ion-card-title>
+                    <div text-center>{{menu.nombre_menu}}</div>
+                  </ion-card-title>
+                </ion-card-content> -->
+              </ion-card>
+            </ng-template>
+            
           </div>
         </ion-col>
       </ion-row>

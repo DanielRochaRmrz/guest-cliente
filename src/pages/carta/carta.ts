@@ -13,6 +13,7 @@ import { ProductoDetallePage } from "../producto-detalle/producto-detalle";
 import { ReservacionProvider } from "../../providers/reservacion/reservacion";
 import { ResumenPage } from "../resumen/resumen";
 import { MenuArbolPage } from '../menu-arbol/menu-arbol';
+import { MenuPage } from "../menu/menu";
 import { CartaApiProvider } from "../../providers/carta-api/carta-api";
 
 @IonicPage()
@@ -27,6 +28,7 @@ export class CartaPage {
   ClaveInstancia: string = "";
   ClaveMenuDigitalDetalle: string = "";
   claveMenuDigitalDetalleArbol: string = "";
+  idSubmenu: string = "";
   area: any;
   zona: any;
   hora: string = "";
@@ -65,6 +67,8 @@ export class CartaPage {
     console.log(this.ClaveMenuDigitalDetalle);
     this.claveMenuDigitalDetalleArbol = navParam.get("claveMenuDigitalDetalleArbol");
     console.log(this.claveMenuDigitalDetalleArbol);
+    this.idSubmenu = navParam.get("idSubmenu");
+    console.log(this.idSubmenu);
 
     this.zona = navParam.get("zona");
 
@@ -94,15 +98,26 @@ export class CartaPage {
   ionViewDidLoad() {
     console.log("ionViewDidLoad CartaPage");
     this.loadSucursal(this.idSucursal);
-    this.loadCartaSucursal(this.claveMenuDigitalDetalleArbol);
+    if (this.claveMenuDigitalDetalleArbol) {
+      this.loadCartaSucursal(this.claveMenuDigitalDetalleArbol);
+    } else {
+      this.loadCartaSucursalGuest(this.idSubmenu);
+    }
     this.loadProductRes(this.idReservacion);
   }
 
   loadCartaSucursal(claveMenuDigitalDetalleArbol: string) {
-    this.cartaApi.GetProductosClasificacion(claveMenuDigitalDetalleArbol).subscribe((carta: any) => {
-      this.cartas = carta;
-      console.log(this.cartas);
-    });
+      this.cartaApi.GetProductosClasificacion(claveMenuDigitalDetalleArbol).subscribe((carta: any) => {
+        this.cartas = carta;
+        console.log(this.cartas);
+      });  
+  }
+
+  loadCartaSucursalGuest(idSubmenu: string) {
+      this.cartaApi.getProductGuest(idSubmenu).subscribe((carta: any) => {
+        this.cartas = carta;
+        console.log(this.cartas);
+      }); 
   }
 
   loadSucursal(idsucursal: string) {
@@ -175,6 +190,7 @@ export class CartaPage {
       ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
       claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
       claveProducto: claveProducto,
+      idSubmenu: this.idSubmenu,
       area: this.area,
       zona: this.zona,
       consumo: this.consumo,
@@ -190,5 +206,16 @@ export class CartaPage {
       this.total = this.productos.reduce((acc, obj) => acc + obj.total, 0);
       console.log("Resusltado: ", this.total);
     });
+  }
+
+  irMenu() {
+    this.navCtrl.push(MenuPage, {
+      idReservacion: this.idReservacion,
+      idSucursal: this.idSucursal,
+      zona: this.zona,
+      hora: this.hora,
+      fecha: this.fecha,
+      consumo: this.consumo,
+    }, { animate: true, direction: "forward" });
   }
 }

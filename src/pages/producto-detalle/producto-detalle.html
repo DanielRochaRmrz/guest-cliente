@@ -34,35 +34,70 @@
     </ion-row>
 
     <br /><br />
+    <div *ngIf="ClaveInstancia; then menuMaestro else menuGues"></div>
+    <ng-template #menuMaestro>
+        <ion-row>
+            <ion-col col-1></ion-col>
+            <ion-col>
+                <p class="titulo">{{product.nombreFamiliaProducto}}</p>
+    
+                <br /><br />
+    
+                <img src="./assets/icon/Vector23.png" width="100%" alt="" />
+            </ion-col>
+            <ion-col col-1></ion-col>
+        </ion-row>
+    
+        <ion-row>
+            <ion-col col-1></ion-col>
+            <ion-col>
+                <ion-row>
+                    <ion-col col-8>
+                        <p class="titulo_s">{{product.nombreProducto}}</p>
+                        <p class="titulo_s">{{product.nombreUnidadPrincipal}}</p>
+                    </ion-col>
+                    <ion-col col-4>
+                        <p class="titulo_s">PRECIO</p>
+                        <p class="precionum">{{product.precioLista | currency}}</p>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col col-1></ion-col>
+        </ion-row>
+    </ng-template>
+    
 
-    <ion-row>
-        <ion-col col-1></ion-col>
-        <ion-col>
-            <p class="titulo">{{product.nombreFamiliaProducto}}</p>
-
-            <br /><br />
-
-            <img src="./assets/icon/Vector23.png" width="100%" alt="" />
-        </ion-col>
-        <ion-col col-1></ion-col>
-    </ion-row>
-
-    <ion-row>
-        <ion-col col-1></ion-col>
-        <ion-col>
-            <ion-row>
-                <ion-col col-8>
-                    <p class="titulo_s">{{product.nombreProducto}}</p>
-                    <p class="titulo_s">{{product.nombreUnidadPrincipal}}</p>
-                </ion-col>
-                <ion-col col-4>
-                    <p class="titulo_s">PRECIO</p>
-                    <p class="precionum">{{product.precioLista | currency}}</p>
-                </ion-col>
-            </ion-row>
-        </ion-col>
-        <ion-col col-1></ion-col>
-    </ion-row>
+    <ng-template #menuGues>
+        <ion-row>
+            <ion-col col-1></ion-col>
+            <ion-col>
+                <p class="titulo">{{product.nombre_producto}}</p>
+    
+                <br /><br />
+    
+                <img src="./assets/icon/Vector23.png" width="100%" alt="" />
+            </ion-col>
+            <ion-col col-1></ion-col>
+        </ion-row>
+    
+        <ion-row>
+            <ion-col col-1></ion-col>
+            <ion-col>
+                <ion-row>
+                    <ion-col col-8>
+                        <p class="titulo_s">{{product.cantidad}} {{product.unidad_medida}}</p>
+                    </ion-col>
+                    <ion-col col-4>
+                        <p class="titulo_s">PRECIO</p>
+                        <p class="precionum">{{product.precio_lista | currency}}</p>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+            <ion-col col-1></ion-col>
+        </ion-row>
+    </ng-template>
+    
+    
 
     <ion-grid id="pisto">
         <ion-row>
@@ -82,30 +117,63 @@
                 </div>
             </ion-col>
         </ion-row>
-        <ion-row align="center">
-            <div *ngIf="modificar != true; then add else update"></div>
-            <ng-template #add>
-                <ion-col col-12>
-                    <div text-center>
-                        <button ion-button round block class="colorbtn" (click)="(agregar(product.nombreProducto, product.precioLista))" [disabled]="disableButton">
-                        Agregar
+        <div *ngIf="ClaveInstancia; then buttonMaestro else buttonGues"></div>
+        <ng-template #buttonMaestro>
+            <ion-row align="center">
+                <div *ngIf="modificar != true; then add else update"></div>
+                <ng-template #add>
+                    <ion-col col-12>
+                        <div text-center>
+                            <button ion-button round block class="colorbtn" (click)="(agregar(product.nombreProducto, product.precioLista))" [disabled]="disableButton">
+                            Agregar
+                            </button>
+                        </div>
+                    </ion-col>
+                </ng-template>
+                <ng-template #update>
+                    <ion-col col-6>
+                        <button ion-button round block class="colorbtn" (click)="(modificar_(product.precioLista, key))" [disabled]="disableButton">
+                            Modificar
                         </button>
-                    </div>
-                </ion-col>
-            </ng-template>
-            <ng-template #update>
-                <ion-col col-6>
-                    <button ion-button round block class="colorbtn" (click)="(modificar_(product.precioLista, key))" [disabled]="disableButton">
-                        Modificar
-                    </button>
-                </ion-col>
-                <ion-col col-6>
-                    <button ion-button round block color="danger" (click)="(eliminar(key))">
-                        Eliminar
-                    </button>
-                </ion-col>
-            </ng-template>
-        </ion-row>
+                    </ion-col>
+                    <ion-col col-6>
+                        <button ion-button round block color="danger" (click)="(eliminar(key))">
+                            Eliminar
+                        </button>
+                    </ion-col>
+                </ng-template>
+            </ion-row>
+        </ng-template>
+
+        <ng-template #buttonGues>
+            <ion-row align="center">
+                <div *ngIf="modificar != true; then add else update"></div>
+                <ng-template #add>
+                    <ion-col col-12>
+                        <div text-center>
+                            <button ion-button round block class="colorbtn" (click)="(agregar(product.nombre_producto, product.precio_lista))" [disabled]="disableButton">
+                            Agregar
+                            </button>
+                        </div>
+                    </ion-col>
+                </ng-template>
+                <ng-template #update>
+                    <ion-col col-6>
+                        <button ion-button round block class="colorbtn" (click)="(modificar_(product.precio_lista, key))" [disabled]="disableButton">
+                            Modificar
+                        </button>
+                    </ion-col>
+                    <ion-col col-6>
+                        <button ion-button round block color="danger" (click)="(eliminar(key))">
+                            Eliminar
+                        </button>
+                    </ion-col>
+                </ng-template>
+            </ion-row>
+        </ng-template>
+        
+        
+        
     </ion-grid>
 </ion-content>
 

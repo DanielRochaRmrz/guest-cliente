@@ -54,11 +54,17 @@ export class MenuPage {
   }
 
   getMenu(ClaveInstancia: string) {
-    this.cartaApi.getMenu(ClaveInstancia).subscribe((menus) => {
-      this.menus = menus;
-      console.log(this.menus);
-      
-    });
+    if (ClaveInstancia) {
+      this.cartaApi.getMenu(ClaveInstancia).subscribe((menus) => {
+        this.menus = menus;
+        console.log(this.menus);
+      }); 
+    } else {
+      this.cartaApi.getMenuGuest(this.idSucursal).subscribe((menus) => {
+        this.menus = menus;
+        console.log(this.menus);
+      });
+    }
   }
 
   irCroquis() {
@@ -84,6 +90,19 @@ export class MenuPage {
       fecha: this.fecha,
       consumo: this.consumo,
     }, { animate: true, direction: "forward" });
+  }
+
+  irCata(idsubmenu: string) {
+    this.navCtrl.push(CartaPage, {
+      consumo: this.consumo,
+      fecha: this.fecha,
+      hora: this.hora,
+      idSubmenu: idsubmenu,
+      idReservacion: this.idReservacion,
+      idSucursal: this.idSucursal,
+      
+      zona: this.zona,
+    }, { animate: true, direction: "back" });
   }
 
 }

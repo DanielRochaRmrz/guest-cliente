@@ -126,11 +126,11 @@ export class MonitoreoReservasProvider {
         content: "Procesando pago...",
       }); //
       loading.present();
-      // this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
-      this.stripe.setPublishableKey(
-        "pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd"
-      );
-      
+      this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+      // this.stripe.setPublishableKey(
+      //   "pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd"
+      // );
+      //
       let card = {
         number: numTarjeta, //numTarjeta
         expMonth: mesExpiracion, //mesExpiracion
@@ -148,7 +148,7 @@ export class MonitoreoReservasProvider {
           let data = JSON.stringify({
             cardToken: token.id,
             amount: montoReservacion, //montoReservacion
-            accion: "stripe_prueba",
+            accion: "stripe",
             folio: folio,
           });
           this.http.post(url, data, options).subscribe((res) => {
@@ -260,10 +260,12 @@ export class MonitoreoReservasProvider {
       content: "Procesando pago...",
     }); //
     loading.present();
-    // this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
-    this.stripe.setPublishableKey(
-      "pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd"
-    );
+    this.stripe.setPublishableKey('pk_live_51HEdzULvQxsl1JSFvSiy3nGqXSlqQc3lUzKCJWY4ve3YeDyZe3zGAt86GRQjIhof7g38oZNCp5eLxMKbyoP42AWt00yfF5wUz0');
+    // this.stripe.setPublishableKey(
+    //   "pk_test_51HEdzULvQxsl1JSFusfnqJwKTFlbg4xCV3UKj2l6v2LZDFwjsNfewl3V6yjGhHbnRxtaKJcvOZkjlxRfp7zTBc6p00kVkIXijd"
+    // );
+
+    //
     let card = {
       number: numTarjeta, //numTarjeta
       expMonth: mesExpiracion, //mesExpiracion
@@ -281,7 +283,7 @@ export class MonitoreoReservasProvider {
         let data = JSON.stringify({
           cardToken: token.id,
           amount: montoReservacion, //montoReservacion
-          accion: "stripe_prueba",
+          accion: "stripe",
           folio: folio,
         });
         this.http.post(url, data, options).subscribe((res) => {
