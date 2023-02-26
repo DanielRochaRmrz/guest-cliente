@@ -22,6 +22,7 @@ export class ProductoDetallePage {
   ClaveInstancia: string = "";
   ClaveMenuDigitalDetalle: string = "";
   claveMenuDigitalDetalleArbol: string = "";
+  idSubmenu: string = "";
   claveProducto: string = "";
   productos: any;
   modificar: any;
@@ -62,6 +63,8 @@ export class ProductoDetallePage {
     this.claveMenuDigitalDetalleArbol = navParams.get(
       "claveMenuDigitalDetalleArbol"
     );
+    this.idSubmenu = navParams.get("idSubmenu");
+    console.log(this.idSubmenu);
     this.claveProducto = navParams.get("claveProducto");
     this.area = navParams.get("area");
     this.zona = navParams.get("zona");
@@ -96,13 +99,29 @@ export class ProductoDetallePage {
   }
 
   ionViewDidLoad() {
-    this.getProducto(this.ClaveInstancia, this.claveProducto);
+    if (this.ClaveInstancia) {
+      this.getProducto(this.ClaveInstancia, this.claveProducto);
+    } else {
+      this.getProductoGuest(this.claveProducto);
+    }
     this.getProductoAdd(this.claveProducto, this.idReservacion);
   }
 
   getProducto(ClaveInstancia: string, claveProducto: string) {
     this.cartaApi
       .GetProducto(ClaveInstancia, claveProducto)
+      .subscribe((producto: any) => {
+        this.product = producto;
+        console.log(this.product);
+        
+      });
+  }
+
+  getProductoGuest(claveProducto: string) {
+    console.log(claveProducto);
+    
+    this.cartaApi
+      .getOneProductGuest(claveProducto)
       .subscribe((producto: any) => {
         this.product = producto;
         console.log(this.product);
@@ -167,6 +186,7 @@ export class ProductoDetallePage {
               ClaveInstancia: this.ClaveInstancia,
               ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
               claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+              idSubmenu: this.idSubmenu,
               area: this.area,
               zona: this.zona,
               consumo: this.consumo,
@@ -201,6 +221,7 @@ export class ProductoDetallePage {
               ClaveInstancia: this.ClaveInstancia,
               ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
               claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+              idSubmenu: this.idSubmenu,
               area: this.area,
               zona: this.zona,
               consumo: this.consumo,
@@ -227,6 +248,7 @@ export class ProductoDetallePage {
             ClaveInstancia: this.ClaveInstancia,
             ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
             claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+            idSubmenu: this.idSubmenu,
             area: this.area,
             zona: this.zona,
             consumo: this.consumo,
@@ -250,6 +272,7 @@ export class ProductoDetallePage {
         ClaveInstancia: this.ClaveInstancia,
         ClaveMenuDigitalDetalle: this.ClaveMenuDigitalDetalle,
         claveMenuDigitalDetalleArbol: this.claveMenuDigitalDetalleArbol,
+        idSubmenu: this.idSubmenu,
         area: this.area,
         zona: this.zona,
         consumo: this.consumo,
