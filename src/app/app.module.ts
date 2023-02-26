@@ -104,6 +104,7 @@ import { ScrollableDirective } from './scrollable.directive';
 import { PaginationService } from './pagination.service';
 import { LoadingSpinnerComponent } from '../components/loading-spinner/loading-spinner';
 import { HistorialCompartidasPage } from '../pages/historial-compartidas/historial-compartidas';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import localeEsMX from "@angular/common/locales/es-MX";
 import { registerLocaleData } from "@angular/common";
@@ -277,6 +278,7 @@ firebase.initializeApp(firebaseConfig);
     PhotoViewer,
     CartaApiProvider,
     PaginationService,
+    InAppBrowser,
   ]
 })
 export class AppModule {}

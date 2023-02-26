@@ -36,6 +36,7 @@
         "@ionic-native/facebook": "^4.20.0",
         "@ionic-native/fcm": "^4.20.0",
         "@ionic-native/image-picker": "^4.20.0",
+        "@ionic-native/in-app-browser": "^4.20.0",
         "@ionic-native/photo-viewer": "^4.20.0",
         "@ionic-native/sms": "^4.20.0",
         "@ionic-native/social-sharing": "^4.20.0",
@@ -132,7 +133,8 @@
             "cordova-plugin-app-version": {},
             "cordova-plugin-uniquedeviceid": {},
             "cordova-plugin-fcm-with-dependecy-updated": {},
-            "com-sarriaroman-photoviewer": {}
+            "com-sarriaroman-photoviewer": {},
+            "cordova-plugin-inappbrowser": {}
         },
         "platforms": [
             "ios",

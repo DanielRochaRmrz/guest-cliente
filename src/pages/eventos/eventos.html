@@ -82,7 +82,8 @@
                     <h2>{{ evento.titulo }}</h2>
                     <p>{{ evento.lugar }}</p>
                 </ion-item>
-                <img *ngIf="evento.eventoEspecial == null" [src]="evento.img" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+                <img *ngIf="evento.eventoEspecial == null" [src]="evento.img"
+                    (click)="verDetalle(evento.uid, evento.uidSucursal)">
                 <img *ngIf="evento.eventoEspecial == true" [src]="evento.img">
                 <ion-card-content>
                 </ion-card-content>
@@ -96,10 +97,10 @@
                         </button>
                     </ion-col>
                     <ion-col *ngIf="evento.eventoEspecial == true">
-                        <button ion-button icon-start clear small >
+                        <button ion-button icon-start clear small>
                             <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
-                            <a href="https://www.eventbrite.com/e/zodiac-tickets-473390362317" rel="noopener noreferrer"
-                                target="_blank">Comprar boletos en Eventbrite</a>
+                            <a (click)="browser()" rel="noopener noreferrer" target="_blank">Comprar boletos en
+                                Eventbrite</a>
                         </button>
                     </ion-col>
                     <ion-col align-self-center text-center>
@@ -119,4 +120,3 @@
     </ion-footer>
 
 </ion-content>
-
