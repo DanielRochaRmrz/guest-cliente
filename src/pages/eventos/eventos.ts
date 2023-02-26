@@ -10,7 +10,7 @@ import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { SucursalAltaProvider } from '../../providers/sucursal-alta/sucursal-alta';
 import { PaginationService } from '../../app/pagination.service';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 
 @IonicPage()
@@ -123,8 +123,13 @@ export class EventosPage implements OnInit {
 
   browser() {
 
-    const browser = this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317', '_blank', 'location=yes');
+    const options: InAppBrowserOptions = {
+      location : 'yes',
+      footer : 'yes',
+      footercolor: '#fd9530',
+      closebuttoncaption: 'Regresar a Guest Resy'
+    }
 
-    // browser.close();
+    const browser = this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317', '_blank', options );
   }
 }
