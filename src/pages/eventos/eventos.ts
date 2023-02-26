@@ -124,5 +124,7 @@ export class EventosPage implements OnInit {
   browser() {
 
     const browser = this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317');
+
+    browser.close();
   }
 }
