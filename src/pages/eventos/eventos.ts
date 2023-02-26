@@ -9,6 +9,7 @@ import { Reservacion_1Page } from '../reservacion-1/reservacion-1';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { SucursalAltaProvider } from '../../providers/sucursal-alta/sucursal-alta';
 import { PaginationService } from '../../app/pagination.service';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 
 @IonicPage()
@@ -38,10 +39,11 @@ export class EventosPage implements OnInit {
     public afs: AngularFirestore,
     public sucursalprovider: SucursalAltaProvider,
     public page: PaginationService,
+    public photoViewer: PhotoViewer
   ) {
     this.page.reset();
     this.uidUserSesion = localStorage.getItem('uid');
-    console.log('id del usuario en eventos', this.uidUserSesion);    
+    console.log('id del usuario en eventos', this.uidUserSesion);
 
     this.afs
       .collection("ciudades")
@@ -58,7 +60,7 @@ export class EventosPage implements OnInit {
       .subscribe(dataSu => {
         this.miUser = dataSu;
         console.log('Datos de mi usuario', this.miUser);
-        this.playerId = this.miUser.playerID;        
+        this.playerId = this.miUser.playerID;
       });
 
   }
@@ -66,9 +68,9 @@ export class EventosPage implements OnInit {
   ngOnInit() {
 
     this.page.init('evento', 'fecha', { reverse: true, prepend: false });
-    
-  }  
-  
+
+  }
+
   scrollHandler(e) {
 
     if (e === 'bottom') {
@@ -102,7 +104,18 @@ export class EventosPage implements OnInit {
   }
 
   goInicio() {
-    
+
     this.navCtrl.setRoot(TipoLugarPage);
+  }
+
+  showImagFlyer(flyerImg: string) {
+    const options = {
+      share: true, // default is false
+      closeButton: true, // default is true
+      copyToReference: true, // default is false
+      headers: "", // If it is not provided, it will trigger an exception
+      piccasoOptions: {}, // If it is not provided, it will trigger an exception
+    };
+    this.photoViewer.show(flyerImg, "Flyer", options);
   }
 }

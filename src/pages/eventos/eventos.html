@@ -63,21 +63,60 @@
 
     </div>
     <div class="content" scrollable (scrollPosition)="scrollHandler($event)">
-        <div class="container" *ngFor="let evento of page.data | async | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
-            <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+        <div class="container"
+            *ngFor="let evento of page.data | async | pipesFilterEvento: filterPost | pipesFilterCiudad: filterPostCiudad; let i = index;">
+            <!-- <button style="background-color:white !important;" (click)="verDetalle(evento.uid, evento.uidSucursal)">
                 <ion-card class="card-image">
                     <img [src]="evento.img" />
                     <div class="card-title">{{ evento.titulo }}</div>
                     <div class="card-subtitle">{{ (evento.uidSucursal | getSucursal | async)?.direccion }},
                         {{ (evento.uidSucursal | getSucursal | async)?.ciudad }}</div>
                 </ion-card>
-            </button>
+            </button> -->
+
+            <ion-card>
+                <ion-item>
+                    <ion-avatar item-start>
+                        <img src="./assets/imgs/amarillo.png">
+                    </ion-avatar>
+                    <h2>{{ evento.titulo }}</h2>
+                    <p>{{ evento.lugar }}</p>
+                </ion-item>
+                <img *ngIf="evento.eventoEspecial == null" [src]="evento.img" (click)="verDetalle(evento.uid, evento.uidSucursal)">
+                <img *ngIf="evento.eventoEspecial == true" [src]="evento.img">
+                <ion-card-content>
+                </ion-card-content>
+                <ion-row>
+                    <ion-col>
+                    </ion-col>
+                    <ion-col *ngIf="evento.eventoEspecial == null">
+                        <button ion-button icon-start clear small (click)="verDetalle(evento.uid, evento.uidSucursal)">
+                            <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+                            <div>Ir al evento</div>
+                        </button>
+                    </ion-col>
+                    <ion-col *ngIf="evento.eventoEspecial == true">
+                        <button ion-button icon-start clear small >
+                            <ion-icon ios="ios-arrow-dropright" md="md-arrow-dropright"></ion-icon>
+                            <a href="https://www.eventbrite.com/e/zodiac-tickets-473390362317" rel="noopener noreferrer"
+                                target="_blank">Comprar boletos en Eventbrite</a>
+                        </button>
+                    </ion-col>
+                    <ion-col align-self-center text-center>
+                        <button ion-button icon-start clear small (click)="showImagFlyer(evento.img)">
+                            <ion-icon ios="ios-information-circle" md="md-information-circle"></ion-icon>
+                            <div>Ver flyer</div>
+                        </button>
+                    </ion-col>
+                </ion-row>
+            </ion-card>
         </div>
     </div>
     <p *ngIf="page.done | async"></p>
 
     <ion-footer>
-        <loading-spinner  *ngIf="page.loading | async"></loading-spinner>
+        <loading-spinner *ngIf="page.loading | async"></loading-spinner>
     </ion-footer>
 
 </ion-content>
+
