@@ -128,9 +128,11 @@ export class EventosPage implements OnInit {
       footer : 'yes',
       footercolor: '#fd9530',
       closebuttoncaption: 'Regresar a Guest Resy',
-      closebuttoncolor: '#ffff'
+      closebuttoncolor: '#ecf0f1',
+      zoom: 'no',
+      hideurlbar: 'yes'
     }
 
-    const browser = this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317', '_blank', options );
+    this.iab.create('https://www.eventbrite.com/e/zodiac-tickets-473390362317', '_blank', options );
   }
 }
