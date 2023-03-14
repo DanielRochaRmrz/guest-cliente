@@ -770,6 +770,7 @@ export class ReservacionProvider {
           folio: "R" + folio,
           playerIDSuc: reservacion.playerIDSuc,
           estatus_pago: "",
+          date_rserva: reservacion.date_rserva
         })
         .then((reserva) => {
           this.updateReservaId(reserva.id);

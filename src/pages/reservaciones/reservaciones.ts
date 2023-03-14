@@ -272,6 +272,7 @@ export class ReservacionesPage {
     this.compartir = temp;
 
     const hora = moment(this.hora, ["h:mm A"]).format("HH:mm");
+    
     let info = {
       numPersonas: this.people,
       hora: this.hora,
@@ -279,6 +280,7 @@ export class ReservacionesPage {
       idSucursal: this.idSucursal,
       playerIDSuc: this.playerIDSuc,
       idevento: this.evento,
+      date_rserva: new Date(`${this.fecha} ${this.hora}`),
       estatus: "Creando",
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {

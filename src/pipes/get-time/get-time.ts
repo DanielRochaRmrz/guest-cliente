@@ -14,14 +14,16 @@ export class GetTimePipe implements PipeTransform {
   async transform(idReservacion: string) {
     this.infoReservaciones = await this.reservaProvider._getInfo(idReservacion);
 
-    const date_create = moment(this.infoReservaciones[0].date_create.toDate());
-    const date_current = moment(new Date());
-    const diff_hours = date_current.diff(date_create, "hours");
-    const timer = 24 - diff_hours;
+    const date_acept = moment(this.infoReservaciones[0].date_acept.toDate());
+    const date_rserva = moment(this.infoReservaciones[0].date_rserva.toDate());
+    const diff_hours = date_rserva.diff(date_acept, "hours");
 
-    console.log(timer);
+    if (diff_hours >= 24) {
+      var timer = 24
+    } else {
+      var timer = diff_hours;
+    }
     
-
     return timer;
   }
 }
