@@ -182,7 +182,7 @@
             <ion-row>
               <ion-col>
                 <div padding>
-                  <button block class="envio" (click)="RegisterToEmail()">
+                  <button block class="envio" (click)="RegisterToEmail()" [disabled]="myForm.invalid">
                     Registrarse
                   </button>
                 </div>

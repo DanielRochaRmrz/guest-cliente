@@ -56,8 +56,13 @@
                 <ion-avatar item-start>
                     <ion-icon style="color: #fcc04d" ios="logo-instagram" md="logo-instagram"></ion-icon>
                 </ion-avatar>
-                <ion-label class="blanco_1" floating>Link de instagram</ion-label>
-                <ion-input type="text" [(ngModel)]="instagram" name="instagram" formControlName="instagram"></ion-input>
+                <ion-label class="blanco_1">
+                    <p>Usuario de instagram*</p>
+                    <ion-chip color="primary">
+                        <ion-label>instagram.com/</ion-label>
+                      </ion-chip>
+                </ion-label>
+                <ion-input class="insta-input" type="text" [(ngModel)]="instagram" name="instagram" formControlName="instagram"></ion-input>
             </ion-item>
         </ion-list>
     </form>

@@ -110,7 +110,7 @@ export class UsuarioProvider {
         .update({
           phoneNumber: telefono,
           ciudad: ciudad,
-          instagram: insta
+          instagram: `https://www.instagram.com/${insta}`
         })
         .then((reserva) => {
           console.log("Reservación actualizada: ", JSON.stringify(reserva));
