@@ -131,40 +131,44 @@ export class PushNotiProvider {
             console.log("PlayerID:", playerIDSuc);
             if (playerIDSuc != undefined) {
               console.log("notificacion  a", playerIDSuc);
-              if (this.platform.is("cordova")) {
-                const data = {
-                  topic: playerIDSuc,
-                  title: "",
-                  body: `Nueva reservación`,
-                };
-                this._deviceProvider.sendPushNoti(data).then((resp: any) => {
-                  console.log("Respuesta noti fcm", resp);
-                  resolve(resp);
-                });
-              } else {
-                console.log("Solo funciona en dispositivos");
-              }
+              playerIDSuc.forEach((e: any) => {
+                if (this.platform.is("cordova")) {
+                  const data = {
+                    topic: e.playerID,
+                    title: "",
+                    body: `Nueva reservación`,
+                  };
+                  this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+                    console.log("Respuesta noti fcm", resp);
+                    resolve(resp);
+                  });
+                } else {
+                  console.log("Solo funciona en dispositivos");
+                }
+              });
             }
           });
         });
     });
   }
 
-  public PushNotiCancelarReserva(folio: string, playerIDSuc: string) {
+  public PushNotiCancelarReserva(folio: string, playerIDSuc: any) {
     return new Promise((resolve, reject) => {
-      if (this.platform.is("cordova")) {
-        const data = {
-          topic: playerIDSuc,
-          title: "",
-          body: `Reservación ${folio} ah sido cancelada`,
-        };
-        this._deviceProvider.sendPushNoti(data).then((resp: any) => {
-          console.log("Respuesta noti fcm", resp);
-          resolve(resp);
-        });
-      } else {
-        console.log("Solo funciona en dispositivos");
-      }
+      playerIDSuc.forEach((e: any) => {
+        if (this.platform.is("cordova")) {
+          const data = {
+            topic: e.playerID,
+            title: "",
+            body: `Reservación ${folio} ah sido cancelada`,
+          };
+          this._deviceProvider.sendPushNoti(data).then((resp: any) => {
+            console.log("Respuesta noti fcm", resp);
+            resolve(resp);
+          });
+        } else {
+          console.log("Solo funciona en dispositivos");
+        }
+      });
     });
   }
 }

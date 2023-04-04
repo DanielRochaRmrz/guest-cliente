@@ -188,7 +188,10 @@ export class ReservacionesPage {
     if (this.idReservacion != null) {
       this.loadReservacion(this.idReservacion);
     }
-    this.fechaActual = new Date().toJSON().split("T")[0];
+    moment.locale('es-MX');
+    this.fechaActual = moment().format('YYYY-MM-DD');
+    console.log('fechaActual -->', new Date().toJSON().split("T")[0]);
+    console.log('fechaActual -->', moment().format('YYYY-MM-DD'));
     this.getImagen(this.idSucursal);
     this.goToUser();
     if (this.platform.is("cordova")) {

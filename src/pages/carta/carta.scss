@@ -67,6 +67,7 @@ page-carta {
     .letra {
         text-transform: uppercase;
         color: #474646;
+        margin-top: 10px;
     }
 
     .letraContenido {
@@ -75,6 +76,7 @@ page-carta {
     }
 
     .precio {
+        margin-top: 0.5rem;
         color: #FD9530;
         font-size: large;
     }

@@ -81,7 +81,7 @@ import { CartaApiProvider } from '../providers/carta-api/carta-api';
 import { Facebook } from '@ionic-native/facebook';
 import { SMS } from '@ionic-native/sms';
 import { Contacts } from '@ionic-native/contacts';
-import { SocialSharing } from '@ionic-native/social-sharing';
+// import { SocialSharing } from '@ionic-native/social-sharing';
 import { HttpModule } from '@angular/http';
 import { QRCodeModule } from 'angularx-qrcode';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -249,7 +249,6 @@ firebase.initializeApp(firebaseConfig);
     AuthProvider,
     UserProvider,
     Camera,
-    SocialSharing,
     CargaArchivoProvider,
     CartaAddProvider,
     ToastProvider,
