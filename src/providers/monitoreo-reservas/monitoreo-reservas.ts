@@ -170,8 +170,8 @@ export class MonitoreoReservasProvider {
                 payment: true,
               };
 
-              this.notiReservaCompartida(uidRerservacion, displayNames);
-              this.notiReservaPago(displayNames);
+              // this.notiReservaCompartida(uidRerservacion, displayNames);
+              // this.notiReservaPago(displayNames);
 
               resolve(msj);
               loading.dismiss();

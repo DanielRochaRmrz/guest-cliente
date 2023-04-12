@@ -342,9 +342,9 @@ export class PropinaPage {
                   }
               const compartida = localStorage.getItem("compartida");
               if (compartida === "true") {
-                this.notiReservaCompartida();
+                // this.notiReservaCompartida();
               }
-              this.notiNuevaReserva();
+              // this.notiNuevaReserva();
               this.getUsersPusCancelar();
               localStorage.removeItem("idSucursal");
               localStorage.removeItem("zona");
@@ -493,9 +493,9 @@ export class PropinaPage {
       });
       const compartida = localStorage.getItem("compartida");
       if (compartida === "true") {
-        this.notiReservaCompartida();
+        // this.notiReservaCompartida();
       }
-      this.notiNuevaReserva();
+      // this.notiNuevaReserva();
       this.getUsersPusCancelar();
       localStorage.removeItem("idSucursal");
       localStorage.removeItem("zona");

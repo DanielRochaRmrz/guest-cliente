@@ -796,7 +796,7 @@ export class ReservacionDetallePage {
       .then(() => {
         console.log("Document successfully deleted!");
         this.reservaProvider.deleteCompartida(idReservacion);
-        this._providerPushNoti.PushNotiCancelarReserva(folio, playerIDSuc);
+        // this._providerPushNoti.PushNotiCancelarReserva(folio, playerIDSuc);
         this.showToast("bottom");
         this.goBack();
       })
@@ -907,14 +907,14 @@ export class ReservacionDetallePage {
             
             if (pagado === 'PagadoN' || pagado === 'pagadoC') {
               this._providerReserva.updateReservacionEstatusReembolsar(idReserva);
-              this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
+              // this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
               this.showToast("bottom");
               this.navCtrl.setRoot(MisReservacionesPage);
               return;
             }
 
             this._providerReserva.deleteReservacion(idReserva);
-            this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
+            // this._providerPushNoti.PushNotiCancelarReserva(folio, payerIdSuc);
             this.showToast("bottom");
             this.navCtrl.setRoot(MisReservacionesPage);
           }
