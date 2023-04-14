@@ -30,7 +30,7 @@ page-login-correo {
         margin-left: -40%;
     }
     .registro {
-        background-color: #c18c26;
+        background-color: #fd9530;
     }
     .header {
         color: white;
@@ -38,21 +38,21 @@ page-login-correo {
         text-align: center;
     }
     .recuadro {
-        background-color: #c18c26;
+        background-color: #fd9530;
         color: white;
-        font-size: large;
     }
     ._input {
-        background: none;
+        background: #00000026;
+        margin-top: 5px;
     }
     .envio {
-        background: #ffffff;
+        background: #fd9530;
         border-radius: 20px;
         width: 100%;
-        height: 40px;
-        color: #839192;
+        height: 45px;
+        color: #ffffff;
         letter-spacing: 0.25em;
-        font-size: large;
+        font-size: 18px;
     }
     //Nuevo
     .toolbar-background {
@@ -65,5 +65,12 @@ page-login-correo {
         width: 4rem;
         height: 4rem;
         margin-top: 1rem;
+    }
+    .recuperar-pass{
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 20rem;
+        margin-right: 2rem;
     }
 }

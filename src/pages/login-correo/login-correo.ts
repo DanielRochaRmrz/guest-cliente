@@ -258,28 +258,54 @@ export class LoginCorreoPage {
 
   onReset(position: string) {
     console.log("llega");
-    console.log("este es el correo", this.email);
+    console.log("este es el correo", this.email_re);
+    if (!this.email_re) {
+      let toast = this.toastCtrl.create({
+        message: 'Correo invalido',
+        duration: 4000,
+        position: position
+      });
+      toast.present(toast);
+      return;
+    }
 
     var auth = firebase.auth();
 
-    auth.sendPasswordResetEmail(this.email).then(function () {
+    auth.sendPasswordResetEmail(this.email_re).then(function () {
 
       this.flashMessage.show('Se ha enviado un mensaje a tu correo', { cssClass: 'alert-success', timeout: 4000 });
 
       // this.router.navigate(['login']);
 
-    }).catch(function (error) {
+    }).catch( (error) => {
+      console.log('error -->', error.code);
+      if (error.code == 'auth/invalid-email') {
+
+        this.errorMSj(position)
+      } else {
+        let toast = this.toastCtrl.create({
+          message: 'Se ha enviado un mensaje a tu correo',
+          duration: 4000,
+          position: position
+        });
+    
+        toast.present(toast);
+    
+        this.navCtrl.setRoot(LoginPage);
+      }
     });
 
+    
+  }
+
+  errorMSj(position: string) {
     let toast = this.toastCtrl.create({
-      message: 'Se ha enviado un mensaje a tu correo',
+      message: 'Formato de correo invalido',
       duration: 4000,
       position: position
     });
 
     toast.present(toast);
-
-    this.navCtrl.setRoot(LoginCorreoPage);
   }
 
   goToUserExist() {
