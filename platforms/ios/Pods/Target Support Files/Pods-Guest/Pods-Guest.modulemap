@@ -1,0 +1,6 @@
+framework module Pods_Guest {
+  umbrella header "Pods-Guest-umbrella.h"
+
+  export *
+  module * { export * }
+}

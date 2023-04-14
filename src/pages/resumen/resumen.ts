@@ -209,7 +209,7 @@ export class ResumenPage {
   }
 
   saveReserva() {
-    // this.notiReservaCompartida();
+    this.notiReservaCompartida();
     // this.enviarMensaje();
     localStorage.removeItem("reservacion");
     // despues del resumen va alas propinas

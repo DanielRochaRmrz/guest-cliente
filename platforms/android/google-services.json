@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "853477386824",
+    "firebase_url": "https://guestreservation-8b24b.firebaseio.com",
+    "project_id": "guestreservation-8b24b",
+    "storage_bucket": "guestreservation-8b24b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853477386824:android:8e1186ca4535f7f4b0867d",
+        "android_client_info": {
+          "package_name": "com.guestreservations.guest03"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853477386824-bareu6g1s21nrqfmoscf19u1g82opim6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.guestreservations.guest03",
+            "certificate_hash": "8884c5daf89d2ce380d4b860ad68a1ab31d78943"
+          }
+        },
+        {
+          "client_id": "853477386824-sqg8oe51jjd64qhev87fhdkeo2e7uai8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.guestreservations.guest03",
+            "certificate_hash": "9cbb6ce8d081d2c485054eb732611ff103262a9c"
+          }
+        },
+        {
+          "client_id": "853477386824-kt4bl5ccfs8hgfm255i3384fhb6e50jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxT8ST1ODjfCBA5fqQoXtH174X-n9KQro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853477386824-kt4bl5ccfs8hgfm255i3384fhb6e50jq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "853477386824-bttnoko079htcbp17dcfb4463ua97mq9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.guestreservations.guest03",
+                "app_store_id": "1526404114"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

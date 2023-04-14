@@ -342,7 +342,7 @@ export class PropinaPage {
                   }
               const compartida = localStorage.getItem("compartida");
               if (compartida === "true") {
-                // this.notiReservaCompartida();
+                this.notiReservaCompartida();
               }
               // this.notiNuevaReserva();
               this.getUsersPusCancelar();
@@ -493,7 +493,7 @@ export class PropinaPage {
       });
       const compartida = localStorage.getItem("compartida");
       if (compartida === "true") {
-        // this.notiReservaCompartida();
+        this.notiReservaCompartida();
       }
       // this.notiNuevaReserva();
       this.getUsersPusCancelar();
