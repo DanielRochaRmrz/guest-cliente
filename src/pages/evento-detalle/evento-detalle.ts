@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { SocialSharing } from "@ionic-native/social-sharing";
+// import { SocialSharing } from "@ionic-native/social-sharing";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
 import { CargaArchivoProvider } from "../../providers/carga-archivo/carga-archivo";
 import { EventosPage } from "../eventos/eventos";
@@ -31,7 +31,7 @@ export class EventoDetallePage {
     public navParams: NavParams,
     public _cap: CargaArchivoProvider,
     public afs: AngularFirestore,
-    private socialSharing: SocialSharing
+    // private socialSharing: SocialSharing
   ) {
 
     this.evento = this.navParams.get("uidEvento");
@@ -102,22 +102,22 @@ export class EventoDetallePage {
     this.navCtrl.setRoot(Reservacion_1Page, {opcionS: opcionS, estatus: estatus});
   }
 
-  compartir(evento: any) {
-      const message = 'Optional message, may be ignored by Facebook app';
-      const image = 'https://www.google.nl/images/srpr/logo4w.png'; 
-      const url = ''
-    this.socialSharing
-      .share(String(message), String(message), String(image), url)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
-  }
+  // compartir(evento: any) {
+  //     const message = 'Optional message, may be ignored by Facebook app';
+  //     const image = 'https://www.google.nl/images/srpr/logo4w.png'; 
+  //     const url = ''
+  //   this.socialSharing
+  //     .share(String(message), String(message), String(image), url)
+  //     .then(() => { }) // se pudo compartir
+  //     .catch(() => { }); // si sucede un error
+  // }
 
-  compartirInsta(evento: any) {
-    this.socialSharing
-      .shareViaInstagram(evento.titulo, evento.img)
-      .then(() => { }) // se pudo compartir
-      .catch(() => { }); // si sucede un error
-  }
+  // compartirInsta(evento: any) {
+  //   this.socialSharing
+  //     .shareViaInstagram(evento.titulo, evento.img)
+  //     .then(() => { }) // se pudo compartir
+  //     .catch(() => { }); // si sucede un error
+  // }
 
   goInicio(){
     this.navCtrl.setRoot(TipoLugarPage);

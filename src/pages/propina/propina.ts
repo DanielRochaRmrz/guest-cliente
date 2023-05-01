@@ -344,7 +344,7 @@ export class PropinaPage {
               if (compartida === "true") {
                 this.notiReservaCompartida();
               }
-              this.notiNuevaReserva();
+              // this.notiNuevaReserva();
               this.getUsersPusCancelar();
               localStorage.removeItem("idSucursal");
               localStorage.removeItem("zona");
@@ -495,7 +495,7 @@ export class PropinaPage {
       if (compartida === "true") {
         this.notiReservaCompartida();
       }
-      this.notiNuevaReserva();
+      // this.notiNuevaReserva();
       this.getUsersPusCancelar();
       localStorage.removeItem("idSucursal");
       localStorage.removeItem("zona");

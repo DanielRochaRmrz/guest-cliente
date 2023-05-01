@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { AngularFireDatabase } from '@angular/fire/database';
 import { ReservacionesPage } from '../reservaciones/reservaciones';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { SocialSharing } from '@ionic-native/social-sharing';
+// import { SocialSharing } from '@ionic-native/social-sharing';
 import { TipoLugarPage } from '../tipo-lugar/tipo-lugar';
 import { LoginPage } from '../login/login';
 import { ReservacionProvider } from '../../providers/reservacion/reservacion';
@@ -44,7 +44,7 @@ export class Reservacion_1Page implements OnInit {
     public navParams: NavParams,
     public afDB: AngularFireDatabase,
     public afs: AngularFirestore,
-    private socialSharing: SocialSharing,
+    // private socialSharing: SocialSharing,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private _reservacionP: ReservacionProvider,

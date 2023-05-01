@@ -1,108 +1,128 @@
 <ion-header>
-    <ion-navbar class="borde" hideBackButton>
-        <ion-row>
-            <ion-col>
-                <button ion-button menuToggle class="botonMod">
+  <ion-navbar class="borde" hideBackButton>
+    <ion-row>
+      <ion-col>
+        <button ion-button menuToggle class="botonMod">
           <!-- <ion-icon item-start name="menu" class="colorIcon3" style="zoom:1.5;"></ion-icon> -->
           <img src="./assets/imgs/Group4.png" alt="" class="imgMenu" />
         </button>
-            </ion-col>
-            <ion-col align="center">
-                <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
-            </ion-col>
-            <ion-col>
-                &nbsp;
-            </ion-col>
-        </ion-row>
-    </ion-navbar>
+      </ion-col>
+      <ion-col align="center">
+        <img src="./assets/imgs/Logoblanco.png" style="width: 60%" alt="" />
+      </ion-col>
+      <ion-col> &nbsp; </ion-col>
+    </ion-row>
+  </ion-navbar>
 </ion-header>
 
-<ion-content>
-    <ion-row>
-        <ion-col col-1></ion-col>
-        <ion-col>
-            <div *ngFor="let sucur of sucurSel">
-                <p class="lugar">
-                    LUGAR: {{ sucur.displayName}} {{eventoSel.titulo}}
-                    <br />
-                    <img src="./assets/icon/Vector10.png" style="width: 40%" alt="" />
-                </p>
-            </div>
-        </ion-col>
-        <ion-col col-1></ion-col>
-    </ion-row>
+<ion-content padding>
+  <ion-row>
+    <ion-col col-1></ion-col>
+    <ion-col>
+      <div *ngFor="let sucur of sucurSel">
+        <p class="lugar">
+          LUGAR: {{ sucur.displayName}} {{eventoSel.titulo}}
+          <br />
+          <img src="./assets/icon/Vector10.png" style="width: 40%" alt="" />
+        </p>
+      </div>
+    </ion-col>
+    <ion-col col-1></ion-col>
+  </ion-row>
 
-    <ion-row>
-        <ion-col col-3></ion-col>
-        <ion-col col-6>
-            <ion-card class="cuadro"> Carta de bebidas </ion-card>
-        </ion-col>
-        <ion-col col-3></ion-col>
-    </ion-row>
+  <ion-row>
+    <ion-col col-3></ion-col>
+    <ion-col col-6>
+      <ion-card class="cuadro"> Carta de bebidas </ion-card>
+    </ion-col>
+    <ion-col col-3></ion-col>
+  </ion-row>
 
-    <ion-row>
-        <ion-col col-1></ion-col>
-        <ion-col>
-            <ion-card class="descripcion">
-                <br />
-                <div *ngIf="claveMenuDigitalDetalleArbol; then menuMaesto else menuGuest"></div>
-                <ng-template #menuMaesto>
-                    <ion-row *ngFor="let cartaItem of cartas">
-                        <ion-col col-2><img src="./assets/icon/Group 49.png" style="margin-top: 10%" alt="" /></ion-col>
-                        <ion-col col-4 class="letra">{{cartaItem.nombreProducto}}</ion-col>
-                        <ion-col col-4 class="precio">{{cartaItem.precioLista | currency}}</ion-col>
-                        <ion-col col-2>
-                            <ion-icon name="ios-checkbox-outline" style="color: black" (click)="productoDetalle(cartaItem.claveProducto)"></ion-icon>
-                        </ion-col>
-                    </ion-row>
-                </ng-template>
-                <ng-template #menuGuest>
-                    <ion-row *ngFor="let cartaItem of cartas">
-                        <ion-col col-2><img src="./assets/icon/Group 49.png" style="margin-top: 10%" alt="" /></ion-col>
-                        <ion-col col-4 class="letra">{{cartaItem.nombre_producto}}</ion-col>
-                        <ion-col col-4 class="precio">{{cartaItem.precio_lista | currency}}</ion-col>
-                        <ion-col col-2>
-                            <ion-icon name="ios-checkbox-outline" style="color: black" (click)="productoDetalle(cartaItem.id)"></ion-icon>
-                        </ion-col>
-                    </ion-row>
-                </ng-template>
-                
-            </ion-card>
+  <ion-card class="descripcion">
+    <br />
+    <div
+      *ngIf="claveMenuDigitalDetalleArbol; then menuMaesto else menuGuest"
+    ></div>
+    <ng-template #menuMaesto>
+      <ion-row
+        *ngFor="let cartaItem of cartas"
+        (click)="productoDetalle(cartaItem.claveProducto)"
+      >
+        <ion-col col-2
+          ><img
+            src="./assets/icon/Group 49.png"
+            style="margin-top: 5px; width: 3.5rem"
+            alt=""
+        /></ion-col>
+        <ion-col col-4 class="letra">{{cartaItem.nombreProducto}}</ion-col>
+        <ion-col col-4 class="precio"
+          >{{cartaItem.precioLista | currency}}</ion-col
+        >
+        <ion-col col-2 style="margin-top: 10px">
+          <ion-icon name="ios-arrow-forward" style="color: black"></ion-icon>
         </ion-col>
-        <ion-col col-1></ion-col>
-    </ion-row>
+      </ion-row>
+    </ng-template>
+    <ng-template #menuGuest>
+      <ion-row
+        *ngFor="let cartaItem of cartas"
+        (click)="productoDetalle(cartaItem.id)"
+      >
+        <ion-col col-2
+          ><img
+            src="./assets/icon/Group 49.png"
+            style="margin-top: 5px; width: 3.5rem"
+            alt=""
+        /></ion-col>
+        <ion-col col-4 class="letra">{{cartaItem.nombre_producto}}</ion-col>
+        <ion-col col-4 class="precio"
+          >{{cartaItem.precio_lista | currency}}</ion-col
+        >
+        <ion-col col-2 style="margin-top: 10px">
+          <ion-icon name="ios-arrow-forward" style="color: black"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ng-template>
+  </ion-card>
 </ion-content>
 
 <ion-footer no-border>
-    <!-- <ion-toolbar> -->
-    <ion-grid>
-        <ion-row>
-            <ion-col col-6>
-                <div text-center>
-                    <div *ngIf="claveMenuDigitalDetalleArbol; then botonMaesto else botonGuest"></div>
-                    <ng-template #botonMaesto>
-                        <button ion-button round block color="dark" (click)="(goBack())">
-                            Atras
-                        </button>
-                    </ng-template>
+  <!-- <ion-toolbar> -->
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <div text-center>
+          <div
+            *ngIf="claveMenuDigitalDetalleArbol; then botonMaesto else botonGuest"
+          ></div>
+          <ng-template #botonMaesto>
+            <button ion-button round block color="dark" (click)="(goBack())">
+              Atras
+            </button>
+          </ng-template>
 
-                    <ng-template #botonGuest>
-                        <button ion-button round block color="dark" (click)="(irMenu())">
-                            Atras
-                        </button>
-                    </ng-template>
-                    
-                </div>
-            </ion-col>
-            <ion-col col-6>
-                <div text-center>
-                    <button ion-button round block color="dark" (click)="(goToResumen(consumo, total))">
+          <ng-template #botonGuest>
+            <button ion-button round block color="dark" (click)="(irMenu())">
+              Atras
+            </button>
+          </ng-template>
+        </div>
+      </ion-col>
+      <ion-col col-6>
+        <div text-center>
+          <button
+            ion-button
+            round
+            block
+            color="dark"
+            (click)="(goToResumen(consumo, total))"
+          >
             {{total | currency}}
             <ion-icon name="arrow-dropright" class="total"></ion-icon>
           </button>
-                </div>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-    <!-- </ion-toolbar> -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- </ion-toolbar> -->
 </ion-footer>

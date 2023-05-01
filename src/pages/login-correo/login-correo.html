@@ -182,7 +182,7 @@
             <ion-row>
               <ion-col>
                 <div padding>
-                  <button block class="envio" (click)="RegisterToEmail()">
+                  <button block class="envio" (click)="RegisterToEmail()" [disabled]="myForm.invalid">
                     Registrarse
                   </button>
                 </div>
@@ -195,7 +195,7 @@
   </div>
 
   <div *ngIf="palabra == 'recuperacion'">
-    <ion-grid>
+    <ion-grid  class="recuperar-pass">
       <ion-row>
         <ion-col>
           <ion-card class="registro">
@@ -207,15 +207,7 @@
               <form [formGroup]="myFormr" novalidate>
                 <ion-grid>
                   <ion-row>
-                    <ion-col col-3>
-                      <ion-item class="recuadro">
-                        <ion-icon
-                          name="logo-google"
-                          style="font-size: x-large"
-                        ></ion-icon>
-                      </ion-item>
-                    </ion-col>
-                    <ion-col col-9>
+                    <ion-col col-12>
                       <ion-item class="_input">
                         <ion-input
                           type="text"
@@ -235,7 +227,7 @@
                   <ion-col>
                     <div padding>
                       <button block class="envio" (click)="onReset('bottom')">
-                        Recuperación de password
+                        Recuperación de contraseña
                       </button>
                     </div>
                   </ion-col>
