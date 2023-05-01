@@ -93,6 +93,9 @@ export class ReservacionDetallePage {
   public subTotal: number;
   public timer: number;
   public ComisionMasIva: number;
+  noPersonas: any;
+  cover: any;
+  totalCover: any;
 
   constructor(
     public navCtrl: NavController,
@@ -262,6 +265,18 @@ export class ReservacionDetallePage {
         const diff_hours = date_current.diff(fechar_, "hours");
         console.log('fechar_', mili);
         
+        this.cover = this.infoReservaciones[0].cover;
+        
+        this.noPersonas = this.infoReservaciones[0].numPersonas;
+        
+        if (this.cover == undefined) {
+
+          this.totalCover = 0;
+
+        } else {
+
+          this.totalCover = this.cover * this.noPersonas;
+        }
 
         // create the timestamp here. I use the end of the day here as an example
         // const end = moment(date_create).endOf('day');
@@ -282,17 +297,19 @@ export class ReservacionDetallePage {
 
           this.comision = this.total * 0.059;
 
-          this.iva = this.comision * 0.16;
+          // this.iva = this.comision * 0.16;
 
-          this.ComisionMasIva = this.comision + this.iva;
+          // this.ComisionMasIva = this.comision + this.iva;
+
+          this.ComisionMasIva = this.comision;
 
           this.subTotal = this.comision + this.total;
 
 
           this.propinaRe = this.total * this.infoReservaciones[0].propina;
 
-          this.totalNeto = this.subTotal + this.iva + this.propinaRe;
-          // this.totalNeto = this.subTotal + this.propinaRe;
+          // this.totalNeto = this.subTotal + this.iva + this.propinaRe;``
+          this.totalNeto = this.subTotal + this.totalCover + this.propinaRe;
 
 
           const totales = {
@@ -320,9 +337,10 @@ export class ReservacionDetallePage {
 
           this.comision = this.infoReservaciones[0].totalReservacion * 0.059;
 
-          this.iva = this.comision * 0.16;
+          // this.iva = this.comision * 0.16;
 
-          this.ComisionMasIva = this.comision + this.iva;
+          // this.ComisionMasIva = this.comision + this.iva;
+          this.ComisionMasIva = this.comision;
 
           this.subTotal =
             this.comision + this.infoReservaciones[0].totalReservacion;
@@ -332,8 +350,8 @@ export class ReservacionDetallePage {
             this.infoReservaciones[0].totalReservacion *
             this.infoReservaciones[0].propina;
 
-          // this.totalNeto = this.subTotal + this.propinaRe;
-          this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+          this.totalNeto = this.subTotal + this.totalCover + this.propinaRe;
+          // this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
           const totales = {
             idReservacion: this.idReservacion,

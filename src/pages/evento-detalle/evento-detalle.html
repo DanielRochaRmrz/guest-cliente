@@ -80,6 +80,15 @@
             <ion-note item-end> {{evento.fecha | date:'d-MM-yyyy' }}, {{ evento.hora }} </ion-note>
         </ion-item>
 
+        <ion-item>
+            <ion-icon ios="ios-cash" md="md-cash" item-start style="color: #fcc04d"></ion-icon>
+
+            Cover x persona
+
+            <ion-note item-end> {{ evento.cover | currency   }} </ion-note>
+        </ion-item>
+
+
         <ion-card>
 
             <ion-card-header>

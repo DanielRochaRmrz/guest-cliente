@@ -84,6 +84,9 @@ export class HistorialDetallePage {
   totalNeto: any;
   subTotal: number;
   public ComisionMasIva: number;
+  noPersonas: any;
+  cover: any;
+  totalCover: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -218,7 +221,20 @@ export class HistorialDetallePage {
 
         this.reservaProvider.getInfo(this.idReservacion).subscribe((info) => {
 
-          this.infoReservaciones = info;
+          this.infoReservaciones = info;          
+
+          this.cover = this.infoReservaciones[0].cover;
+
+          this.noPersonas = this.infoReservaciones[0].numPersonas;
+
+          if (this.cover == undefined) {
+
+            this.totalCover = 0;
+
+          } else {
+
+            this.totalCover = this.cover * this.noPersonas;
+          }
 
           if (info[0].uidCupon == undefined) {
 
@@ -226,16 +242,17 @@ export class HistorialDetallePage {
 
             this.comision = this.total * .059;
 
-            this.iva = this.comision * .16;
+            // this.iva = this.comision * .16;
 
-            this.ComisionMasIva = this.comision + this.iva;
-            
+            // this.ComisionMasIva = this.comision + this.iva;
+            this.ComisionMasIva = this.comision;
+
             this.subTotal = this.comision + this.total;
-            
 
             this.propinaRe = this.total * info[0].propina;
 
-            this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+            // this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+            this.totalNeto = this.subTotal + this.totalCover + this.propinaRe;
 
           } else {
 
@@ -249,17 +266,16 @@ export class HistorialDetallePage {
 
               this.comision = info[0].totalReservacion * .059;
 
-              this.iva = this.comision * .16;
+              // this.iva = this.comision * .16;
 
-              this.ComisionMasIva = this.comision + this.iva;
+              this.ComisionMasIva = this.comision;
 
               this.subTotal = this.comision + info[0].totalReservacion;
 
-
               this.propinaRe = info[0].totalReservacion * info[0].propina;
-              
-              // this.totalNeto = this.subTotal + this.propinaRe;
-              this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+
+              this.totalNeto = this.subTotal + this.totalCover + this.propinaRe;
+              // this.totalNeto = this.subTotal + this.iva + this.propinaRe;
 
             });
           }

@@ -200,6 +200,46 @@
 
         <hr>
 
+        <!-- Cover  -->
+
+        <div align="center" *ngIf="totalCover != 0">
+
+            <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
+            <font size="2" color="#474646"> <b> Cover</b></font>
+
+            <br>
+
+        </div>
+
+        <ion-grid *ngIf="totalCover != 0">
+
+            <ion-row class="header-row">
+                <ion-col><b></b></ion-col>
+
+                <ion-col><b>No. Personas</b></ion-col>
+
+                <ion-col><b>Costo</b></ion-col>
+
+                <ion-col><b>Total cover</b></ion-col>
+
+            </ion-row>
+
+            <ion-row *ngFor="let pro of productos">
+
+                <ion-col></ion-col>
+
+                <ion-col>{{ noPersonas }} </ion-col>
+
+                <ion-col> {{ cover | currency }} </ion-col>
+
+                <ion-col> {{ totalCover | currency }} </ion-col>
+
+            </ion-row>
+
+        </ion-grid>
+
+        <!-- /Cover -->
+
         <div align="center">
 
             <ion-icon ios="ios-list" md="md-list" item-start style="color: #fcc04d"></ion-icon>
@@ -257,7 +297,7 @@
                         <ion-col><b></b></ion-col>
                         <ion-col>IVA</ion-col>
                         <ion-col>{{ iva | currency }}</ion-col> -->
-                        <!-- <ion-col *ngIf="soloTotal ==''"> {{totalPropina*.16 | currency}}</ion-col>
+                    <!-- <ion-col *ngIf="soloTotal ==''"> {{totalPropina*.16 | currency}}</ion-col>
                         <ion-col *ngIf="soloTotal =='1'">{{total*.16 | currency}}</ion-col> -->
                     <!-- </ion-row> -->
 
