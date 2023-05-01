@@ -100,6 +100,7 @@ export class ReservacionesPage {
   selectContactos: any[];
 
   cover: number = 0;
+  coverE: number = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -270,6 +271,7 @@ export class ReservacionesPage {
       this.people++;
       if (cover) {
         this.cover = cover * this.people;
+        this.coverE = cover
       }
     }
   }
@@ -279,6 +281,7 @@ export class ReservacionesPage {
       this.people--;
       if (cover) {
         this.cover = cover * this.people;
+        this.coverE = cover
       }
     }
   }
@@ -303,7 +306,7 @@ export class ReservacionesPage {
       idevento: this.evento,
       date_rserva: new Date(`${this.fecha} ${this.hora}`),
       estatus: "Creando",
-      cover: this.cover
+      cover: this.coverE
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
       // Si se compartio la cuenta insertar telefonos en tabla compartidas
@@ -427,7 +430,7 @@ export class ReservacionesPage {
         idSucursal: this.idSucursal,
         idevento: this.evento,
         estatus: "Creando",
-        cover: this.cover
+        cover: this.coverE
       };
 
       this._providerReserva
@@ -490,7 +493,7 @@ export class ReservacionesPage {
       estatus: "Compartida",
       idSucursal: this.idSucursal,
       idevento: this.evento,
-      cover: this.cover
+      cover: this.coverE
     };
 
     this._providerReserva

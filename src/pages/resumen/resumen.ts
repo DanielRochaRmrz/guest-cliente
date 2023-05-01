@@ -82,6 +82,7 @@ export class ResumenPage {
   codigoSel: any;
   mesas: any;
   codi: any;
+  cover: number = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -109,6 +110,7 @@ export class ResumenPage {
   }
 
   ionViewDidLoad() {
+    this.cover = Number(localStorage.getItem('cover'));
     console.log("ionViewDidLoad ResumenPage");
     this.loadNavParams();
     this.getReservacion();
