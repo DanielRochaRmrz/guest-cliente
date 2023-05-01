@@ -770,7 +770,8 @@ export class ReservacionProvider {
           folio: "R" + folio,
           playerIDSuc: reservacion.playerIDSuc,
           estatus_pago: "",
-          date_rserva: reservacion.date_rserva
+          date_rserva: reservacion.date_rserva,
+          cover: reservacion.cover
         })
         .then((reserva) => {
           this.updateReservaId(reserva.id);
@@ -893,6 +894,7 @@ export class ReservacionProvider {
           idSucursal: reservacion.idSucursal,
           idevento: reservacion.idevento,
           idUsuario: idUsuario,
+          cover: reservacion.cover
         })
         .then((reserva) => {
           resolve({ success: true });

@@ -217,11 +217,24 @@
               <ion-col col-1></ion-col>
               <ion-col col-6 class="fondorow">
                 <div text-center class="consumoT">
-                  Consumo {{s.totalReservacion}}
+                  Consumo
                 </div>
               </ion-col>
               <ion-col col-4 class="fondorow">
                 <div text-center class="consumoT">{{total | currency}}</div>
+              </ion-col>
+              <ion-col col-1></ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="r.cover != 0" align="center">
+              <ion-col col-1></ion-col>
+              <ion-col col-6 class="fondorow">
+                <div text-center class="consumoT">
+                  Cover
+                </div>
+              </ion-col>
+              <ion-col col-4 class="fondorow">
+                <div text-center class="consumoT">{{r.cover | currency}}</div>
               </ion-col>
               <ion-col col-1></ion-col>
             </ion-row>
@@ -233,7 +246,7 @@
                   <div text-center class="consumoT">Total a pagar</div>
                 </ion-col>
                 <ion-col col-4 class="fondorow">
-                  <div text-center class="consumoT">{{resta | currency}}</div>
+                  <div text-center class="consumoT">{{resta + r.cover | currency}}</div>
                 </ion-col>
                 <ion-col col-1></ion-col>
               </ion-row>

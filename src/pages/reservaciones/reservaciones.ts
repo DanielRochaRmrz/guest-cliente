@@ -99,6 +99,8 @@ export class ReservacionesPage {
   contactos: any[];
   selectContactos: any[];
 
+  cover: number = 0;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -185,6 +187,11 @@ export class ReservacionesPage {
       this.disabledHora = false;
     }
 
+    let cover =  localStorage.getItem('cover');
+    if (cover) {
+      this.cover = Number(cover);
+    }
+
     if (this.idReservacion != null) {
       this.loadReservacion(this.idReservacion);
     }
@@ -211,6 +218,7 @@ export class ReservacionesPage {
         localStorage.removeItem("zona");
         localStorage.removeItem("contactosCompartidos");
         localStorage.removeItem("contactsSelected");
+        localStorage.removeItem('cover');
       });
     } else {
       this.navCtrl.popToRoot();
@@ -222,6 +230,8 @@ export class ReservacionesPage {
       localStorage.removeItem("zona");
       localStorage.removeItem("contactosCompartidos");
       localStorage.removeItem("contactsSelected");
+      localStorage.removeItem('cover');
+
     }
   }
 
@@ -255,19 +265,27 @@ export class ReservacionesPage {
     });
   }
 
-  increment() {
+  increment(cover: number) {
     if (this.people < 20) {
       this.people++;
+      if (cover) {
+        this.cover = cover * this.people;
+      }
     }
   }
 
-  decrement() {
+  decrement(cover: number) {
     if (this.people > 0) {
       this.people--;
+      if (cover) {
+        this.cover = cover * this.people;
+      }
     }
   }
 
   reservacionAdd() {
+    console.log('cover -->', this.cover);
+    localStorage.setItem('cover', this.cover.toString());
     let temp = [];
     this.telSelectMul.forEach((data) => {
       temp.push(data.tel);
@@ -285,6 +303,7 @@ export class ReservacionesPage {
       idevento: this.evento,
       date_rserva: new Date(`${this.fecha} ${this.hora}`),
       estatus: "Creando",
+      cover: this.cover
     };
     this._providerReserva.saveReservacion(info).then((respuesta: any) => {
       // Si se compartio la cuenta insertar telefonos en tabla compartidas
@@ -385,6 +404,8 @@ export class ReservacionesPage {
   }
 
   reservacionUpdate(idReservacion) {
+    console.log('cover -->', this.cover);
+    localStorage.setItem('cover', this.cover.toString());
     let temp = [];
     this.telSelectMul.forEach((data) => {
       temp.push(data.tel);
@@ -406,6 +427,7 @@ export class ReservacionesPage {
         idSucursal: this.idSucursal,
         idevento: this.evento,
         estatus: "Creando",
+        cover: this.cover
       };
 
       this._providerReserva
@@ -468,6 +490,7 @@ export class ReservacionesPage {
       estatus: "Compartida",
       idSucursal: this.idSucursal,
       idevento: this.evento,
+      cover: this.cover
     };
 
     this._providerReserva

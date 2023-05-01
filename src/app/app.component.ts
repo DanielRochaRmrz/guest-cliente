@@ -236,6 +236,7 @@ export class MyApp {
                 localStorage.removeItem("numcupon");
                 localStorage.removeItem("cuponn");
                 localStorage.removeItem("cupon");
+                localStorage.removeItem('cover');
               } else {
                 console.log("No hay");
               }

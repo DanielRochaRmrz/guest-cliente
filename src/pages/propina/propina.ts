@@ -239,8 +239,11 @@ export class PropinaPage {
                         this.propinaRe =
                           this.total * this.infoReservaciones[0].propina;
 
+                        // this.totalNeto =
+                        //   this.subTotal + this.iva + this.propinaRe;
+
                         this.totalNeto =
-                          this.subTotal + this.iva + this.propinaRe;
+                          this.subTotal + this.propinaRe;
 
                         this.totales = {
                           subTotal: parseFloat(this.total.toFixed(2)),
@@ -302,7 +305,10 @@ export class PropinaPage {
                       this.infoReservaciones[0].totalReservacion *
                       this.infoReservaciones[0].propina;
 
-                    this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+                    // this.totalNeto = this.subTotal + this.iva + this.propinaRe;
+
+                    this.totalNeto = this.subTotal + this.propinaRe;
+
 
                     this.totales = {
                       subTotal: parseFloat(totalDescuento.toFixed(2)),
@@ -357,6 +363,8 @@ export class PropinaPage {
               localStorage.removeItem("numcupon");
               localStorage.removeItem("cuponn");
               localStorage.removeItem("cupon");
+              localStorage.removeItem('cover');
+
 
               this.navCtrl.setRoot(MisReservacionesPage);
 
@@ -507,6 +515,8 @@ export class PropinaPage {
       localStorage.removeItem("numcupon");
       localStorage.removeItem("cuponn");
       localStorage.removeItem("cupon");
+      localStorage.removeItem('cover');
+
       this.navCtrl.setRoot(MisReservacionesPage);
     }
   }
